@@ -24,7 +24,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "1C ERP Diagnostics",
-    "shortDescription": "Dynamic evidence-first 1C:ERP orchestration · Gate 0–10",
+    "shortDescription": "Доказательная диагностика 1С:ERP · динамический Gate 0–10",
     "longDescription": "A single dynamic orchestrator for 1C:ERP incidents. It discovers available capabilities, builds an evidence graph, routes specialist skills, uses optional companion plugins only when available, challenges conclusions adversarially, and controls every proposed action through reversible risk gates.",
     "developerName": "Akim Kaneev",
     "category": "Productivity",
@@ -38,9 +38,9 @@
     "logo": "./assets/logo.png",
     "logoDark": "./assets/logo-dark.png",
     "defaultPrompt": [
-      "Diagnose this 1C:ERP incident through Gate 0–10.",
-      "Compare two 1C:ERP examples and verify the cause.",
-      "Проведи доказательную диагностику 1С:ERP по Gate 0–10."
+      "Проведи доказательную диагностику 1С:ERP по Gate 0–10.",
+      "Сравни корректный и проблемный примеры 1С:ERP и перепроверь причину.",
+      "Diagnose this 1C:ERP incident through Gate 0–10."
     ]
   }
 }
