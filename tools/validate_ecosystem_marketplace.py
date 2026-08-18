@@ -33,7 +33,7 @@ EXPECTED_SOURCES = {
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "ref": "v0.12.0",
+        "ref": "aefc880f9bab606a5c55ed11af563b740054a549",
     },
     "1c-skills": {
         "source": "url",
@@ -50,6 +50,7 @@ REQUIRED_FILES = [
     ROOT / "TERMS.md",
     ROOT / "docs" / "ECOSYSTEM_MARKETPLACE.md",
     ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
+    ROOT / "docs" / "RELEASE_NOTES_v0.2.1.md",
 ]
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
@@ -114,7 +115,7 @@ def main() -> int:
         if policy.get("authentication") != "ON_INSTALL":
             errors.append(f"{name} must declare ON_INSTALL authentication timing")
 
-    for name in ("1c-skills", "1c-skills-py"):
+    for name in ("unica", "1c-skills", "1c-skills-py"):
         ref = (by_name.get(name, {}).get("source") or {}).get("ref", "")
         if not SHA40.fullmatch(ref):
             errors.append(f"{name} must use an immutable 40-character commit ref")
