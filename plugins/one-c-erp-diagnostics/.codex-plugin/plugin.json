@@ -1,0 +1,33 @@
+{
+  "name": "one-c-erp-diagnostics",
+  "version": "0.1.2",
+  "description": "Evidence-first 1C:ERP diagnostics with Gate 1-10 orchestration, domain skills, adversarial verification, and safe action control.",
+  "repository": "https://github.com/akim-kaneyev/1c-erp-diagnostics",
+  "keywords": [
+    "1c",
+    "1c-erp",
+    "erp",
+    "accounting",
+    "diagnostics",
+    "evidence",
+    "month-close",
+    "codex",
+    "chatgpt"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "1C ERP Diagnostics",
+    "shortDescription": "Evidence-first 1C:ERP diagnostics · Gate 1–10",
+    "longDescription": "Evidence-first 1C:ERP diagnostics for movements, registers, postings, month close, cost, expenses, settlements, VAT, warehouse/series/assignments, production, access rights and supplied code. The workflow routes the case, builds a causal chain, runs an independent adversarial verification pass, and proposes the smallest safe action with before/after validation.",
+    "developerName": "Akim Kaneev",
+    "category": "Productivity",
+    "brandColor": "#0D1B2A",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/composer-icon.png",
+    "defaultPrompt": [
+      "Diagnose this 1C:ERP incident through Gate 1–10 and do not claim a root cause without evidence.",
+      "Compare the correct and problematic 1C:ERP examples, find the earliest proven divergence, and verify the conclusion adversarially.",
+      "Проверь этот инцидент 1С:ERP по Gate 1–10 и не делай финальный вывод без доказательств."
+    ]
+  }
+}

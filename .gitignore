@@ -1,0 +1,31 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials/
+
+# 1C databases and backups
+*.dt
+*.1CD
+*.bak
+*.backup
+
+# Sensitive raw case data
+cases/*/input/*
+!cases/*/input/.gitkeep
+cases/*/work/*
+!cases/*/work/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
