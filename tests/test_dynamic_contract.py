@@ -55,6 +55,28 @@ class DynamicContractTests(unittest.TestCase):
         ):
             self.assertIn(required, combined)
 
+    def test_scoped_closure_contract_is_explicit(self) -> None:
+        root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        packaged = (
+            PLUGIN / "skills" / "one-c-erp-diagnostics" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        final_review = (
+            PLUGIN / "skills" / "one-c-erp-final-review" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        state = (ROOT / "templates" / "case" / "STATE.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("current goal/task scope", root_skill)
+        self.assertIn("linked incident scope", root_skill)
+        self.assertIn("Do not use decorated statuses such as `passed*`", root_skill)
+        self.assertIn("Current goal status", final_review)
+        self.assertIn("Linked incident status", final_review)
+        self.assertIn("Current goal status:", state)
+        self.assertIn("Linked incident status:", state)
+        self.assertIn("not_required", packaged)
+        self.assertIn("Never use `passed*`", packaged)
+
     def test_required_dynamic_skills_are_packaged(self) -> None:
         required = {
             "one-c-erp-capability-discovery",
