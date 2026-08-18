@@ -1,0 +1,67 @@
+name: Bootstrap public tree from reviewed snapshot
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/bootstrap-public-pr.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bootstrap branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Download, verify and transform snapshot
+        shell: bash
+        env:
+          SNAPSHOT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-a7a0-81f4-be2c-5e7eac2f819d/raw?se=2026-08-18T08%3A09%3A09Z&sp=r&sv=2026-02-06&sr=b&scid=5e9bc8bd-d3b2-57ad-a851-eda93ee6c37f&skoid=9b41a688-1b44-4731-856e-b0efcf3660ed&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-18T05%3A36%3A18Z&ske=2026-08-19T05%3A36%3A18Z&sks=b&skv=2026-02-06&sig=Jk32ZcNA%2BxhvEZ3RZFy1KFL32l8mead2gjzZFG1YYwk%3D"
+        run: |
+          set -euo pipefail
+          cp tools/bootstrap_public_snapshot.py "$RUNNER_TEMP/bootstrap_public_snapshot.py"
+          curl --fail --location --retry 3 "$SNAPSHOT_URL" -o "$RUNNER_TEMP/snapshot.zip"
+          echo "401a2f471c70d3cbdd7c47f5e6d5a0a0de5a5573125b548c70c26c5aba6c0982  $RUNNER_TEMP/snapshot.zip" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/artifact" "$RUNNER_TEMP/source"
+          unzip -q "$RUNNER_TEMP/snapshot.zip" -d "$RUNNER_TEMP/artifact"
+          tar -xzf "$RUNNER_TEMP/artifact/one-c-erp-diagnostics-public-snapshot.tar.gz" -C "$RUNNER_TEMP/source"
+          python "$RUNNER_TEMP/bootstrap_public_snapshot.py" "$RUNNER_TEMP/source"
+
+      - name: Validate transformed public snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/source"
+          python -m pip install --upgrade pip
+          python -m pip install "openpyxl>=3.1" "pypdf>=5"
+          python -m compileall -q tools tests
+          python tools/validate_public_release.py
+          python -m unittest discover -s tests -v
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -type f -name '*.pyc' -delete
+          ! grep -RIl --exclude='composer-icon.png' -E 'akimka-jpg|akim266@gmail.com|800537959|NR6DrLRb|НПО ЗЭРС|НТЦ ЗЭРС' .
+
+      - name: Force-publish a single clean root commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --orphan public-root
+          git rm -rf . || true
+          git clean -fdx
+          rsync -a "$RUNNER_TEMP/source/" ./
+          git config user.name "Akim Kaneev"
+          git config user.email "290311329+akim-kaneyev@users.noreply.github.com"
+          git add -A
+          git commit -m "Initial public release candidate v0.1.2"
+          git push --force origin HEAD:main
