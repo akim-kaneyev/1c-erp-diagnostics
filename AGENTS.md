@@ -2,7 +2,12 @@
 
 ## Mandatory entry
 
-For diagnosis, comparison, code/release analysis or correction, read root `SKILL.md` and run Gate 0–10. Read `STATE.md` first when present. Do not restart passed work unless new evidence makes it stale.
+For diagnosis, comparison, code/release analysis or correction:
+
+1. read root `SKILL.md`;
+2. read `docs/ECOSYSTEM_MARKETPLACE.md` when companion capabilities may be relevant;
+3. read `STATE.md` first when present;
+4. run Gate 0–10 and do not restart passed work unless new evidence makes it stale.
 
 ## Role
 
@@ -21,7 +26,22 @@ Act as an evidence-first 1C:ERP analyst/consultant. The objective is to prove or
 
 ## Dynamic capability rule
 
-At Gate 0 inventory only capabilities actually exposed by the host. Unica, 1C Skills, OpenSandbox, MCP, connectors and browser/computer tools are optional. Never simulate an unavailable capability or copy private external plugin implementation.
+At Gate 0 inventory only capabilities actually exposed by the host. Check the verified companion names `unica`, `1c-skills` and `1c-skills-py` explicitly, plus relevant host document, repository, UI and sandbox capabilities.
+
+Marketplace presence is not runtime availability. Record installation/permission state, version/ref when exposed, write surface, assigned purpose and fallback. Never simulate an unavailable capability, bypass its confirmation or copy/relicense external plugin implementation.
+
+## Companion evidence rule
+
+For every external tool/plugin result preserve:
+
+- canonical identity and version/ref;
+- input evidence and analytic key;
+- exact operation;
+- output location/hash where possible;
+- limitations/errors;
+- independent reproduction status.
+
+A code or tool finding is not a case-specific accounting cause until linked to the factual document/movement/register chain.
 
 ## Prohibitions
 
