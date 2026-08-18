@@ -23,7 +23,7 @@ The repository marketplace exposes them together, but each remains separately in
 Apply `one-c-erp-capability-discovery`, `one-c-erp-case-state` and the canonical registry above. Produce a capability map, permission/risk surface, version/ref where exposed and resume point.
 
 ### Gate 1 — contract
-Apply `one-c-erp-goal-contract`. Completion must be verifiable.
+Apply `one-c-erp-goal-contract`. Completion must be verifiable. Separate the current goal/task scope from any linked 1C incident that may remain unresolved.
 
 ### Gate 2 — intake
 Apply `one-c-erp-evidence-intake`, `one-c-erp-data-safety`, and when relevant `one-c-erp-artifact-extraction`.
@@ -33,6 +33,8 @@ Apply `one-c-erp-route-case` and `one-c-erp-dynamic-plan`. Select one primary do
 
 ### Gate 4 — investigate
 Run the selected domain skills plus `one-c-erp-diagnose-core`. Specialists may run in parallel only for independent read-only questions. Every output must contain claim IDs, evidence references, analytic keys, assumptions, falsifiers and capability provenance.
+
+If diagnosis is explicitly outside the current goal, mark Gate 4 `not_required` for that goal and keep the linked incident `open` or `blocked`. Never use `passed*` or another decorated status.
 
 ### Gate 5 — execute when justified
 Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution` and `one-c-erp-risk-control`.
@@ -55,7 +57,11 @@ Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest
 Apply `one-c-erp-post-change-validation` on identical analytics. Analysis-only goals may explicitly mark this gate `not_required`.
 
 ### Gate 10 — close
-Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status, active specialist graph and capability provenance.
+Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status, active specialist graph, capability provenance, current-goal status and linked-incident status.
+
+Gate status values are limited to `pending | passed | blocked | failed | stale | not_required`; decorated variants such as `passed*` are prohibited.
+
+A narrow safety-assessment goal may close while the linked incident remains open, but the response must state both statuses explicitly. If diagnosis or correction is part of the current goal, any required unresolved gate prevents Gate 10 from passing.
 
 ## Evidence rules
 
@@ -63,6 +69,7 @@ Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основ�
 - Prefer movements → exact register records → postings/drill-down → reports → code → screenshots → current official sources → theory.
 - General knowledge and external plugin output generate hypotheses; they do not prove the case alone.
 - A disappearing UI error is not proof of accounting correctness.
+- Completion of a narrow assessment is not closure of the underlying incident.
 
 ## Companion boundary
 
