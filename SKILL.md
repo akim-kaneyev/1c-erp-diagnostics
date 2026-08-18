@@ -1,207 +1,104 @@
 ---
 name: one-c-erp-diagnostics
-description: Orchestrate evidence-first 1C:ERP diagnosis and safe correction. Use for incidents involving movements, registers, postings, month close, cost, expenses, settlements, VAT, warehouse/series/assignments, production, or access rights when the user needs a cause, comparison, correction plan, or verified conclusion.
+description: Run the dynamic evidence-first Gate 0-10 workflow for 1C:ERP incidents, comparisons, code, releases, access rights and safe remediation.
 user-invocable: true
 argument-hint: "[case path or task description]"
 ---
 
-# 1C ERP Diagnostics — Mandatory Workflow
+# 1C ERP Diagnostics — Dynamic Gate 0–10 Orchestrator
 
-## Single entry command
+## Single entrypoint
 
-Explicit invocation command:
+`$one-c-erp-diagnostics <case path or task>`
 
-`$one-c-erp-diagnostics <case path or task description>`
+The user invokes one command. The orchestrator discovers capabilities, selects internal specialist skills and optional companion plugins, runs verification and reports one consolidated result. Never require the user to manually chain skills.
 
-This is the only command the user should need for the full diagnostic workflow. Do not ask the user to invoke internal skills, playbooks, prompts or validators manually.
+## Gate 0 — Capability and state discovery
 
-On explicit invocation, run the workflow from Stage 0 through Gate 10 in order. A gate may be `not_required` only when its own criteria say so. A required gate may never be silently skipped.
+1. Read `AGENTS.md` and existing `STATE.md`.
+2. Inventory only capabilities actually exposed in the current host/session.
+3. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
+4. Record provenance, write-risk and the exact purpose for which a capability may be used.
+5. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
 
-If a required external capability, plugin, connector, sandbox or evidence source is unavailable, mark the affected gate `blocked`, state exactly what is unavailable, and do not represent downstream verification as completed.
-
-## Purpose
-
-Run 1C:ERP investigations in a fixed, resumable order so that a plausible hypothesis is never presented as a proven cause.
-
-For a simple explanatory question that does not require diagnosis, comparison, or correction, answer directly and do not force the full workflow unless the user explicitly invoked `$one-c-erp-diagnostics`. The no-invention rules from `AGENTS.md` still apply.
-
-## Stage 0 — Resume or initialize
-
-1. Read `AGENTS.md`.
-2. If the case already has `STATE.md`, read it before doing new analysis.
-3. Continue from the first incomplete, blocked or stale gate. Do not repeat passed gates unless new evidence can invalidate them.
-4. If no state exists and a persistent case workspace is available, create it from `templates/case/STATE.md`.
-5. If persistent files cannot be created in the current surface, maintain the same gate state in the working response/context and explicitly say that durable resume state is unavailable.
+Do not claim that Unica, 1C Skills, OpenSandbox, MCP, a connector or any other companion is available until the host exposes it.
 
 ## Gate 1 — Goal contract
 
-Before investigation, state a concrete goal using the quality bar aligned with OpenAI `define-goal`:
-
-- what concrete result must become true;
-- which system/document/report/period is in scope;
-- what evidence will prove completion;
-- what is explicitly out of scope when it matters;
-- what condition requires stopping and asking instead of guessing.
-
-Do not turn ordinary work into a persistent goal-tool task automatically. If an installed `define-goal` skill is explicitly requested/appropriate, use it; otherwise apply the quality bar as an internal case contract.
-
-**Gate passes only when success can be verified.**
+Define the concrete outcome, scope, evidence of completion, exclusions and stop condition. Use the measurable quality bar from OpenAI `define-goal`, but do not turn ordinary work into a separate persistent goal automatically.
 
 ## Gate 2 — Evidence intake
 
-1. Inventory all provided files and screenshots.
-2. Prefer exact movements, register records, postings, report drill-downs, code and official documentation over general theory.
-3. Hash/index files when working in a case directory.
-4. Mark what each source can and cannot prove.
-5. Record missing evidence.
+Inventory all files, screenshots, reports, movements, register records, postings, code and official sources. State what each item proves and cannot prove. Preserve identifiers and hashes when possible. For CF/CFE/EPF or unpacked BSL/JSON, apply the artifact-extraction skill and checklist.
 
-**Gate passes only when the available evidence and blind spots are explicit.**
+## Gate 3 — Dynamic execution graph
 
-## Gate 3 — Route the case
+Choose one primary domain and no more than two justified secondary domains. Build a directed execution graph containing:
 
-Read `playbooks/router.md` and select one primary playbook. Add a second only when a concrete cross-domain link is evidenced.
+- specialist objective;
+- input evidence;
+- dependency nodes;
+- allowed capabilities;
+- output schema;
+- stop/falsification condition.
 
-**Gate passes only when the selected playbook matches the observed symptom, not an assumed cause.**
+Run specialists in parallel only when they do not mutate shared state and their questions are independent.
 
-## Gate 4 — Primary diagnosis
+## Gate 4 — Specialist analysis
 
-Execute `skills/diagnose-1c-erp/SKILL.md` plus the selected playbook.
+Each specialist must separate facts, interpretations, hypotheses and missing evidence. The core causal chain is:
 
-Required chain:
+`document → movement → record/register → consuming mechanism → accounting/stock/access result → symptom`
 
-`document → movement → record/register → consuming mechanism → accounting/stock result → observed symptom`
+The earliest proven divergence is more important than the latest visible symptom. Code or tooling findings remain hypotheses until linked to the factual case chain.
 
-Build:
+## Gate 5 — Executable validation and sandbox decision
 
-- fact table;
-- good/bad or before/after comparison where available;
-- hypotheses with confirm/falsify conditions;
-- earliest demonstrated divergence point.
+Use local tools, 1C Skills runtimes or OpenSandbox only when executable validation adds measurable value. Default to read-only and sanitized inputs. If required execution is unavailable, mark the gate `blocked`; never simulate it.
 
-Never invent metadata object names.
+## Gate 6 — Evidence synthesis
 
-## Gate 5 — Execution / sandbox decision
-
-Use OpenSandbox only when isolated execution adds value, for example:
-
-- running Codex or scripts on sanitized case files;
-- testing an untrusted parser/tool;
-- reproducing a transformation;
-- running repeatable validation commands without touching the working environment.
-
-If OpenSandbox is used:
-
-1. use sanitized minimum data;
-2. do not place production `.dt` or plaintext secrets in the sandbox;
-3. restrict network egress where practical;
-4. record commands, versions, inputs and outputs;
-5. treat sandbox output as evidence to evaluate, not as truth by itself;
-6. destroy/expire the sandbox after the case when appropriate.
-
-If no executable validation is needed, mark Gate 5 `not_required`.
-If executable sandbox validation is required for the claimed result but OpenSandbox or an equivalent isolated executor is unavailable, mark Gate 5 `blocked`; do not pretend the validation occurred.
-
-## Gate 6 — Preliminary conclusion
-
-Produce a preliminary result using only:
+Merge specialist outputs by source and claim ID. Resolve contradictions explicitly. A majority vote is not evidence. Produce a preliminary status only from:
 
 - `УСТАНОВЛЕНО`;
 - `ВЕРОЯТНО`;
 - `ТРЕБУЕТ ПРОВЕРКИ`.
 
-For every material conclusion record:
+## Gate 7 — Adversarial verification
 
-- conclusion ID;
-- exact evidence;
-- causal link;
-- alternative explanation checked;
-- falsifier: what finding would make the conclusion wrong.
+A distinct reviewer re-reads original evidence, not only the synthesis. It challenges every causal link, checks identical analytics, searches for an earlier divergence, tests alternatives, identifies invented objects and records a falsifier. Final `УСТАНОВЛЕНО` is forbidden if this gate is unavailable or fails.
 
-No business correction is authorized by this gate alone.
+## Gate 8 — Risk-controlled action decision
 
-## Gate 7 — Independent verification
+Classify the action:
 
-Run `prompts/verify-conclusion.md` as a separate adversarial pass.
+- `R0` — read-only analysis;
+- `R1` — derived local files or reports;
+- `R2` — reversible test-environment change;
+- `R3` — production, accounting, access rights, closed periods or broad reposting.
 
-The verifier must not defend the preliminary answer. It must:
-
-1. re-read the evidence;
-2. challenge each causal link;
-3. identify invented/unproven objects or assumptions;
-4. check whether before/after comparisons use identical analytics;
-5. search for an earlier divergence point;
-6. check reasonable alternatives;
-7. downgrade the status when evidence is insufficient.
-
-If a separate verification pass cannot actually be performed in the current environment, mark this gate `blocked` or return `ТРЕБУЕТ ПРОВЕРКИ`; never label the cause final `УСТАНОВЛЕНО` on the basis of the primary pass alone.
-
-**A cause is final `УСТАНОВЛЕНО` only if it survives this gate.**
-
-## Gate 8 — Action decision
-
-Choose the smallest safe and reversible action.
-
-Priority:
-
-1. verify/adjust standard configuration or NSI when proven relevant;
-2. use a standard 1C document/mechanism;
-3. correct the actual source document in an allowed period when justified;
-4. use specialized/manual corrections only when standard mechanisms are unsuitable and consequences are understood.
-
-Do not automatically open closed periods, mass repost, grant broad rights, or modify the standard configuration.
-
-If a production-changing action is required, state the expected accounting effect, scope, rollback path, and validation plan before execution.
+R3 requires explicit user approval, tested rollback, affected-scope statement and post-change validation plan. Prefer standard 1C configuration/NSI, then a standard document/mechanism, then correction of the actual source document in an allowed period. Do not automatically grant broad rights, open closed periods, mass repost or modify the standard configuration.
 
 ## Gate 9 — Post-change validation
 
-After an approved change, compare the same analytics before and after.
-
-Verify not only that an error message disappeared, but also the relevant:
-
-- movements/records;
-- quantities and amounts;
-- balances;
-- postings/subaccounts;
-- month-close result;
-- duplicate/side effects;
-- user access matrix, for rights cases.
-
-If no change has been applied yet, Gate 9 remains `pending` or becomes `not_required` only when the user's goal is analysis-only and Gate 8 explicitly records that no change is in scope.
-
-If the expected result is not reproduced, reopen the earliest affected gate and mark downstream gates `stale`.
+Compare the same analytic key before and after. Check movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates, side effects or access matrix. Disappearance of an interface error is not sufficient proof. Analysis-only work may mark Gate 9 `not_required` explicitly.
 
 ## Gate 10 — Final closure
 
-Final response must contain:
+Return:
 
-1. **Краткий вывод** — status and proven cause or explicit uncertainty.
-2. **Основание** — evidence and causal chain.
-3. **Что делать дальше** — safe action or smallest missing evidence.
+1. **Краткий вывод** — final status and proven cause or explicit uncertainty.
+2. **Основание** — evidence, causal chain and verification result.
+3. **Что делать дальше** — safe action or smallest missing evidence set.
+4. Compact Gate 0–10 status and capability provenance.
 
-Update `STATE.md` with the final status, evidence set, verification result, applied change (if any), and remaining blind spots.
-
-A case may be `CLOSED` only when every required gate is `passed` or `not_required`. If any gate is `blocked`, `failed`, `pending` or `stale`, final closure must say what remains unresolved.
-
-## Internal routing — no user commands required
-
-The orchestrator itself must invoke/use as relevant:
-
-- `playbooks/router.md`;
-- one primary playbook and at most one justified secondary playbook;
-- `skills/diagnose-1c-erp/SKILL.md`;
-- `prompts/verify-conclusion.md`;
-- local parsers/comparison tools from `tools/` when they are suitable;
-- available connected apps/plugins only when their data/action is required;
-- OpenSandbox only under Gate 5 rules.
-
-Do not make the user manually chain these components.
+A case is closed only when all required gates are `passed` or `not_required`. New evidence invalidates downstream gates from the earliest affected point.
 
 ## Non-negotiable controls
 
 - No invented 1C objects.
-- No cause without a causal chain.
-- No final `УСТАНОВЛЕНО` without an independent verification pass.
-- No correction validated only by disappearance of a UI error.
-- No restart-from-zero when a valid case state exists.
-- No silent substitution for an unavailable required plugin/tool/evidence source.
-- New evidence can invalidate earlier gates; when it does, mark them stale and re-run from the earliest affected gate.
+- No hidden use of unavailable companion plugins.
+- No external plugin output treated as truth without evidence linkage.
+- No final cause without Gate 7.
+- No production-changing action without the applicable risk gate.
+- No restart from zero when valid state exists.

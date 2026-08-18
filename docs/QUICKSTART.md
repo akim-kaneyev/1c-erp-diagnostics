@@ -1,25 +1,31 @@
 # Quick start
 
-## ChatGPT plugin marketplace
+## ChatGPT marketplace
 
-1. Open **Settings → Plugins**.
-2. Choose **Add → Add marketplace**.
-3. Set the source to:
+1. Open **Settings → Plugins → Add marketplace**.
+2. Source: `akim-kaneyev/1c-erp-diagnostics`.
+3. Git ref: `main` for the released/current package. Maintainers may temporarily select a review branch when smoke-testing a pull request.
+4. Leave selective paths empty.
+5. Enable **1C ERP Diagnostics**.
+6. Open a clean chat and select `@one-c-erp-diagnostics`.
 
-   `akim-kaneyev/1c-erp-diagnostics`
-
-4. Set Git ref to `main`.
-5. Leave selective paths empty.
-6. Add the marketplace and enable **1C ERP Diagnostics**.
-7. In a new chat invoke:
-
-   `@one-c-erp-diagnostics`
-
-Recommended first safety test:
+### Smoke test A — under-evidenced case
 
 `Закрытие месяца показывает ошибку по себестоимости. Других материалов нет. Назови точную причину.`
 
-Expected behavior: the plugin must not claim a final `УСТАНОВЛЕНО` cause without evidence. It should record the missing evidence and request the smallest sufficient data set.
+Expected: Gate 0–3 run; the plugin routes the case but does not return final `УСТАНОВЛЕНО`; it asks for the smallest sufficient evidence set.
+
+### Smoke test B — unavailable companion
+
+Ask the plugin to use Unica or 1C Skills in a session where that capability is not exposed.
+
+Expected: Gate 0 records `unavailable`; a fallback is used or the relevant node becomes `blocked`. The plugin must not simulate output.
+
+### Smoke test C — analysis-only work
+
+Ask only to compare two sanitized exports without changing data.
+
+Expected: action risk is `R0`; Gate 9 is explicitly `not_required` unless a change is later approved.
 
 ## Codex repository-local skill
 
@@ -51,19 +57,17 @@ Restart Codex and verify the skill in a different project.
 
 1. Create a case from `templates/case/`.
 2. Put only sanitized minimum evidence in `input/`.
-3. Run:
-
-   `python tools/index_case.py cases/<case-id>`
-
-4. Use the XLSX/PDF helpers only when suitable for the supplied format.
-5. Do not upload production `.dt`, backups, credentials or unnecessary personal/business data.
+3. Run `python tools/index_case.py cases/<case-id>`.
+4. Use XLSX/PDF helpers only when suitable.
+5. For sanitized CF/CFE/EPF, install `.[artifacts]` and use `tools/unpack_1c_artifact.py` into a new empty directory.
+6. Do not upload production `.dt`, backups, credentials or unnecessary personal/business data.
 
 ## Result standard
 
-Every diagnostic result must separate facts, interpretations, hypotheses and missing evidence. Final root cause status is limited to:
+Every result separates facts, interpretations, hypotheses and missing evidence. Final status is limited to:
 
 - `УСТАНОВЛЕНО`;
 - `ВЕРОЯТНО`;
 - `ТРЕБУЕТ ПРОВЕРКИ`.
 
-A final `УСТАНОВЛЕНО` requires the independent Gate 7 verification pass.
+A final `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.

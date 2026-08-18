@@ -1,24 +1,29 @@
 # Publishing and validation
 
-## Local plugin smoke test
+## Required package checks
 
-This repository includes `.agents/plugins/marketplace.json` pointing to `plugins/one-c-erp-diagnostics`.
+- manifest version matches `pyproject.toml`;
+- author/homepage/repository/license/interface metadata are valid;
+- `composerIcon`, `logo` and `logoDark` exist and pass PNG CRC validation;
+- at least 31 packaged skills are present, including all dynamic-control skills;
+- public-package validator and regression tests pass on Python 3.10 and 3.12;
+- no secrets, real case data, production databases or unsupported dependency claims exist.
 
-Expected local tests:
-- plugin is discoverable from the local marketplace;
-- `@one-c-erp-diagnostics` selects the plugin when the host supports local plugin installation;
-- a diagnostic request routes through the master orchestrator;
-- domain companion skills refine the analysis without user-side manual chaining;
-- a deliberately under-evidenced test case cannot end with final `УСТАНОВЛЕНО`;
-- an analysis-only case may mark post-change validation `not_required` explicitly;
-- unavailable required capabilities become `blocked` rather than silently skipped.
+## Clean-session smoke tests
 
-## Pre-release audit
+1. plugin is discoverable after marketplace re-import;
+2. Variant A icon renders in GitHub and the plugin selector;
+3. Gate 0 reports actual companion availability;
+4. an under-evidenced case cannot end as final `УСТАНОВЛЕНО`;
+5. an unavailable Unica/1C Skills request becomes fallback/`blocked`, not simulated;
+6. Gate 7 challenges the original evidence and causal chain;
+7. analysis-only work is `R0` and may mark Gate 9 `not_required`;
+8. R3 action requires exact approval, rollback and validation plan.
 
-Invoke/apply `one-c-erp-plugin-audit` and require no critical FAIL.
+## External companion rule
 
-## Public submission
+Do not publish `.app.json` or `mcpServers` unless the connector/server exists, is portable, is licensed for this use and has verified identifiers. Host-managed Unica and 1C Skills remain optional runtime companions.
 
-Public listing/review is an OpenAI Platform/Plugin Directory action and cannot be completed by repository commits alone. Prepare manifest, public metadata, privacy/support information and any required review materials in accordance with the current OpenAI plugin submission flow.
+## Release gate
 
-This v0.1 is skills-only: no custom MCP server, no custom OAuth, no external action endpoint declared.
+Run `one-c-erp-plugin-audit`. Any critical `FAIL` blocks merge/release. Repository publication and Plugin Directory submission remain separate product actions.

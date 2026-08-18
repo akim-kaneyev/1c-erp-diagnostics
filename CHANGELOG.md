@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 — dynamic orchestrator candidate
+
+- repaired the corrupted PNG brand asset and added separate `composerIcon`, `logo` and `logoDark` files;
+- expanded the manifest with author, homepage, license, public URLs and validated interface metadata;
+- introduced Gate 0 capability discovery and a bounded dynamic execution graph;
+- added evidence synthesis, contradiction handling and capability provenance;
+- added optional companion coordination for Unica, 1C Skills, document tools, GitHub/Drive, Computer Use and OpenSandbox;
+- made companion plugins runtime-discovered rather than fabricated hard dependencies;
+- added `R0–R3` action-risk controls;
+- added sanitized CF/CFE/EPF extraction through optional pinned `v8unpack`;
+- added release-difference and open-source intake skills;
+- strengthened the plugin validator with PNG CRC checks, manifest checks and dynamic-contract tests.
+
 ## 0.1.2 — public-ready candidate
 
 - polished international README and project positioning;

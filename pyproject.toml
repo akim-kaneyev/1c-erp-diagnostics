@@ -1,7 +1,7 @@
 [project]
 name = "one-c-erp-diagnostics"
-version = "0.1.2"
-description = "Evidence-first toolkit for 1C:ERP incident diagnostics"
+version = "0.2.0"
+description = "Dynamic evidence-first toolkit for 1C:ERP incident diagnostics"
 requires-python = ">=3.10"
 dependencies = [
   "openpyxl>=3.1",
@@ -9,4 +9,5 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-sandbox = ["opensandbox"]
+artifacts = ["v8unpack==1.2.6"]
+sandbox = ["opensandbox==0.1.14"]

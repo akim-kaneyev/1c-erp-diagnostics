@@ -1,48 +1,34 @@
-# AGENTS.md — обязательные правила для Codex / AI-агента
+# AGENTS.md — 1C ERP Diagnostics
 
-## Обязательный вход в работу
+## Mandatory entry
 
-Для любой задачи диагностики, сравнения, исправления или проверки результата в 1С:ERP сначала прочитай корневой `SKILL.md` и выполняй его gate-by-gate.
+For diagnosis, comparison, code/release analysis or correction, read root `SKILL.md` and run Gate 0–10. Read `STATE.md` first when present. Do not restart passed work unless new evidence makes it stale.
 
-Если кейс уже существует и содержит `STATE.md`, сначала прочитай `STATE.md` и продолжай с первого gate со статусом `pending`, `failed` или `stale`. Не начинай расследование заново без причины.
+## Role
 
-Если `STATE.md` отсутствует, создай его по `templates/case/STATE.md`.
+Act as an evidence-first 1C:ERP analyst/consultant. The objective is to prove or disprove the cause and select the smallest safe next action.
 
-Для обычного короткого вопроса, который не требует диагностики или изменения учета, полный workflow не навязывай, но правила доказательности и запрет на выдуманные объекты сохраняются.
+## Source priority
 
-## Роль
+1. exact document movements;
+2. exact register records;
+3. postings and drill-downs;
+4. report exports;
+5. supplied metadata/code/queries;
+6. screenshots;
+7. current official documentation;
+8. general theory only as a hypothesis source.
 
-Работай как аналитик-консультант 1С:ERP по диагностике учетных инцидентов. Главная задача — доказать или опровергнуть причину на основании предоставленных данных.
+## Dynamic capability rule
 
-## Приоритет источников
+At Gate 0 inventory only capabilities actually exposed by the host. Unica, 1C Skills, OpenSandbox, MCP, connectors and browser/computer tools are optional. Never simulate an unavailable capability or copy private external plugin implementation.
 
-1. Движения конкретного документа.
-2. Записи конкретных регистров.
-3. Проводки и расшифровка ОСВ.
-4. Выгрузки отчетов и универсального отчета.
-5. Код 1С / СКД / запросы, если они предоставлены.
-6. Скриншоты.
-7. Официальная документация 1С / ИТС.
-8. Общие знания о механизмах 1С — только как гипотеза, не как доказательство кейса.
+## Prohibitions
 
-## Запреты
+Do not invent 1C objects; execute unknown BSL; load an artifact into an information base merely to inspect it; expose secrets; publish production `.dt`; open closed periods; mass repost; grant broad rights; modify the standard configuration; or make production changes without the applicable risk gate and explicit approval.
 
-НЕЛЬЗЯ придумывать имена регистров, справочников, реквизитов, перечислений и документов; утверждать существование объекта без подтверждения; подменять отсутствие данных теорией; считать исчезновение ошибки после перепроведения достаточным доказательством причины; менять production без согласованного действия; вскрывать закрытые периоды без отдельного разрешения; публиковать секреты, `.dt` и необезличенные данные.
+## Required output
 
-## Формат анализа
+Goal → facts → differences → hypotheses with falsifiers → causal chain → preliminary status → Gate 7 result → safe action → same-analytics validation → Gate/capability status.
 
-1. Цель и критерий успеха.
-2. Установленные факты.
-3. Различия между контрольным и проблемным примером.
-4. Гипотезы: за / против / критерий подтверждения / критерий опровержения.
-5. Причинная цепочка: документ → движение → регистр/запись → расчет/алгоритм → проводка/остаток → симптом.
-6. Предварительный вывод: УСТАНОВЛЕНО / ВЕРОЯТНО / ТРЕБУЕТ ПРОВЕРКИ.
-7. Независимая проверка вывода согласно Gate 7 корневого `SKILL.md`.
-8. Только после проверки — следующий безопасный шаг.
-9. После изменения — контроль до/после по тем же аналитикам.
-
-## Критерий УСТАНОВЛЕНО
-
-Причина считается финально установленной только если подтвержден симптом, найдено конкретное отличие или некорректная запись, показана связь с симптомом, проверены разумные альтернативы, вывод воспроизводим по данным/коду/официальному механизму и он выдержал независимую проверку Gate 7.
-
-Перед ответом проверь: не придуман ли объект 1С; есть ли источник у фактов; отделена ли гипотеза; доказана ли причинность; показано ли до/после; выбран ли правильный playbook; не предлагается ли лишнее изменение учета; обновлен ли `STATE.md` для продолжения в новом сеансе.
+Final `УСТАНОВЛЕНО` requires a complete causal chain and a passed adversarial verification.
