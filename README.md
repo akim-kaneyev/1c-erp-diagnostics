@@ -7,13 +7,13 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.2.0" src="https://img.shields.io/badge/version-0.2.0-0D1B2A.svg" />
+  <img alt="Version 0.2.1" src="https://img.shields.io/badge/version-0.2.1-0D1B2A.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
 
-<p align="center"><strong>Dynamic evidence-first diagnostics for 1C:ERP with Gate 0–10 orchestration, optional companion capabilities and adversarial verification.</strong></p>
+<p align="center"><strong>One evidence-first entrypoint for 1C:ERP diagnostics, backed by a verified companion marketplace and dynamic Gate 0–10 orchestration.</strong></p>
 
-> Independent community project. Not affiliated with or endorsed by 1C Company or OpenAI. Product names and trademarks belong to their respective owners.
+> Independent community project. Not affiliated with or endorsed by 1C Company, OpenAI, Ingvar Consulting or the 1C Skills maintainers. Product names and trademarks belong to their respective owners.
 
 ## Why this project exists
 
@@ -23,19 +23,35 @@ Complex 1C:ERP incidents are often diagnosed from the last visible symptom. This
 
 A plausible explanation is not a final cause. Final `УСТАНОВЛЕНО` requires the dedicated Gate 7 adversarial review.
 
+## One marketplace, separate verified plugins
+
+Adding this repository as a marketplace source exposes four independently maintained plugins in one place:
+
+| Plugin | Primary role |
+|---|---|
+| **1C ERP Diagnostics** | Gate 0–10 orchestration, evidence synthesis and controlled remediation |
+| **Unica 0.12.0** | 1C development, metadata/BSL investigation and controlled build/test workflows |
+| **1C Skills (PowerShell)** | Windows-first 1C artifact/configurator/web-client tooling |
+| **1C Skills (Python)** | Cross-platform 1C artifact parsing and controlled automation |
+
+The external plugins are referenced from verified upstream sources and immutable refs where possible. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
+
+See [`docs/ECOSYSTEM_MARKETPLACE.md`](docs/ECOSYSTEM_MARKETPLACE.md) and [`docs/OPEN_SOURCE_INTEGRATIONS.md`](docs/OPEN_SOURCE_INTEGRATIONS.md).
+
 ## Dynamic orchestration
 
-The user selects one plugin or invokes one Codex skill. The orchestrator then:
+The user selects **1C ERP Diagnostics** once. The orchestrator then:
 
-1. discovers only the capabilities actually available in the current host;
+1. discovers only capabilities actually available in the current host;
 2. resumes prior case state rather than restarting;
 3. creates a bounded dependency graph of specialist analyses;
 4. runs independent read-only specialists in parallel when safe;
 5. records evidence, claims, contradictions and tool provenance;
-6. uses executable validation only when it adds measurable value;
-7. classifies every proposed action by risk level `R0–R3`;
-8. challenges the preliminary conclusion before any final cause;
-9. validates the same analytics before and after a change.
+6. invokes Unica, 1C Skills or another companion only when installed and justified;
+7. uses executable validation only when it adds measurable value;
+8. classifies every proposed action by risk level `R0–R3`;
+9. challenges the preliminary conclusion before any final cause;
+10. validates the same analytics before and after a change.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -68,32 +84,34 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - platform/configuration release differences;
 - correct-vs-problematic document comparison.
 
-## Optional companion ecosystem
+## Additional capabilities
 
-The orchestrator can coordinate external capabilities when the host actually exposes them:
+- PDF, Spreadsheets and Documents for evidence extraction;
+- GitHub and Drive for user-referenced sources;
+- Computer Use for observation or explicitly approved interaction;
+- OpenSandbox for isolated executable validation;
+- pinned `v8unpack` for non-executing extraction of sanitized CF/CFE/EPF;
+- optional BSL static analysis after extraction.
 
-- **Unica** for 1C developer workflows and code-oriented investigation;
-- **1C Skills (Python/PowerShell)** for parsing, indexing, comparison and controlled automation;
-- **PDF, Spreadsheets and Documents** for evidence extraction;
-- **GitHub and Drive** for user-referenced sources;
-- **Computer Use** for observation or explicitly approved interaction;
-- **OpenSandbox** for isolated executable validation.
-
-These companions are **not copied into this repository and are not fabricated hard dependencies**. Their private implementation, versions, permissions and installation remain host-managed. Gate 0 records whether each capability is actually available; unavailable required capabilities become `blocked` rather than simulated.
-
-Reviewed open-source integrations and their boundaries are documented in [`docs/OPEN_SOURCE_INTEGRATIONS.md`](docs/OPEN_SOURCE_INTEGRATIONS.md).
+Gate 0 records whether every capability is `available`, `confirmation_required`, `unavailable` or `prohibited`. Missing capabilities become a documented fallback or `blocked`, never a simulated result.
 
 ## Quick start
 
-### ChatGPT
+### ChatGPT / Codex marketplace
 
-Add this repository as a marketplace source, enable **1C ERP Diagnostics**, and select:
+Add this repository as a marketplace source:
+
+```text
+Source: akim-kaneyev/1c-erp-diagnostics
+Git ref: main
+Selective paths: empty
+```
+
+Install **1C ERP Diagnostics** as the primary entrypoint. Install the companion plugins needed for the current workflow. Invoke:
 
 `@one-c-erp-diagnostics`
 
-### Codex
-
-Repository-local entrypoint:
+### Codex repository-local skill
 
 `.agents/skills/one-c-erp-diagnostics/SKILL.md`
 
@@ -101,7 +119,7 @@ Global invocation after installation:
 
 `$one-c-erp-diagnostics <task or case>`
 
-The full procedure and smoke tests are in [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
+The complete procedure and smoke tests are in [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
 
 ## Evidence standard
 
@@ -130,12 +148,13 @@ There is no pretend universal MXL parser. Use a verified export to XLSX/XML/HTML
 
 ## Safety
 
-Do not upload production `.dt`, backups, credentials, tokens, unnecessary personal data or broad confidential exports. Production/accounting/access writes are `R3` and require explicit approval, rollback and Gate 9 validation. See `SECURITY.md`, `PRIVACY.md` and `SUPPORT.md`.
+Do not upload production `.dt`, backups, credentials, tokens, unnecessary personal data or broad confidential exports. Production/accounting/access writes are `R3` and require explicit approval, rollback and Gate 9 validation. See `SECURITY.md`, `PRIVACY.md`, `TERMS.md` and `SUPPORT.md`.
 
 ## Project structure
 
 - `SKILL.md` — authoritative dynamic Gate 0–10 contract;
-- `plugins/one-c-erp-diagnostics/` — packaged ChatGPT/Codex plugin;
+- `.agents/plugins/marketplace.json` — unified verified 1C marketplace;
+- `plugins/one-c-erp-diagnostics/` — primary ChatGPT/Codex plugin;
 - `playbooks/` — domain-specific diagnostic rules;
 - `templates/case/STATE.md` — resumable state, capability and claim ledgers;
 - `tools/` — deterministic evidence preparation;
@@ -143,12 +162,12 @@ Do not upload production `.dt`, backups, credentials, tokens, unnecessary person
 
 ## Status
 
-Current development candidate: **0.2.0**. It repairs the brand assets and adds dynamic capability discovery, bounded planning, evidence synthesis, optional companion coordination, artifact extraction and `R0–R3` action controls. Public release remains blocked until CI, plugin re-import and clean-session smoke tests pass.
+Current candidate: **0.2.1**. It adds a verified ecosystem marketplace with Unica and both 1C Skills runtimes while preserving explicit installation, permissions and provenance. Repository publication and global Plugin Directory submission remain separate final steps after marketplace re-import, clean-session smoke tests and public visibility.
 
 ## Contributing
 
-Contributions are welcome when they preserve evidence-first reasoning, explicit uncertainty, reproducibility and data minimization. See `CONTRIBUTING.md`.
+Contributions are welcome when they preserve evidence-first reasoning, explicit uncertainty, reproducibility, source provenance and data minimization. See `CONTRIBUTING.md`.
 
 ## License
 
-MIT. See `LICENSE`.
+The project code is MIT. Referenced companion plugins retain their own licenses. See `LICENSE` and `docs/ECOSYSTEM_MARKETPLACE.md`.
