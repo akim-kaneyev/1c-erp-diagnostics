@@ -1,18 +1,28 @@
 # 1C ERP Diagnostics plugin
 
-Skills-only plugin for ChatGPT and Codex.
+A single dynamic entrypoint for ChatGPT and Codex:
 
-## Explicit invocation
+- ChatGPT: `@one-c-erp-diagnostics`
+- Codex: `$one-c-erp-diagnostics <task or case>`
 
-- ChatGPT/Codex plugin: `@one-c-erp-diagnostics`
-- Direct Codex skill, when installed separately: `$one-c-erp-diagnostics`
+## What is bundled
 
-The plugin packages one orchestrator and focused companion skills. The user should not manually chain them. The orchestrator owns Gate 1–10 and may apply companion skills as refinements.
+- Gate 0–10 master orchestration;
+- 1C:ERP domain specialists;
+- capability discovery and bounded dynamic planning;
+- evidence synthesis and adversarial verification;
+- risk controls and same-analytics validation;
+- artifact/open-source intake rules;
+- deterministic Python helpers.
 
-## Why skills-only in v0.1
+## Optional companions
 
-The workflow primarily needs instructions, uploaded evidence, built-in analysis tools and whichever apps are already available to the user. A custom MCP server would add hosting, authentication, domain verification and review surface without being necessary for the core diagnostic method. Add MCP only when a controlled server-side capability is actually required.
+Unica, 1C Skills (Python/PowerShell), document plugins, GitHub/Drive, Computer Use and OpenSandbox are discovered at runtime and used only when the host exposes them and the case needs them. They are not copied into this package, and their unavailable state is never hidden.
+
+## Why no fabricated app/MCP binding
+
+A portable plugin dependency requires verified public connector metadata. None was available for the user's locally installed Unica/1C Skills packages during this review. The safe implementation is capability discovery plus explicit provenance, not a guessed `.app.json` or copied private code.
 
 ## Safety
 
-Do not include production `.dt`, plaintext credentials, confidential full database backups or unnecessary personal data. A sandbox does not replace data minimization.
+Do not include production `.dt`, plaintext credentials, full confidential database backups or unnecessary personal data. External tool output is evidence to verify, not truth by itself.

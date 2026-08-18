@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import json
 import re
+import struct
 import sys
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,24 +24,26 @@ REQUIRED_FILES = [
     ROOT / "AGENTS.md",
     ROOT / "SKILL.md",
     ROOT / "templates" / "case" / "STATE.md",
+    ROOT / "docs" / "ARCHITECTURE.md",
+    ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
+    ROOT / "checklists" / "code-artifacts.md",
+    ROOT / "tools" / "unpack_1c_artifact.py",
     MANIFEST,
     MARKETPLACE,
 ]
 
-FORBIDDEN_SUFFIXES = {
-    ".dt",
-    ".1cd",
-    ".bak",
-    ".backup",
-    ".key",
-    ".pem",
+REQUIRED_DYNAMIC_SKILLS = {
+    "one-c-erp-capability-discovery",
+    "one-c-erp-dynamic-plan",
+    "one-c-erp-companion-plugins",
+    "one-c-erp-evidence-synthesis",
+    "one-c-erp-risk-control",
+    "one-c-erp-artifact-extraction",
+    "one-c-erp-release-difference",
+    "one-c-erp-open-source-intake",
 }
 
-SECRET_ASSIGNMENT = re.compile(
-    r"(?i)\b(password|passwd|api[_-]?key|access[_-]?token|client[_-]?secret)\b"
-    r"\s*[:=]\s*[\"'][^\"']{8,}[\"']"
-)
-
+FORBIDDEN_SUFFIXES = {".dt", ".1cd", ".bak", ".backup", ".key", ".pem"}
 TEXT_SUFFIXES_FOR_SECRET_CHECK = {
     ".py",
     ".json",
@@ -50,6 +54,13 @@ TEXT_SUFFIXES_FOR_SECRET_CHECK = {
     ".ps1",
     ".env",
 }
+SECRET_ASSIGNMENT = re.compile(
+    r"(?i)\b(password|passwd|api[_-]?key|access[_-]?token|client[_-]?secret)\b"
+    r"\s*[:=]\s*[\"'][^\"']{8,}[\"']"
+)
+SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:[-+][0-9A-Za-z.-]+)?$")
+HTTPS_URL = re.compile(r"^https://[^\s]+$")
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -58,10 +69,14 @@ def fail(errors: list[str], message: str) -> None:
 
 def load_json(path: Path, errors: list[str]) -> dict:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001 - validator must report malformed files
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001 - validator reports malformed files
         fail(errors, f"Invalid JSON: {path.relative_to(ROOT)}: {exc}")
         return {}
+    if not isinstance(value, dict):
+        fail(errors, f"JSON root must be an object: {path.relative_to(ROOT)}")
+        return {}
+    return value
 
 
 def parse_pyproject_version(errors: list[str]) -> str | None:
@@ -69,31 +84,112 @@ def parse_pyproject_version(errors: list[str]) -> str | None:
     if not path.exists():
         fail(errors, "Missing pyproject.toml")
         return None
-
-    text = path.read_text(encoding="utf-8")
-    match = re.search(r'^version\s*=\s*"([^"]+)"', text, flags=re.MULTILINE)
+    match = re.search(
+        r'^version\s*=\s*"([^"]+)"',
+        path.read_text(encoding="utf-8"),
+        flags=re.MULTILINE,
+    )
     if not match:
         fail(errors, "pyproject.toml has no project version")
         return None
     return match.group(1)
 
 
-def validate_skill(path: Path, errors: list[str]) -> None:
+def validate_skill(path: Path, errors: list[str]) -> str | None:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
         fail(errors, f"Skill has no YAML frontmatter: {path.relative_to(ROOT)}")
-        return
-
+        return None
     closing = text.find("\n---\n", 4)
     if closing == -1:
         fail(errors, f"Skill frontmatter is not closed: {path.relative_to(ROOT)}")
+        return None
+    frontmatter = text[4:closing]
+    name_match = re.search(r"(?m)^name:\s*(\S+)", frontmatter)
+    description_match = re.search(r"(?m)^description:\s*\S+", frontmatter)
+    if not name_match:
+        fail(errors, f"Skill frontmatter has no name: {path.relative_to(ROOT)}")
+    if not description_match:
+        fail(errors, f"Skill frontmatter has no description: {path.relative_to(ROOT)}")
+    return name_match.group(1) if name_match else None
+
+
+def validate_png(path: Path, errors: list[str]) -> None:
+    """Validate PNG framing, critical chunks and CRCs without Pillow."""
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        fail(errors, f"Cannot read PNG asset {path.relative_to(ROOT)}: {exc}")
+        return
+    if not data.startswith(PNG_SIGNATURE):
+        fail(errors, f"Invalid PNG signature: {path.relative_to(ROOT)}")
         return
 
-    frontmatter = text[4:closing]
-    if not re.search(r"(?m)^name:\s*\S+", frontmatter):
-        fail(errors, f"Skill frontmatter has no name: {path.relative_to(ROOT)}")
-    if not re.search(r"(?m)^description:\s*\S+", frontmatter):
-        fail(errors, f"Skill frontmatter has no description: {path.relative_to(ROOT)}")
+    offset = len(PNG_SIGNATURE)
+    seen_ihdr = False
+    seen_idat = False
+    seen_iend = False
+    width = height = 0
+
+    while offset < len(data):
+        if offset + 12 > len(data):
+            fail(errors, f"Truncated PNG chunk header: {path.relative_to(ROOT)}")
+            return
+        length = struct.unpack(">I", data[offset : offset + 4])[0]
+        chunk_type = data[offset + 4 : offset + 8]
+        chunk_end = offset + 12 + length
+        if chunk_end > len(data):
+            fail(errors, f"Truncated PNG chunk data: {path.relative_to(ROOT)}")
+            return
+        chunk_data = data[offset + 8 : offset + 8 + length]
+        stored_crc = struct.unpack(">I", data[offset + 8 + length : chunk_end])[0]
+        calculated_crc = zlib.crc32(chunk_type)
+        calculated_crc = zlib.crc32(chunk_data, calculated_crc) & 0xFFFFFFFF
+        if stored_crc != calculated_crc:
+            label = chunk_type.decode("ascii", errors="replace")
+            fail(errors, f"PNG CRC mismatch in {label}: {path.relative_to(ROOT)}")
+            return
+
+        if chunk_type == b"IHDR":
+            if seen_ihdr or length != 13:
+                fail(errors, f"Invalid IHDR chunk: {path.relative_to(ROOT)}")
+                return
+            seen_ihdr = True
+            width, height = struct.unpack(">II", chunk_data[:8])
+        elif chunk_type == b"IDAT":
+            seen_idat = True
+        elif chunk_type == b"IEND":
+            if length != 0:
+                fail(errors, f"Invalid IEND chunk: {path.relative_to(ROOT)}")
+            seen_iend = True
+            offset = chunk_end
+            break
+        offset = chunk_end
+
+    if not (seen_ihdr and seen_idat and seen_iend):
+        fail(errors, f"PNG is missing IHDR/IDAT/IEND: {path.relative_to(ROOT)}")
+    if width < 64 or height < 64:
+        fail(errors, f"PNG is too small ({width}x{height}): {path.relative_to(ROOT)}")
+    if offset != len(data):
+        fail(errors, f"PNG has trailing bytes after IEND: {path.relative_to(ROOT)}")
+
+
+def validate_manifest_asset(interface: dict, field: str, errors: list[str]) -> None:
+    value = interface.get(field)
+    if not isinstance(value, str) or not value.startswith("./"):
+        fail(errors, f"Manifest interface.{field} must be a relative ./ path")
+        return
+    asset = (PLUGIN_DIR / value).resolve()
+    try:
+        asset.relative_to(PLUGIN_DIR.resolve())
+    except ValueError:
+        fail(errors, f"Manifest {field} points outside the plugin directory")
+        return
+    if not asset.is_file():
+        fail(errors, f"Manifest {field} asset does not exist: {value}")
+        return
+    if asset.suffix.lower() == ".png":
+        validate_png(asset, errors)
 
 
 def main() -> int:
@@ -110,7 +206,30 @@ def main() -> int:
     if manifest.get("name") != expected_name:
         fail(errors, f"Manifest name must be {expected_name!r}")
 
+    manifest_version = manifest.get("version")
+    if not isinstance(manifest_version, str) or not SEMVER.fullmatch(manifest_version):
+        fail(errors, "Manifest version must be strict semver")
+
+    project_version = parse_pyproject_version(errors)
+    if manifest_version and project_version and manifest_version != project_version:
+        fail(errors, f"Version mismatch: plugin={manifest_version}, pyproject={project_version}")
+
+    author = manifest.get("author") or {}
+    if not isinstance(author, dict) or not author.get("name"):
+        fail(errors, "Manifest author.name is required")
+    for field in ("homepage", "repository"):
+        value = manifest.get(field)
+        if not isinstance(value, str) or not HTTPS_URL.fullmatch(value):
+            fail(errors, f"Manifest {field} must be an absolute https:// URL")
+    if manifest.get("license") != "MIT":
+        fail(errors, "Manifest license must be MIT")
+    if manifest.get("skills") != "./skills/":
+        fail(errors, 'Manifest skills must be "./skills/"')
+
     interface = manifest.get("interface") or {}
+    if not isinstance(interface, dict):
+        fail(errors, "Manifest interface must be an object")
+        interface = {}
     for field in (
         "displayName",
         "shortDescription",
@@ -119,29 +238,27 @@ def main() -> int:
         "category",
         "composerIcon",
         "logo",
+        "logoDark",
     ):
         if not interface.get(field):
             fail(errors, f"Manifest interface.{field} is required")
-
-    for field in ("composerIcon", "logo"):
+    for field in ("websiteURL", "privacyPolicyURL"):
         value = interface.get(field)
-        if value:
-            asset = (PLUGIN_DIR / value).resolve()
-            try:
-                asset.relative_to(PLUGIN_DIR.resolve())
-            except ValueError:
-                fail(errors, f"Manifest {field} points outside the plugin directory")
-            else:
-                if not asset.is_file():
-                    fail(errors, f"Manifest {field} asset does not exist: {value}")
+        if not isinstance(value, str) or not HTTPS_URL.fullmatch(value):
+            fail(errors, f"Manifest interface.{field} must be an absolute https:// URL")
 
-    manifest_version = manifest.get("version")
-    project_version = parse_pyproject_version(errors)
-    if manifest_version and project_version and manifest_version != project_version:
-        fail(
-            errors,
-            f"Version mismatch: plugin={manifest_version}, pyproject={project_version}",
-        )
+    prompts = interface.get("defaultPrompt")
+    if not isinstance(prompts, list) or not 1 <= len(prompts) <= 3:
+        fail(errors, "Manifest defaultPrompt must contain 1 to 3 strings")
+    else:
+        for index, prompt in enumerate(prompts, start=1):
+            if not isinstance(prompt, str) or not prompt.strip():
+                fail(errors, f"defaultPrompt[{index}] must be non-empty text")
+            elif len(prompt) > 128:
+                fail(errors, f"defaultPrompt[{index}] exceeds 128 characters")
+
+    for field in ("composerIcon", "logo", "logoDark"):
+        validate_manifest_asset(interface, field, errors)
 
     plugins = marketplace.get("plugins") if isinstance(marketplace, dict) else None
     if not isinstance(plugins, list) or not any(
@@ -149,11 +266,13 @@ def main() -> int:
     ):
         fail(errors, "Marketplace does not declare one-c-erp-diagnostics")
 
-    skills = sorted((PLUGIN_DIR / "skills").glob("*/SKILL.md"))
-    if len(skills) < 10:
-        fail(errors, f"Expected at least 10 packaged skills, found {len(skills)}")
-    for skill in skills:
-        validate_skill(skill, errors)
+    skill_paths = sorted((PLUGIN_DIR / "skills").glob("*/SKILL.md"))
+    skill_names = {name for path in skill_paths if (name := validate_skill(path, errors))}
+    if len(skill_paths) < 31:
+        fail(errors, f"Expected at least 31 packaged skills, found {len(skill_paths)}")
+    missing_dynamic = sorted(REQUIRED_DYNAMIC_SKILLS - skill_names)
+    if missing_dynamic:
+        fail(errors, "Missing dynamic skills: " + ", ".join(missing_dynamic))
 
     case_files = [
         path
@@ -184,7 +303,9 @@ def main() -> int:
     for required_text in (
         "@one-c-erp-diagnostics",
         "$one-c-erp-diagnostics",
-        "Gate 1–10",
+        "Gate 0–10",
+        "Dynamic orchestration",
+        "Optional companion",
         "Not affiliated",
     ):
         if required_text not in readme:
@@ -197,7 +318,7 @@ def main() -> int:
         return 1
 
     print("PUBLIC RELEASE VALIDATION: PASS")
-    print(f"Packaged skills: {len(skills)}")
+    print(f"Packaged skills: {len(skill_paths)}")
     print(f"Plugin version: {manifest_version}")
     return 0
 
