@@ -28,13 +28,14 @@ Audit result: **PASS with four non-critical product/runtime warnings**. No criti
 | 18 | Optional executable adapters are pinned | PASS | CI installs/imports `v8unpack==1.2.6` and `opensandbox==0.1.14` on Python 3.10/3.12. |
 | 19 | Public package rejects sensitive artifacts | PASS | Validator blocks case input/work files, `.dt`, `.1CD`, backups, key material and obvious credential assignments. |
 | 20 | Publication documentation is complete | PASS | README, privacy, terms, security, support, ecosystem architecture, release notes and publication checklist exist. |
-| 21 | CI validates the complete contract | PASS | Run `32127125862` passed package validation, ecosystem validation and regression tests on Python 3.10 and 3.12. |
+| 21 | CI validates the complete contract | PASS | Final PR run `32127228592` passed package validation, ecosystem validation and regression tests on Python 3.10 and 3.12. |
+| 22 | Reviewed change is merged into `main` | PASS | PR #6 was squash-merged as commit `197f538603578a85788c37edce8b7eec59cd025b`. |
 
 ## Product/runtime warnings
 
 ### WARNING 1 — marketplace re-import pending
 
-Repository CI validates the marketplace file and immutable refs, but does not prove that the current ChatGPT/Codex UI will import and render all four entries. Re-import `main` after merge and visually verify the plugin cards.
+Repository CI validates the marketplace file and immutable refs, but does not prove that the current ChatGPT/Codex UI will import and render all four entries. Refresh or re-import `main` and visually verify the plugin cards.
 
 ### WARNING 2 — cross-plugin invocation is host-dependent
 
@@ -50,4 +51,4 @@ The personal/workspace marketplace is not the global Plugin Directory. OpenAI-si
 
 ## Conclusion
 
-The v0.2.1 package materially expands the 1C workflow: it provides one verified marketplace for the primary diagnostics plugin, Unica and both 1C Skills runtimes, while retaining explicit permissions, source provenance and evidence/risk controls. The branch is technically eligible for merge. Public repository release, tag creation and global directory submission remain blocked until the documented product-side smoke tests pass.
+The v0.2.1 package materially expands the 1C workflow: it provides one verified marketplace for the primary diagnostics plugin, Unica and both 1C Skills runtimes, while retaining explicit permissions, source provenance and evidence/risk controls. The implementation is merged and repository-side validation is complete. Public repository release, tag creation and global directory submission remain blocked only by the documented product-side smoke tests and manual publication steps.

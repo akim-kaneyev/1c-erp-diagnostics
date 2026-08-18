@@ -14,22 +14,24 @@
 - [x] Clean public repository was initialized without private development history.
 - [x] Public-candidate commits use GitHub `noreply` identity.
 - [x] Current-tree searches found no known internal credentials/company names.
+- [x] v0.2.1 self-audit has no critical `FAIL`.
 
 ## Unified 1C ecosystem marketplace
 
 - [x] Primary `one-c-erp-diagnostics` plugin is declared locally.
-- [x] Canonical Unica `0.12.0` marketplace release is pinned by tag/path.
+- [x] Canonical Unica `0.12.0` release is pinned to immutable commit `aefc880f9bab606a5c55ed11af563b740054a549` and path `plugins/unica`.
 - [x] 1C Skills PowerShell and Python are pinned to reviewed immutable generated commits.
 - [x] Third-party sources, versions, licenses and permission boundaries are documented.
 - [x] External plugins remain independently installed; no code copying, relicensing or permission bypass.
 - [x] Gate 0 uses canonical identities and records actual availability.
 - [x] Missing companion capabilities become fallback/`blocked`, never simulated.
+- [x] PR #6 passed package/ecosystem/regression CI and was squash-merged to `main` as `197f538603578a85788c37edce8b7eec59cd025b`.
 
 ## Marketplace/plugin smoke tests
 
 - [x] The private repository marketplace can be added and refreshed locally.
 - [x] Variant A icon renders in the local ChatGPT plugin list after refresh.
-- [ ] Re-import `main` after v0.2.1 merge and confirm the marketplace shows four plugins.
+- [ ] Refresh/re-import `main` after the v0.2.1 merge and confirm the marketplace shows four plugins.
 - [ ] Confirm the primary card reports version/description for the unified Gate 0–10 ecosystem.
 - [ ] Run Gate 0 capability inventory in a clean independent chat.
 - [ ] Confirm installed Unica/1C Skills calls record canonical identity, operation and provenance.
@@ -55,7 +57,7 @@
 
 ## Public repository and release
 
-- [ ] Merge v0.2.1 only after CI and self-audit pass.
+- [x] Merge v0.2.1 only after CI and self-audit pass.
 - [ ] Change repository visibility to Public.
 - [ ] Create annotated tag `v0.2.1` on the approved release commit.
 - [ ] Publish `1C ERP Diagnostics v0.2.1 — Unified Ecosystem Preview` as a pre-release.
