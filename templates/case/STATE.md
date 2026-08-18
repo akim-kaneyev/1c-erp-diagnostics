@@ -6,12 +6,16 @@
 - Title:
 - Owner:
 - Updated at:
-- Overall status: `open | blocked | action_pending | validating | closed`
+- Overall workflow status: `open | blocked | action_pending | validating | closed`
+- Current goal status: `open | blocked | closed`
+- Linked incident status: `not_in_scope | open | blocked | resolved`
+- Closure statement:
 
 ## Goal contract
 
 - Outcome:
 - Scope:
+- Linked incident:
 - Completion evidence:
 - Exclusions:
 - Stop condition:
@@ -46,6 +50,8 @@
 | 10 Final closure | pending | |
 
 Allowed gate status: `pending | passed | blocked | failed | stale | not_required`.
+
+Do not use decorated values such as `passed*`. When a gate is outside the current goal, use `not_required` and record any unresolved linked incident separately.
 
 ## Evidence ledger
 

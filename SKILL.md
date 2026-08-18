@@ -42,6 +42,15 @@ Use the smallest sufficient set. If the preferred capability is unavailable, use
 
 Define the concrete outcome, scope, evidence of completion, exclusions and stop condition. Use the measurable quality bar from OpenAI `define-goal`, but do not turn ordinary work into a separate persistent goal automatically.
 
+### Scope model
+
+Separate two statuses whenever the current request is narrower than the underlying 1C incident:
+
+- **current goal/task scope** — the exact analysis or decision the user requested now;
+- **linked incident scope** — the accounting, operational or technical incident that may remain unresolved.
+
+Example: a request to assess whether mass reposting is safe may be completed as a safety assessment even though the root cause of the cost incident remains open. Do not silently convert a safety-assessment goal into a root-cause diagnosis, and do not describe the incident itself as closed merely because the narrower assessment is complete.
+
 ## Gate 2 — Evidence intake
 
 Inventory all files, screenshots, reports, movements, register records, postings, code and official sources. State what each item proves and cannot prove. Preserve identifiers and hashes when possible. For CF/CFE/EPF or unpacked BSL/JSON, apply the artifact-extraction skill and checklist.
@@ -70,6 +79,8 @@ Each specialist must separate facts, interpretations, hypotheses and missing evi
 The earliest proven divergence is more important than the latest visible symptom. Code or tooling findings remain hypotheses until linked to the factual case chain.
 
 For every external companion output record canonical plugin/tool identity, assigned operation, evidence inputs, version/ref when available, output location/hash, limitations and whether another method reproduced the material result.
+
+When root-cause investigation is explicitly outside the current goal, mark Gate 4 `not_required` for that goal and record the linked incident as `open` or `blocked`. Do not use decorated or qualified gate values such as `passed*` to hide an unresolved diagnostic branch.
 
 ## Gate 5 — Executable validation and sandbox decision
 
@@ -119,8 +130,14 @@ Return:
 2. **Основание** — evidence, causal chain and verification result.
 3. **Что делать дальше** — safe action or smallest missing evidence set.
 4. Compact Gate 0–10 status, active specialist graph and capability provenance.
+5. **Current goal status** — `closed | blocked | open`.
+6. **Linked incident status** — `resolved | open | blocked | not_in_scope`.
 
-A case is closed only when all required gates are `passed` or `not_required`. New evidence invalidates downstream gates from the earliest affected point.
+Allowed gate statuses are only `pending | passed | blocked | failed | stale | not_required`. Do not use decorated statuses such as `passed*`.
+
+Gate 10 may be `passed` for a narrowly defined safety assessment when all gates required by that assessment are `passed` or `not_required`. In that case the output must say, for example, `Current goal: closed; linked incident: open`, and must not state that the 1C incident or root cause is closed.
+
+If the current goal includes root-cause diagnosis or correction, any required `blocked`, `failed`, `pending` or `stale` gate prevents Gate 10 from passing. New evidence invalidates downstream gates from the earliest affected point.
 
 ## Non-negotiable controls
 
@@ -130,4 +147,6 @@ A case is closed only when all required gates are `passed` or `not_required`. Ne
 - No external plugin output treated as truth without evidence linkage.
 - No final cause without Gate 7.
 - No production-changing action without the applicable risk gate.
+- No decorated gate statuses or ambiguous asterisk qualifications.
+- No statement that an incident is closed when only a narrower assessment is complete.
 - No restart from zero when valid state exists.
