@@ -1,7 +1,7 @@
 [project]
 name = "one-c-erp-diagnostics"
-version = "0.2.0"
-description = "Dynamic evidence-first toolkit for 1C:ERP incident diagnostics"
+version = "0.2.1"
+description = "Dynamic evidence-first toolkit and verified companion ecosystem for 1C:ERP diagnostics"
 requires-python = ">=3.10"
 dependencies = [
   "openpyxl>=3.1",
