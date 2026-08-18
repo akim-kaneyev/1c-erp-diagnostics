@@ -18,6 +18,7 @@ MANIFEST = (
     / "plugin.json"
 )
 
+MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
 EXPECTED_ORDER = [
     "one-c-erp-diagnostics",
     "unica",
@@ -33,24 +34,24 @@ EXPECTED_SOURCES = {
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "ref": "aefc880f9bab606a5c55ed11af563b740054a549",
+        "sha": "aefc880f9bab606a5c55ed11af563b740054a549",
     },
     "1c-skills": {
         "source": "url",
         "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
-        "ref": "8cb7868145281d8e353831512cc1ffa72f1b5c89",
+        "sha": "8cb7868145281d8e353831512cc1ffa72f1b5c89",
     },
     "1c-skills-py": {
         "source": "url",
         "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
-        "ref": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4",
+        "sha": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4",
     },
 }
 REQUIRED_FILES = [
     ROOT / "TERMS.md",
     ROOT / "docs" / "ECOSYSTEM_MARKETPLACE.md",
     ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
-    ROOT / "docs" / "RELEASE_NOTES_v0.2.1.md",
+    ROOT / "docs" / "RELEASE_NOTES_v0.2.2.md",
 ]
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
@@ -81,8 +82,8 @@ def main() -> int:
         errors.append(f"Invalid plugin manifest JSON: {exc}")
         manifest = {}
 
-    if marketplace.get("name") != "one-c-erp-diagnostics-ecosystem":
-        errors.append("Unexpected marketplace name")
+    if marketplace.get("name") != MARKETPLACE_ID:
+        errors.append("Unexpected marketplace name; the installation identity must remain stable")
     if (marketplace.get("interface") or {}).get("displayName") != "1C ERP Diagnostics Ecosystem":
         errors.append("Unexpected marketplace displayName")
 
@@ -116,13 +117,16 @@ def main() -> int:
             errors.append(f"{name} must declare ON_INSTALL authentication timing")
 
     for name in ("unica", "1c-skills", "1c-skills-py"):
-        ref = (by_name.get(name, {}).get("source") or {}).get("ref", "")
-        if not SHA40.fullmatch(ref):
-            errors.append(f"{name} must use an immutable 40-character commit ref")
+        source = by_name.get(name, {}).get("source") or {}
+        sha = source.get("sha", "")
+        if not SHA40.fullmatch(sha):
+            errors.append(f"{name} must use an immutable 40-character SHA selector")
+        if "ref" in source:
+            errors.append(f"{name} must use the verified `sha` field, not `ref`, for a commit pin")
 
     interface = manifest.get("interface") or {}
-    if manifest.get("version") != "0.2.1":
-        errors.append("Plugin manifest version must be 0.2.1")
+    if manifest.get("version") != "0.2.2":
+        errors.append("Plugin manifest version must be 0.2.2")
     if interface.get("termsOfServiceURL") != (
         "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md"
     ):
@@ -137,8 +141,9 @@ def main() -> int:
         return 1
 
     print("ECOSYSTEM MARKETPLACE VALIDATION: PASS")
+    print("Marketplace ID: " + MARKETPLACE_ID)
     print("Plugins: " + ", ".join(EXPECTED_ORDER))
-    print("Plugin version: 0.2.1")
+    print("Plugin version: 0.2.2")
     return 0
 
 

@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
+MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
 UNICA_COMMIT = "aefc880f9bab606a5c55ed11af563b740054a549"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
@@ -20,10 +21,8 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         }
 
     def test_marketplace_identity_and_order(self) -> None:
-        self.assertEqual(
-            self.marketplace["name"],
-            "one-c-erp-diagnostics-ecosystem",
-        )
+        # The internal ID is installation identity and must remain stable across upgrades.
+        self.assertEqual(self.marketplace["name"], MARKETPLACE_ID)
         self.assertEqual(
             self.marketplace["interface"]["displayName"],
             "1C ERP Diagnostics Ecosystem",
@@ -52,23 +51,25 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             "https://github.com/IngvarConsulting/unica-marketplace.git",
         )
         self.assertEqual(source["path"], "plugins/unica")
-        self.assertEqual(source["ref"], UNICA_COMMIT)
-        self.assertRegex(source["ref"], r"^[0-9a-f]{40}$")
+        self.assertEqual(source["sha"], UNICA_COMMIT)
+        self.assertNotIn("ref", source)
+        self.assertRegex(source["sha"], r"^[0-9a-f]{40}$")
 
-    def test_1c_skills_are_pinned_to_immutable_generated_refs(self) -> None:
+    def test_1c_skills_are_pinned_to_immutable_generated_shas(self) -> None:
         expected = {
             "1c-skills": POWERSHELL_COMMIT,
             "1c-skills-py": PYTHON_COMMIT,
         }
-        for name, ref in expected.items():
+        for name, sha in expected.items():
             source = self.plugins[name]["source"]
             self.assertEqual(source["source"], "url")
             self.assertEqual(
                 source["url"],
                 "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
             )
-            self.assertEqual(source["ref"], ref)
-            self.assertRegex(ref, r"^[0-9a-f]{40}$")
+            self.assertEqual(source["sha"], sha)
+            self.assertNotIn("ref", source)
+            self.assertRegex(sha, r"^[0-9a-f]{40}$")
 
     def test_every_plugin_requires_explicit_installation(self) -> None:
         for item in self.marketplace["plugins"]:
@@ -84,7 +85,7 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         integrations = (ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md").read_text(
             encoding="utf-8"
         )
-        release_notes = (ROOT / "docs" / "RELEASE_NOTES_v0.2.1.md").read_text(
+        release_notes = (ROOT / "docs" / "RELEASE_NOTES_v0.2.2.md").read_text(
             encoding="utf-8"
         )
         terms = (ROOT / "TERMS.md").read_text(encoding="utf-8")
@@ -103,6 +104,7 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             self.assertIn(token, release_notes)
             self.assertIn(token, companion)
 
+        self.assertIn(MARKETPLACE_ID, ecosystem)
         self.assertIn("v0.12.0", ecosystem)
         self.assertIn("v0.12.0", integrations)
         self.assertIn("third-party", terms.lower())

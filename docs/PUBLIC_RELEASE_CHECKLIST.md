@@ -14,32 +14,39 @@
 - [x] Clean public repository was initialized without private development history.
 - [x] Public-candidate commits use GitHub `noreply` identity.
 - [x] Current-tree searches found no known internal credentials/company names.
-- [x] v0.2.1 self-audit has no critical `FAIL`.
+- [x] v0.2.1 self-audit had no critical `FAIL` before the refresh hotfix.
+- [x] Scoped Gate-closure ambiguity found by the R3 test was corrected and regression-tested.
 
 ## Unified 1C ecosystem marketplace
 
 - [x] Primary `one-c-erp-diagnostics` plugin is declared locally.
-- [x] Canonical Unica `0.12.0` release is pinned to immutable commit `aefc880f9bab606a5c55ed11af563b740054a549` and path `plugins/unica`.
-- [x] 1C Skills PowerShell and Python are pinned to reviewed immutable generated commits.
+- [x] Canonical Unica `0.12.0` release is pinned to immutable SHA `aefc880f9bab606a5c55ed11af563b740054a549` and path `plugins/unica`.
+- [x] 1C Skills PowerShell and Python are pinned to reviewed immutable generated SHAs.
 - [x] Third-party sources, versions, licenses and permission boundaries are documented.
 - [x] External plugins remain independently installed; no code copying, relicensing or permission bypass.
 - [x] Gate 0 uses canonical identities and records actual availability.
 - [x] Missing companion capabilities become fallback/`blocked`, never simulated.
-- [x] PR #6 passed package/ecosystem/regression CI and was squash-merged to `main` as `197f538603578a85788c37edce8b7eec59cd025b`.
+- [x] Internal marketplace ID restored to stable `one-c-erp-diagnostics-marketplace`.
+- [x] Visible title remains `1C ERP Diagnostics Ecosystem` through `interface.displayName`.
+- [x] External commit pins use the verified `sha` selector, not a commit hash in `ref`.
+- [x] Primary plugin/package version bumped to `0.2.2` so the installed cache receives behavior changes.
 
 ## Marketplace/plugin smoke tests
 
-- [x] The private repository marketplace can be added and refreshed locally.
-- [x] Variant A icon renders in the local ChatGPT plugin list after refresh.
-- [ ] Refresh/re-import `main` after the v0.2.1 merge and confirm the marketplace shows four plugins.
-- [ ] Confirm the primary card reports version/description for the unified Gate 0–10 ecosystem.
-- [ ] Run Gate 0 capability inventory in a clean independent chat.
-- [ ] Confirm installed Unica/1C Skills calls record canonical identity, operation and provenance.
-- [ ] Run an under-evidenced case and confirm it cannot finish as final `УСТАНОВЛЕНО`.
-- [ ] Confirm Gate 7 explicitly challenges the preliminary conclusion.
-- [ ] Confirm an unavailable companion becomes fallback/`blocked` / `ТРЕБУЕТ ПРОВЕРКИ`.
-- [ ] Confirm analysis-only work is `R0` and may mark Gate 9 `not_required`.
-- [ ] Confirm any unapproved production/accounting/access proposal is classified `R3` and blocked.
+- [x] The private repository marketplace was added locally.
+- [x] Variant A icon renders in the local ChatGPT plugin list.
+- [x] Gate 0 capability inventory completed in a clean independent chat.
+- [x] Unica and both 1C Skills runtimes were detected and probed read-only.
+- [x] OpenSandbox was correctly reported unavailable and was not simulated.
+- [x] Under-evidenced case did not produce an invented final cause.
+- [x] Gate 7 rejected unsupported `УСТАНОВЛЕНО`.
+- [x] Analysis-only work was classified `R0`; Gate 9 was `not_required`.
+- [x] Unapproved closed-period/mass-reposting proposal was classified `R3` and received `NO-GO`.
+- [ ] Merge the v0.2.2 refresh hotfix after CI passes.
+- [ ] Refresh the existing marketplace in place and confirm the error is gone.
+- [ ] Confirm the marketplace shows four plugins.
+- [ ] Confirm the primary card reports version `0.2.2`, unified-ecosystem description and Variant A icon.
+- [ ] Repeat the R3 scoped-closure test and confirm canonical statuses with `Current goal: closed; linked incident: open`.
 
 ## GitHub identity and presentation
 
@@ -57,10 +64,9 @@
 
 ## Public repository and release
 
-- [x] Merge v0.2.1 only after CI and self-audit pass.
 - [ ] Change repository visibility to Public.
-- [ ] Create annotated tag `v0.2.1` on the approved release commit.
-- [ ] Publish `1C ERP Diagnostics v0.2.1 — Unified Ecosystem Preview` as a pre-release.
+- [ ] Create annotated tag `v0.2.2` on the approved release commit.
+- [ ] Publish `1C ERP Diagnostics v0.2.2 — Marketplace Refresh Hotfix` as a pre-release.
 
 ## Global ChatGPT Plugin Directory
 
@@ -72,4 +78,4 @@
 
 ## Stop condition
 
-Do **not** publish the repository or global listing while any critical CI/self-audit control fails, while the ecosystem marketplace cannot be re-imported, or if any real customer/company data, credentials, personal commit email, production database artifact or private development history is present.
+Do **not** publish the repository or global listing while any critical CI/self-audit control fails, while the ecosystem marketplace cannot be refreshed/re-imported, or if any real customer/company data, credentials, personal commit email, production database artifact or private development history is present.

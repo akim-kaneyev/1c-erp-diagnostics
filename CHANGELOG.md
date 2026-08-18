@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.2 — marketplace refresh hotfix candidate
+
+- restored the stable internal marketplace ID `one-c-erp-diagnostics-marketplace` so existing installations can update in place;
+- retained `1C ERP Diagnostics Ecosystem` as display text rather than installation identity;
+- switched external companion commit pins from `ref` to the verified `sha` selector supported by the OpenAI marketplace loader;
+- bumped the plugin/package version so the installed plugin cache receives the scoped Gate-closure correction;
+- added regression checks preventing marketplace-ID drift, commit-selector misuse and version-stable behavior changes;
+- documented the exact refresh failure cause and recovery path.
+
 ## 0.2.1 — verified ecosystem marketplace candidate
 
 - expanded the repository marketplace from one local plugin to a verified four-plugin 1C ecosystem;
