@@ -1,79 +1,63 @@
-# Case State
+# Case state
 
-## Case ID
-`YYYY-MM-DD-short-name`
+## Identity
+
+- Case ID:
+- Title:
+- Owner:
+- Updated at:
+- Overall status: `open | blocked | action_pending | validating | closed`
 
 ## Goal contract
+
 - Outcome:
-- Verification evidence:
-- In scope:
-- Out of scope:
+- Scope:
+- Completion evidence:
+- Exclusions:
 - Stop condition:
 
-## Current status
-- Overall: `NEW | IN_PROGRESS | BLOCKED | VERIFIED | CLOSED`
-- Primary playbook:
-- Secondary playbook (optional):
+## Capability map
+
+| Capability | Status | Read/write risk | Case purpose | Provenance/fallback |
+|---|---|---|---|---|
+
+## Routing and graph
+
+- Primary domain:
+- Secondary domains:
+
+| Node | Objective | Dependencies | Capability | Risk | Status | Output/stop condition |
+|---|---|---|---|---|---|---|
 
 ## Gate status
 
-Use: `pending | passed | failed | stale | not_required`.
-
-| Gate | Status | Evidence / note |
+| Gate | Status | Evidence/result |
 |---|---|---|
+| 0 Capability/state discovery | pending | |
 | 1 Goal contract | pending | |
 | 2 Evidence intake | pending | |
-| 3 Route case | pending | |
-| 4 Primary diagnosis | pending | |
-| 5 Sandbox/execution | pending | |
-| 6 Preliminary conclusion | pending | |
-| 7 Independent verification | pending | |
+| 3 Dynamic plan | pending | |
+| 4 Specialist analysis | pending | |
+| 5 Executable validation | pending | |
+| 6 Evidence synthesis | pending | |
+| 7 Adversarial verification | pending | |
 | 8 Action decision | pending | |
 | 9 Post-change validation | pending | |
 | 10 Final closure | pending | |
 
-## Evidence set
+Allowed gate status: `pending | passed | blocked | failed | stale | not_required`.
 
-List immutable source identifiers where possible: filename, hash, document number/date, report parameters, code revision, screenshot reference.
+## Evidence ledger
 
-## Established facts
+| Evidence ID | Source | Hash/identifier | What it proves | Limitations |
+|---|---|---|---|---|
 
-Only facts directly supported by evidence.
+## Claim ledger
 
-## Active hypotheses
+| Claim ID | Status | Claim | Support | Contradiction | Falsifier | Provenance |
+|---|---|---|---|---|---|---|
 
-For each hypothesis record:
-- hypothesis;
-- supporting evidence;
-- contradicting evidence;
-- confirm condition;
-- falsify condition.
+## Actions and rollback
 
-## Conclusions under verification
-
-For each conclusion:
-- ID:
-- status: `УСТАНОВЛЕНО | ВЕРОЯТНО | ТРЕБУЕТ ПРОВЕРКИ`;
-- evidence:
-- causal chain:
-- alternatives checked:
-- falsifier:
-- verification result:
-
-## Changes applied
-
-For each approved change:
-- what changed;
-- where;
-- why;
-- expected effect;
-- rollback;
-- validation result.
-
-## Blind spots / missing evidence
-
-Record the smallest evidence needed to continue.
-
-## Resume instruction
-
-On a new session, read this file first. Continue from the earliest gate that is `pending`, `failed`, or `stale`. Do not repeat passed gates unless new evidence invalidates them.
+| Action | Risk | Approval | Expected result | Rollback | Validation |
+|---|---|---|---|---|---|

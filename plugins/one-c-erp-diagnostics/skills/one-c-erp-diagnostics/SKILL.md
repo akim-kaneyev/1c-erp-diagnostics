@@ -1,56 +1,54 @@
 ---
 name: one-c-erp-diagnostics
-description: Orchestrate a mandatory evidence-first Gate 1-10 workflow for 1C:ERP incidents. Use when the user needs a verified cause, comparison, correction plan, or safe next action for movements, registers, postings, month close, cost, expenses, settlements, VAT, warehouse/series/assignments, production, access rights, or 1C code behavior.
+description: Single dynamic entrypoint for evidence-first Gate 0-10 orchestration across 1C:ERP data, code, releases and controlled actions.
 ---
 
-# 1C ERP Diagnostics — master orchestrator
+# Master orchestrator
 
-This is the single entrypoint. The user must not have to invoke companion skills manually.
+Run Gate 0 through Gate 10 in order. Internally invoke/apply packaged specialist skills and optional companion capabilities. The user must not manually chain them.
 
-## Core contract
+## Runtime sequence
 
-Run Gate 1 through Gate 10 in order. A required gate may not be silently skipped. If a required capability or evidence source is unavailable, mark the gate `blocked` and do not claim downstream verification occurred.
+### Gate 0 — discover
+Apply `one-c-erp-capability-discovery` and `one-c-erp-case-state`. Produce a capability map and resume point.
 
-Use companion skills from this plugin when they match the gate/domain. If the host does not explicitly expose sub-skill invocation, apply their rules inline; the sequence remains authoritative here.
+### Gate 1 — contract
+Apply `one-c-erp-goal-contract`. Completion must be verifiable.
+
+### Gate 2 — intake
+Apply `one-c-erp-evidence-intake`, `one-c-erp-data-safety`, and when relevant `one-c-erp-artifact-extraction`.
+
+### Gate 3 — plan
+Apply `one-c-erp-route-case` and `one-c-erp-dynamic-plan`. Select one primary domain and at most two justified secondary domains.
+
+### Gate 4 — investigate
+Run the selected domain skills plus `one-c-erp-diagnose-core`. Specialists may run in parallel only for independent read-only questions. Every output must contain claim IDs, evidence references, assumptions and falsifiers.
+
+### Gate 5 — execute when justified
+Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution` and `one-c-erp-risk-control`. Never use a companion solely because it is installed.
+
+### Gate 6 — synthesize
+Apply `one-c-erp-evidence-synthesis`. Contradictions stay visible.
+
+### Gate 7 — challenge
+Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass with access to original evidence. Final `УСТАНОВЛЕНО` is forbidden otherwise.
+
+### Gate 8 — decide action
+Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action.
+
+### Gate 9 — validate
+Apply `one-c-erp-post-change-validation` on identical analytics. Analysis-only goals may explicitly mark this gate `not_required`.
+
+### Gate 10 — close
+Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status and capability provenance.
 
 ## Evidence rules
 
 - Never invent 1C metadata objects, registers, fields, roles, documents or settings.
-- Prefer: exact movements → exact register records → postings/OSV drill-down → reports → code/queries → screenshots → official documentation → general theory.
-- General knowledge may generate hypotheses, never prove this case by itself.
-- A disappearing UI error is not proof that accounting is correct.
-- Final `УСТАНОВЛЕНО` requires an adversarial second pass.
+- Prefer movements → exact register records → postings/drill-down → reports → code → screenshots → current official sources → theory.
+- General knowledge and external plugin output generate hypotheses; they do not prove the case alone.
+- A disappearing UI error is not proof of accounting correctness.
 
-## Gate 1 — Goal contract
-Define outcome, verification evidence, scope, material exclusions and stop condition. Pass only when success is checkable.
+## Companion boundary
 
-## Gate 2 — Evidence intake
-Inventory all supplied evidence, record what each item can/cannot prove, preserve identifiers/hashes where possible, and list blind spots.
-
-## Gate 3 — Route case
-Choose one primary domain by observed symptom, not assumed cause. Add at most one secondary domain when a concrete cross-domain link is evidenced.
-
-## Gate 4 — Primary diagnosis
-Separate fact / interpretation / hypothesis. Build chronology, good-vs-bad or before-vs-after comparison, earliest demonstrated divergence, and causal chain:
-`document → movement → record/register → consuming mechanism → accounting/stock/access result → symptom`.
-
-## Gate 5 — Execution / sandbox decision
-Use isolated execution only when it adds verifiable value. If not needed: `not_required`. If required but unavailable: `blocked`.
-
-## Gate 6 — Preliminary conclusion
-Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`. For each material conclusion record exact evidence, causal link, alternatives checked and falsifier. No business correction is authorized yet.
-
-## Gate 7 — Independent verification
-Perform a distinct adversarial pass: re-read evidence, challenge every causal link, search earlier divergence, detect invented assumptions, compare identical analytics, test reasonable alternatives, downgrade when needed. Final `УСТАНОВЛЕНО` is forbidden if this gate did not pass.
-
-## Gate 8 — Action decision
-Choose the smallest safe reversible action. Prefer proven standard setting/NSI → standard 1C mechanism/document → correction of actual source document in an allowed period → manual/specialized correction only when justified. Do not automatically open closed periods, mass repost, grant broad rights or modify the standard configuration.
-
-## Gate 9 — Post-change validation
-Compare the same analytics before/after: movements, records, quantities, amounts, balances, postings, close results, duplicates/side effects or access matrix. Analysis-only goals may mark this `not_required` explicitly.
-
-## Gate 10 — Final closure
-Return: `Краткий вывод`, `Основание`, `Что делать дальше`, plus compact Gate 1–10 statuses. Close only when every required gate is `passed` or `not_required`.
-
-## Resume behavior
-If prior state/decision log exists, read it first. Continue from earliest `pending`, `blocked`, `failed` or `stale` gate. New evidence may invalidate passed gates; reopen from the earliest affected gate.
+Unica, 1C Skills (Python/PowerShell), GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use and OpenSandbox are optional companions. Discover them at runtime. Do not copy their private implementation, declare fabricated dependencies or imply availability when the host does not expose them.
