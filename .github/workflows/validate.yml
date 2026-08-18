@@ -60,5 +60,8 @@ jobs:
       - name: Validate plugin and public package
         run: python tools/validate_public_release.py
 
+      - name: Validate unified 1C ecosystem marketplace
+        run: python tools/validate_ecosystem_marketplace.py
+
       - name: Run regression tests
         run: python -m unittest discover -s tests -v

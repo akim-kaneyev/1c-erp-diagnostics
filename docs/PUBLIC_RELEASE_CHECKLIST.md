@@ -1,63 +1,73 @@
 # Public release checklist
 
-## Repository package
+## Repository and plugin package
 
-- [x] Gate 1–10 master workflow exists.
+- [x] Dynamic Gate 0–10 master workflow exists.
 - [x] Independent adversarial verification is mandatory for final `УСТАНОВЛЕНО`.
-- [x] Domain skills exist for the main 1C:ERP incident classes.
-- [x] Plugin manifest and local marketplace are present.
-- [x] Variant A branding is configured.
-- [x] LICENSE, PRIVACY, SECURITY, SUPPORT, CONTRIBUTING and notices are present.
+- [x] 31 packaged skills cover the principal 1C:ERP diagnostic and control domains.
+- [x] `R0–R3` action controls protect production/accounting/access/closed-period actions.
+- [x] Variant A `composerIcon`, `logo` and `logoDark` pass PNG structural/CRC checks.
+- [x] LICENSE, PRIVACY, TERMS, SECURITY, SUPPORT, CONTRIBUTING and notices are present.
 - [x] `.gitignore` excludes secrets, databases and raw case input/work directories.
-- [x] Automated public-package validator and regression tests are present.
-- [x] GitHub Actions validation workflow is present.
-- [x] Clean public repository was initialized from a root commit without the private development history.
-- [x] Root and subsequent public-candidate commits use the GitHub `noreply` identity.
-- [x] Public snapshot provenance and reviewed artifact digest are recorded.
-- [x] Current-tree search found no known internal credentials/company names.
-- [x] Release review PR passed all required CI checks on Python 3.10 and 3.12.
-- [x] Plugin self-audit has no critical `FAIL`; see `docs/PLUGIN_AUDIT_v0.1.2.md`.
+- [x] Public-package, ecosystem-marketplace and regression validators are present.
+- [x] GitHub Actions validates Python 3.10 and 3.12.
+- [x] Clean public repository was initialized without private development history.
+- [x] Public-candidate commits use GitHub `noreply` identity.
+- [x] Current-tree searches found no known internal credentials/company names.
 
-## Marketplace/plugin smoke test
+## Unified 1C ecosystem marketplace
 
-- [x] Local marketplace source can be added from the private GitHub repository.
-- [ ] Re-import marketplace from `akim-kaneyev/1c-erp-diagnostics` and verify the 0.1.2 card/icon.
-- [ ] Install/select `@one-c-erp-diagnostics` in a clean independent chat.
+- [x] Primary `one-c-erp-diagnostics` plugin is declared locally.
+- [x] Canonical Unica `0.12.0` marketplace release is pinned by tag/path.
+- [x] 1C Skills PowerShell and Python are pinned to reviewed immutable generated commits.
+- [x] Third-party sources, versions, licenses and permission boundaries are documented.
+- [x] External plugins remain independently installed; no code copying, relicensing or permission bypass.
+- [x] Gate 0 uses canonical identities and records actual availability.
+- [x] Missing companion capabilities become fallback/`blocked`, never simulated.
+
+## Marketplace/plugin smoke tests
+
+- [x] The private repository marketplace can be added and refreshed locally.
+- [x] Variant A icon renders in the local ChatGPT plugin list after refresh.
+- [ ] Re-import `main` after v0.2.1 merge and confirm the marketplace shows four plugins.
+- [ ] Confirm the primary card reports version/description for the unified Gate 0–10 ecosystem.
+- [ ] Run Gate 0 capability inventory in a clean independent chat.
+- [ ] Confirm installed Unica/1C Skills calls record canonical identity, operation and provenance.
 - [ ] Run an under-evidenced case and confirm it cannot finish as final `УСТАНОВЛЕНО`.
 - [ ] Confirm Gate 7 explicitly challenges the preliminary conclusion.
-- [ ] Confirm a missing required capability becomes `blocked` / `ТРЕБУЕТ ПРОВЕРКИ`.
-- [ ] Confirm an analysis-only case can mark Gate 9 `not_required`.
+- [ ] Confirm an unavailable companion becomes fallback/`blocked` / `ТРЕБУЕТ ПРОВЕРКИ`.
+- [ ] Confirm analysis-only work is `R0` and may mark Gate 9 `not_required`.
+- [ ] Confirm any unapproved production/accounting/access proposal is classified `R3` and blocked.
 
-## GitHub identity
+## GitHub identity and presentation
 
-- [x] Final GitHub username confirmed: `akim-kaneyev`.
-- [x] Repository URLs, plugin manifest, marketplace metadata and documentation updated to `akim-kaneyev`.
-- [x] New public-candidate commits use `290311329+akim-kaneyev@users.noreply.github.com`.
-- [ ] Confirm a public support email that is separate from private credentials/accounts.
-- [ ] Consider joining the GitHub Developer Program after a support email is available.
+- [x] Final username: `akim-kaneyev`.
+- [x] Repository URLs and public documentation use `akim-kaneyev`.
+- [x] New public-candidate commits use the GitHub ID-based `noreply` address.
+- [x] Variant A profile avatar, name and professional bio are configured.
+- [ ] Create public profile repository `akim-kaneyev/akim-kaneyev` with profile README.
+- [ ] Set repository description: `Evidence-first 1C:ERP diagnostics — dynamic Gate 0–10 orchestration and a verified Unica/1C Skills companion ecosystem.`
+- [ ] Add topics: `1c`, `1c-erp`, `1c-enterprise`, `erp`, `accounting`, `diagnostics`, `chatgpt`, `codex`, `ai-agents`, `skills`, `plugins`, `unica`, `month-close`, `cost-accounting`.
+- [ ] Enable a `main` ruleset with pull requests, required Python 3.10/3.12 checks, resolved conversations, no force-push and no deletion.
+- [ ] Confirm every public URL anonymously after visibility change.
+- [ ] Enable private vulnerability reporting after the repository becomes public.
+- [ ] Pin `1c-erp-diagnostics` in the public profile.
 
-## GitHub presentation — manual UI steps
+## Public repository and release
 
-- [x] Variant A profile avatar uploaded.
-- [x] Name and professional bio configured.
-- [ ] Enable anonymized private contributions if desired.
-- [ ] Decide whether to enable `Available for hire`.
-- [ ] Create public profile repository `akim-kaneyev/akim-kaneyev` and place `README.md` in its root.
-- [ ] Repository description: `Evidence-first diagnostics for 1C:ERP — Gate 1–10 orchestration, movements/registers/postings analysis, adversarial verification, ChatGPT & Codex skills/plugin.`
-- [ ] Suggested topics: `1c`, `1c-erp`, `1c-enterprise`, `erp`, `accounting`, `diagnostics`, `chatgpt`, `codex`, `ai-agents`, `skills`, `plugins`, `month-close`, `cost-accounting`.
-- [ ] Enable a `main` ruleset with pull requests, required CI checks, resolved conversations, no force-push and no deletion.
-- [ ] Enable GitHub security/private vulnerability reporting when the repository becomes public.
-- [ ] Change repository visibility to Public only after all required checks pass.
-- [ ] Pin `1c-erp-diagnostics` after it becomes public.
+- [ ] Merge v0.2.1 only after CI and self-audit pass.
+- [ ] Change repository visibility to Public.
+- [ ] Create annotated tag `v0.2.1` on the approved release commit.
+- [ ] Publish `1C ERP Diagnostics v0.2.1 — Unified Ecosystem Preview` as a pre-release.
 
-## Public release
+## Global ChatGPT Plugin Directory
 
-- [x] Run `one-c-erp-plugin-audit` and resolve every critical `FAIL`.
-- [ ] Create annotated tag `v0.1.2` on the approved release commit.
-- [ ] Publish `1C ERP Diagnostics v0.1.2 — Public Preview` as a pre-release.
-- [ ] Submit/publish through the available ChatGPT Plugin Directory flow.
-- [ ] Install the public listing in a clean chat and repeat smoke tests.
+- [ ] Use the ChatGPT/workspace **Create or Import plugin** flow after the repository is public.
+- [ ] Review listing metadata, skills and companion requirements.
+- [ ] Select **Publish/Submit** where offered and complete OpenAI review.
+- [ ] Verify the plugin appears in the global directory rather than only the personal marketplace.
+- [ ] Install the public listing in a clean account/session and repeat all smoke tests.
 
 ## Stop condition
 
-Do **not** make the repository public if any real customer/company case data, credentials, personal commit email, production database artifacts or private development history are present in the public repository.
+Do **not** publish the repository or global listing while any critical CI/self-audit control fails, while the ecosystem marketplace cannot be re-imported, or if any real customer/company data, credentials, personal commit email, production database artifact or private development history is present.

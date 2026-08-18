@@ -2,29 +2,61 @@
 
 ## Design goal
 
-One public entrypoint coordinates a changing set of internal skills, host tools and optional companion plugins without treating availability or output as fact.
+One public diagnostic entrypoint coordinates a changing set of internal skills, verified companion plugins and host tools without treating marketplace presence, runtime availability or tool output as fact.
 
-## Layers
+## Distribution architecture
+
+The repository has two distinct layers:
+
+1. **Ecosystem marketplace** — exposes `one-c-erp-diagnostics`, `unica`, `1c-skills` and `1c-skills-py` from reviewed sources/refs.
+2. **Primary orchestrator plugin** — provides the user-facing Gate 0–10 workflow and 31 packaged skills.
+
+The marketplace is an installation/discovery bundle. It does not merge code, grant permissions or create hidden dependencies. Each plugin remains separately installed and governed by its own license, permissions and update channel.
+
+## Runtime layers
 
 1. **Gate controller** — enforces Gate 0–10 and resumable state.
-2. **Capability registry** — discovers what the current host actually exposes.
+2. **Capability registry** — discovers what the current host actually exposes, including canonical companion names.
 3. **Evidence graph** — assigns stable evidence and claim IDs.
-4. **Dynamic planner** — builds a bounded dependency graph.
+4. **Dynamic planner** — builds a bounded dependency graph with exact skills/capabilities and fallbacks.
 5. **Domain specialists** — cost, expenses, settlements, VAT, warehouse, production, access, code and release analysis.
-6. **Execution adapters** — Python/PowerShell, OpenSandbox and artifact tools when justified.
-7. **Synthesis** — preserves supporting and contradicting evidence.
-8. **Adversarial verifier** — attempts to falsify the preliminary cause.
-9. **Risk controller** — separates read-only work from production-impacting actions.
-10. **Post-change validator** — checks identical analytics before/after.
+6. **Companion coordinator** — delegates bounded tasks to Unica or 1C Skills only when available and justified.
+7. **Execution adapters** — Python/PowerShell, OpenSandbox and artifact tools when executable validation adds value.
+8. **Synthesis** — preserves supporting and contradicting evidence plus plugin/tool provenance.
+9. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence.
+10. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
+11. **Post-change validator** — checks identical analytics before/after.
 
-## External companions
+## Canonical companion registry
 
-Unica and 1C Skills can strengthen code/developer and executable workflows when they are installed and exposed. They are not copied into this repository and are not portable hard dependencies. Other host plugins are selected by capability rather than brand name.
+- `unica` — developer workflows, metadata/BSL investigation and controlled build/test operations.
+- `1c-skills` — Windows-first PowerShell 1C tooling.
+- `1c-skills-py` — cross-platform Python 1C tooling.
+
+Gate 0 records installation/availability, version/ref when exposed, permission/write surface, purpose and fallback. A companion is never considered available merely because it appears in the marketplace.
+
+## Bounded planning
+
+A normal case uses:
+
+- one primary domain;
+- at most two justified secondary domains;
+- no more than four active specialist nodes unless the dependency graph explicitly proves additional value.
+
+Each node defines evidence inputs, exact capability, dependencies, output schema, `R0–R3` risk, falsifier and fallback.
 
 ## Parallelism
 
-Parallel specialist work is allowed only for independent read-only questions. Shared-state writes, test mutations and production actions are serialized. The verifier reads original evidence directly.
+Parallel specialist work is allowed only for independent read-only questions. Shared-state writes, test mutations and production actions are serialized. The verifier reads original evidence directly rather than trusting the synthesis alone.
 
 ## Truth model
 
-Tool output, code findings and official documentation have provenance but different evidentiary roles. Documentation can establish a mechanism; case evidence must establish that the mechanism actually consumed the user's record.
+Tool output, code findings and official documentation have provenance but different evidentiary roles. Documentation can establish a mechanism; case evidence must establish that the mechanism actually consumed the user's record. External plugin output is never exempt from Gate 7.
+
+## Failure model
+
+- missing optional capability → use documented fallback;
+- missing required capability → dependent node/Gate becomes `blocked`;
+- contradicting tool results → preserve both, compare inputs/versions/scope, do not vote by majority;
+- unapproved `R3` action → stop before execution;
+- new evidence → reopen from the earliest affected gate.

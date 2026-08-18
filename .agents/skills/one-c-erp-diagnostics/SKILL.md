@@ -1,13 +1,15 @@
 ---
 name: one-c-erp-diagnostics
-description: Discover and run the repository's dynamic Gate 0-10 1C:ERP diagnostic orchestrator.
+description: Discover and run the repository's dynamic Gate 0-10 1C:ERP diagnostic orchestrator and verified Unica/1C Skills companion ecosystem.
 ---
 
 # Repository entrypoint
 
 1. Read repository-root `AGENTS.md`.
 2. Read repository-root `SKILL.md`; it is authoritative.
-3. Read `plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md` for the packaged runtime contract.
-4. Resume from `STATE.md` when present.
-5. Do not ask the user to invoke companion skills or plugins manually.
-6. If an external capability is unavailable, mark it unavailable/blocked rather than simulating it.
+3. Read `docs/ECOSYSTEM_MARKETPLACE.md` for canonical companion identities and boundaries.
+4. Read `plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md` for the packaged runtime contract.
+5. Resume from `STATE.md` when present.
+6. Do not ask the user to manually chain internal skills.
+7. Check `unica`, `1c-skills` and `1c-skills-py` at Gate 0; do not infer installation from marketplace presence.
+8. If an external capability is unavailable, use a documented fallback or mark the dependent node unavailable/blocked rather than simulating it.

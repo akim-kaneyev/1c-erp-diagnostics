@@ -1,7 +1,7 @@
 {
-  "name": "one-c-erp-diagnostics-marketplace",
+  "name": "one-c-erp-diagnostics-ecosystem",
   "interface": {
-    "displayName": "1C ERP Diagnostics"
+    "displayName": "1C ERP Diagnostics Ecosystem"
   },
   "plugins": [
     {
@@ -15,6 +15,46 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "unica",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
+        "path": "plugins/unica",
+        "ref": "aefc880f9bab606a5c55ed11af563b740054a549"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    },
+    {
+      "name": "1c-skills",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
+        "ref": "8cb7868145281d8e353831512cc1ffa72f1b5c89"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
+      "name": "1c-skills-py",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
+        "ref": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
     }
   ]
 }

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 — verified ecosystem marketplace candidate
+
+- expanded the repository marketplace from one local plugin to a verified four-plugin 1C ecosystem;
+- added canonical Unica `0.12.0` source `IngvarConsulting/unica-marketplace@v0.12.0`;
+- added immutable generated refs for 1C Skills PowerShell and Python from `Nikolay-Shirokov/cc-1c-skills`;
+- documented third-party licenses, provenance, permissions and update boundaries;
+- updated Gate 0 companion coordination to use canonical plugin identities and conflict handling;
+- added ecosystem installation, capability, under-evidenced, unavailable-companion and `R3` smoke tests;
+- added public terms and publication preparation guidance;
+- strengthened validation to verify the exact external marketplace contract.
+
 ## 0.2.0 — dynamic orchestrator candidate
 
 - repaired the corrupted PNG brand asset and added separate `composerIcon`, `logo` and `logoDark` files;

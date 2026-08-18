@@ -26,12 +26,16 @@ class DynamicContractTests(unittest.TestCase):
             (PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
         )
         pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-        self.assertEqual(manifest["version"], "0.2.0")
-        self.assertIn('version = "0.2.0"', pyproject)
+        self.assertEqual(manifest["version"], "0.2.1")
+        self.assertIn('version = "0.2.1"', pyproject)
         self.assertIn('v8unpack==1.2.6', pyproject)
         self.assertIn('opensandbox==0.1.14', pyproject)
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertIn("logoDark", manifest["interface"])
+        self.assertEqual(
+            manifest["interface"]["termsOfServiceURL"],
+            "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md",
+        )
 
     def test_master_contract_contains_dynamic_and_risk_gates(self) -> None:
         root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
