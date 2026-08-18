@@ -11,7 +11,7 @@ Use only after Gate 0 confirms actual installation, permissions and runtime avai
 
 The ecosystem marketplace exposes these independently maintained plugins:
 
-- `unica` — Unica `0.12.0`, source `IngvarConsulting/unica-marketplace`, ref `v0.12.0`.
+- `unica` — Unica `0.12.0`, source `IngvarConsulting/unica-marketplace`, immutable ref `aefc880f9bab606a5c55ed11af563b740054a549` (release tag `v0.12.0`).
 - `1c-skills` — 1C Skills PowerShell, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
 - `1c-skills-py` — 1C Skills Python, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
 
@@ -35,7 +35,7 @@ For each requested capability, record:
 2. Gate 0 status: `available | confirmation_required | unavailable | prohibited`;
 3. exact task assigned and evidence IDs;
 4. read/write surface and `R0–R3` risk;
-5. output location/hash and tool version where available;
+5. output location/hash and tool version/ref where available;
 6. limitations, errors and fallback;
 7. whether another method independently reproduced the material result.
 
