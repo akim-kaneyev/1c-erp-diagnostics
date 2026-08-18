@@ -35,10 +35,24 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
-      - name: Install validation dependencies
+      - name: Install validation and pinned optional dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install "openpyxl>=3.1" "pypdf>=5"
+          python -m pip install "v8unpack==1.2.6" "opensandbox==0.1.14"
+
+      - name: Verify optional adapter imports and pins
+        run: |
+          python - <<'PY'
+          from importlib.metadata import version
+          import v8unpack
+          from opensandbox.sandbox import Sandbox
+
+          assert version("v8unpack") == "1.2.6"
+          assert callable(v8unpack.extract)
+          assert version("opensandbox") == "0.1.14"
+          assert Sandbox is not None
+          PY
 
       - name: Compile Python tools
         run: python -m compileall -q tools tests

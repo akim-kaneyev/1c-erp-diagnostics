@@ -10,4 +10,4 @@ dependencies = [
 
 [project.optional-dependencies]
 artifacts = ["v8unpack==1.2.6"]
-sandbox = ["opensandbox"]
+sandbox = ["opensandbox==0.1.14"]

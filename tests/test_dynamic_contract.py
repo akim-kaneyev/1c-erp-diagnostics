@@ -28,6 +28,8 @@ class DynamicContractTests(unittest.TestCase):
         pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
         self.assertEqual(manifest["version"], "0.2.0")
         self.assertIn('version = "0.2.0"', pyproject)
+        self.assertIn('v8unpack==1.2.6', pyproject)
+        self.assertIn('opensandbox==0.1.14', pyproject)
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertIn("logoDark", manifest["interface"])
 

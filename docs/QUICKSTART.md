@@ -4,7 +4,7 @@
 
 1. Open **Settings → Plugins → Add marketplace**.
 2. Source: `akim-kaneyev/1c-erp-diagnostics`.
-3. Git ref: `feature/dynamic-orchestrator-v0.2.0` while the candidate is under review; use `main` after merge.
+3. Git ref: `main` for the released/current package. Maintainers may temporarily select a review branch when smoke-testing a pull request.
 4. Leave selective paths empty.
 5. Enable **1C ERP Diagnostics**.
 6. Open a clean chat and select `@one-c-erp-diagnostics`.

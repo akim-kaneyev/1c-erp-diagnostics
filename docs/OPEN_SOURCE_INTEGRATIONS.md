@@ -16,7 +16,9 @@ Source: `https://github.com/opensandbox-group/OpenSandbox`
 
 License: Apache-2.0.
 
-Use: optional isolated execution for sanitized scripts, parsers and reproducible validation. It is not a source of 1C knowledge. Network egress and credentials must be controlled.
+Reviewed Python package pin: `opensandbox==0.1.14`.
+
+Use: optional isolated execution for sanitized scripts, parsers and reproducible validation. It is not a source of 1C knowledge. Network egress and credentials must be controlled. The repository CI verifies the SDK import and exact package pin, but does not create a remote sandbox or require sandbox credentials.
 
 ## v8unpack
 
@@ -24,14 +26,18 @@ Source: `https://github.com/saby-integration/v8unpack`
 
 Reviewed Python package pin: `v8unpack==1.2.6` (MIT).
 
-Use: read-only extraction of sanitized CF/CFE/EPF into BSL/JSON. Rebuild mode is excluded from the diagnostic workflow. Successful extraction does not prove that the code caused an accounting incident.
+Use: read-only extraction of sanitized CF/CFE/EPF into BSL/JSON. Rebuild mode is excluded from the diagnostic workflow. Successful extraction does not prove that the code caused an accounting incident. CI verifies the package version and `extract` API.
 
 ## BSL Language Server
 
 Source: `https://github.com/1c-syntax/bsl-language-server`
 
-Use: optional static BSL analysis after extraction. Record the exact release and command used. Its diagnostics are hypotheses until connected to the factual case chain. MCP mode is not a mandatory dependency.
+Use: optional static BSL analysis after extraction. Record the exact release and command used for each case. Its diagnostics are hypotheses until connected to the factual case chain. MCP mode is not a mandatory dependency.
 
 ## Unica and 1C Skills
 
 These are optional host-managed companion plugins in the user's environment. Their private implementation is not copied. Portable dependency metadata was not available through the public plugin registry at review time, so the orchestrator discovers them at runtime and records availability honestly.
+
+## Adoption rule
+
+A new tool or skill enters the ecosystem only after source/license verification, version pinning where applicable, sanitized regression testing, risk classification, fallback/rollback design and plugin self-audit.
