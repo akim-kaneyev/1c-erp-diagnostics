@@ -38,7 +38,11 @@ Use: optional static BSL analysis after extraction. Record the exact release and
 
 Canonical marketplace source: `https://github.com/IngvarConsulting/unica-marketplace.git`
 
-Pinned marketplace ref/path: `v0.12.0`, `plugins/unica`.
+Reviewed release tag: `v0.12.0`.
+
+Immutable marketplace ref: `aefc880f9bab606a5c55ed11af563b740054a549`.
+
+Plugin path: `plugins/unica`.
 
 Manifest version: `0.12.0`.
 
@@ -61,7 +65,7 @@ Use: optional 1C artifact/configurator/web-client tooling. The PowerShell varian
 
 ## Unified marketplace
 
-`.agents/plugins/marketplace.json` exposes `one-c-erp-diagnostics`, Unica and both 1C Skills variants from one source. This is a discovery/installation bundle, not code vendoring and not a permission bypass. See `docs/ECOSYSTEM_MARKETPLACE.md`.
+`.agents/plugins/marketplace.json` exposes `one-c-erp-diagnostics`, Unica and both 1C Skills variants from one source. This is a discovery/installation bundle, not code vendoring and not a permission bypass. All external entries use immutable commit refs. See `docs/ECOSYSTEM_MARKETPLACE.md`.
 
 ## 1C ecosystem discovery catalog
 
