@@ -23,7 +23,7 @@ Complex 1C:ERP incidents are often diagnosed from the last visible symptom. This
 
 A plausible explanation is not a final cause. Final `УСТАНОВЛЕНО` requires the dedicated Gate 7 adversarial review.
 
-## One marketplace, separate verified plugins
+## Optional companion ecosystem: one marketplace, separate verified plugins
 
 Adding this repository as a marketplace source exposes four independently maintained plugins in one place:
 
@@ -34,7 +34,7 @@ Adding this repository as a marketplace source exposes four independently mainta
 | **1C Skills (PowerShell)** | Windows-first 1C artifact/configurator/web-client tooling |
 | **1C Skills (Python)** | Cross-platform 1C artifact parsing and controlled automation |
 
-The external plugins are referenced from verified upstream sources and immutable refs where possible. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
+The external plugins are referenced from verified upstream sources and immutable refs. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
 
 See [`docs/ECOSYSTEM_MARKETPLACE.md`](docs/ECOSYSTEM_MARKETPLACE.md) and [`docs/OPEN_SOURCE_INTEGRATIONS.md`](docs/OPEN_SOURCE_INTEGRATIONS.md).
 
