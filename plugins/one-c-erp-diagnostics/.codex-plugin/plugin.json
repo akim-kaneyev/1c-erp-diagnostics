@@ -1,7 +1,7 @@
 {
   "name": "one-c-erp-diagnostics",
-  "version": "0.2.0",
-  "description": "Dynamic evidence-first orchestration for 1C:ERP diagnostics, code analysis and controlled remediation.",
+  "version": "0.2.1",
+  "description": "Dynamic evidence-first orchestration and a verified companion ecosystem for 1C:ERP diagnostics, code analysis and controlled remediation.",
   "author": {
     "name": "Akim Kaneev",
     "url": "https://github.com/akim-kaneyev"
@@ -17,6 +17,8 @@
     "diagnostics",
     "orchestration",
     "evidence",
+    "unica",
+    "1c-skills",
     "month-close",
     "codex",
     "chatgpt"
@@ -24,8 +26,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "1C ERP Diagnostics",
-    "shortDescription": "Доказательная диагностика 1С:ERP · динамический Gate 0–10",
-    "longDescription": "A single dynamic orchestrator for 1C:ERP incidents. It discovers available capabilities, builds an evidence graph, routes specialist skills, uses optional companion plugins only when available, challenges conclusions adversarially, and controls every proposed action through reversible risk gates.",
+    "shortDescription": "Доказательная диагностика 1С:ERP · единая экосистема Gate 0–10",
+    "longDescription": "A single dynamic entrypoint for 1C:ERP incidents. It discovers actual capabilities, builds a bounded evidence graph, routes 31 packaged specialist skills, coordinates verified companion plugins such as Unica and 1C Skills when installed, challenges conclusions adversarially, and controls proposed actions through reversible R0–R3 risk gates.",
     "developerName": "Akim Kaneev",
     "category": "Productivity",
     "capabilities": [
@@ -33,6 +35,7 @@
     ],
     "websiteURL": "https://github.com/akim-kaneyev/1c-erp-diagnostics",
     "privacyPolicyURL": "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md",
     "brandColor": "#0D1B2A",
     "composerIcon": "./assets/composer-icon.png",
     "logo": "./assets/logo.png",
@@ -40,7 +43,7 @@
     "defaultPrompt": [
       "Проведи доказательную диагностику 1С:ERP по Gate 0–10.",
       "Сравни корректный и проблемный примеры 1С:ERP и перепроверь причину.",
-      "Diagnose this 1C:ERP incident through Gate 0–10."
+      "Покажи доступные 1С-навыки и построй безопасный план анализа."
     ]
   }
 }
