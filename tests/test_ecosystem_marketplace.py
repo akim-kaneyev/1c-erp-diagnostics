@@ -7,6 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
+UNICA_COMMIT = "aefc880f9bab606a5c55ed11af563b740054a549"
+POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
+PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
+
 
 class EcosystemMarketplaceTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -40,7 +44,7 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             },
         )
 
-    def test_unica_is_pinned_to_canonical_marketplace_release(self) -> None:
+    def test_unica_is_pinned_to_canonical_marketplace_commit(self) -> None:
         source = self.plugins["unica"]["source"]
         self.assertEqual(source["source"], "git-subdir")
         self.assertEqual(
@@ -48,12 +52,13 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             "https://github.com/IngvarConsulting/unica-marketplace.git",
         )
         self.assertEqual(source["path"], "plugins/unica")
-        self.assertEqual(source["ref"], "v0.12.0")
+        self.assertEqual(source["ref"], UNICA_COMMIT)
+        self.assertRegex(source["ref"], r"^[0-9a-f]{40}$")
 
     def test_1c_skills_are_pinned_to_immutable_generated_refs(self) -> None:
         expected = {
-            "1c-skills": "8cb7868145281d8e353831512cc1ffa72f1b5c89",
-            "1c-skills-py": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4",
+            "1c-skills": POWERSHELL_COMMIT,
+            "1c-skills-py": PYTHON_COMMIT,
         }
         for name, ref in expected.items():
             source = self.plugins[name]["source"]
@@ -79,6 +84,9 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         integrations = (ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md").read_text(
             encoding="utf-8"
         )
+        release_notes = (ROOT / "docs" / "RELEASE_NOTES_v0.2.1.md").read_text(
+            encoding="utf-8"
+        )
         terms = (ROOT / "TERMS.md").read_text(encoding="utf-8")
         companion = (
             ROOT
@@ -89,15 +97,14 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             / "SKILL.md"
         ).read_text(encoding="utf-8")
 
-        for token in (
-            "v0.12.0",
-            "8cb7868145281d8e353831512cc1ffa72f1b5c89",
-            "c1f79f5ac9f31c620b8508f75464f8c42c559ae4",
-        ):
+        for token in (UNICA_COMMIT, POWERSHELL_COMMIT, PYTHON_COMMIT):
             self.assertIn(token, ecosystem)
             self.assertIn(token, integrations)
+            self.assertIn(token, release_notes)
             self.assertIn(token, companion)
 
+        self.assertIn("v0.12.0", ecosystem)
+        self.assertIn("v0.12.0", integrations)
         self.assertIn("third-party", terms.lower())
         self.assertIn("permissions", ecosystem.lower())
 
