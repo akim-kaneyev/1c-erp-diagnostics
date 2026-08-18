@@ -65,3 +65,5 @@ jobs:
           git add -A
           git commit -m "Initial public release candidate v0.1.2"
           git push --force origin HEAD:main
+
+# Temporary PR trigger; this workflow is removed by the published snapshot.
