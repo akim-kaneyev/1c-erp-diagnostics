@@ -55,15 +55,19 @@ A cause cannot become final `УСТАНОВЛЕНО` until it survives a separat
 
 If a required tool, connector or evidence source is unavailable, the gate becomes `blocked`; the workflow must not simulate success.
 
-## Use in ChatGPT
+## Quick start
 
-After installing the plugin marketplace/source:
+The complete installation and first-test procedure is in [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
+
+### ChatGPT
+
+After adding this repository as a plugin marketplace, select:
 
 `@one-c-erp-diagnostics`
 
 The master orchestrator routes internally to the relevant companion skills. Users should not need to manually chain them.
 
-## Use in Codex
+### Codex
 
 Repository-local discovery:
 
@@ -96,7 +100,7 @@ The repository includes helpers for XLSX and PDF plus case indexing/hashing. `.m
 
 ## Security and privacy
 
-Do not commit or upload production `.dt`, database backups, credentials, tokens or broad confidential exports merely for convenience. Minimize and pseudonymize case data. See `SECURITY.md` and `PRIVACY.md`.
+Do not commit or upload production `.dt`, database backups, credentials, tokens or broad confidential exports merely for convenience. Minimize and pseudonymize case data. See `SECURITY.md`, `PRIVACY.md` and `SUPPORT.md`.
 
 ## Project structure
 
@@ -108,7 +112,7 @@ Do not commit or upload production `.dt`, database backups, credentials, tokens 
 - `templates/case/STATE.md` — resumable case state;
 - `tools/` — local evidence preparation;
 - `sandbox/` — optional isolated execution;
-- `docs/` — methodology, release and profile materials.
+- `docs/` — methodology, release, provenance and profile materials.
 
 ## Status
 

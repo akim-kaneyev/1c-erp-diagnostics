@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/akim-kaneyev/1c-erp-diagnostics/security/policy
+    about: Do not disclose vulnerabilities or credentials in a public issue.
+  - name: Usage and support guidance
+    url: https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/SUPPORT.md
+    about: Read the data-minimization and reproducibility requirements before opening an issue.

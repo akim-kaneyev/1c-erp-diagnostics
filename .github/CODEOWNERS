@@ -1,0 +1,8 @@
+# Default reviewer for all project changes
+* @akim-kaneyev
+
+# Security and release-sensitive files
+/SECURITY.md @akim-kaneyev
+/PRIVACY.md @akim-kaneyev
+/.github/workflows/ @akim-kaneyev
+/plugins/one-c-erp-diagnostics/.codex-plugin/ @akim-kaneyev
