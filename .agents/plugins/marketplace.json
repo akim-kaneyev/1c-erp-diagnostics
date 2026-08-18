@@ -1,5 +1,5 @@
 {
-  "name": "one-c-erp-diagnostics-ecosystem",
+  "name": "one-c-erp-diagnostics-marketplace",
   "interface": {
     "displayName": "1C ERP Diagnostics Ecosystem"
   },
@@ -22,7 +22,7 @@
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "ref": "aefc880f9bab606a5c55ed11af563b740054a549"
+        "sha": "aefc880f9bab606a5c55ed11af563b740054a549"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -35,7 +35,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
-        "ref": "8cb7868145281d8e353831512cc1ffa72f1b5c89"
+        "sha": "8cb7868145281d8e353831512cc1ffa72f1b5c89"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -48,7 +48,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
-        "ref": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
+        "sha": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
       },
       "policy": {
         "installation": "AVAILABLE",
