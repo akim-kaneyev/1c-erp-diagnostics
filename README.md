@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.2.1" src="https://img.shields.io/badge/version-0.2.1-0D1B2A.svg" />
+  <img alt="Version 0.2.2" src="https://img.shields.io/badge/version-0.2.2-0D1B2A.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
 
@@ -34,7 +34,7 @@ Adding this repository as a marketplace source exposes four independently mainta
 | **1C Skills (PowerShell)** | Windows-first 1C artifact/configurator/web-client tooling |
 | **1C Skills (Python)** | Cross-platform 1C artifact parsing and controlled automation |
 
-The external plugins are referenced from verified upstream sources and immutable refs. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
+The external plugins are referenced from verified upstream sources and immutable SHAs. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
 
 See [`docs/ECOSYSTEM_MARKETPLACE.md`](docs/ECOSYSTEM_MARKETPLACE.md) and [`docs/OPEN_SOURCE_INTEGRATIONS.md`](docs/OPEN_SOURCE_INTEGRATIONS.md).
 
@@ -111,6 +111,8 @@ Install **1C ERP Diagnostics** as the primary entrypoint. Install the companion 
 
 `@one-c-erp-diagnostics`
 
+The internal marketplace ID remains `one-c-erp-diagnostics-marketplace` for upgrade compatibility; the visible marketplace title is `1C ERP Diagnostics Ecosystem`.
+
 ### Codex repository-local skill
 
 `.agents/skills/one-c-erp-diagnostics/SKILL.md`
@@ -162,7 +164,7 @@ Do not upload production `.dt`, backups, credentials, tokens, unnecessary person
 
 ## Status
 
-Current candidate: **0.2.1**. It adds a verified ecosystem marketplace with Unica and both 1C Skills runtimes while preserving explicit installation, permissions and provenance. Repository publication and global Plugin Directory submission remain separate final steps after marketplace re-import, clean-session smoke tests and public visibility.
+Current candidate: **0.2.2**. It preserves the verified Unica/1C Skills ecosystem, fixes in-place marketplace refresh by restoring the stable installation identity, uses verified SHA selectors for external commits, and includes the scoped Gate-closure correction found during the R3 smoke test. Repository publication and global Plugin Directory submission remain separate final steps after refresh verification and public visibility.
 
 ## Contributing
 
