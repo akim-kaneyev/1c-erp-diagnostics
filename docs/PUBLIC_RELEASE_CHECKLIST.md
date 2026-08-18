@@ -15,7 +15,8 @@
 - [x] Root and subsequent public-candidate commits use the GitHub `noreply` identity.
 - [x] Public snapshot provenance and reviewed artifact digest are recorded.
 - [x] Current-tree search found no known internal credentials/company names.
-- [ ] Release review PR passes all required CI checks.
+- [x] Release review PR passed all required CI checks on Python 3.10 and 3.12.
+- [x] Plugin self-audit has no critical `FAIL`; see `docs/PLUGIN_AUDIT_v0.1.2.md`.
 
 ## Marketplace/plugin smoke test
 
@@ -51,7 +52,7 @@
 
 ## Public release
 
-- [ ] Run `one-c-erp-plugin-audit` and resolve every critical FAIL.
+- [x] Run `one-c-erp-plugin-audit` and resolve every critical `FAIL`.
 - [ ] Create annotated tag `v0.1.2` on the approved release commit.
 - [ ] Publish `1C ERP Diagnostics v0.1.2 — Public Preview` as a pre-release.
 - [ ] Submit/publish through the available ChatGPT Plugin Directory flow.
