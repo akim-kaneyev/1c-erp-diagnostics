@@ -27,7 +27,7 @@ jobs:
       - name: Download, verify and transform snapshot
         shell: bash
         env:
-          SNAPSHOT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-a7a0-81f4-be2c-5e7eac2f819d/raw?se=2026-08-18T08%3A09%3A09Z&sp=r&sv=2026-02-06&sr=b&scid=5e9bc8bd-d3b2-57ad-a851-eda93ee6c37f&skoid=9b41a688-1b44-4731-856e-b0efcf3660ed&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-18T05%3A36%3A18Z&ske=2026-08-19T05%3A36%3A18Z&sks=b&skv=2026-02-06&sig=Jk32ZcNA%2BxhvEZ3RZFy1KFL32l8mead2gjzZFG1YYwk%3D"
+          SNAPSHOT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-7574-81f4-baab-934778cc7ce9/raw?se=2026-08-18T08%3A13%3A17Z&sp=r&sv=2026-02-06&sr=b&scid=e71185e0-4b60-5664-95c2-7611f7c3f8c4&skoid=9b41a688-1b44-4731-856e-b0efcf3660ed&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-17T22%3A47%3A29Z&ske=2026-08-18T22%3A47%3A29Z&sks=b&skv=2026-02-06&sig=OY0J3CUcJTiTytBt410sm10DfcyD0Tbu4Cq6r9Z/R4g%3D"
         run: |
           set -euo pipefail
           cp tools/bootstrap_public_snapshot.py "$RUNNER_TEMP/bootstrap_public_snapshot.py"
@@ -56,6 +56,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          rm -f "$RUNNER_TEMP/source/.github/workflows/validate.yml"
           git checkout --orphan public-root
           git rm -rf . || true
           git clean -fdx
@@ -66,4 +67,4 @@ jobs:
           git commit -m "Initial public release candidate v0.1.2"
           git push --force origin HEAD:main
 
-# Temporary PR trigger; this workflow is removed by the published snapshot.
+# Temporary PR trigger; the bootstrap workflow is removed by the published snapshot.
