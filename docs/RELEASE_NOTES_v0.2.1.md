@@ -12,8 +12,8 @@ Version 0.2.1 turns the repository marketplace into a verified 1C companion ecos
 - Gate 7 adversarial verification;
 - `R0–R3` action-risk controls;
 - Variant A branding with validated PNG assets;
-- Unica `0.12.0` marketplace reference;
-- pinned 1C Skills PowerShell and Python plugin references;
+- immutable Unica `0.12.0` marketplace reference;
+- immutable 1C Skills PowerShell and Python plugin references;
 - OpenSandbox and `v8unpack` optional adapters with exact pins;
 - XLSX, PDF and deterministic case-indexing helpers;
 - ecosystem source/license/provenance documentation;
@@ -26,7 +26,7 @@ The external companion plugins are not copied into `one-c-erp-diagnostics`. The 
 
 ## Companion sources
 
-- Unica: `IngvarConsulting/unica-marketplace`, tag `v0.12.0`, path `plugins/unica`.
+- Unica: `IngvarConsulting/unica-marketplace`, release tag `v0.12.0` resolved to commit `aefc880f9bab606a5c55ed11af563b740054a549`, path `plugins/unica`.
 - 1C Skills PowerShell: `Nikolay-Shirokov/cc-1c-skills`, commit `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
 - 1C Skills Python: `Nikolay-Shirokov/cc-1c-skills`, commit `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
 
