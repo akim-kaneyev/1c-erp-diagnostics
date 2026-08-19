@@ -76,7 +76,7 @@ jobs:
             gh release create "${VERSION}" --verify-tag --prerelease --title "${TITLE}" --notes-file "${NOTES}"
           fi
 
-      - name: Verify published release
+      - name: Verify published release with repository credentials
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -86,21 +86,71 @@ jobs:
           test "$(gh release view v0.2.3 --json tagName --jq .tagName)" = "v0.2.3"
           test -n "$(gh release view v0.2.3 --json url --jq .url)"
 
+      - name: Verify release anonymously
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPO="akim-kaneyev/1c-erp-diagnostics"
+          VERSION="v0.2.3"
+          BASE="https://raw.githubusercontent.com/${REPO}/${VERSION}"
+
+          env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
+            "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" \
+            -o /tmp/release.json
+          test "$(jq -r .tag_name /tmp/release.json)" = "${VERSION}"
+          test "$(jq -r .prerelease /tmp/release.json)" = "true"
+          test "$(jq -r .name /tmp/release.json)" = "1C ERP Diagnostics v0.2.3 — Public Preview"
+
+          for path in README.md PRIVACY.md TERMS.md SECURITY.md docs/RELEASE_NOTES_v0.2.3.md; do
+            env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 "${BASE}/${path}" -o "/tmp/$(basename "${path}")"
+            test -s "/tmp/$(basename "${path}")"
+          done
+          grep -Fq "version-0.2.3" /tmp/README.md
+          grep -Fq "v0.2.3" /tmp/PRIVACY.md
+
+          env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
+            "${BASE}/plugins/one-c-erp-diagnostics/assets/logo.png" -o /tmp/logo.png
+          env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
+            "${BASE}/plugins/one-c-erp-diagnostics/assets/composer-icon.png" -o /tmp/composer-icon.png
+          test -s /tmp/logo.png
+          test -s /tmp/composer-icon.png
+          test "$(head -c 8 /tmp/logo.png | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a"
+          test "$(head -c 8 /tmp/composer-icon.png | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a"
+
+          env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
+            "https://github.com/${REPO}/archive/refs/tags/${VERSION}.tar.gz" -o /tmp/source.tar.gz
+          env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
+            "https://github.com/${REPO}/archive/refs/tags/${VERSION}.zip" -o /tmp/source.zip
+          tar -tzf /tmp/source.tar.gz | grep -Fq "/plugins/one-c-erp-diagnostics/.codex-plugin/plugin.json"
+          unzip -Z1 /tmp/source.zip | grep -Fq "/docs/RELEASE_NOTES_v0.2.3.md"
+
       - name: Record verified release in issue 3
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          MARKER="<!-- v0.2.3-release-verified -->"
-          if gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${MARKER}"; then
-            exit 0
-          fi
           RELEASE_URL="$(gh release view v0.2.3 --json url --jq .url)"
-          gh issue comment 3 --body "${MARKER}
-          ✅ GitHub Actions verified the annotated tag and published pre-release **1C ERP Diagnostics v0.2.3 — Public Preview**.
 
-          - tag: \`v0.2.3\`
-          - target commit: \`97cebacfe6a8755b89f7fd9231ffdd639febc33c\`
-          - pre-release: \`true\`
-          - release: ${RELEASE_URL}"
+          RELEASE_MARKER="<!-- v0.2.3-release-verified -->"
+          if ! gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${RELEASE_MARKER}"; then
+            gh issue comment 3 --body "${RELEASE_MARKER}
+            ✅ GitHub Actions verified the annotated tag and published pre-release **1C ERP Diagnostics v0.2.3 — Public Preview**.
+
+            - tag: \`v0.2.3\`
+            - target commit: \`97cebacfe6a8755b89f7fd9231ffdd639febc33c\`
+            - pre-release: \`true\`
+            - release: ${RELEASE_URL}"
+          fi
+
+          PUBLIC_MARKER="<!-- v0.2.3-public-access-verified -->"
+          if ! gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${PUBLIC_MARKER}"; then
+            gh issue comment 3 --body "${PUBLIC_MARKER}
+            ✅ Anonymous public-access verification passed for **v0.2.3** without an authorization token.
+
+            Verified:
+            - public GitHub release metadata and pre-release flag;
+            - tagged README, PRIVACY, TERMS, SECURITY and release notes;
+            - public Velis logo and composer icon PNG files;
+            - public \`.tar.gz\` and \`.zip\` source archives and expected package paths."
+          fi
