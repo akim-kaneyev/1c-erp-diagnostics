@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.2.2" src="https://img.shields.io/badge/version-0.2.2-0D1B2A.svg" />
+  <img alt="Version 0.2.3" src="https://img.shields.io/badge/version-0.2.3-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -165,9 +165,11 @@ Do not upload production `.dt`, backups, credentials, tokens, unnecessary person
 
 ## Status
 
-**v0.2.2 Public Preview is live.** The public repository, marketplace refresh, four-plugin ecosystem display, Gate 0 capability inventory, under-evidenced-case control and `R3 / NO-GO` safety behavior have been validated. The next publication steps are the versioned GitHub pre-release and submission to the global ChatGPT Plugin Directory.
+**v0.2.3 Public Preview is live.** This patch aligns the package version with the approved Velis mascot branding, preserves the verified four-plugin marketplace and records the completed GitHub security hardening: protected `main`, required Python 3.10/3.12 checks, required CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report the actual runtime state.
+
+The repository marketplace and the global ChatGPT Plugin Directory remain separate distribution channels. Refresh an existing marketplace installation after each version change; global listing publication requires the supported OpenAI-side publish flow.
 
 ## Contributing
 

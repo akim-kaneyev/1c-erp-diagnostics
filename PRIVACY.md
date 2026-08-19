@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.2.2 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.2.3 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -27,6 +27,10 @@ When Unica, 1C Skills, GitHub, Google Drive, Computer Use or another connected c
 ## Isolated execution
 
 OpenSandbox or another isolated executor may be used only when executable validation adds measurable value. Isolation does not replace data minimization. Secrets should be injected through supported secret-management mechanisms rather than stored in files. Sandbox output is evidence to verify, not truth by itself.
+
+## Repository security controls
+
+The public repository uses protected-branch rules, required CI and CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection. These GitHub controls reduce distribution risk but do not replace user-side data minimization or review of every material conclusion.
 
 ## Public issues and examples
 

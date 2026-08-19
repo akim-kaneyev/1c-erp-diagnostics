@@ -8,6 +8,7 @@
 - at least 31 packaged skills are present, including all dynamic-control skills;
 - public-package and ecosystem-marketplace validators pass;
 - regression tests pass on Python 3.10 and 3.12;
+- CodeQL results are present for the release Pull Request;
 - no secrets, real case data, production databases or unsupported dependency claims exist.
 
 ## Required ecosystem checks
@@ -21,15 +22,16 @@
 
 ## Clean-session smoke tests
 
-1. marketplace re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.2.1` and Variant A icon render in GitHub and the plugin selector;
+1. marketplace refresh/re-import shows all four plugins;
+2. 1C ERP Diagnostics `0.2.3` and the approved Velis icon render in GitHub and the plugin selector;
 3. Gate 0 reports actual companion availability;
 4. an installed companion call records canonical identity, inputs, operation, output and limitations;
 5. an under-evidenced case cannot end as final `УСТАНОВЛЕНО`;
 6. an unavailable companion request becomes fallback/`blocked`, not simulated;
 7. Gate 7 challenges the original evidence and causal chain;
 8. analysis-only work is `R0` and may mark Gate 9 `not_required`;
-9. an `R3` action requires exact approval, rollback and validation plan.
+9. a scoped `R3` safety-only test returns `NO-GO`, `Current goal: closed; linked incident: open` and no decorated gate statuses;
+10. the installed plugin details/card reports `0.2.3` when the current surface exposes a version field.
 
 ## External companion rule
 
@@ -37,27 +39,29 @@ Do not publish a fabricated `.app.json`, `mcpServers` declaration or hidden depe
 
 ## Repository publication
 
-Before changing visibility to Public:
+Before a versioned release:
 
-1. confirm CI and self-audit are green on `main`;
-2. verify the complete Git history uses privacy-safe commit identities and contains no confidential artifacts;
-3. configure repository description, topics and `main` ruleset;
-4. perform an anonymous review of README, privacy, terms, support and license URLs;
-5. enable private vulnerability reporting after visibility changes.
+1. confirm Python 3.10/3.12 CI, CodeQL and self-audit are green on the release Pull Request;
+2. merge only through the protected `main` ruleset;
+3. verify the complete Git history uses privacy-safe commit identities and contains no confidential artifacts;
+4. confirm repository description, topics, policies and brand assets are current;
+5. verify private vulnerability reporting, dependency monitoring, secret scanning and push protection remain enabled;
+6. perform an anonymous review of README, privacy, terms, support and license URLs.
 
-## Global ChatGPT Plugin Directory submission
+## ChatGPT/Codex Plugin Directory publication
 
-Public GitHub visibility does not itself create a global listing. After the repository is public:
+Public GitHub visibility does not itself create a global listing. After the repository release is available:
 
-1. use the ChatGPT/workspace **Create or Import plugin** flow;
+1. use the supported ChatGPT/workspace plugin import or publication flow;
 2. import the public marketplace/plugin source;
 3. review listing metadata, skills and any optional app/plugin requirements;
-4. select **Publish/Submit** where offered;
-5. complete OpenAI review requirements;
-6. install the resulting public listing in a clean account/session and repeat all smoke tests.
+4. select **Publish** where offered;
+5. complete any required OpenAI review or workspace configuration;
+6. refresh the workspace plugin whenever a newer marketplace version should be pulled from its original source;
+7. install the resulting listing in a clean account/session and repeat all smoke tests.
 
-The global submission is an OpenAI-side action and cannot be completed by GitHub commits alone.
+A local or Codex-specific plugin may require import or workspace publication before it can be selected broadly in ChatGPT. Directory availability, installation and invocation can also depend on plan, role, workspace settings, supported surface and included capabilities.
 
 ## Release gate
 
-Run `one-c-erp-plugin-audit`. Any critical `FAIL` blocks merge, repository publication, tag/release creation and Plugin Directory submission.
+Run `one-c-erp-plugin-audit`. Any critical `FAIL` blocks merge, tag/release creation and Plugin Directory publication.

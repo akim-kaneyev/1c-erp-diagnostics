@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
+PLUGIN_VERSION = "0.2.3"
 
 
 def load_artifact_module():
@@ -26,8 +27,8 @@ class DynamicContractTests(unittest.TestCase):
             (PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
         )
         pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-        self.assertEqual(manifest["version"], "0.2.2")
-        self.assertIn('version = "0.2.2"', pyproject)
+        self.assertEqual(manifest["version"], PLUGIN_VERSION)
+        self.assertIn(f'version = "{PLUGIN_VERSION}"', pyproject)
         self.assertIn('v8unpack==1.2.6', pyproject)
         self.assertIn('opensandbox==0.1.14', pyproject)
         self.assertEqual(manifest["skills"], "./skills/")

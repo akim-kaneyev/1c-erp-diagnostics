@@ -19,6 +19,7 @@ MANIFEST = (
 )
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
+EXPECTED_VERSION = "0.2.3"
 EXPECTED_ORDER = [
     "one-c-erp-diagnostics",
     "unica",
@@ -51,7 +52,8 @@ REQUIRED_FILES = [
     ROOT / "TERMS.md",
     ROOT / "docs" / "ECOSYSTEM_MARKETPLACE.md",
     ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
-    ROOT / "docs" / "RELEASE_NOTES_v0.2.2.md",
+    ROOT / "docs" / f"RELEASE_NOTES_v{EXPECTED_VERSION}.md",
+    ROOT / "docs" / f"PLUGIN_AUDIT_v{EXPECTED_VERSION}.md",
 ]
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
@@ -125,8 +127,8 @@ def main() -> int:
             errors.append(f"{name} must use the verified `sha` field, not `ref`, for a commit pin")
 
     interface = manifest.get("interface") or {}
-    if manifest.get("version") != "0.2.2":
-        errors.append("Plugin manifest version must be 0.2.2")
+    if manifest.get("version") != EXPECTED_VERSION:
+        errors.append(f"Plugin manifest version must be {EXPECTED_VERSION}")
     if interface.get("termsOfServiceURL") != (
         "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md"
     ):
@@ -143,7 +145,7 @@ def main() -> int:
     print("ECOSYSTEM MARKETPLACE VALIDATION: PASS")
     print("Marketplace ID: " + MARKETPLACE_ID)
     print("Plugins: " + ", ".join(EXPECTED_ORDER))
-    print("Plugin version: 0.2.2")
+    print("Plugin version: " + EXPECTED_VERSION)
     return 0
 
 

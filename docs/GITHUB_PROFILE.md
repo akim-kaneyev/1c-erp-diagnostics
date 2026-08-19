@@ -1,12 +1,10 @@
 # GitHub public profile plan
 
-## Identity decision before launch
+## Final identity
 
-Recommended public username: `akim-kaneev`.
+Public username: `akim-kaneyev`.
 
-Reason: it matches the public name, is readable internationally, and does not look like a temporary file-oriented handle. Do not rename after the public plugin/repository has been widely shared unless necessary.
-
-The final username must be chosen before creating the special profile README repository, because that repository must have exactly the same name as the username.
+The username is already used by the public project and documentation. Do not rename it after publication unless a migration plan covers repository URLs, marketplace sources, policy links, profile README and external references.
 
 ## Suggested profile bio
 
@@ -16,16 +14,16 @@ The final username must be chosen before creating the special profile README rep
 
 - Public email: do not expose a private account email; add a dedicated work/support address later.
 - Pronouns: optional.
-- URL: add the public project/site only after it exists.
+- URL: use the public flagship repository until a separate project site is available.
 - Company and precise location: leave blank unless intentionally public.
 - Private contributions: enable anonymized display if desired.
 - Achievements: keep enabled.
 - Available for hire: enable if the profile should generate consulting/project leads.
 - Appearance/accessibility: personal preference; no public branding impact.
 
-## Suggested profile README
+## Profile README
 
-Replace `<FINAL_USERNAME>` and `<PUBLIC_CONTACT>` only after the final identity and public support email are confirmed.
+Create the special public repository `akim-kaneyev/akim-kaneyev` and place the following in its root `README.md`. Replace `<PUBLIC_CONTACT>` only after a dedicated public contact is confirmed.
 
 ```md
 # Akim Kaneev
@@ -48,9 +46,9 @@ My working principle is simple: **separate facts from hypotheses, find the earli
 
 ## Featured project
 
-### [1C ERP Diagnostics](https://github.com/<FINAL_USERNAME>/1c-erp-diagnostics)
+### [1C ERP Diagnostics](https://github.com/akim-kaneyev/1c-erp-diagnostics)
 
-An evidence-first diagnostic framework for ChatGPT and Codex with a mandatory Gate 1–10 workflow:
+An evidence-first diagnostic framework for ChatGPT and Codex with dynamic Gate 0–10 orchestration:
 
 - no invented 1C metadata;
 - case evidence before generic theory;
@@ -77,9 +75,10 @@ Independent community work. Product names and trademarks belong to their respect
 ## Presentation rules
 
 - Keep the profile README concise; visitors should understand the role and flagship project in the first screen.
-- Use the approved Variant A avatar and one consistent dark-teal/gold visual identity.
+- Use the approved Velis white-dog mascot avatar and one consistent dark-teal/gold visual identity.
 - Avoid excessive animated widgets, counters and third-party statistics cards; they add noise and external runtime dependencies.
-- Publish only one strong pinned repository initially. Add more only when they contain sanitized, useful public work.
+- Pin `1c-erp-diagnostics` as the primary public repository.
+- Publish additional repositories only when they contain sanitized, useful public work.
 - English should be the primary language for global reach; Russian can be added as a short secondary section later.
 
 ## Suggested pinned repositories
@@ -90,4 +89,4 @@ Independent community work. Product names and trademarks belong to their respect
 
 ## Profile image
 
-Use the approved Variant A circle-safe avatar prepared separately.
+Use the approved circle-safe Velis mascot crop prepared for the plugin composer icon.

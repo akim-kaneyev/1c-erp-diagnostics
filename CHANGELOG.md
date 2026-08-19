@@ -1,12 +1,16 @@
 # Changelog
 
-## Unreleased — approved Velis brand refresh
+## 0.2.3 — Velis branding and repository hardening
 
-- replaced the previous plugin artwork with the approved white-dog mascot identity;
+- replaced the previous plugin artwork with the approved white-dog Velis mascot identity;
 - retained one Velis medallion on the collar and removed the redundant second medallion from the draft;
 - added separate optimized composer, card and dark-surface assets;
 - documented the approved asset mapping and brand/trademark boundary;
-- preserved the independent-project disclaimer and did not introduce the corporate 1C logo.
+- preserved the independent-project disclaimer and did not introduce the corporate 1C logo;
+- aligned the plugin manifest, project metadata, README, policies, release notes, audit, validators and tests to version `0.2.3`;
+- recorded the active `main` ruleset with required Pull Request, squash merge, Python 3.10/3.12 checks, CodeQL results, resolved conversations, linear history, no force-push and no deletion;
+- recorded successful CodeQL default setup for GitHub Actions and Python with zero open alerts;
+- recorded private vulnerability reporting, dependency graph, Dependabot alerts/security updates, secret scanning and push protection as enabled.
 
 ## 0.2.2 — public preview
 
