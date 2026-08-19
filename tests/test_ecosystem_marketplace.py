@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
+PLUGIN_VERSION = "0.2.3"
 UNICA_COMMIT = "aefc880f9bab606a5c55ed11af563b740054a549"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
@@ -85,9 +86,12 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         integrations = (ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md").read_text(
             encoding="utf-8"
         )
-        release_notes = (ROOT / "docs" / "RELEASE_NOTES_v0.2.2.md").read_text(
-            encoding="utf-8"
-        )
+        release_notes = (
+            ROOT / "docs" / f"RELEASE_NOTES_v{PLUGIN_VERSION}.md"
+        ).read_text(encoding="utf-8")
+        audit = (
+            ROOT / "docs" / f"PLUGIN_AUDIT_v{PLUGIN_VERSION}.md"
+        ).read_text(encoding="utf-8")
         terms = (ROOT / "TERMS.md").read_text(encoding="utf-8")
         companion = (
             ROOT
@@ -104,6 +108,7 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             self.assertIn(token, release_notes)
             self.assertIn(token, companion)
 
+        self.assertIn(PLUGIN_VERSION, audit)
         self.assertIn(MARKETPLACE_ID, ecosystem)
         self.assertIn("v0.12.0", ecosystem)
         self.assertIn("v0.12.0", integrations)
