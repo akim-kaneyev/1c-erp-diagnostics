@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — approved Velis brand refresh
+
+- replaced the previous plugin artwork with the approved white-dog mascot identity;
+- retained one Velis medallion on the collar and removed the redundant second medallion from the draft;
+- added separate optimized composer, card and dark-surface assets;
+- documented the approved asset mapping and brand/trademark boundary;
+- preserved the independent-project disclaimer and did not introduce the corporate 1C logo.
+
 ## 0.2.2 — public preview
 
 - opened the clean release repository to the public under `akim-kaneyev/1c-erp-diagnostics`;
