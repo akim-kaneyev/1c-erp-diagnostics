@@ -47,7 +47,7 @@
 - [x] Gate 7 rejected unsupported `УСТАНОВЛЕНО`.
 - [x] Analysis-only work was classified `R0`; Gate 9 was `not_required`.
 - [x] Unapproved closed-period/mass-reposting proposal was classified `R3` and received `NO-GO`.
-- [ ] Refresh the marketplace after v0.2.3 is merged and confirm the new version/assets are installed.
+- [ ] Refresh the marketplace after v0.2.3 and confirm the new version/assets are installed.
 - [ ] Repeat Gate 0 in a clean v0.2.3 session and record actual capability availability.
 - [ ] Repeat the under-evidenced case in a clean v0.2.3 session.
 - [ ] Repeat the scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open` with canonical gate statuses.
@@ -78,11 +78,16 @@
 ## Public repository and versioned release
 
 - [x] Public repository is live.
-- [x] Public-preview documentation is aligned to v0.2.3 on the release branch.
-- [ ] Merge the v0.2.3 release Pull Request after required Python and CodeQL checks pass.
-- [ ] Create annotated tag `v0.2.3` on the approved merged commit.
-- [ ] Publish `1C ERP Diagnostics v0.2.3 — Public Preview` as a GitHub pre-release.
-- [ ] Verify the release, source archives, images and documentation anonymously.
+- [x] Public-preview package and documentation are aligned to v0.2.3 on `main`.
+- [x] Release Pull Request #12 passed Python 3.10/3.12 package, ecosystem and regression checks.
+- [x] Release Pull Request #12 passed the protected-branch gates and was squash-merged.
+- [x] Annotated tag `v0.2.3` targets commit `97cebacfe6a8755b89f7fd9231ffdd639febc33c`.
+- [x] `1C ERP Diagnostics v0.2.3 — Public Preview` is published as a GitHub pre-release.
+- [x] GitHub Actions verified the tag object, target commit, pre-release flag and release URL.
+- [x] Anonymous verification confirmed public release metadata and tagged policy/documentation files.
+- [x] Anonymous verification confirmed the public Velis PNG assets.
+- [x] Anonymous verification confirmed the `.tar.gz` and `.zip` source archives and expected package paths.
+- [x] Issue #3 records the release and anonymous-verification evidence.
 
 ## Global ChatGPT Plugin Directory
 
@@ -94,4 +99,4 @@
 
 ## Stop condition
 
-Do **not** publish a versioned release or global listing while any critical CI, CodeQL or self-audit control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or private development history are present.
+Do **not** publish the global listing while any critical CI, CodeQL or self-audit control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or private development history are present.
