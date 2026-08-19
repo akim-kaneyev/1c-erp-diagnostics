@@ -8,6 +8,7 @@
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
   <img alt="Version 0.2.2" src="https://img.shields.io/badge/version-0.2.2-0D1B2A.svg" />
+  <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
 
@@ -164,7 +165,9 @@ Do not upload production `.dt`, backups, credentials, tokens, unnecessary person
 
 ## Status
 
-Current candidate: **0.2.2**. It preserves the verified Unica/1C Skills ecosystem, fixes in-place marketplace refresh by restoring the stable installation identity, uses verified SHA selectors for external commits, and includes the scoped Gate-closure correction found during the R3 smoke test. Repository publication and global Plugin Directory submission remain separate final steps after refresh verification and public visibility.
+**v0.2.2 Public Preview is live.** The public repository, marketplace refresh, four-plugin ecosystem display, Gate 0 capability inventory, under-evidenced-case control and `R3 / NO-GO` safety behavior have been validated. The next publication steps are the versioned GitHub pre-release and submission to the global ChatGPT Plugin Directory.
+
+Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report the actual runtime state.
 
 ## Contributing
 
