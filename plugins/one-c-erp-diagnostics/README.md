@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin
+# 1C ERP Diagnostics plugin — v0.2.3
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -13,7 +13,10 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - evidence synthesis, contradiction handling and adversarial verification;
 - `R0–R3` risk controls and same-analytics validation;
 - artifact/open-source intake rules;
-- deterministic Python helpers.
+- deterministic Python helpers;
+- approved Velis mascot assets for the composer, plugin card and dark surfaces.
+
+The artwork is an original white-dog mascot identity with one Velis collar medallion and does not reproduce the corporate 1C graphic logo. Product references are descriptive; the project is independent from 1C Company and OpenAI.
 
 ## What is exposed by the ecosystem marketplace
 
