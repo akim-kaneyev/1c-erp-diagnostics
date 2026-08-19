@@ -11,9 +11,11 @@
    - **Unica**;
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
-6. Enable **1C ERP Diagnostics** as the primary entrypoint.
-7. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
-8. Open a clean chat and select `@one-c-erp-diagnostics`.
+6. Refresh an existing marketplace installation after a version change.
+7. Confirm `1C ERP Diagnostics` reports `0.2.3` when the current surface exposes the version and renders the approved Velis icon.
+8. Enable **1C ERP Diagnostics** as the primary entrypoint.
+9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
+10. Open a clean chat and select `@one-c-erp-diagnostics`.
 
 The marketplace creates one discovery/installation space. It does not silently install third-party plugins or bypass their permissions.
 
@@ -97,16 +99,19 @@ Restart Codex and verify the skill in a different project.
 
 ## Public Plugin Directory preparation
 
-Public GitHub visibility and global ChatGPT Plugin Directory publication are separate operations.
+Public GitHub visibility and Plugin Directory publication are separate operations.
 
 Before submission:
 
-1. all CI and self-audit controls must pass;
-2. re-import `main` and run the smoke tests above;
-3. publish the repository and verify all policy/support URLs anonymously;
-4. create a version tag and pre-release;
-5. use the OpenAI-side **Create/Import plugin → Publish/Submit** flow available in ChatGPT/workspace settings;
-6. install the resulting public listing in a clean chat and repeat the smoke tests.
+1. all CI, CodeQL and self-audit controls must pass;
+2. re-import or refresh `main` and run the smoke tests above;
+3. publish the versioned GitHub pre-release and verify all policy/support URLs anonymously;
+4. use the supported ChatGPT/workspace plugin import or publication flow;
+5. review listing metadata, included skills and companion requirements;
+6. select **Publish** where offered and complete any required review/configuration;
+7. install the resulting public listing in a clean chat and repeat the smoke tests.
+
+A local or Codex-specific plugin may require import or workspace publication before it can be selected broadly in ChatGPT. Availability can depend on the user's plan, workspace settings, role, supported surface and plugin capabilities.
 
 ## Result standard
 
