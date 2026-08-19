@@ -1,8 +1,13 @@
 # Brand assets
 
-Variant A is the selected visual identity for 1C ERP Diagnostics.
+The approved visual identity uses an original white-dog mascot, a diagnostic magnifying glass, a moonlit mountain landscape and a single Velis medallion on the collar.
 
-- `composer-icon.png` — compact plugin icon.
-- `logo.png` — plugin card/details logo.
+Production assets:
 
-Source artwork is based on the approved Variant A: white ornamental dog, moonlit mountains, dark teal/gold palette, and 1C ERP Diagnostics branding.
+- `composer-icon.png` — compact crop for the plugin selector and composer.
+- `logo.png` — full badge for the plugin card and repository README.
+- `logo-dark.png` — dark-surface plugin logo.
+
+The artwork does not include the corporate 1C logo. The text reference to 1C:ERP is descriptive and the project remains independent from 1C Company.
+
+The redundant second medallion shown in an earlier draft is intentionally excluded from the approved composition.
