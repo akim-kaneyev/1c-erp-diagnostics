@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   publish:
@@ -83,3 +84,23 @@ jobs:
           set -euo pipefail
           test "$(gh release view v0.2.3 --json isPrerelease --jq .isPrerelease)" = "true"
           test "$(gh release view v0.2.3 --json tagName --jq .tagName)" = "v0.2.3"
+          test -n "$(gh release view v0.2.3 --json url --jq .url)"
+
+      - name: Record verified release in issue 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          MARKER="<!-- v0.2.3-release-verified -->"
+          if gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${MARKER}"; then
+            exit 0
+          fi
+          RELEASE_URL="$(gh release view v0.2.3 --json url --jq .url)"
+          gh issue comment 3 --body "${MARKER}
+          ✅ GitHub Actions verified the annotated tag and published pre-release **1C ERP Diagnostics v0.2.3 — Public Preview**.
+
+          - tag: \`v0.2.3\`
+          - target commit: \`97cebacfe6a8755b89f7fd9231ffdd639febc33c\`
+          - pre-release: \`true\`
+          - release: ${RELEASE_URL}"
