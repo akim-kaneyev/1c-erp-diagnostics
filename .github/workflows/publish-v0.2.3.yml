@@ -1,0 +1,85 @@
+name: Publish v0.2.3 pre-release
+
+on:
+  push:
+    branches:
+      - ops/publish-v0.2.3
+    paths:
+      - .github/release/v0.2.3.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout approved release source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 97cebacfe6a8755b89f7fd9231ffdd639febc33c
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify v0.2.3 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest = json.loads(
+              Path("plugins/one-c-erp-diagnostics/.codex-plugin/plugin.json")
+              .read_text(encoding="utf-8")
+          )
+          pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
+          assert manifest["version"] == "0.2.3"
+          assert 'version = "0.2.3"' in pyproject
+          assert Path("docs/RELEASE_NOTES_v0.2.3.md").is_file()
+          assert Path("docs/PLUGIN_AUDIT_v0.2.3.md").is_file()
+          PY
+          test "$(git rev-parse HEAD)" = "97cebacfe6a8755b89f7fd9231ffdd639febc33c"
+
+      - name: Create and verify annotated tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="v0.2.3"
+          TARGET_SHA="97cebacfe6a8755b89f7fd9231ffdd639febc33c"
+
+          git fetch origin "refs/tags/${VERSION}:refs/tags/${VERSION}" 2>/dev/null || true
+          if git show-ref --tags --verify --quiet "refs/tags/${VERSION}"; then
+            test "$(git cat-file -t "refs/tags/${VERSION}")" = "tag"
+            test "$(git rev-list -n 1 "${VERSION}")" = "${TARGET_SHA}"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "${VERSION}" "${TARGET_SHA}" -m "1C ERP Diagnostics v0.2.3 — Public Preview"
+            git push origin "refs/tags/${VERSION}"
+          fi
+
+      - name: Publish GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="v0.2.3"
+          TITLE="1C ERP Diagnostics v0.2.3 — Public Preview"
+          NOTES="docs/RELEASE_NOTES_v0.2.3.md"
+
+          if gh release view "${VERSION}" >/dev/null 2>&1; then
+            gh release edit "${VERSION}" --prerelease --title "${TITLE}" --notes-file "${NOTES}"
+          else
+            gh release create "${VERSION}" --verify-tag --prerelease --title "${TITLE}" --notes-file "${NOTES}"
+          fi
+
+      - name: Verify published release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh release view v0.2.3 --json isPrerelease --jq .isPrerelease)" = "true"
+          test "$(gh release view v0.2.3 --json tagName --jq .tagName)" = "v0.2.3"
