@@ -21,9 +21,22 @@
 
 Use a separate disposable environment per case when isolation is needed. Restrict egress where practical, inject secrets through a supported vault/environment mechanism, record commands and versions, and treat sandbox output as evidence rather than truth.
 
+## Repository controls
+
+The public repository uses:
+
+- a protected `main` branch with Pull Request, CI and CodeQL requirements;
+- no force-push or branch deletion;
+- private vulnerability reporting;
+- dependency graph, Dependabot alerts and security updates;
+- CodeQL analysis for GitHub Actions and Python;
+- secret scanning and push protection.
+
+These controls reduce repository and supply-chain risk but do not make confidential 1C data safe to publish.
+
 ## Vulnerability reporting
 
-Do not post secrets or exploit details in a public issue. If GitHub private vulnerability reporting is enabled, use it. Otherwise open a minimal issue stating that you need a private security contact, without including sensitive details.
+Do not post secrets, exploit details or affected customer/company data in a public issue. Use GitHub **Private vulnerability reporting** for security findings. Public Issues are appropriate only for non-sensitive bugs, feature requests and sanitized reproductions.
 
 ## Public examples
 
