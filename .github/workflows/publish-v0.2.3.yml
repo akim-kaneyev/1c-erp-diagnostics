@@ -87,13 +87,17 @@ jobs:
           test -n "$(gh release view v0.2.3 --json url --jq .url)"
 
       - name: Verify release anonymously
+        id: public_verification
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee /tmp/public-verification.log) 2>&1
           REPO="akim-kaneyev/1c-erp-diagnostics"
           VERSION="v0.2.3"
           BASE="https://raw.githubusercontent.com/${REPO}/${VERSION}"
 
+          echo "Checking public release metadata"
           env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
             "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" \
             -o /tmp/release.json
@@ -101,13 +105,16 @@ jobs:
           test "$(jq -r .prerelease /tmp/release.json)" = "true"
           test "$(jq -r .name /tmp/release.json)" = "1C ERP Diagnostics v0.2.3 — Public Preview"
 
+          echo "Checking public tagged documents"
           for path in README.md PRIVACY.md TERMS.md SECURITY.md docs/RELEASE_NOTES_v0.2.3.md; do
-            env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 "${BASE}/${path}" -o "/tmp/$(basename "${path}")"
-            test -s "/tmp/$(basename "${path}")"
+            target="/tmp/public-$(echo "${path}" | tr '/' '-')"
+            env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 "${BASE}/${path}" -o "${target}"
+            test -s "${target}"
           done
-          grep -Fq "version-0.2.3" /tmp/README.md
-          grep -Fq "v0.2.3" /tmp/PRIVACY.md
+          grep -Fq "version-0.2.3" /tmp/public-README.md
+          grep -Fq "v0.2.3" /tmp/public-PRIVACY.md
 
+          echo "Checking public Velis assets"
           env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
             "${BASE}/plugins/one-c-erp-diagnostics/assets/logo.png" -o /tmp/logo.png
           env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
@@ -117,16 +124,22 @@ jobs:
           test "$(head -c 8 /tmp/logo.png | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a"
           test "$(head -c 8 /tmp/composer-icon.png | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a"
 
+          echo "Checking public source archives"
           env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
             "https://github.com/${REPO}/archive/refs/tags/${VERSION}.tar.gz" -o /tmp/source.tar.gz
           env -u GH_TOKEN -u GITHUB_TOKEN curl -fsSL --retry 5 \
             "https://github.com/${REPO}/archive/refs/tags/${VERSION}.zip" -o /tmp/source.zip
-          tar -tzf /tmp/source.tar.gz | grep -Fq "/plugins/one-c-erp-diagnostics/.codex-plugin/plugin.json"
-          unzip -Z1 /tmp/source.zip | grep -Fq "/docs/RELEASE_NOTES_v0.2.3.md"
+          tar -tzf /tmp/source.tar.gz > /tmp/tar-list.txt
+          unzip -Z1 /tmp/source.zip > /tmp/zip-list.txt
+          grep -Fq "/plugins/one-c-erp-diagnostics/.codex-plugin/plugin.json" /tmp/tar-list.txt
+          grep -Fq "/docs/RELEASE_NOTES_v0.2.3.md" /tmp/zip-list.txt
+          echo "Anonymous public-access verification passed"
 
-      - name: Record verified release in issue 3
+      - name: Record verification results in issue 3
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          PUBLIC_OUTCOME: ${{ steps.public_verification.outcome }}
         shell: bash
         run: |
           set -euo pipefail
@@ -143,14 +156,28 @@ jobs:
             - release: ${RELEASE_URL}"
           fi
 
-          PUBLIC_MARKER="<!-- v0.2.3-public-access-verified -->"
-          if ! gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${PUBLIC_MARKER}"; then
-            gh issue comment 3 --body "${PUBLIC_MARKER}
-            ✅ Anonymous public-access verification passed for **v0.2.3** without an authorization token.
+          if [ "${PUBLIC_OUTCOME}" = "success" ]; then
+            PUBLIC_MARKER="<!-- v0.2.3-public-access-verified -->"
+            if ! gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${PUBLIC_MARKER}"; then
+              gh issue comment 3 --body "${PUBLIC_MARKER}
+              ✅ Anonymous public-access verification passed for **v0.2.3** without an authorization token.
 
-            Verified:
-            - public GitHub release metadata and pre-release flag;
-            - tagged README, PRIVACY, TERMS, SECURITY and release notes;
-            - public Velis logo and composer icon PNG files;
-            - public \`.tar.gz\` and \`.zip\` source archives and expected package paths."
+              Verified:
+              - public GitHub release metadata and pre-release flag;
+              - tagged README, PRIVACY, TERMS, SECURITY and release notes;
+              - public Velis logo and composer icon PNG files;
+              - public \`.tar.gz\` and \`.zip\` source archives and expected package paths."
+            fi
+          else
+            FAILURE_MARKER="<!-- v0.2.3-public-access-failed-attempt-4 -->"
+            LOG="$(tail -c 5000 /tmp/public-verification.log 2>/dev/null || true)"
+            if ! gh issue view 3 --json comments --jq '.comments[].body' | grep -Fq "${FAILURE_MARKER}"; then
+              gh issue comment 3 --body "${FAILURE_MARKER}
+              ⚠️ Anonymous public-access verification did not complete on attempt 4.
+
+              \`\`\`text
+              ${LOG}
+              \`\`\`"
+            fi
+            exit 1
           fi
