@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 — factual SonarQube Gate 0 discovery
+
+- fixed Gate 0 so absence of a dedicated SonarQube MCP/app/tool name is not treated as evidence that the local runtime is unavailable;
+- require factual loopback status/version and scanner-version probes whenever the session exposes local execution and loopback HTTP;
+- classify a blocked read-only probe as `confirmation_required / host_execution_confirmation_required` rather than invented `unavailable`;
+- preserve observed server/scanner facts when protected APIs return `401/403` and keep the capability at `confirmation_required / authentication_required`;
+- added regression assertions and clean-session smoke expectations for the reported cross-project failure;
+- retained the stable marketplace ID, 32 skills and all immutable companion pins.
+
 ## 0.3.0 — optional SonarQube BSL evidence and executable acceptance gates
 
 - added the optional `sonarqube-bsl-local` capability and a packaged SonarQube analysis skill, bringing the primary plugin to 32 packaged skills;

@@ -12,7 +12,7 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.0` when the current surface exposes the version and renders the approved Velis icon.
+7. Confirm `1C ERP Diagnostics` reports `0.3.1` when the current surface exposes the version and renders the approved Velis icon.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
@@ -66,7 +66,7 @@ Expected:
 
 Ask Gate 0 to inspect `sonarqube-bsl-local` without starting services, creating projects/tokens or running a scan.
 
-Expected: the capability is `available` only when the loopback server, scanner, `communitybsl` language/profile, pre-created project and scoped authentication are actually confirmed. A missing token is `confirmation_required`; a missing runtime is `unavailable`; every non-loopback endpoint is `prohibited` for the local capability.
+Expected: Gate 0 performs the factual loopback status/version and scanner-version probes even when no dedicated SonarQube tool is listed. The capability is `available` only when the loopback server, scanner, `communitybsl` language/profile, pre-created project and scoped authentication are actually confirmed. A host permission block or missing token is `confirmation_required`; a missing runtime after an actual probe is `unavailable`; every non-loopback endpoint is `prohibited` for the local capability.
 
 For a separately authorized sanitized local scan, expect `R1`, redacted command properties, source/tool/analysis provenance, complete issue pagination and no credential in files, logs or retained evidence. A finding without executed-path and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7.
 

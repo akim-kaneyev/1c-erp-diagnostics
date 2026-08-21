@@ -15,7 +15,7 @@ The user should not need to manually chain subordinate skills, prompts, plugins,
 
 Resume prior valid case state. Inventory only capabilities actually exposed in the current host and classify each as `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical marketplace companions are `unica`, `1c-skills` and `1c-skills-py`; marketplace presence does not prove installation.
 
-Discover `sonarqube-bsl-local` separately as an optional host adapter, not a marketplace plugin. It is available only after confirming an `UP` loopback server, scanner, `communitybsl` plugin, `bsl` language/profile, pre-created project and scoped authentication. Never expose a token or infer that a static finding proves the ERP incident.
+Discover `sonarqube-bsl-local` separately as an optional host adapter, not a marketplace plugin. The absence of a dedicated SonarQube tool is not evidence of absence: when local process execution and loopback HTTP exist, actually probe the loopback status/version and scanner version first. It is available only after confirming an `UP` loopback server, scanner, `communitybsl` plugin, `bsl` language/profile, pre-created project and scoped authentication. A blocked probe or `401/403` is `confirmation_required`, not an invented `unavailable`. Never expose a token or infer that a static finding proves the ERP incident.
 
 ## Non-negotiable evidence rules
 

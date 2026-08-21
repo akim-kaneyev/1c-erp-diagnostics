@@ -18,16 +18,27 @@ Default to the loopback endpoint `http://127.0.0.1:9000`. Record the explicitly 
 5. `/api/webservices/list` confirms the endpoint contract exposed by that server version;
 6. authentication can use scoped tokens without exposing their values.
 
+### Required discovery execution
+
+A dedicated SonarQube MCP server, app or tool name is not required for this host adapter. Never infer `unavailable` from the skill/plugin/tool inventory alone. When the current session exposes local process execution and loopback HTTP, Gate 0 must actually run the read-only endpoint and scanner preflight before assigning a status:
+
+1. request `/api/system/status` and `/api/server/version` from the normalized loopback base URL without credentials;
+2. resolve the scanner through the configured executable or `PATH` and invoke only its version command without shell interpolation;
+3. use authenticated API discovery only when a scoped token is already supplied through an approved secret channel;
+4. preserve every successfully observed server/scanner fact when a protected API returns `401` or `403`.
+
+The absence of a named SonarQube tool is not evidence that the loopback server or scanner is absent. Do not report “not provided in this session” until the actual read-only probes were attempted. If the host blocks local execution or loopback access pending approval, use status `confirmation_required` with reason `host_execution_confirmation_required`, record the blocked probe and request only that exact permission. Do not downgrade it to `unavailable` without a failed factual probe.
+
 The reviewed local baseline is SonarQube Community Build `26.8.0.126808`, SonarScanner CLI `8.0.1.6346` and `communitybsl` `1.20.0` with JAR SHA-256 `595F741AFD49BC7F1869B3F82F623821D519CECB399C56F154E55EA83DC7057B`. A different version is `compatibility_unverified`, not silently equivalent.
 
 Map the result to the canonical capability status:
 
 - `available` — loopback server is `UP`, scanner works, BSL plugin/language/profile/project are confirmed and scoped authentication is ready;
-- `confirmation_required` — the reviewed components exist but the server must be started, a scoped token must be created/provided, or version compatibility must be reviewed;
+- `confirmation_required` — the reviewed components exist but local discovery needs exact host permission, the known reviewed server must be started, a scoped token must be created/provided, or version compatibility must be reviewed;
 - `unavailable` — a required component, BSL language/profile or source format is absent;
 - `prohibited` — source is not sanitized, the endpoint is not loopback, or safe authentication cannot be used. `sonarqube-bsl-local` never changes to `available` for a remote endpoint.
 
-Keep the canonical status separate from a machine-readable reason such as `authentication_required`, `compatibility_unverified`, `sonarqube_unavailable`, `bsl_analyzer_unavailable` or `remote_out_of_scope`. Never emit a reason code as a fifth capability status.
+Keep the canonical status separate from a machine-readable reason such as `host_execution_confirmation_required`, `server_start_required`, `authentication_required`, `compatibility_unverified`, `sonarqube_unavailable`, `bsl_analyzer_unavailable` or `remote_out_of_scope`. Never emit a reason code as a fifth capability status.
 
 Do not start the server automatically, try default credentials, reuse a browser cookie, create a project, generate a token or change a quality profile during discovery.
 
@@ -89,7 +100,10 @@ Phrase a finding as: “the analyzer reported rule X at file/line Y.” Its func
 
 Fallbacks:
 
-- server unavailable — use status `unavailable`, reason `sonarqube_unavailable`; do not auto-start it;
+- named SonarQube tool absent but local execution exists — run the factual loopback/scanner preflight; do not infer a status from the tool list;
+- local execution or loopback access awaits host approval — use status `confirmation_required`, reason `host_execution_confirmation_required`;
+- known reviewed installation is stopped — use status `confirmation_required`, reason `server_start_required`; do not auto-start it;
+- no installation/endpoint is found after an actual probe — use status `unavailable`, reason `sonarqube_unavailable`;
 - `401/403` — use status `confirmation_required`, reason `authentication_required`; do not try standard passwords;
 - missing BSL plugin/language/profile — use status `unavailable`, reason `bsl_analyzer_unavailable`;
 - version mismatch — use status `confirmation_required`, reason `compatibility_unverified`;

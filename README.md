@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.0" src="https://img.shields.io/badge/version-0.3.0-0D1B2A.svg" />
+  <img alt="Version 0.3.1" src="https://img.shields.io/badge/version-0.3.1-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -168,7 +168,7 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.0 Public Preview release candidate.** It adds the optional local `sonarqube-bsl-local` evidence adapter and executable clean-session acceptance while preserving the verified four-plugin marketplace and approved Velis assets. Static findings remain hypotheses; SonarQube credentials are never stored by the plugin. GitHub CI, protected-branch merge, tag/release and exact-version clean-session acceptance remain pending until their separate checks complete.
+**v0.3.1 Public Preview release candidate.** This patch requires Gate 0 to run the factual loopback server and scanner preflight whenever local execution is available, even when the host lists no dedicated SonarQube tool. It preserves the verified four-plugin marketplace, approved Velis assets and the rule that static findings remain hypotheses. GitHub CI, protected-branch merge, tag/release and exact-version clean-session acceptance for `0.3.1` remain pending until their separate checks complete.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report the actual runtime state.
 
