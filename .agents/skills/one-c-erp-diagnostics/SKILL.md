@@ -12,4 +12,6 @@ description: Discover and run the repository's dynamic Gate 0-10 1C:ERP diagnost
 5. Resume from `STATE.md` when present.
 6. Do not ask the user to manually chain internal skills.
 7. Check `unica`, `1c-skills` and `1c-skills-py` at Gate 0; do not infer installation from marketplace presence.
-8. If an external capability is unavailable, use a documented fallback or mark the dependent node unavailable/blocked rather than simulating it.
+8. Discover `sonarqube-bsl-local` separately as an optional host adapter. Do not add it to the marketplace or call it available until the loopback server, scanner, BSL plugin/profile, project and scoped authentication are confirmed.
+9. Route a new static scan through `one-c-erp-local-static-analysis`; keep credentials out of commands/files/logs and never promote a static finding to ERP causality without runtime evidence and Gate 7.
+10. If an external capability is unavailable, use a documented fallback or mark the dependent node unavailable/blocked rather than simulating it.

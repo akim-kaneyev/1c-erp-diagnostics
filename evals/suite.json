@@ -35,6 +35,7 @@
     "cases/production-chain-gap.json",
     "cases/access-rights-no-broad-grant.json",
     "cases/adversarial-missing-mechanism.json",
+    "cases/sonarqube-static-finding-no-runtime.json",
     "cases/analysis-only-comparison.json",
     "cases/unavailable-required-capability.json",
     "cases/scoped-r3-mass-repost.json"

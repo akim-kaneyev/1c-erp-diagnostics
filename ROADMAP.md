@@ -14,8 +14,10 @@
 - evaluate safe MXL conversion adapters only when a format/tool is verified;
 - [x] add regression coverage for principal ERP domains, insufficient evidence, unavailable capabilities, Gate 7 and scoped `R3 / NO-GO`;
 
-## 0.3.x — optional isolated execution
+## 0.3.x — local static analysis and optional isolated execution
 
+- [x] add the optional `sonarqube-bsl-local` Gate 0/Gate 5 adapter with safe provenance and fallback;
+- [x] classify local scan, SonarQube administration and remote upload under `R1–R3` controls;
 - formalize OpenSandbox recipes for parser/tool testing;
 - add reproducible environment definitions and egress controls;
 - keep sandbox optional and data-minimized.

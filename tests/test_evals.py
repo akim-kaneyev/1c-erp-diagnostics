@@ -226,6 +226,65 @@ class EvalSuiteTests(unittest.TestCase):
         self.assertTrue(any("established claims 1 exceed allowed maximum 0" in error for error in errors))
         self.assertTrue(any("УСТАНОВЛЕНО requires a complete causal chain" in error for error in errors))
 
+    def test_sonarqube_finding_cannot_replace_runtime_erp_evidence(self) -> None:
+        case = self.cases["sonarqube-static-finding-no-runtime"]
+        self.assertEqual(len(self.cases), 14)
+        self.assertEqual(
+            case["capabilities"],
+            [{"name": "sonarqube-bsl-local", "status": "available"}],
+        )
+        self.assertEqual(case["expect"]["max_established_claims"], 0)
+        self.assertFalse(case["expect"]["require_complete_causal_chain"])
+        self.assertEqual(case["expect"]["required_gate_statuses"]["5"], "not_required")
+        self.assertEqual(case["expect"]["required_gate_statuses"]["7"], "passed")
+        self.assertEqual(case["expect"]["required_gate_statuses"]["10"], "blocked")
+        self.assertEqual(case["expect"]["min_requested_evidence"], 2)
+
+        result = {
+            "schema_version": 1,
+            "case_id": case["id"],
+            "final_status": "УСТАНОВЛЕНО",
+            "risk": "R0",
+            "decision": "EVIDENCE_REQUIRED",
+            "current_goal_status": "blocked",
+            "linked_incident_status": "blocked",
+            "gates": closed_gates(**{"5": "not_required", "9": "not_required", "10": "blocked"}),
+            "capabilities": [
+                {
+                    "name": "sonarqube-bsl-local",
+                    "status": "available",
+                    "simulated": False,
+                }
+            ],
+            "evidence_ids_used": ["E-SQ-1", "E-SQ-2"],
+            "claims": [
+                {
+                    "id": "C-SQ-BAD-1",
+                    "status": "УСТАНОВЛЕНО",
+                    "text": "Статический finding объявлен причиной без runtime-цепочки.",
+                    "evidence_ids": ["E-SQ-1", "E-SQ-2"],
+                    "falsifier": "Трасса выполненной ветки и цепочка документа, движения и регистра.",
+                }
+            ],
+            "causal_chain": {"complete": False, "links": []},
+            "requested_evidence": [
+                "Runtime-трасса выполнения отмеченной ветки",
+                "Движения и записи регистров по единому аналитическому ключу",
+            ],
+            "actions": [],
+            "summary": "Некорректный синтетический вывод из одного static finding.",
+        }
+        errors = validate_evals.validate_result(result, case)
+        self.assertTrue(
+            any("final_status 'УСТАНОВЛЕНО' is forbidden" in error for error in errors)
+        )
+        self.assertTrue(
+            any("established claims 1 exceed allowed maximum 0" in error for error in errors)
+        )
+        self.assertTrue(
+            any("УСТАНОВЛЕНО requires a complete causal chain" in error for error in errors)
+        )
+
     def test_runtime_gate_rejects_incomplete_run(self) -> None:
         version = json.loads(
             validate_runtime_run.PLUGIN_MANIFEST.read_text(encoding="utf-8")
@@ -253,7 +312,9 @@ class EvalSuiteTests(unittest.TestCase):
             )
             errors = validate_runtime_run.validate_runtime_run(run_dir)
         self.assertTrue(any("missing complete-suite results" in error for error in errors))
-        self.assertTrue(any("exactly 13 entries" in error for error in errors))
+        self.assertTrue(
+            any(f"exactly {len(self.cases)} entries" in error for error in errors)
+        )
         self.assertTrue(any("all-zero placeholder" in error for error in errors))
 
 

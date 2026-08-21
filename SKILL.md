@@ -21,7 +21,7 @@ The user invokes one command. The orchestrator discovers capabilities, selects i
    - `unica` — Unica 1C developer workflows;
    - `1c-skills` — 1C Skills PowerShell;
    - `1c-skills-py` — 1C Skills Python.
-4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use and OpenSandbox.
+4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and the optional local `sonarqube-bsl-local` adapter.
 5. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
 6. Record version/ref when exposed, permissions, write-risk, provenance and the exact purpose for which a capability may be used.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
@@ -35,6 +35,7 @@ The unified marketplace makes companions discoverable; it does not prove install
 - `1c-skills-py`: cross-platform artifact parsing, comparison and controlled automation.
 - internal domain skills: accounting causality, movements/registers/postings, ERP process and release analysis.
 - OpenSandbox: isolated executable validation, never a source of 1C truth.
+- `sonarqube-bsl-local`: static BSL findings from an actually discovered loopback SonarQube instance; read existing analysis as `R0`, and route a new sanitized scan through Gate 5 as `R1`.
 
 Use the smallest sufficient set. If the preferred capability is unavailable, use a documented read-only fallback or mark the dependent node `blocked`.
 
@@ -84,12 +85,13 @@ When root-cause investigation is explicitly outside the current goal, mark Gate 
 
 ## Gate 5 — Executable validation and sandbox decision
 
-Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime capabilities or OpenSandbox only when executable validation adds measurable value. Default to read-only and sanitized inputs.
+Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime capabilities, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs.
 
 - Use 1C Skills PowerShell for Windows-first operations only when Windows/1C runtime prerequisites are confirmed.
 - Use 1C Skills Python for cross-platform artifact operations when its implementation supports the exact format/task.
 - Use Unica build/test/write capabilities only after the relevant risk classification and confirmation.
 - Use OpenSandbox for isolation, not to bypass permissions or data minimization.
+- Use `sonarqube-bsl-local` only after Gate 0 confirms the loopback server, scanner, BSL plugin/profile, pre-created project and scoped authentication. Keep scanner credentials only in the child-process environment and treat every static finding as a hypothesis until linked to case evidence.
 
 If required execution is unavailable, mark the gate `blocked`; never simulate it.
 

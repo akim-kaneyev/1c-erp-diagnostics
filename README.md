@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.2.3" src="https://img.shields.io/badge/version-0.2.3-0D1B2A.svg" />
+  <img alt="Version 0.3.0" src="https://img.shields.io/badge/version-0.3.0-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -49,7 +49,7 @@ The user selects **1C ERP Diagnostics** once. The orchestrator then:
 4. runs independent read-only specialists in parallel when safe;
 5. records evidence, claims, contradictions and tool provenance;
 6. invokes Unica, 1C Skills or another companion only when installed and justified;
-7. uses executable validation only when it adds measurable value;
+7. can route sanitized BSL through the optional `sonarqube-bsl-local` adapter when its actual loopback runtime is confirmed;
 8. classifies every proposed action by risk level `R0–R3`;
 9. challenges the preliminary conclusion before any final cause;
 10. validates the same analytics before and after a change.
@@ -92,7 +92,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - Computer Use for observation or explicitly approved interaction;
 - OpenSandbox for isolated executable validation;
 - pinned `v8unpack` for non-executing extraction of sanitized CF/CFE/EPF;
-- optional BSL static analysis after extraction.
+- optional `sonarqube-bsl-local` analysis after extraction, with BSL Language Server/manual review as fallback.
 
 Gate 0 records whether every capability is `available`, `confirmation_required`, `unavailable` or `prohibited`. Missing capabilities become a documented fallback or `blocked`, never a simulated result.
 
@@ -145,7 +145,7 @@ External plugin output and official documentation have provenance but different 
 - PDF text extraction;
 - deterministic case indexing and SHA-256 manifests;
 - optional sanitized CF/CFE/EPF extraction through pinned `v8unpack`;
-- optional static BSL analysis after extraction.
+- optional local SonarQube/BSL static analysis after extraction, with versioned provenance and sanitized report hashes.
 
 There is no pretend universal MXL parser. Use a verified export to XLSX/XML/HTML/TXT and PDF for visual control when appropriate.
 
@@ -168,7 +168,7 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.2.3 Public Preview is live.** This patch aligns the package version with the approved Velis mascot branding, preserves the verified four-plugin marketplace and records the completed GitHub security hardening: protected `main`, required Python 3.10/3.12 checks, required CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection.
+**v0.3.0 Public Preview release candidate.** It adds the optional local `sonarqube-bsl-local` evidence adapter and executable clean-session acceptance while preserving the verified four-plugin marketplace and approved Velis assets. Static findings remain hypotheses; SonarQube credentials are never stored by the plugin. GitHub CI, protected-branch merge, tag/release and exact-version clean-session acceptance remain pending until their separate checks complete.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report the actual runtime state.
 

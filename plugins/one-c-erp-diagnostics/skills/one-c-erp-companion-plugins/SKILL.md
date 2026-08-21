@@ -26,6 +26,7 @@ They are offered from one marketplace but remain separate plugins with their own
 - **GitHub / Drive** — retrieval only when the user has identified the source and has access.
 - **Computer Use** — observation or explicitly approved UI interaction; production-changing operations require the applicable risk gate.
 - **OpenSandbox** — isolated executable validation when Gate 5 establishes value.
+- **Local SonarQube (`sonarqube-bsl-local`)** — a separately installed host adapter for sanitized static BSL analysis. It is not a marketplace companion; coordinate it through `one-c-erp-local-static-analysis` only when Gate 0 confirms the actual loopback runtime.
 
 ## Dynamic selection
 
@@ -53,6 +54,6 @@ When companion outputs disagree:
 
 ## Boundary
 
-External plugins are invoked, not copied. Their runtime availability is host-managed. The marketplace entry makes them discoverable from one source; it does not bypass installation, permissions, authentication or action confirmation.
+External plugins and host adapters are invoked, not copied. Their runtime availability is host-managed. The marketplace entry makes the three canonical companion plugins discoverable from one source; it does not include SonarQube or bypass installation, permissions, authentication or action confirmation.
 
 A missing companion triggers a documented fallback or `blocked`, never a simulated result.

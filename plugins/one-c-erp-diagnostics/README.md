@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.2.3
+# 1C ERP Diagnostics plugin — v0.3.0
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -8,12 +8,13 @@ A single dynamic entrypoint for ChatGPT and Codex:
 ## What is bundled in the primary plugin
 
 - Gate 0–10 master orchestration;
-- 31 packaged 1C:ERP and control skills;
+- 32 packaged 1C:ERP and control skills;
 - capability discovery and bounded dynamic planning;
 - evidence synthesis, contradiction handling and adversarial verification;
 - `R0–R3` risk controls and same-analytics validation;
 - artifact/open-source intake rules;
 - deterministic Python helpers;
+- optional `sonarqube-bsl-local` discovery, safe scan and evidence-provenance contract;
 - approved Velis mascot assets for the composer, plugin card and dark surfaces.
 
 The artwork is an original white-dog mascot identity with one Velis collar medallion and does not reproduce the corporate 1C graphic logo. Product references are descriptive; the project is independent from 1C Company and OpenAI.
@@ -30,7 +31,9 @@ They are discoverable from one marketplace but remain separate plugins. They are
 
 ## Runtime coordination
 
-Gate 0 records whether Unica, 1C Skills, document plugins, GitHub/Drive, Computer Use and OpenSandbox are actually available and permitted. Only then may the orchestrator delegate a bounded task. Missing capabilities become a fallback or `blocked`, never a simulated result.
+Gate 0 records whether Unica, 1C Skills, document plugins, GitHub/Drive, Computer Use, OpenSandbox and local SonarQube are actually available and permitted. SonarQube is a host adapter rather than a fifth marketplace plugin. Only then may the orchestrator delegate a bounded task. Missing capabilities become a fallback or `blocked`, never a simulated result.
+
+A local sanitized SonarQube scan is `R1`; project/token/profile administration is `R2`; remote source upload is `R3`. Tokens stay outside Git, properties, logs, reports and chat. A static finding does not prove ERP causality without matching runtime/case evidence and Gate 7.
 
 ## Why no fabricated app/MCP binding
 

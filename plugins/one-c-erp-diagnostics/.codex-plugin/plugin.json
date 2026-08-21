@@ -1,6 +1,6 @@
 {
   "name": "one-c-erp-diagnostics",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Dynamic evidence-first orchestration and a verified companion ecosystem for 1C:ERP diagnostics, code analysis and controlled remediation.",
   "author": {
     "name": "Akim Kaneev",
@@ -19,6 +19,8 @@
     "evidence",
     "unica",
     "1c-skills",
+    "sonarqube",
+    "bsl",
     "month-close",
     "codex",
     "chatgpt"
@@ -27,7 +29,7 @@
   "interface": {
     "displayName": "1C ERP Diagnostics",
     "shortDescription": "Доказательная диагностика 1С:ERP · единая экосистема Gate 0–10",
-    "longDescription": "A single dynamic entrypoint for 1C:ERP incidents. It discovers actual capabilities, builds a bounded evidence graph, routes 31 packaged specialist skills, coordinates verified companion plugins such as Unica and 1C Skills when installed, challenges conclusions adversarially, and controls proposed actions through reversible R0–R3 risk gates.",
+    "longDescription": "A single dynamic entrypoint for 1C:ERP incidents. It discovers actual capabilities, builds a bounded evidence graph, routes 32 packaged specialist skills, coordinates verified companion plugins and optional local SonarQube BSL analysis when available, challenges conclusions adversarially, and controls proposed actions through reversible R0–R3 risk gates.",
     "developerName": "Akim Kaneev",
     "category": "Productivity",
     "capabilities": [

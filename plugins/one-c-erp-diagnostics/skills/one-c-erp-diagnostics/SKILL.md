@@ -20,7 +20,7 @@ The repository marketplace exposes them together, but each remains separately in
 ## Runtime sequence
 
 ### Gate 0 — discover
-Apply `one-c-erp-capability-discovery`, `one-c-erp-case-state` and the canonical registry above. Produce a capability map, permission/risk surface, version/ref where exposed and resume point.
+Apply `one-c-erp-capability-discovery`, `one-c-erp-case-state` and the canonical registry above. Discover the optional host capability `sonarqube-bsl-local` without treating it as a marketplace plugin. Produce a capability map, permission/risk surface, version/ref where exposed and resume point.
 
 ### Gate 1 — contract
 Apply `one-c-erp-goal-contract`. Completion must be verifiable. Separate the current goal/task scope from any linked 1C incident that may remain unresolved.
@@ -42,6 +42,7 @@ Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution` and `one-c-er
 - Prefer `1c-skills-py` for supported cross-platform artifact operations.
 - Prefer `1c-skills` for confirmed Windows/1C runtime operations.
 - Use Unica for developer workflows, code navigation and controlled build/test work when exposed.
+- Use `one-c-erp-local-static-analysis` for an explicitly authorized sanitized BSL scan only after its loopback, version, plugin/profile, project and authentication preflight passes.
 - Never use a companion solely because it is installed.
 
 ### Gate 6 — synthesize
@@ -73,4 +74,4 @@ A narrow safety-assessment goal may close while the linked incident remains open
 
 ## Companion boundary
 
-Unica, 1C Skills, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use and OpenSandbox are optional runtime capabilities. Do not copy their implementation, bypass installation/permissions, declare fabricated app/MCP dependencies or imply availability when the host does not expose them. A missing required capability becomes fallback or `blocked`.
+Unica, 1C Skills, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use, OpenSandbox and local SonarQube are optional runtime capabilities. SonarQube remains a host execution adapter and is not added to the marketplace registry. Do not copy external implementation, bypass installation/permissions, declare fabricated app/MCP dependencies or imply availability when the host does not expose it. A missing required capability becomes fallback or `blocked`.
