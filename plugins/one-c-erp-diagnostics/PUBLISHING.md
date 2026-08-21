@@ -5,11 +5,12 @@
 - manifest version matches `pyproject.toml`;
 - author/homepage/repository/license/interface/policy URLs are valid;
 - `composerIcon`, `logo` and `logoDark` exist and pass PNG CRC validation;
-- at least 31 packaged skills are present, including all dynamic-control skills;
+- at least 32 packaged skills are present, including the local static-analysis and all dynamic-control skills;
 - public-package and ecosystem-marketplace validators pass;
 - regression tests pass on Python 3.10 and 3.12;
 - CodeQL results are present for the release Pull Request;
 - no secrets, real case data, production databases or unsupported dependency claims exist.
+- `.scannerwork/` and runtime SonarQube evidence are excluded; no token assignment exists anywhere in the candidate.
 
 ## Required ecosystem checks
 
@@ -23,7 +24,7 @@
 ## Clean-session smoke tests
 
 1. marketplace refresh/re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.2.3` and the approved Velis icon render in GitHub and the plugin selector;
+2. 1C ERP Diagnostics `0.3.0` and the approved Velis icon render in GitHub and the plugin selector;
 3. Gate 0 reports actual companion availability;
 4. an installed companion call records canonical identity, inputs, operation, output and limitations;
 5. an under-evidenced case cannot end as final `УСТАНОВЛЕНО`;
@@ -31,11 +32,14 @@
 7. Gate 7 challenges the original evidence and causal chain;
 8. analysis-only work is `R0` and may mark Gate 9 `not_required`;
 9. a scoped `R3` safety-only test returns `NO-GO`, `Current goal: closed; linked incident: open` and no decorated gate statuses;
-10. the installed plugin details/card reports `0.2.3` when the current surface exposes a version field.
+10. Gate 0 reports `sonarqube-bsl-local` from actual loopback/server/scanner/BSL/auth state rather than marketplace presence;
+11. an available sanitized local scan records `R1`, source/tool/analysis provenance and complete paginated evidence without retaining a token;
+12. a static finding without runtime and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7;
+13. the installed plugin details/card reports `0.3.0` when the current surface exposes a version field.
 
 ## External companion rule
 
-Do not publish a fabricated `.app.json`, `mcpServers` declaration or hidden dependency. The repository marketplace may reference verified public plugins, but each remains independently installed and subject to its own permissions, terms and confirmations.
+Do not publish a fabricated `.app.json`, `mcpServers` declaration or hidden dependency. The repository marketplace may reference verified public plugins, but each remains independently installed and subject to its own permissions, terms and confirmations. SonarQube remains a separately installed host adapter and is not a fifth marketplace plugin.
 
 ## Repository publication
 

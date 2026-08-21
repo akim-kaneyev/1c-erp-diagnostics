@@ -26,7 +26,16 @@ REQUIRED_FILES = [
     ROOT / "templates" / "case" / "STATE.md",
     ROOT / "docs" / "ARCHITECTURE.md",
     ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
+    ROOT / "docs" / "RUNTIME_ACCEPTANCE.md",
     ROOT / "checklists" / "code-artifacts.md",
+    ROOT / "checklists" / "sonarqube-bsl.md",
+    ROOT / "evals" / "suite.json",
+    ROOT / "evals" / "README.md",
+    ROOT / "evals" / "result.schema.json",
+    ROOT / "evals" / "run.schema.json",
+    ROOT / "tests" / "test_evals.py",
+    ROOT / "tools" / "validate_evals.py",
+    ROOT / "tools" / "validate_runtime_run.py",
     ROOT / "tools" / "unpack_1c_artifact.py",
     MANIFEST,
     MARKETPLACE,
@@ -41,22 +50,26 @@ REQUIRED_DYNAMIC_SKILLS = {
     "one-c-erp-artifact-extraction",
     "one-c-erp-release-difference",
     "one-c-erp-open-source-intake",
+    "one-c-erp-local-static-analysis",
 }
 
-FORBIDDEN_SUFFIXES = {".dt", ".1cd", ".bak", ".backup", ".key", ".pem"}
-TEXT_SUFFIXES_FOR_SECRET_CHECK = {
-    ".py",
-    ".json",
-    ".toml",
-    ".yml",
-    ".yaml",
-    ".sh",
-    ".ps1",
-    ".env",
+FORBIDDEN_SUFFIXES = {
+    ".dt",
+    ".1cd",
+    ".bak",
+    ".backup",
+    ".key",
+    ".pem",
+    ".pfx",
+    ".p12",
+    ".jks",
+    ".keystore",
+    ".kdbx",
 }
 SECRET_ASSIGNMENT = re.compile(
-    r"(?i)\b(password|passwd|api[_-]?key|access[_-]?token|client[_-]?secret)\b"
-    r"\s*[:=]\s*[\"'][^\"']{8,}[\"']"
+    r"(?i)(?:\b(password|passwd|api[_-]?key|access[_-]?token|client[_-]?secret|"
+    r"private[_-]?key|sonar[_-]?token)\b|sonar\.(?:token|login))\s*[:=]\s*"
+    r"(?:[\"'][^\"'\r\n]{8,}[\"']|[A-Za-z0-9_./+=:-]{16,})"
 )
 SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:[-+][0-9A-Za-z.-]+)?$")
 HTTPS_URL = re.compile(r"^https://[^\s]+$")
@@ -268,8 +281,8 @@ def main() -> int:
 
     skill_paths = sorted((PLUGIN_DIR / "skills").glob("*/SKILL.md"))
     skill_names = {name for path in skill_paths if (name := validate_skill(path, errors))}
-    if len(skill_paths) < 31:
-        fail(errors, f"Expected at least 31 packaged skills, found {len(skill_paths)}")
+    if len(skill_paths) < 32:
+        fail(errors, f"Expected at least 32 packaged skills, found {len(skill_paths)}")
     missing_dynamic = sorted(REQUIRED_DYNAMIC_SKILLS - skill_names)
     if missing_dynamic:
         fail(errors, "Missing dynamic skills: " + ", ".join(missing_dynamic))
@@ -291,13 +304,15 @@ def main() -> int:
             continue
         if path.suffix.lower() in FORBIDDEN_SUFFIXES:
             fail(errors, f"Forbidden artifact tracked: {path.relative_to(ROOT)}")
-        if path.suffix.lower() in TEXT_SUFFIXES_FOR_SECRET_CHECK:
-            try:
-                text = path.read_text(encoding="utf-8")
-            except UnicodeDecodeError:
-                continue
-            if SECRET_ASSIGNMENT.search(text):
-                fail(errors, f"Possible plaintext credential assignment: {path.relative_to(ROOT)}")
+        lower_name = path.name.lower()
+        if lower_name == ".env" or lower_name.startswith(".env."):
+            fail(errors, f"Forbidden environment file tracked: {path.relative_to(ROOT)}")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if SECRET_ASSIGNMENT.search(text):
+            fail(errors, f"Possible plaintext credential assignment: {path.relative_to(ROOT)}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8") if (ROOT / "README.md").exists() else ""
     for required_text in (
@@ -307,9 +322,14 @@ def main() -> int:
         "Dynamic orchestration",
         "Optional companion",
         "Not affiliated",
+        "sonarqube-bsl-local",
     ):
         if required_text not in readme:
             fail(errors, f"README is missing required public text: {required_text}")
+
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8") if (ROOT / ".gitignore").exists() else ""
+    if ".scannerwork/" not in gitignore:
+        fail(errors, ".gitignore must exclude SonarScanner .scannerwork directories")
 
     if errors:
         print("PUBLIC RELEASE VALIDATION: FAIL", file=sys.stderr)

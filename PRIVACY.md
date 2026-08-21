@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.2.3 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.0 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -23,6 +23,14 @@ Before sharing a file, review hidden spreadsheet sheets, document properties, em
 Installing the ecosystem marketplace does not silently install or enable every companion. Each plugin remains independently installed and permissioned. Gate 0 records what is actually available in the current session; marketplace presence is not treated as runtime availability.
 
 When Unica, 1C Skills, GitHub, Google Drive, Computer Use or another connected capability is used, its own permissions and provider policies apply. The project cannot override host confirmations or source-system access controls.
+
+## SonarQube
+
+The optional SonarQube BSL adapter defaults to a user-managed loopback-only instance. SonarQube stores analyzed source and derived analysis data; only sanitized, minimized source should be submitted. Reading an existing report is read-only, while a scan changes analysis state on the selected instance.
+
+Scanner and API tokens are not plugin data and must not be stored in the repository, configuration, reports, logs or conversations. The scanner receives `SONAR_TOKEN` only in its child-process environment. API reads use a separate least-privilege Bearer token supplied only for the API child process. The adapter does not automatically create projects or tokens, delete projects, or change quality profiles.
+
+A remote SonarQube endpoint is a separate external data destination. `sonarqube-bsl-local` prohibits it. Any separate workflow that uploads source or writes analysis state remotely is `R3` and requires exact approval, HTTPS, and review of the remote operator's retention, access and privacy terms. A separately approved read of an existing remote report does not upload source, but still requires endpoint/access review.
 
 ## Isolated execution
 

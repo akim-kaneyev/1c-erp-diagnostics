@@ -4,17 +4,17 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.2.3"
+VERSION = "0.3.0"
 
 
 class PublicPreviewDocumentationTests(unittest.TestCase):
     def test_readme_declares_current_public_preview(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn(f"v{VERSION} Public Preview is live", readme)
+        self.assertIn(f"v{VERSION} Public Preview release candidate", readme)
         self.assertIn(f"version-{VERSION}", readme)
         self.assertIn("status-public%20preview", readme)
         self.assertIn("Velis", readme)
-        self.assertNotIn("v0.2.2 Public Preview is live", readme)
+        self.assertNotIn("v0.2.3 Public Preview is live", readme)
 
     def test_privacy_scope_matches_current_ecosystem(self) -> None:
         privacy = (ROOT / "PRIVACY.md").read_text(encoding="utf-8")

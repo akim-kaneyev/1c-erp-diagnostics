@@ -1,6 +1,6 @@
 ---
 name: one-c-erp-diagnostics
-description: Run a mandatory evidence-first Gate 1-10 workflow for 1C:ERP incidents. Use for movements, registers, postings, month close, cost, post-item expenses, settlements, VAT, warehouse/series/assignments, production/repair, or access rights when a verified cause, comparison, correction plan, or safe next action is required.
+description: Run a dynamic evidence-first Gate 0-10 workflow for 1C:ERP incidents, capability discovery, code/static analysis and controlled actions.
 ---
 
 # 1C ERP Diagnostics — portable global skill
@@ -10,6 +10,12 @@ Explicit Codex invocation:
 `$one-c-erp-diagnostics <task or case description>`
 
 The user should not need to manually chain subordinate skills, prompts, plugins, apps, parsers or validators. Use available tools/connectors when they materially help. If a required capability is unavailable, mark the affected gate blocked instead of simulating completion.
+
+## Gate 0 — Capability and state discovery
+
+Resume prior valid case state. Inventory only capabilities actually exposed in the current host and classify each as `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical marketplace companions are `unica`, `1c-skills` and `1c-skills-py`; marketplace presence does not prove installation.
+
+Discover `sonarqube-bsl-local` separately as an optional host adapter, not a marketplace plugin. It is available only after confirming an `UP` loopback server, scanner, `communitybsl` plugin, `bsl` language/profile, pre-created project and scoped authentication. Never expose a token or infer that a static finding proves the ERP incident.
 
 ## Non-negotiable evidence rules
 
@@ -41,7 +47,9 @@ Domain controls:
 - Access rights: build `business operation → required permission` matrix; separate functional/admin/organization restrictions and test safely before mass changes.
 
 ## Gate 5 — Execution / sandbox decision
-Use OpenSandbox or another isolated executor only when executable validation adds value. Use sanitized minimum data, no production `.dt` or plaintext secrets, restrict egress where practical, record commands/versions/inputs/outputs, and treat output as evidence. If not needed: `not_required`. If required but unavailable: `blocked`.
+Use OpenSandbox or another isolated executor only when executable validation adds value. Use sanitized minimum data, no production `.dt` or plaintext secrets, restrict egress where practical, record commands/versions/inputs/outputs, and treat output as evidence.
+
+For a new local BSL scan, apply `one-c-erp-local-static-analysis`: loopback sanitized scan is `R1`; project/token/profile administration is `R2`; remote source upload is `R3`. The scanner token exists only in the child-process `SONAR_TOKEN` environment, never in arguments, properties, files, logs or chat. If not needed: `not_required`. If required but unavailable: `blocked`.
 
 ## Gate 6 — Preliminary conclusion
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, or `ТРЕБУЕТ ПРОВЕРКИ`. For each material conclusion record evidence, causal link, alternatives checked and falsifier. No business correction is authorized yet.
@@ -56,7 +64,7 @@ Choose the smallest safe reversible action. Priority: proven standard setting/NS
 Compare the same analytics before/after: applicable movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates/side effects, or access matrix. If result is not reproduced, reopen from earliest affected gate. Analysis-only goals may mark this `not_required` explicitly.
 
 ## Gate 10 — Final closure
-Return: 1) `Краткий вывод`; 2) `Основание`; 3) `Что делать дальше`. Also report compact Gate 1–10 statuses. Close only if every required gate is passed or `not_required`; state any blocked/pending/failed/stale gate.
+Return: 1) `Краткий вывод`; 2) `Основание`; 3) `Что делать дальше`. Also report compact Gate 0–10 statuses and capability provenance. Close only if every required gate is passed or `not_required`; state any blocked/pending/failed/stale gate.
 
 ## Resume behavior
 If a project/case contains prior state or decision log, read it first and continue from the earliest incomplete/stale gate. Do not restart passed investigation steps unless new evidence invalidates them.

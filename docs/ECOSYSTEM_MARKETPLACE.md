@@ -55,6 +55,10 @@ Selective paths: empty
 
 The marketplace should show four independently installable plugins. Install `1C ERP Diagnostics` as the primary entrypoint. Install Unica and one or both 1C Skills runtimes only when their capabilities are required and their permissions are acceptable.
 
+## Host-adapter boundary
+
+`sonarqube-bsl-local` is intentionally absent from the marketplace table. SonarQube, SonarScanner and the BSL analyzer are separately installed host software rather than ChatGPT/Codex plugins. Gate 0 may discover and use that optional loopback capability under the reviewed `R0–R3` contract, but marketplace installation neither supplies it nor proves it available.
+
 ## Runtime contract
 
 A diagnostic starts with `@one-c-erp-diagnostics`.
@@ -96,6 +100,7 @@ The primary plugin's semantic version must change whenever packaged skills, mani
 The marketplace does not:
 
 - copy or relicense Unica or 1C Skills;
+- bundle, install or configure SonarQube, SonarScanner or the BSL analyzer;
 - silently install or enable companions;
 - guarantee that every ChatGPT surface exposes cross-plugin invocation;
 - grant access to production 1C data;

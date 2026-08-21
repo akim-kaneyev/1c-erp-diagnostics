@@ -18,6 +18,12 @@ cases/*/input/*
 cases/*/work/*
 !cases/*/work/.gitkeep
 
+# Local runtime evaluation evidence
+evals/runs/
+.codex-test-tmp/
+.codex-validation-deps/
+.scannerwork/
+
 # Python
 __pycache__/
 *.pyc

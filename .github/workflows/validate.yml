@@ -63,5 +63,8 @@ jobs:
       - name: Validate unified 1C ecosystem marketplace
         run: python tools/validate_ecosystem_marketplace.py
 
+      - name: Validate executable Gate 0-10 eval suite
+        run: python tools/validate_evals.py
+
       - name: Run regression tests
         run: python -m unittest discover -s tests -v

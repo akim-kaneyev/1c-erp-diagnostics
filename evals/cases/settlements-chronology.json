@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "settlements-chronology",
+  "title": "Chronology identifies a divergence but not its consumer",
+  "domain": "settlements",
+  "controls": ["gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Построй хронологию по K-03 и найди первую видимую разницу. Не делай вывод о причине по одной строке отчета и не повышай статус без доказанного потребляющего механизма. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-SET-1",
+      "kind": "chronology_export",
+      "summary": "В 10:00 записи корректного и проблемного примеров совпадают; в 10:05 проблемный пример получает дополнительную запись T-02 по K-03.",
+      "proves": ["время и место первой видимой разницы"],
+      "does_not_prove": ["механизм, создавший T-02", "влияние на итог"]
+    },
+    {
+      "id": "E-SET-2",
+      "kind": "report_export",
+      "summary": "Итоговый отчет показывает расхождение 50 по K-03.",
+      "proves": ["наличие итогового расхождения"],
+      "does_not_prove": ["причинную связь с T-02"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ВЕРОЯТНО", "ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-SET-1", "E-SET-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akim-kaneyev/1c-erp-diagnostics/evals/result.schema.json",
+  "title": "1C ERP Diagnostics evaluation result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "final_status",
+    "risk",
+    "decision",
+    "current_goal_status",
+    "linked_incident_status",
+    "gates",
+    "capabilities",
+    "evidence_ids_used",
+    "claims",
+    "causal_chain",
+    "requested_evidence",
+    "actions",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "final_status": {
+      "enum": ["УСТАНОВЛЕНО", "ВЕРОЯТНО", "ТРЕБУЕТ ПРОВЕРКИ"]
+    },
+    "risk": {"enum": ["R0", "R1", "R2", "R3"]},
+    "decision": {"enum": ["GO", "NO-GO", "NO_ACTION", "EVIDENCE_REQUIRED"]},
+    "current_goal_status": {"enum": ["closed", "blocked", "open"]},
+    "linked_incident_status": {
+      "enum": ["resolved", "open", "blocked", "not_in_scope"]
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      "patternProperties": {
+        "^(?:[0-9]|10)$": {
+          "enum": ["pending", "passed", "blocked", "failed", "stale", "not_required"]
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status", "simulated"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "status": {
+            "enum": ["available", "confirmation_required", "unavailable", "prohibited"]
+          },
+          "simulated": {"const": false}
+        }
+      }
+    },
+    "evidence_ids_used": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "text", "evidence_ids", "falsifier"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {
+            "enum": ["УСТАНОВЛЕНО", "ВЕРОЯТНО", "ТРЕБУЕТ ПРОВЕРКИ"]
+          },
+          "text": {"type": "string", "minLength": 1},
+          "evidence_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "falsifier": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "causal_chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["complete", "links"],
+      "properties": {
+        "complete": {"type": "boolean"},
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["stage", "evidence_ids"],
+            "properties": {
+              "stage": {
+                "enum": [
+                  "document",
+                  "movement",
+                  "record_register",
+                  "consuming_mechanism",
+                  "accounting_stock_access_result",
+                  "symptom"
+                ]
+              },
+              "evidence_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    },
+    "requested_evidence": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "description",
+          "risk",
+          "approved",
+          "executed",
+          "approval_reference",
+          "rollback",
+          "validation"
+        ],
+        "properties": {
+          "description": {"type": "string", "minLength": 1},
+          "risk": {"enum": ["R0", "R1", "R2", "R3"]},
+          "approved": {"type": "boolean"},
+          "executed": {"type": "boolean"},
+          "approval_reference": {"type": "string"},
+          "rollback": {"type": "string"},
+          "validation": {"type": "string"}
+        }
+      }
+    },
+    "summary": {"type": "string", "minLength": 1}
+  }
+}

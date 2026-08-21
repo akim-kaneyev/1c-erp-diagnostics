@@ -24,10 +24,13 @@ Audit before release or public submission:
 15. 1C Skills variants use reviewed immutable generated commit refs;
 16. every companion requires explicit installation and retains its own permissions/license;
 17. no external implementation is copied, relicensed or represented as embedded;
-18. open-source additions have source, license, pin, tests and fallback;
-19. no undeclared MCP/app/backend or unsupported manifest field is claimed;
-20. repository history and package contain no confidential case data or credentials;
-21. clean-session smoke tests cover capability inventory, installed/unavailable companions, under-evidenced cases, analysis-only work, scoped closure and `R3` blocking;
-22. public repository, release and Plugin Directory submission are not marked complete before their separate product-side checks pass.
+18. open-source additions have source, license, reviewed version/identity, tests and fallback;
+19. SonarQube remains an optional host adapter rather than a marketplace dependency, and Gate 0 verifies the actual loopback server/scanner/BSL runtime;
+20. scanner/API credentials are never stored in files, commands, logs, state, reports or Git;
+21. static findings retain complete provenance and cannot establish ERP causality without runtime/case linkage and Gate 7;
+22. no undeclared MCP/app/backend or unsupported manifest field is claimed;
+23. repository history and package contain no confidential case data or credentials;
+24. clean-session smoke tests cover capability inventory, installed/unavailable companions, under-evidenced cases, static-analysis non-causality, analysis-only work, scoped closure and `R3` blocking;
+25. public repository, release and Plugin Directory submission are not marked complete before their separate product-side checks pass.
 
 Report each control as `PASS | FAIL | WARNING` with exact evidence and remediation. Any critical `FAIL` blocks merge, repository publication, tag/release creation and global Plugin Directory submission.

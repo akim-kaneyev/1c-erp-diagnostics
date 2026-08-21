@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "sonarqube-static-finding-no-runtime",
+  "title": "SonarQube BSL finding is not an ERP runtime cause",
+  "domain": "verification",
+  "controls": ["gate_7", "under_evidenced", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Локальная возможность sonarqube-bsl-local фактически доступна, а ранее полученный синтетический отчет SonarQube/BSL содержит статический finding; новый scan не требуется. Однако для диагностики причины инцидента нет доказательства выполнения отмеченной ветки и нет цепочки document → movement → register. Установи точную причину либо запроси недостающие доказательства после Gate 7. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-SQ-1",
+      "kind": "static_analyzer_finding",
+      "summary": "Синтетический отчет SonarQube/BSL содержит finding F-SQ-1 для строки BSL-кода и идентификатор выполненного анализа.",
+      "proves": ["наличие воспроизводимого статического finding в отчете анализатора"],
+      "does_not_prove": ["выполнение отмеченной ветки в проблемном сценарии", "влияние finding на учетный результат"]
+    },
+    {
+      "id": "E-SQ-2",
+      "kind": "case_evidence_gap",
+      "summary": "В пакете кейса отсутствуют runtime-трасса, движения документа и записи регистров по единому аналитическому ключу.",
+      "proves": ["отсутствие case-specific runtime и ERP causal evidence в предоставленном пакете"],
+      "does_not_prove": ["что отмеченная ветка никогда не выполняется", "что finding является причиной симптома"]
+    }
+  ],
+  "capabilities": [
+    {"name": "sonarqube-bsl-local", "status": "available"}
+  ],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"0": "passed", "4": "passed", "5": "not_required", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 2,
+    "required_evidence_ids": ["E-SQ-1", "E-SQ-2"],
+    "required_capabilities": {"sonarqube-bsl-local": "available"},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — optional SonarQube BSL evidence and executable acceptance gates
+
+- added the optional `sonarqube-bsl-local` capability and a packaged SonarQube analysis skill, bringing the primary plugin to 32 packaged skills;
+- defined a verified local baseline for SonarQube Community Build `26.8.0.126808`, SonarScanner CLI `8.0.1.6346` and communitybsl `1.20.0`;
+- pinned the reviewed communitybsl artifact digest to SHA-256 `595F741AFD49BC7F1869B3F82F623821D519CECB399C56F154E55EA83DC7057B`;
+- required SonarQube tokens to be supplied through the environment only and prohibited credentials in repository files, reports, logs and case state;
+- classified local analysis as `R1`, SonarQube project/token administration as `R2` and source upload to a remote SonarQube instance as `R3`;
+- kept static-analysis findings at hypothesis level until linked to the diagnostic evidence chain and accepted through Gate 7;
+- retained the stable marketplace ID `one-c-erp-diagnostics-marketplace`, exactly four marketplace plugins and the existing immutable companion pins;
+- added executable evaluation and runtime-acceptance contracts to the public-release gate.
+
 ## 0.2.3 — Velis branding and repository hardening
 
 - replaced the previous plugin artwork with the approved white-dog Velis mascot identity;

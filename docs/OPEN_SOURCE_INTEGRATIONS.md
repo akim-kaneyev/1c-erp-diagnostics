@@ -1,6 +1,6 @@
 # Reviewed open-source integrations
 
-Review date: 2026-08-18.
+Review date: 2026-08-21.
 
 This project uses open-source components only through an explicit intake process. Discovery catalogs such as OpenYellow and `Untru/1c-mcp` are not treated as security, quality or compatibility certification.
 
@@ -32,7 +32,26 @@ Use: read-only extraction of sanitized CF/CFE/EPF into BSL/JSON. Rebuild mode is
 
 Source: `https://github.com/1c-syntax/bsl-language-server`
 
-Use: optional static BSL analysis after extraction. Record the exact release and command used for each case. Diagnostics are hypotheses until connected to the factual document/movement/register chain. MCP mode is not a mandatory dependency.
+Use: optional fallback static BSL analysis after extraction when the reviewed SonarQube adapter is unavailable or unnecessary. Record the exact release and command used for each case. Diagnostics are hypotheses until connected to the factual document/movement/register chain. MCP mode is not a mandatory dependency.
+
+## SonarQube Community Build and BSL plugin
+
+Official sources:
+
+- SonarQube Community Build: `https://github.com/SonarSource/sonarqube` (GNU LGPL v3); official Web API/scanner documentation under `https://docs.sonarsource.com/sonarqube-community-build/`.
+- SonarScanner CLI: `https://github.com/SonarSource/sonar-scanner-cli` (GNU LGPL v3).
+- 1C (BSL) Community Plugin: `https://github.com/1c-syntax/sonar-bsl-plugin-community` (GNU LGPL v3), official release `v1.20.0`.
+
+Reviewed local pilot baseline:
+
+- SonarQube Community Build `26.8.0.126808`;
+- SonarScanner CLI `8.0.1.6346`;
+- plugin key `communitybsl`, language key `bsl`, version `1.20.0`;
+- plugin JAR SHA-256 `595F741AFD49BC7F1869B3F82F623821D519CECB399C56F154E55EA83DC7057B`.
+
+Use: optional loopback-only static analysis of sanitized extracted `.bsl`/`.os` sources. The plugin does not bundle or start this toolchain. Gate 0 records actual runtime versions and requires compatibility review when they differ from the baseline. Scanner credentials exist only in the child process environment; API retrieval uses a separate least-privilege token. Because the scanner has no generic auto-create switch, preflight must prove the exact existing project and matching project analysis token or abort before invocation.
+
+Risk and proof boundary: reading an identified report is `R0`; a sanitized loopback scan is `R1`; project/token/profile administration is `R2`; source upload to a remote endpoint is `R3` with separate approval and HTTPS. A rule finding proves only that the analyzer reported it for a source snapshot. ERP causality still requires runtime and document/movement/register evidence plus Gate 7. Fallback: reviewed BSL Language Server or manual code review.
 
 ## Unica
 
@@ -74,7 +93,7 @@ Reviewed catalog snapshot: `https://github.com/Untru/1c-mcp` at commit `24a4526d
 The catalog is used to identify candidates by scenario. It is not bundled wholesale. Current priority queue:
 
 1. **Read-only platform help/context** — evaluate `mcp-bsl-platform-context` or `onec-help-mcp` for current platform API lookup.
-2. **Static BSL validation** — evaluate `bsl-analyzer`/BSL Language Server adapters with deterministic reports.
+2. **Static BSL validation** — maintain the adopted local SonarQube adapter and evaluate BSL Language Server/manual fallbacks with deterministic reports.
 3. **Isolated test/build loops** — evaluate `v8-runner` and `mcp-onec-test-runner` only in disposable test contours.
 4. **Live information-base access** — prohibited by default for the public plugin; requires a separate threat model, authentication design, minimal tool surface, audit logging and explicit `R3` approval.
 

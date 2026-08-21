@@ -19,7 +19,7 @@ MANIFEST = (
 )
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.2.3"
+EXPECTED_VERSION = "0.3.0"
 EXPECTED_ORDER = [
     "one-c-erp-diagnostics",
     "unica",

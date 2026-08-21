@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "vat-date-separation",
+  "title": "Operation, tax record and declaration dates remain separate",
+  "domain": "vat",
+  "controls": ["analysis_only", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Сопоставь три даты синтетического НДС-кейса. Цель — только фактическое сравнение; причину отклонения и изменение учета не устанавливай. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-VAT-1",
+      "kind": "operation_export",
+      "summary": "Дата хозяйственной операции OP-01 — 2026-03-31.",
+      "proves": ["дату операции"],
+      "does_not_prove": ["дату налоговой записи", "период декларации"]
+    },
+    {
+      "id": "E-VAT-2",
+      "kind": "tax_record_export",
+      "summary": "Дата синтетической налоговой записи TAX-01 — 2026-04-02.",
+      "proves": ["дату налоговой записи"],
+      "does_not_prove": ["период отражения в декларации"]
+    },
+    {
+      "id": "E-VAT-3",
+      "kind": "declaration_export",
+      "summary": "Строка декларации DEC-01 относится к 2026-Q2.",
+      "proves": ["период предоставленной строки декларации"],
+      "does_not_prove": ["правильность налогового учета"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "8": "passed", "9": "not_required", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "NO_ACTION",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["not_in_scope"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 0,
+    "required_evidence_ids": ["E-VAT-1", "E-VAT-2", "E-VAT-3"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

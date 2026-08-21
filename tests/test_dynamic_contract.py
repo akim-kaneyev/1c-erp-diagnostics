@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.2.3"
+PLUGIN_VERSION = "0.3.0"
 
 
 def load_artifact_module():
@@ -16,6 +16,16 @@ def load_artifact_module():
     spec = importlib.util.spec_from_file_location("unpack_1c_artifact", path)
     if spec is None or spec.loader is None:
         raise RuntimeError("Cannot load artifact extraction module")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_public_release_module():
+    path = ROOT / "tools" / "validate_public_release.py"
+    spec = importlib.util.spec_from_file_location("validate_public_release", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Cannot load public release validator")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -88,11 +98,13 @@ class DynamicContractTests(unittest.TestCase):
             "one-c-erp-artifact-extraction",
             "one-c-erp-release-difference",
             "one-c-erp-open-source-intake",
+            "one-c-erp-local-static-analysis",
         }
         actual = {
             path.parent.name
             for path in (PLUGIN / "skills").glob("*/SKILL.md")
         }
+        self.assertEqual(len(actual), 32)
         self.assertTrue(required.issubset(actual))
 
     def test_artifact_adapter_rejects_unsupported_and_nonempty_output(self) -> None:
@@ -111,6 +123,54 @@ class DynamicContractTests(unittest.TestCase):
             (output / "existing.txt").write_text("occupied", encoding="utf-8")
             with self.assertRaises(ValueError):
                 module.validate_paths(supported, output, False)
+
+    def test_secret_assignment_detection_covers_quoted_and_unquoted_values(self) -> None:
+        module = load_public_release_module()
+        quoted = "api_" + 'key = "' + "abcdefghijklmnop" + '"'
+        unquoted = "access-" + "token: " + "abcdefghijklmnop"
+        sonar_env = "SONAR_" + "TOKEN=" + "abcdefghijklmnop"
+        sonar_property = "sonar." + "token: " + "abcdefghijklmnop"
+        legacy_property = "sonar." + "login=" + "abcdefghijklmnop"
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(quoted))
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(unquoted))
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(sonar_env))
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(sonar_property))
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(legacy_property))
+        self.assertIsNone(module.SECRET_ASSIGNMENT.search("secret scanning is enabled"))
+        self.assertIsNone(module.SECRET_ASSIGNMENT.search("Use SONAR_TOKEN only in child process environment"))
+
+    def test_local_static_analysis_contract_is_safe_and_non_causal(self) -> None:
+        skill = (
+            PLUGIN
+            / "skills"
+            / "one-c-erp-local-static-analysis"
+            / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        packaged = (
+            PLUGIN / "skills" / "one-c-erp-diagnostics" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+
+        for required in (
+            "sonarqube-bsl-local",
+            "http://127.0.0.1:9000",
+            "communitybsl",
+            "SONAR_TOKEN",
+            "R1",
+            "R2",
+            "R3",
+            "report-task.txt",
+            "sonar.qualitygate.timeout",
+            "project analysis token",
+            "reason",
+            "complete=false",
+            "hypothesis",
+            "Gate 7",
+        ):
+            self.assertIn(required, skill)
+        self.assertIn("one-c-erp-local-static-analysis", root_skill)
+        self.assertIn("one-c-erp-local-static-analysis", packaged)
+        self.assertIn("SonarQube remains a host execution adapter", packaged)
 
 
 if __name__ == "__main__":

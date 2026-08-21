@@ -18,7 +18,8 @@
 
 ## Static analysis
 
-- record analyzer version, configuration, command and report hash;
+- for local SonarQube, apply `checklists/sonarqube-bsl.md` and route through `one-c-erp-local-static-analysis`;
+- record analyzer/server/scanner versions, sanitized configuration, redacted command, source manifest and report hash;
 - distinguish syntax/style findings from an accounting cause;
 - link the code path to an actual event, movement, register record or calculation;
 - test reasonable alternatives.
@@ -29,3 +30,4 @@
 - version differs from the reviewed pin;
 - evidence requires executing unknown code;
 - no link between code and the factual case chain.
+- token isolation, loopback ownership or the scanner working-directory boundary cannot be verified.

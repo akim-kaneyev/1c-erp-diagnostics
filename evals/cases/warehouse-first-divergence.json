@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "warehouse-first-divergence",
+  "title": "Series divergence is visible before the stock symptom",
+  "domain": "warehouse",
+  "controls": ["gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Найди первую доказанную разницу по серии и назначению K-04. Не объявляй ее причиной остатка, пока не доказан потребляющий механизм. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-WH-1",
+      "kind": "movement_comparison",
+      "summary": "Корректный пример записывает серию S-A, проблемный — S-B по одинаковому K-04.",
+      "proves": ["первую видимую разницу в движениях"],
+      "does_not_prove": ["влияние серии на итоговый остаток"]
+    },
+    {
+      "id": "E-WH-2",
+      "kind": "balance_report",
+      "summary": "По K-04 итоговые остатки различаются на 1 единицу.",
+      "proves": ["итоговый симптом"],
+      "does_not_prove": ["связь симптома с S-B"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ВЕРОЯТНО", "ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-WH-1", "E-WH-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}
