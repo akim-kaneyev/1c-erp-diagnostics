@@ -73,3 +73,17 @@ Expected:
 ## Release acceptance
 
 Record the actual result of all tests after installing version `0.2.3`. Any invented capability, unsupported `УСТАНОВЛЕНО`, non-canonical gate status or unapproved R3 execution blocks release publication.
+
+These manual scenarios now have an executable superset in `evals/suite.json`. Structural validation alone is not runtime evidence:
+
+```text
+python tools/validate_evals.py
+```
+
+Render cases without their expected answers and record a complete clean-session run. Runtime acceptance is passed only when the strict hashed evidence gate succeeds:
+
+```text
+python tools/validate_runtime_run.py evals/runs/<run-id>
+```
+
+See `docs/RUNTIME_ACCEPTANCE.md`. Until a complete v0.2.3 run passes, the pending clean-session warning remains open.

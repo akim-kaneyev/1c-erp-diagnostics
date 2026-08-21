@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akim-kaneyev/1c-erp-diagnostics/evals/run.schema.json",
+  "title": "1C ERP Diagnostics clean-session runtime run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "suite",
+    "plugin_version",
+    "source_commit",
+    "executed_at",
+    "environment",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "suite": {"type": "string", "minLength": 1},
+    "plugin_version": {"type": "string", "minLength": 1},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "executed_at": {"type": "string", "format": "date-time"},
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface",
+        "host",
+        "clean_session",
+        "installed_plugin_version",
+        "expectations_visible_to_runner"
+      ],
+      "properties": {
+        "surface": {"type": "string", "minLength": 1},
+        "host": {"type": "string", "minLength": 1},
+        "clean_session": {"const": true},
+        "installed_plugin_version": {"type": "string", "minLength": 1},
+        "expectations_visible_to_runner": {"const": false}
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "file", "sha256"],
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "file": {"type": "string", "pattern": "^[^/\\\\]+\\.result\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,9 @@
 - [x] LICENSE, PRIVACY, TERMS, SECURITY, SUPPORT, CONTRIBUTING and notices are present.
 - [x] `.gitignore` excludes secrets, databases and raw case input/work directories.
 - [x] Public-package, ecosystem-marketplace and regression validators are present.
+- [x] Synthetic executable eval specifications cover principal ERP domains and critical safety controls without production data.
+- [x] Machine-readable validation rejects unsupported `УСТАНОВЛЕНО`, invented metadata names, decorated Gate statuses and unauthorized `R3` execution.
+- [x] Strict runtime acceptance requires a complete clean-session run, exact installed version and SHA-256 result evidence.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Clean public repository was initialized without private development history.
 - [x] Public commits use the GitHub ID-based `noreply` identity.
@@ -52,6 +55,7 @@
 - [ ] Repeat the under-evidenced case in a clean v0.2.3 session.
 - [ ] Repeat the scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open` with canonical gate statuses.
 - [ ] Confirm the installed plugin details/card explicitly report version `0.2.3` if the current surface exposes the version field.
+- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.2.3 run.
 
 ## GitHub identity, security and presentation
 

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "name": "1C ERP Diagnostics Gate 0-10 acceptance",
+  "description": "Synthetic regression cases for evidence sufficiency, ERP-domain causality, capability honesty, Gate closure and R0-R3 action control.",
+  "required_domains": [
+    "capability_discovery",
+    "cost_month_close",
+    "post_item_expenses",
+    "settlements",
+    "vat",
+    "warehouse",
+    "production",
+    "access_rights",
+    "verification",
+    "risk_control"
+  ],
+  "required_controls": [
+    "under_evidenced",
+    "complete_causal_chain",
+    "gate_7",
+    "analysis_only",
+    "unavailable_capability",
+    "r3_no_go",
+    "scoped_closure",
+    "no_invented_objects"
+  ],
+  "cases": [
+    "cases/capability-inventory.json",
+    "cases/under-evidenced-cost.json",
+    "cases/complete-cost-chain.json",
+    "cases/post-item-expenses.json",
+    "cases/settlements-chronology.json",
+    "cases/vat-date-separation.json",
+    "cases/warehouse-first-divergence.json",
+    "cases/production-chain-gap.json",
+    "cases/access-rights-no-broad-grant.json",
+    "cases/adversarial-missing-mechanism.json",
+    "cases/analysis-only-comparison.json",
+    "cases/unavailable-required-capability.json",
+    "cases/scoped-r3-mass-repost.json"
+  ]
+}

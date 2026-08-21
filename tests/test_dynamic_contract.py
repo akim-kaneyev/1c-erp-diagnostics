@@ -21,6 +21,16 @@ def load_artifact_module():
     return module
 
 
+def load_public_release_module():
+    path = ROOT / "tools" / "validate_public_release.py"
+    spec = importlib.util.spec_from_file_location("validate_public_release", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Cannot load public release validator")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 class DynamicContractTests(unittest.TestCase):
     def test_manifest_and_project_versions_match(self) -> None:
         manifest = json.loads(
@@ -111,6 +121,14 @@ class DynamicContractTests(unittest.TestCase):
             (output / "existing.txt").write_text("occupied", encoding="utf-8")
             with self.assertRaises(ValueError):
                 module.validate_paths(supported, output, False)
+
+    def test_secret_assignment_detection_covers_quoted_and_unquoted_values(self) -> None:
+        module = load_public_release_module()
+        quoted = "api_" + 'key = "' + "abcdefghijklmnop" + '"'
+        unquoted = "access-" + "token: " + "abcdefghijklmnop"
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(quoted))
+        self.assertIsNotNone(module.SECRET_ASSIGNMENT.search(unquoted))
+        self.assertIsNone(module.SECRET_ASSIGNMENT.search("secret scanning is enabled"))
 
 
 if __name__ == "__main__":

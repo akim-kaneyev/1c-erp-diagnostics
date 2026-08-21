@@ -26,6 +26,7 @@ The marketplace is an installation/discovery bundle. It does not merge code, gra
 9. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence.
 10. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
 11. **Post-change validator** — checks identical analytics before/after.
+12. **Evaluation and release gate** — validates synthetic domain/control coverage, machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
 
 ## Canonical companion registry
 
@@ -59,4 +60,5 @@ Tool output, code findings and official documentation have provenance but differ
 - missing required capability → dependent node/Gate becomes `blocked`;
 - contradicting tool results → preserve both, compare inputs/versions/scope, do not vote by majority;
 - unapproved `R3` action → stop before execution;
+- invalid, incomplete or expectation-contaminated runtime run → release acceptance remains `blocked`;
 - new evidence → reopen from the earliest affected gate.

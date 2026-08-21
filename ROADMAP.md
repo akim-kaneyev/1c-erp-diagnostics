@@ -10,9 +10,9 @@
 ## 0.2.x — evidence tooling
 
 - improve XLSX structural comparison;
-- add deterministic case manifests and validator output;
+- [x] add deterministic synthetic eval manifests, machine-readable result validation and a strict clean-session runtime gate;
 - evaluate safe MXL conversion adapters only when a format/tool is verified;
-- add more synthetic regression fixtures.
+- [x] add regression coverage for principal ERP domains, insufficient evidence, unavailable capabilities, Gate 7 and scoped `R3 / NO-GO`;
 
 ## 0.3.x — optional isolated execution
 

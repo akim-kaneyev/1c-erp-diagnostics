@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "production-chain-gap",
+  "title": "Production output is present but consumption link is missing",
+  "domain": "production",
+  "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Проверь синтетическую производственную цепочку K-05. Выход продукции виден, но связь потребления материалов не предоставлена. Не достраивай ее типовым поведением 1С. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-PRD-1",
+      "kind": "output_movement",
+      "summary": "Движение OUT-01 фиксирует выпуск 10 единиц по K-05.",
+      "proves": ["факт синтетического движения выпуска"],
+      "does_not_prove": ["потребление материалов", "расчет себестоимости"]
+    },
+    {
+      "id": "E-PRD-2",
+      "kind": "cost_report",
+      "summary": "Отчет показывает ненулевую сумму незавершенного производства по K-05.",
+      "proves": ["наличие симптома по K-05"],
+      "does_not_prove": ["источник суммы", "причину"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "blocked", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-PRD-1", "E-PRD-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

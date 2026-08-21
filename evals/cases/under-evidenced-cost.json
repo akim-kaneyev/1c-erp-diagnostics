@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "under-evidenced-cost",
+  "title": "Month-close symptom without movements or registers",
+  "domain": "cost_month_close",
+  "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Закрытие месяца показывает ошибку себестоимости. Других материалов нет. Назови точную причину только если она доказана; иначе запроси минимальный набор доказательств. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-COST-1",
+      "kind": "user_statement",
+      "summary": "Пользователь сообщил только о сообщении ошибки при закрытии месяца.",
+      "proves": ["наличие заявленного симптома"],
+      "does_not_prove": ["регистратор", "движение", "регистр", "механизм расчета", "причину"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"2": "passed", "4": "blocked", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-COST-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

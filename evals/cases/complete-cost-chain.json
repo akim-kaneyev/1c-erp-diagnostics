@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "id": "complete-cost-chain",
+  "title": "Synthetic complete month-close causal chain",
+  "domain": "cost_month_close",
+  "controls": ["complete_causal_chain", "gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Проверь полную синтетическую цепочку по одному аналитическому ключу. Допускай УСТАНОВЛЕНО только если все шесть звеньев подтверждены исходными evidence ID и Gate 7 пройден. Никаких изменений не выполняй. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-CC-1",
+      "kind": "document_export",
+      "summary": "Синтетический документ D-001 содержит аналитический ключ K-01 и сумму 100.",
+      "proves": ["исходный документ и аналитический ключ"],
+      "does_not_prove": ["фактическое движение"]
+    },
+    {
+      "id": "E-CC-2",
+      "kind": "movement_export",
+      "summary": "Экспорт движения M-001 связывает D-001, K-01 и сумму 100.",
+      "proves": ["движение документа по K-01"],
+      "does_not_prove": ["запись итогового регистра"]
+    },
+    {
+      "id": "E-CC-3",
+      "kind": "register_export",
+      "summary": "Запись R-001 создана движением M-001 по K-01 и содержит сумму 100.",
+      "proves": ["запись регистра и регистратор"],
+      "does_not_prove": ["потребление записью расчета"]
+    },
+    {
+      "id": "E-CC-4",
+      "kind": "mechanism_trace",
+      "summary": "Трасса MC-001 показывает, что механизм закрытия потребил R-001 и отклонил K-01 из-за отсутствующего синтетического признака P-01.",
+      "proves": ["потребляющий механизм", "точку отклонения"],
+      "does_not_prove": ["конечный учетный результат без итогового экспорта"]
+    },
+    {
+      "id": "E-CC-5",
+      "kind": "accounting_result",
+      "summary": "Итоговый экспорт AR-001 фиксирует остаток 100 по тому же K-01 после отклонения.",
+      "proves": ["учетный результат по идентичной аналитике"],
+      "does_not_prove": ["отображение симптома пользователю"]
+    },
+    {
+      "id": "E-CC-6",
+      "kind": "symptom_record",
+      "summary": "Сообщение S-001 ссылается на K-01 и остаток 100 из AR-001.",
+      "proves": ["связь результата с симптомом"],
+      "does_not_prove": ["безопасность исправления"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["УСТАНОВЛЕНО"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "9": "not_required", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "NO_ACTION",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["resolved"],
+    "max_established_claims": 1,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 0,
+    "required_evidence_ids": ["E-CC-1", "E-CC-2", "E-CC-3", "E-CC-4", "E-CC-5", "E-CC-6"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": true,
+    "required_causal_stage_evidence": {
+      "document": ["E-CC-1"],
+      "movement": ["E-CC-2"],
+      "record_register": ["E-CC-3"],
+      "consuming_mechanism": ["E-CC-4"],
+      "accounting_stock_access_result": ["E-CC-5"],
+      "symptom": ["E-CC-6"]
+    }
+  }
+}

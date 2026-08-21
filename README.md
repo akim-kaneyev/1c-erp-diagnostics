@@ -160,8 +160,11 @@ Do not upload production `.dt`, backups, credentials, tokens, unnecessary person
 - `plugins/one-c-erp-diagnostics/` — primary ChatGPT/Codex plugin;
 - `playbooks/` — domain-specific diagnostic rules;
 - `templates/case/STATE.md` — resumable state, capability and claim ledgers;
+- `evals/` — synthetic executable acceptance cases and machine-readable result contracts;
 - `tools/` — deterministic evidence preparation;
 - `docs/` — architecture, integrations, audit and release controls.
+
+The eval suite is validated in CI. A plugin version is runtime-accepted only after a complete hashed clean-session run passes [`tools/validate_runtime_run.py`](tools/validate_runtime_run.py); see [`docs/RUNTIME_ACCEPTANCE.md`](docs/RUNTIME_ACCEPTANCE.md).
 
 ## Status
 
