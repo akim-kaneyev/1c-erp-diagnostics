@@ -35,14 +35,14 @@ Run the rendered prompt in a clean task with the exact candidate installed. Save
   "schema_version": 1,
   "run_id": "v0-3-0-clean-20260821",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.0",
+  "plugin_version": "0.3.1",
   "source_commit": "0000000000000000000000000000000000000000",
   "executed_at": "2026-08-19T12:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.0",
+    "installed_plugin_version": "0.3.1",
     "expectations_visible_to_runner": false
   },
   "results": [

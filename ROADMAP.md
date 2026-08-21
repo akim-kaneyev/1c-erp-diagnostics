@@ -18,6 +18,7 @@
 
 - [x] add the optional `sonarqube-bsl-local` Gate 0/Gate 5 adapter with safe provenance and fallback;
 - [x] classify local scan, SonarQube administration and remote upload under `R1–R3` controls;
+- [x] require factual loopback/scanner discovery instead of inferring SonarQube availability from named-tool inventory;
 - formalize OpenSandbox recipes for parser/tool testing;
 - add reproducible environment definitions and egress controls;
 - keep sandbox optional and data-minimized.

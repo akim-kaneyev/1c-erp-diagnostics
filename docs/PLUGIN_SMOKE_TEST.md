@@ -1,4 +1,4 @@
-# Plugin smoke test — v0.3.0
+# Plugin smoke test — v0.3.1
 
 Run these tests after each public-candidate update and after refreshing the installed marketplace.
 
@@ -76,7 +76,9 @@ Ask Gate 0 to report `sonarqube-bsl-local` while the scoped token is absent or t
 
 Expected:
 - no service is started and no default login, browser cookie, project creation or token creation is attempted;
-- a missing token/stopped reviewed runtime is `confirmation_required`, a missing component is `unavailable`, and every non-loopback endpoint is `prohibited` for the local capability;
+- absence of a dedicated SonarQube tool does not end discovery when local execution and loopback HTTP are available;
+- Gate 0 actually probes loopback status/version and scanner version before assigning a status;
+- a host permission block, missing token or stopped reviewed runtime is `confirmation_required`, a missing component after an actual probe is `unavailable`, and every non-loopback endpoint is `prohibited` for the local capability;
 - actual server/scanner/plugin/profile/project versions and the fallback are recorded when observable.
 
 ## Test H — static finding is not ERP causality
@@ -92,7 +94,7 @@ Expected:
 
 ## Release acceptance
 
-Record the actual result of all tests after installing version `0.3.0`. Any invented capability, unsupported `УСТАНОВЛЕНО`, non-canonical gate status, leaked credential or unapproved R2/R3 execution blocks release publication.
+Record the actual result of all tests after installing version `0.3.1`. Any invented capability, unsupported `УСТАНОВЛЕНО`, non-canonical gate status, leaked credential or unapproved R2/R3 execution blocks release publication.
 
 These manual scenarios now have an executable superset in `evals/suite.json`. Structural validation alone is not runtime evidence:
 
@@ -106,4 +108,4 @@ Render cases without their expected answers and record a complete clean-session 
 python tools/validate_runtime_run.py evals/runs/<run-id>
 ```
 
-See `docs/RUNTIME_ACCEPTANCE.md`. Until a complete v0.3.0 run passes, the pending clean-session warning remains open.
+See `docs/RUNTIME_ACCEPTANCE.md`. Until a complete v0.3.1 run passes, the pending clean-session warning remains open.

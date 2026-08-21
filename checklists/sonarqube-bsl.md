@@ -3,6 +3,8 @@
 ## Gate 0: availability and boundary
 
 - verify that the SonarQube endpoint, scanner and BSL analyzer are actually available;
+- never infer `unavailable` merely because no dedicated SonarQube MCP/app/tool name is listed; when local execution and loopback HTTP exist, perform the factual endpoint and scanner probes;
+- if host permission blocks those read-only probes, record `confirmation_required` with reason `host_execution_confirmation_required` instead of inventing an unavailable runtime;
 - default to a user-managed loopback-only endpoint;
 - confirm that the source is sanitized and minimized before scanning, because SonarQube stores analyzed source and derived analysis data;
 - classify an existing-report read as R0 and a sanitized loopback-local scan as R1;

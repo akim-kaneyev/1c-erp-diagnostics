@@ -21,7 +21,7 @@ The user invokes one command. The orchestrator discovers capabilities, selects i
    - `unica` — Unica 1C developer workflows;
    - `1c-skills` — 1C Skills PowerShell;
    - `1c-skills-py` — 1C Skills Python.
-4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and the optional local `sonarqube-bsl-local` adapter.
+4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and the optional local `sonarqube-bsl-local` adapter. For SonarQube, do not classify from named-tool inventory: when local execution and loopback HTTP exist, apply `one-c-erp-local-static-analysis` and run its read-only server/scanner preflight.
 5. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
 6. Record version/ref when exposed, permissions, write-risk, provenance and the exact purpose for which a capability may be used.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
