@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.0"
+PLUGIN_VERSION = "0.3.1"
 
 
 def load_artifact_module():
@@ -166,6 +166,9 @@ class DynamicContractTests(unittest.TestCase):
             "complete=false",
             "hypothesis",
             "Gate 7",
+            "dedicated SonarQube MCP server",
+            "host_execution_confirmation_required",
+            "actual read-only probes",
         ):
             self.assertIn(required, skill)
         self.assertIn("one-c-erp-local-static-analysis", root_skill)

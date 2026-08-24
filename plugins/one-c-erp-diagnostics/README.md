@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.0
+# 1C ERP Diagnostics plugin — v0.3.1
 
 A single dynamic entrypoint for ChatGPT and Codex:
 

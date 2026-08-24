@@ -24,7 +24,7 @@
 ## Clean-session smoke tests
 
 1. marketplace refresh/re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.3.0` and the approved Velis icon render in GitHub and the plugin selector;
+2. 1C ERP Diagnostics `0.3.1` and the approved Velis icon render in GitHub and the plugin selector;
 3. Gate 0 reports actual companion availability;
 4. an installed companion call records canonical identity, inputs, operation, output and limitations;
 5. an under-evidenced case cannot end as final `УСТАНОВЛЕНО`;
@@ -35,7 +35,7 @@
 10. Gate 0 reports `sonarqube-bsl-local` from actual loopback/server/scanner/BSL/auth state rather than marketplace presence;
 11. an available sanitized local scan records `R1`, source/tool/analysis provenance and complete paginated evidence without retaining a token;
 12. a static finding without runtime and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7;
-13. the installed plugin details/card reports `0.3.0` when the current surface exposes a version field.
+13. the installed plugin details/card reports `0.3.1` when the current surface exposes a version field.
 
 ## External companion rule
 

@@ -1,4 +1,4 @@
-# Public release checklist — v0.3.0
+# Public release checklist — v0.3.1
 
 ## Repository and plugin package
 
@@ -23,8 +23,8 @@
 - [x] Public commits use the GitHub ID-based `noreply` identity.
 - [x] Current-tree searches found no known internal credentials or company case data.
 - [x] Scoped Gate-closure ambiguity found by the R3 test was corrected and regression-tested.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.0`.
-- [x] v0.3.0 release notes and self-audit are present without claiming pending GitHub/runtime steps as complete.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.1`.
+- [x] v0.3.1 release notes and self-audit are present without claiming pending GitHub/runtime steps as complete.
 - [x] Assembled candidate passes 31 unit tests, the 14-case eval validator, public-package validation and ecosystem validation.
 
 ## Unified 1C ecosystem marketplace
@@ -39,7 +39,7 @@
 - [x] Internal marketplace ID is stable: `one-c-erp-diagnostics-marketplace`.
 - [x] Visible title is `1C ERP Diagnostics Ecosystem` through `interface.displayName`.
 - [x] External commit pins use the verified `sha` selector.
-- [x] Primary plugin/package version is `0.3.0`.
+- [x] Primary plugin/package version is `0.3.1`.
 
 ## Marketplace/plugin smoke tests
 
@@ -54,14 +54,14 @@
 - [x] Gate 7 rejected unsupported `УСТАНОВЛЕНО`.
 - [x] Analysis-only work was classified `R0`; Gate 9 was `not_required`.
 - [x] Unapproved closed-period/mass-reposting proposal was classified `R3` and received `NO-GO`.
-- [ ] Refresh the marketplace after v0.3.0 and confirm the new version/assets are installed.
-- [ ] Repeat Gate 0 in a clean v0.3.0 session and record actual capability availability, including `sonarqube-bsl-local`.
-- [ ] Repeat the under-evidenced case in a clean v0.3.0 session.
+- [ ] Refresh the marketplace after v0.3.1 and confirm the new version/assets are installed.
+- [ ] Repeat Gate 0 in a clean v0.3.1 session and record actual capability availability, including factual loopback/scanner discovery for `sonarqube-bsl-local`.
+- [ ] Repeat the under-evidenced case in a clean v0.3.1 session.
 - [ ] Repeat the scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open` with canonical gate statuses.
 - [ ] Confirm missing SonarQube authentication/runtime becomes `confirmation_required`/`unavailable` without auto-start, default login or simulated findings.
 - [ ] Run the authorized sanitized local SonarQube smoke test and confirm complete provenance, no token retention and no unsupported `УСТАНОВЛЕНО`.
-- [ ] Confirm the installed plugin details/card explicitly report version `0.3.0` if the current surface exposes the version field.
-- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.0 run.
+- [ ] Confirm the installed plugin details/card explicitly report version `0.3.1` if the current surface exposes the version field.
+- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.1 run.
 
 ## GitHub identity, security and presentation
 
@@ -90,11 +90,13 @@
 - [x] Public repository is live.
 - [x] Previous v0.2.3 release Pull Request #12 passed the protected Python 3.10/3.12, CodeQL and review gates.
 - [x] Previous annotated tag `v0.2.3` targets commit `97cebacfe6a8755b89f7fd9231ffdd639febc33c` and its GitHub pre-release was anonymously verified.
-- [ ] Open a v0.3.0 release Pull Request from the feature branch.
-- [ ] Pass Python 3.10/3.12 validation, CodeQL, up-to-date-branch and resolved-conversation requirements for v0.3.0.
-- [ ] Squash-merge v0.3.0 only through the protected `main` ruleset.
-- [ ] Create annotated tag `v0.3.0` on the exact approved `main` commit.
-- [ ] Publish `1C ERP Diagnostics v0.3.0 — Public Preview` as a GitHub pre-release.
+- [x] Previous v0.3.0 Pull Request #14 passed Python 3.10/3.12, CodeQL and protected squash-merge gates.
+- [x] Previous annotated tag `v0.3.0` targets commit `21fce104716a45cead23a019ad79029f2522390a`; its pre-release, tagged documents/assets and source archives were anonymously verified.
+- [ ] Open a v0.3.1 release Pull Request from the feature branch.
+- [ ] Pass Python 3.10/3.12 validation, CodeQL, up-to-date-branch and resolved-conversation requirements for v0.3.1.
+- [ ] Squash-merge v0.3.1 only through the protected `main` ruleset.
+- [ ] Create annotated tag `v0.3.1` on the exact approved `main` commit.
+- [ ] Publish `1C ERP Diagnostics v0.3.1 — Public Preview` as a GitHub pre-release.
 - [ ] Verify release metadata, tagged documentation/assets and both source archives anonymously.
 
 ## Global ChatGPT Plugin Directory
