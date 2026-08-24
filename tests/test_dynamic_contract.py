@@ -216,7 +216,7 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("## Evidence coverage", state)
         self.assertIn("## Independent verification plan", state)
         self.assertIn("## Escaped/missed finding feedback", state)
-        self.assertIn("provider-neutral harness", architecture)
+        self.assertIn("## Model/provider neutrality", architecture)
         self.assertIn("Regression feedback loop", architecture)
         self.assertIn("Earendil — What is a Harness?", methodology)
         self.assertIn("Infostart — seven-agent 1C delivery pipeline", methodology)
