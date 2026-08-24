@@ -9,13 +9,20 @@ Use for Gate 7. Do not defend the preliminary answer.
 
 For each material conclusion:
 1. re-read the primary evidence;
-2. label every premise fact / interpretation / hypothesis;
-3. challenge each causal link;
-4. identify any 1C object name not proven by evidence/metadata/code/docs;
-5. verify before/after uses identical analytics;
-6. look for an earlier divergence point;
-7. test reasonable alternative explanations;
-8. state a falsifier;
-9. downgrade status when evidence is insufficient.
+2. confirm that every material supplied source/attachment is accounted for by Gate 2 and inspect anything that could falsify the conclusion;
+3. label every premise fact / interpretation / hypothesis;
+4. challenge each causal link;
+5. identify any 1C object name not proven by evidence/metadata/code/docs;
+6. verify before/after uses identical analytics;
+7. look for an earlier divergence point;
+8. test reasonable alternative explanations;
+9. state a falsifier;
+10. downgrade status when evidence is insufficient.
 
-A final root cause may be `УСТАНОВЛЕНО` only after surviving this pass.
+## Review finding rule
+
+A review label such as `critical`, `high`, `blocking`, or an agent's confident defect verdict is not itself evidence that a defect exists. Convert every material review finding into a testable claim and independently reproduce it or link it to original case evidence before treating it as established.
+
+Likewise, absence of findings from another reviewer or tool is not proof of correctness. Resolve disagreements by evidence and reproduction, never by majority vote or confidence wording.
+
+A final root cause may be `УСТАНОВЛЕНО` only after surviving this pass and only when no material supplied evidence remains unaccounted for in a way that could change the conclusion.
