@@ -25,13 +25,29 @@
 | Capability | Status | Read/write risk | Case purpose | Provenance/fallback |
 |---|---|---|---|---|
 
+## Evidence coverage
+
+Every supplied attachment/source must be accounted for before Gate 2 passes.
+
+| Source/attachment | Evidence ID | Disposition | Inspection method | Result/limitation |
+|---|---|---|---|---|
+
+Allowed dispositions: `examined | unreadable | duplicate | irrelevant_with_reason | blocked`.
+
 ## Routing and graph
 
 - Primary domain:
 - Secondary domains:
 
-| Node | Objective | Dependencies | Capability | Risk | Status | Output/stop condition |
-|---|---|---|---|---|---|---|
+| Node | Objective | Dependencies | Capability | Risk | Validation level | Status | Output/stop condition |
+|---|---|---|---|---|---|---|---|
+
+## Independent verification plan
+
+| Claim/change | Required validation level | Method | Independent evidence | Expected result/falsifier | Status |
+|---|---|---|---|---|---|
+
+Validation levels: `structural | static | metadata_runtime | functional | business_accounting`.
 
 ## Gate status
 
@@ -67,3 +83,10 @@ Do not use decorated values such as `passed*`. When a gate is outside the curren
 
 | Action | Risk | Approval | Expected result | Rollback | Validation |
 |---|---|---|---|---|---|
+
+## Escaped/missed finding feedback
+
+Use this section only when a defect, contradiction or material omission survives a prior control. Feed the lesson back into the earliest gate that could have caught it and add a regression eval/checklist when reproducible.
+
+| Finding | Where it escaped | Why the control missed it | Earliest gate/control to improve | Regression eval/checklist |
+|---|---|---|---|---|

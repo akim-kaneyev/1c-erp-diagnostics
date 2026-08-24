@@ -11,11 +11,15 @@ Explicit Codex invocation:
 
 The user should not need to manually chain subordinate skills, prompts, plugins, apps, parsers or validators. Use available tools/connectors when they materially help. If a required capability is unavailable, mark the affected gate blocked instead of simulating completion.
 
+Treat this skill as a provider-neutral harness around the available model. Correctness is defined by the evidence and Gate contract, not by model brand, confidence or self-reported success. Use an inspect → hypothesize → test → compare loop and reopen the earliest affected gate when evidence disagrees.
+
 ## Gate 0 — Capability and state discovery
 
 Resume prior valid case state. Inventory only capabilities actually exposed in the current host and classify each as `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical marketplace companions are `unica`, `1c-skills` and `1c-skills-py`; marketplace presence does not prove installation.
 
 Discover `sonarqube-bsl-local` separately as an optional host adapter, not a marketplace plugin. The absence of a dedicated SonarQube tool is not evidence of absence: when local process execution and loopback HTTP exist, actually probe the loopback status/version and scanner version first. It is available only after confirming an `UP` loopback server, scanner, `communitybsl` plugin, `bsl` language/profile, pre-created project and scoped authentication. A blocked probe or `401/403` is `confirmation_required`, not an invented `unavailable`. Never expose a token or infer that a static finding proves the ERP incident.
+
+Record model/provider identity only as provenance when exposed. Acceptance criteria do not change by provider.
 
 ## Non-negotiable evidence rules
 
@@ -24,15 +28,20 @@ Discover `sonarqube-bsl-local` separately as an optional host adapter, not a mar
 - General 1C knowledge may generate a hypothesis, never prove the case by itself.
 - A disappearing UI error is not proof that accounting is corrected.
 - Final root cause `УСТАНОВЛЕНО` requires an adversarial verification pass.
+- Every material supplied source/attachment must be accounted for before a conclusion it could falsify becomes final.
+- Reviewer severity labels and agent confidence are findings to test, not proof of defects.
+- Clean syntax, static analysis or a successful build cannot substitute for required runtime, functional or business/accounting validation.
 
 ## Gate 1 — Goal contract
 State concrete outcome, scope, verification evidence, material exclusions, and stop condition. Pass only when completion can be checked.
 
 ## Gate 2 — Evidence intake
-Inventory supplied files/screenshots/text; record what each can prove, limitations, missing evidence and blind spots. Prefer immutable source identifiers/hashes when available.
+Inventory supplied files/screenshots/text; record what each can prove, limitations, missing evidence and blind spots. Prefer immutable source identifiers/hashes when available. Give every supplied source/attachment an Evidence ID and disposition: `examined | unreadable | duplicate | irrelevant_with_reason | blocked`. Gate 2 cannot pass while supplied evidence is unaccounted for; keep supplied-but-unexamined evidence separate from expected-but-missing evidence.
 
 ## Gate 3 — Route the case
 Select one primary domain by observed symptom, not assumed cause: `cost-and-month-close`, `post-item-expenses`, `settlements`, `vat`, `warehouse-series-assignments`, `production`, or `access-rights`. Add a secondary domain only when a concrete cross-domain link is evidenced.
+
+For every material claim/change define an independent validation method and required level before execution: `structural → static → metadata_runtime → functional → business_accounting`. A lower validation level cannot substitute for a required higher one.
 
 ## Gate 4 — Primary diagnosis
 Separate facts, interpretations and hypotheses; compare good/bad or before/after where available; build chronology and earliest demonstrated divergence. Required chain: `document → movement → record/register → consuming mechanism → accounting/stock/access result → observed symptom`.
@@ -55,13 +64,13 @@ For a new local BSL scan, apply `one-c-erp-local-static-analysis`: loopback sani
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, or `ТРЕБУЕТ ПРОВЕРКИ`. For each material conclusion record evidence, causal link, alternatives checked and falsifier. No business correction is authorized yet.
 
 ## Gate 7 — Independent/adversarial verification
-Run a distinct second pass that tries to disprove Gate 6: re-read evidence, challenge every causal link, find unproven assumptions/invented objects, verify same analytics before/after, search earlier divergence, test reasonable alternatives, and downgrade when insufficient. Final `УСТАНОВЛЕНО` is forbidden without surviving this gate.
+Run a distinct second pass that tries to disprove Gate 6: re-read original evidence, confirm material evidence coverage, challenge every causal link, find unproven assumptions/invented objects, verify same analytics before/after, search earlier divergence, test reasonable alternatives, and downgrade when insufficient. Convert `critical`/`blocking` reviewer findings into testable claims and reproduce or evidence-link them. Final `УСТАНОВЛЕНО` is forbidden without surviving this gate.
 
 ## Gate 8 — Action decision
 Choose the smallest safe reversible action. Priority: proven standard setting/NSI → standard 1C mechanism/document → correction of actual source document in allowed period → specialized/manual correction only when standard mechanisms are unsuitable and consequences understood. Do not automatically open closed periods, mass repost, grant broad rights, or modify the standard configuration.
 
 ## Gate 9 — Post-change validation
-Compare the same analytics before/after: applicable movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates/side effects, or access matrix. If result is not reproduced, reopen from earliest affected gate. Analysis-only goals may mark this `not_required` explicitly.
+Apply every validation level required by the change: structural/syntax, static, metadata/runtime, functional, business/accounting. Passing a lower level never substitutes for a required higher level. Compare the same analytics before/after: applicable movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates/side effects, or access matrix. If required runtime/business validation is unavailable, mark this gate `blocked`. If result is not reproduced, reopen from earliest affected gate and feed reproducible escaped defects into the earliest missed control/eval. Analysis-only goals may mark this `not_required` explicitly.
 
 ## Gate 10 — Final closure
 Return: 1) `Краткий вывод`; 2) `Основание`; 3) `Что делать дальше`. Also report compact Gate 0–10 statuses and capability provenance. Close only if every required gate is passed or `not_required`; state any blocked/pending/failed/stale gate.

@@ -175,6 +175,52 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("one-c-erp-local-static-analysis", packaged)
         self.assertIn("SonarQube remains a host execution adapter", packaged)
 
+    def test_harness_hardening_contracts_are_explicit(self) -> None:
+        evidence = (
+            PLUGIN / "skills" / "one-c-erp-evidence-intake" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        plan = (
+            PLUGIN / "skills" / "one-c-erp-dynamic-plan" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        verify = (
+            PLUGIN / "skills" / "one-c-erp-verify-conclusion" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        post = (
+            PLUGIN / "skills" / "one-c-erp-post-change-validation" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        state = (ROOT / "templates" / "case" / "STATE.md").read_text(
+            encoding="utf-8"
+        )
+        architecture = (ROOT / "docs" / "ARCHITECTURE.md").read_text(
+            encoding="utf-8"
+        )
+        methodology = (ROOT / "docs" / "upstream-methodology.md").read_text(
+            encoding="utf-8"
+        )
+
+        for disposition in (
+            "examined",
+            "unreadable",
+            "duplicate",
+            "irrelevant_with_reason",
+            "blocked",
+        ):
+            self.assertIn(disposition, evidence)
+        self.assertIn("supplied-but-unexamined evidence", evidence)
+        self.assertIn("expected-but-missing evidence", evidence)
+        self.assertIn("Independent validation contract", plan)
+        self.assertIn("business_accounting", plan)
+        self.assertIn("A review label such as `critical`", verify)
+        self.assertIn("Validation ladder", post)
+        self.assertIn("Passing a lower validation level never substitutes", post)
+        self.assertIn("## Evidence coverage", state)
+        self.assertIn("## Independent verification plan", state)
+        self.assertIn("## Escaped/missed finding feedback", state)
+        self.assertIn("## Model/provider neutrality", architecture)
+        self.assertIn("Regression feedback loop", architecture)
+        self.assertIn("Earendil — What is a Harness?", methodology)
+        self.assertIn("Infostart — seven-agent 1C delivery pipeline", methodology)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,6 +13,8 @@ argument-hint: "[case path or task description]"
 
 The user invokes one command. The orchestrator discovers capabilities, selects internal specialist skills and installed companion plugins, runs verification and reports one consolidated result. Never require the user to manually chain skills.
 
+The orchestrator is a provider-neutral harness around the available model. Correctness comes from explicit instructions, evidence coverage, capability/tool provenance, an inspect → hypothesize → test → compare loop and independent validation. Model/provider identity or confidence is runtime provenance, never proof.
+
 ## Gate 0 — Capability and state discovery
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.
@@ -23,7 +25,7 @@ The user invokes one command. The orchestrator discovers capabilities, selects i
    - `1c-skills-py` — 1C Skills Python.
 4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and the optional local `sonarqube-bsl-local` adapter. For SonarQube, do not classify from named-tool inventory: when local execution and loopback HTTP exist, apply `one-c-erp-local-static-analysis` and run its read-only server/scanner preflight.
 5. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
-6. Record version/ref when exposed, permissions, write-risk, provenance and the exact purpose for which a capability may be used.
+6. Record version/ref when exposed, permissions, write-risk, provenance and the exact purpose for which a capability may be used. Record model/provider identity only as provenance when exposed; acceptance criteria remain unchanged across providers.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
 
 The unified marketplace makes companions discoverable; it does not prove installation or cross-plugin invocation support. Do not claim availability until the host exposes the capability.
@@ -56,6 +58,8 @@ Example: a request to assess whether mass reposting is safe may be completed as 
 
 Inventory all files, screenshots, reports, movements, register records, postings, code and official sources. State what each item proves and cannot prove. Preserve identifiers and hashes when possible. For CF/CFE/EPF or unpacked BSL/JSON, apply the artifact-extraction skill and checklist.
 
+Every supplied source/attachment must receive an Evidence ID and an explicit disposition: `examined`, `unreadable`, `duplicate`, `irrelevant_with_reason` or `blocked`. Gate 2 cannot pass while supplied evidence is unaccounted for. Keep supplied-but-unexamined evidence separate from expected-but-missing evidence. A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could reasonably falsify the conclusion.
+
 ## Gate 3 — Dynamic execution graph
 
 Choose one primary domain and no more than two justified secondary domains. Build a directed execution graph containing:
@@ -66,8 +70,11 @@ Choose one primary domain and no more than two justified secondary domains. Buil
 - exact internal skill or canonical companion capability;
 - read/write surface and `R0–R3` risk;
 - output schema and provenance fields;
+- required validation level and independent acceptance evidence;
 - stop/falsification condition;
 - fallback if the assigned companion is unavailable.
+
+Validation levels are `structural → static → metadata_runtime → functional → business_accounting`. Before execution, define how each material claim/change will be checked independently of the producing specialist using original evidence, reproduced output or another independently derived observation. A lower validation level cannot substitute for a required higher one.
 
 Run specialists in parallel only when they do not mutate shared state and their questions are independent. Do not activate more than four specialist nodes without explicit dependency justification.
 
@@ -105,9 +112,11 @@ Merge specialist outputs by source, evidence and claim ID. Preserve supporting a
 
 ## Gate 7 — Adversarial verification
 
-A distinct reviewer re-reads original evidence, not only the synthesis. It challenges every causal link, checks identical analytics, searches for an earlier divergence, tests alternatives, identifies invented objects and records a falsifier. Final `УСТАНОВЛЕНО` is forbidden if this gate is unavailable or fails.
+A distinct reviewer re-reads original evidence, not only the synthesis. It challenges every causal link, checks identical analytics, searches for an earlier divergence, tests alternatives, identifies invented objects and records a falsifier. It must also confirm that every material supplied source/attachment is accounted for.
 
-An external plugin's conclusion is not exempt from this review.
+A review label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof of a defect. Convert each material review finding into a testable claim and independently reproduce it or link it to original case evidence. Absence of findings is likewise not proof of correctness. Resolve reviewer disagreement by evidence, not majority vote or confidence wording.
+
+Final `УСТАНОВЛЕНО` is forbidden if this gate is unavailable or fails. An external plugin's conclusion is not exempt from this review.
 
 ## Gate 8 — Risk-controlled action decision
 
@@ -122,7 +131,19 @@ R3 requires explicit user approval, tested rollback, affected-scope statement an
 
 ## Gate 9 — Post-change validation
 
+Use the validation ladder required by the change:
+
+1. structural/syntax;
+2. static;
+3. metadata/runtime;
+4. functional;
+5. business/accounting.
+
+Passing syntax, static analysis or build checks does not prove runtime, functional or accounting correctness. If a required runtime/business level cannot be executed, Gate 9 is `blocked` rather than passed from a lower-level check or the producer's self-report.
+
 Compare the same analytic key before and after. Check movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates, side effects or access matrix. Disappearance of an interface error is not sufficient proof. Analysis-only work may mark Gate 9 `not_required` explicitly.
+
+If validation exposes a defect or omission that survived an earlier control, record where it escaped and strengthen the earliest applicable gate, checklist or regression eval when reproducible.
 
 ## Gate 10 — Final closure
 
@@ -147,6 +168,10 @@ If the current goal includes root-cause diagnosis or correction, any required `b
 - No hidden use of unavailable companion plugins.
 - No copied or simulated Unica/1C Skills output.
 - No external plugin output treated as truth without evidence linkage.
+- No supplied material evidence silently omitted from a final conclusion.
+- No reviewer severity/confidence label treated as a defect without reproduction or evidence linkage.
+- No lower-level validation promoted into proof of a required higher-level 1C result.
+- No self-reported success from the producing specialist treated as independent validation.
 - No final cause without Gate 7.
 - No production-changing action without the applicable risk gate.
 - No decorated gate statuses or ambiguous asterisk qualifications.

@@ -1,6 +1,6 @@
 # Upstream methodology references
 
-Pinned review date: 2026-08-17.
+Pinned review date: 2026-08-24.
 
 ## OpenAI define-goal
 
@@ -47,3 +47,47 @@ Our additional controls:
 - inputs, commands, tool/model versions and outputs must be recorded when sandbox execution is used as verification evidence.
 
 Before changing the sandbox integration, re-check the current upstream README/examples because installation and runtime behavior may evolve.
+
+## Earendil — What is a Harness?
+
+Source reviewed on 2026-08-24:
+`https://earendil.com/posts/what-is-a-harness/`
+
+Article date: 2026-08-20.
+
+What we adopt:
+- treat the useful agent as `model + harness`, not as the model alone;
+- keep instructions, tools, the agentic loop and model/provider translation as separate responsibilities;
+- make the loop explicit: inspect → hypothesize → test → compare → retry/reopen when evidence disagrees;
+- keep domain correctness rules provider-neutral so a model swap does not silently change acceptance criteria;
+- record model/provider/tool identity as provenance rather than treating brand or confidence as evidence.
+
+What we do NOT copy as-is:
+- provider-specific UX/session behavior;
+- unrestricted autonomous looping without stop conditions, risk gates and evidence-based closure;
+- any assumption that the availability of more tools improves correctness by itself.
+
+Our stricter addition is that the harness has deterministic Gate 0–10 acceptance rules and a separate adversarial verifier; tool output or model confidence cannot pass those gates by declaration.
+
+## Infostart — seven-agent 1C delivery pipeline
+
+Source reviewed on 2026-08-24:
+`https://infostart.ru/1c/articles/2767171/`
+
+Article date: 2026-08-19.
+
+What we adopt:
+- every supplied task artifact must be accounted for instead of assuming the main technical task text contains everything important;
+- separate implementation/diagnosis from independent validation and preserve repeatable check results;
+- use a QA/validation ladder that distinguishes syntax/static checks from real 1C runtime, functional and business/accounting verification;
+- treat reviewer severity labels and confident agent verdicts as hypotheses until reproduced or tied to evidence;
+- feed escaped defects and missed findings back into the earliest failed control, regression eval or checklist;
+- keep a human approval boundary for production-impacting work.
+
+What we do NOT copy as-is:
+- a mandatory fixed topology of seven agents for every task;
+- majority voting or role count as evidence of correctness;
+- treating successful code review, syntax, static analysis or build as proof that a 1C business process is correct;
+- duplicating roles when the bounded dynamic graph can prove the same claim with fewer independent nodes.
+
+Our implementation keeps one primary domain, at most two justified secondary domains and normally no more than four active specialist nodes, while preserving independence at Gate 7 and at the required validation level.
