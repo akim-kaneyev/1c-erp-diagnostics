@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "description": "Synthetic regression cases for evidence sufficiency, ERP-domain causality, capability honesty, Gate closure and R0-R3 action control.",
+  "description": "Synthetic regression cases for evidence sufficiency, ERP-domain causality, capability honesty, provenance closure, execution identity, Gate closure and R0-R3 action control.",
   "required_domains": [
     "capability_discovery",
     "cost_month_close",
@@ -22,7 +22,9 @@
     "unavailable_capability",
     "r3_no_go",
     "scoped_closure",
-    "no_invented_objects"
+    "no_invented_objects",
+    "provenance_closure",
+    "execution_identity"
   ],
   "cases": [
     "cases/capability-inventory.json",
@@ -38,6 +40,8 @@
     "cases/sonarqube-static-finding-no-runtime.json",
     "cases/analysis-only-comparison.json",
     "cases/unavailable-required-capability.json",
-    "cases/scoped-r3-mass-repost.json"
+    "cases/scoped-r3-mass-repost.json",
+    "cases/provenance-closure-broken.json",
+    "cases/stale-execution-result.json"
   ]
 }
