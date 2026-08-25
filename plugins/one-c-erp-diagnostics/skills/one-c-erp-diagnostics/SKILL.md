@@ -21,7 +21,7 @@ Marketplace presence does not prove installation or runtime availability.
 ## Runtime sequence
 
 ### Gate 0 — discover
-Apply `one-c-erp-capability-discovery`, `one-c-erp-case-state` and the canonical registry. Discover optional `sonarqube-bsl-local` through factual read-only server/scanner preflight when host execution exists. Produce capability map, permissions/risk, version/ref, provenance and resume point. Model/provider identity is provenance only.
+Apply `one-c-erp-capability-discovery`, `one-c-erp-case-state` and the canonical registry. Discover optional `sonarqube-bsl-local` through `one-c-erp-local-static-analysis` and factual read-only server/scanner preflight when host execution exists. Produce capability map, permissions/risk, version/ref, provenance and resume point. Model/provider identity is provenance only.
 
 ### Gate 1 — contract
 Apply `one-c-erp-goal-contract`. Completion must be verifiable. Separate current goal/task scope from any linked 1C incident.
@@ -38,11 +38,11 @@ Run selected domain skills plus `one-c-erp-diagnose-core`. Specialists may run i
 If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep linked incident `open`/`blocked`. Never use `passed*` or another decorated status.
 
 ### Gate 5 — execute when justified
-Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution` and `one-c-erp-risk-control`.
+Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution`, `one-c-erp-local-static-analysis` when SonarQube is justified, and `one-c-erp-risk-control`.
 
 Every executable result used as evidence records unique `run_id`, current `case_id`, input evidence identities/hashes, tool/version/ref, operation without secrets, timestamps when exposed, output identifier/hash, status and limitations. Reject or reopen stale results when case/input identity changed unless deterministic equivalence is proven.
 
-Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. Use SonarQube only after factual preflight. Never use a companion solely because installed.
+Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. SonarQube remains a host execution adapter, not a marketplace companion or causal authority. Use it only after factual preflight. Never use a companion solely because installed.
 
 ### Gate 6 — synthesize
 Apply `one-c-erp-evidence-synthesis`. Preserve support, contradictions, limitations and provenance. For each material claim require provenance closure:
