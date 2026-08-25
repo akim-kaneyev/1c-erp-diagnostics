@@ -34,6 +34,22 @@ Every supplied attachment/source must be accounted for before Gate 2 passes.
 
 Allowed dispositions: `examined | unreadable | duplicate | irrelevant_with_reason | blocked`.
 
+## Evidence ledger and derivation lineage
+
+| Evidence ID | Source | Hash/identifier | Derived from | Transformation/tool/version | Run ID | Output hash | What it proves | Limitations |
+|---|---|---|---|---|---|---|---|---|
+
+For source evidence, `Derived from`, transformation and Run ID may be empty. For derived evidence they are required when materially relevant. A derived result with no traceable parent artifact cannot by itself establish a final cause.
+
+## Execution records
+
+Use for executable Gate 5 evidence and any external tool output relied upon later.
+
+| Run ID | Case ID | Tool/version/ref | Input evidence + hashes | Started/completed | Output identifier/hash | Status | Limitations |
+|---|---|---|---|---|---|---|---|
+
+If current inputs no longer match an execution record, mark dependent evidence/claims `stale` and reopen from the earliest affected gate.
+
 ## Routing and graph
 
 - Primary domain:
@@ -69,15 +85,12 @@ Allowed gate status: `pending | passed | blocked | failed | stale | not_required
 
 Do not use decorated values such as `passed*`. When a gate is outside the current goal, use `not_required` and record any unresolved linked incident separately.
 
-## Evidence ledger
-
-| Evidence ID | Source | Hash/identifier | What it proves | Limitations |
-|---|---|---|---|---|
-
 ## Claim ledger
 
-| Claim ID | Status | Claim | Support | Contradiction | Falsifier | Provenance |
+| Claim ID | Status | Claim | Support | Contradiction | Falsifier | Provenance closure |
 |---|---|---|---|---|---|---|
+
+For a material `УСТАНОВЛЕНО` claim, `Provenance closure` must trace every material premise/causal link back to original evidence or a documented derivation chain. `open` or `broken` closure blocks final establishment.
 
 ## Actions and rollback
 

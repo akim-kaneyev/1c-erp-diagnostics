@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.1"
+PLUGIN_VERSION = "0.3.2"
 
 
 def load_artifact_module():
@@ -220,6 +220,23 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("Regression feedback loop", architecture)
         self.assertIn("Earendil — What is a Harness?", methodology)
         self.assertIn("Infostart — seven-agent 1C delivery pipeline", methodology)
+
+    def test_provenance_and_execution_identity_contracts_are_explicit(self) -> None:
+        evidence_model = (ROOT / "docs" / "evidence-model.md").read_text(encoding="utf-8")
+        intake = (PLUGIN / "skills" / "one-c-erp-evidence-intake" / "SKILL.md").read_text(encoding="utf-8")
+        synthesis = (PLUGIN / "skills" / "one-c-erp-evidence-synthesis" / "SKILL.md").read_text(encoding="utf-8")
+        sandbox = (PLUGIN / "skills" / "one-c-erp-sandbox-execution" / "SKILL.md").read_text(encoding="utf-8")
+        verify = (PLUGIN / "skills" / "one-c-erp-verify-conclusion" / "SKILL.md").read_text(encoding="utf-8")
+        state = (ROOT / "templates" / "case" / "STATE.md").read_text(encoding="utf-8")
+
+        for token in ("derived_from", "run_id", "input_hashes", "output_hash", "Provenance closure"):
+            self.assertIn(token, evidence_model)
+        self.assertIn("Artifact-anchor and derivation contract", intake)
+        self.assertIn("Provenance closure contract", synthesis)
+        self.assertIn("Execution identity contract", sandbox)
+        self.assertIn("mismatched execution identity", verify)
+        self.assertIn("## Execution records", state)
+        self.assertIn("Provenance closure", state)
 
 
 if __name__ == "__main__":

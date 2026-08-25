@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "provenance-closure-broken",
+  "title": "Gate 7 blocks an unanchored derived result",
+  "domain": "verification",
+  "controls": ["gate_7", "under_evidenced", "provenance_closure"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Есть производная таблица D-1, в которой указано расхождение суммы, но неизвестно, из какого исходного файла и какой трансформацией она получена. Исходный файл S-1 содержит только общий экспорт без подтверждения этого значения. Проведи синтез и Gate 7. Нельзя считать производную таблицу доказательством исходного содержимого без provenance closure. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-PROV-1",
+      "kind": "source_artifact",
+      "summary": "Синтетический исходный экспорт S-1 доступен, но предоставленное описание не подтверждает конкретное спорное значение.",
+      "proves": ["наличие исходного артефакта S-1"],
+      "does_not_prove": ["что спорное значение присутствовало в S-1", "происхождение производной таблицы D-1"]
+    },
+    {
+      "id": "E-PROV-2",
+      "kind": "derived_table",
+      "summary": "Производная таблица D-1 содержит спорное значение, но не имеет derived_from, описания трансформации, run_id или output hash.",
+      "proves": ["что значение присутствует в самой D-1"],
+      "does_not_prove": ["что D-1 получена из S-1", "что значение присутствовало в исходном артефакте", "причинную связь с симптомом"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"2": "passed", "6": "passed", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-PROV-1", "E-PROV-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

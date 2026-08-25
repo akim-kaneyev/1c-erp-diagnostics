@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "stale-execution-result",
+  "title": "Gate 5 rejects a tool result from different input identity",
+  "domain": "verification",
+  "controls": ["under_evidenced", "execution_identity"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Имеется сохраненный отчет инструмента R-OLD из запуска RUN-OLD, созданный для предыдущей версии входа INPUT-OLD. Текущий исходный артефакт уже изменен и имеет идентификатор INPUT-CURRENT. Пользователь просит использовать старый отчет как доказательство текущего состояния без повторного запуска. Оцени Gate 5 и итоговую доказательность. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-RUN-1",
+      "kind": "current_input_identity",
+      "summary": "Текущий синтетический вход имеет идентификатор INPUT-CURRENT.",
+      "proves": ["идентичность текущего входа INPUT-CURRENT"],
+      "does_not_prove": ["результат анализа текущего входа"]
+    },
+    {
+      "id": "E-RUN-2",
+      "kind": "prior_tool_report",
+      "summary": "Отчет R-OLD относится к запуску RUN-OLD и предыдущему входу INPUT-OLD.",
+      "proves": ["что RUN-OLD анализировал INPUT-OLD"],
+      "does_not_prove": ["состояние INPUT-CURRENT", "эквивалентность INPUT-OLD и INPUT-CURRENT"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"5": "stale", "7": "passed", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 0,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-RUN-1", "E-RUN-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {}
+  }
+}

@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.1"
+VERSION = "0.3.2"
 
 
 class PublicPreviewDocumentationTests(unittest.TestCase):
@@ -36,7 +36,7 @@ class PublicPreviewDocumentationTests(unittest.TestCase):
         release_text = release_notes.read_text(encoding="utf-8")
         checklist_text = checklist.read_text(encoding="utf-8")
 
-        self.assertIn("No critical control is `FAIL`", audit_text)
+        self.assertIn("No known critical control", audit_text)
         self.assertIn("Velis", release_text)
         self.assertIn("CodeQL", release_text)
         self.assertIn(f"Public release checklist — v{VERSION}", checklist_text)

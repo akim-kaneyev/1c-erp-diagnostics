@@ -17,7 +17,9 @@ For each material conclusion:
 7. look for an earlier divergence point;
 8. test reasonable alternative explanations;
 9. state a falsifier;
-10. downgrade status when evidence is insufficient.
+10. verify provenance closure from each material premise/causal link back to an original artifact or documented derivation chain;
+11. verify every relied-upon executable/tool result belongs to the current case and current material input identities rather than a stale run;
+12. downgrade status when evidence is insufficient.
 
 ## Review finding rule
 
@@ -25,4 +27,8 @@ A review label such as `critical`, `high`, `blocking`, or an agent's confident d
 
 Likewise, absence of findings from another reviewer or tool is not proof of correctness. Resolve disagreements by evidence and reproduction, never by majority vote or confidence wording.
 
-A final root cause may be `УСТАНОВЛЕНО` only after surviving this pass and only when no material supplied evidence remains unaccounted for in a way that could change the conclusion.
+## Provenance closure rule
+
+A claim may not remain `УСТАНОВЛЕНО` when any material chain has an unanchored transformation, unknown parent evidence, mismatched execution identity or stale output. A clean summary, report or analyzer finding cannot repair a broken lineage. Return to the earliest missing artifact/derivation/run record and reopen the affected gate.
+
+A final root cause may be `УСТАНОВЛЕНО` only after surviving this pass, with closed provenance for every material causal link and no material supplied evidence left unaccounted for in a way that could change the conclusion.

@@ -1,6 +1,6 @@
 # Upstream methodology references
 
-Pinned review date: 2026-08-24.
+Pinned review date: 2026-08-25.
 
 ## OpenAI define-goal
 
@@ -91,3 +91,29 @@ What we do NOT copy as-is:
 - duplicating roles when the bounded dynamic graph can prove the same claim with fewer independent nodes.
 
 Our implementation keeps one primary domain, at most two justified secondary domains and normally no more than four active specialist nodes, while preserving independence at Gate 7 and at the required validation level.
+
+## Grok Bot 0.18 reconstructed — forensic provenance and publication discipline
+
+Source reviewed on 2026-08-25:
+`https://github.com/b-nnett/grok-bot-0.18-reconstructed`
+
+Relevant reviewed areas:
+- `PROVENANCE.md` — evidence-only reconstruction and artifact anchors;
+- `source/node-agent-coordinator/inference-router.ts` and local execution supervision — run/process identity and stale-state resistance;
+- `scripts/verify.mjs` — deterministic composition/provenance verification;
+- `docs/PUBLISHING.md` — clean export, full-history and redistribution checks.
+
+What we adopt as independently implemented methodology:
+- a material derived result must be traceable to an original artifact through explicit derivation lineage rather than merely appearing plausible;
+- a claim must have provenance closure across every material causal transition, not just a bag of individually valid references;
+- executable evidence must be tied to exact case/input identity, tool/version and output identity so an old but valid report cannot silently prove a changed input;
+- changed material input makes dependent prior execution evidence stale until rerun or deterministic equivalence is proven;
+- public-release checks must distinguish current-tree cleanliness from full Git-history cleanliness and verify the actual archive tree that is distributed.
+
+What we do NOT copy as-is:
+- any Grok Bot source implementation, reconstructed proprietary application code, renderer, Electron/auth stack or inference router;
+- provider-routing/session UX that does not improve 1C diagnostic correctness;
+- heuristic read-only/destructive classification based on tool names/descriptions; our explicit `R0–R3` contract is stronger;
+- upstream binaries, recovered artifacts, trademarks or any material whose redistribution rights are unclear.
+
+The repository itself states that it is an unofficial reconstruction and does not assert an upstream source-code license. Therefore this project adopts only general engineering ideas and implements them independently; no Grok reconstruction code is copied into `1c-erp-diagnostics`.

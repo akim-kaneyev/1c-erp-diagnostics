@@ -10,27 +10,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
-MANIFEST = (
-    ROOT
-    / "plugins"
-    / "one-c-erp-diagnostics"
-    / ".codex-plugin"
-    / "plugin.json"
-)
+MANIFEST = ROOT / "plugins" / "one-c-erp-diagnostics" / ".codex-plugin" / "plugin.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.3.1"
-EXPECTED_ORDER = [
-    "one-c-erp-diagnostics",
-    "unica",
-    "1c-skills",
-    "1c-skills-py",
-]
+EXPECTED_VERSION = "0.3.2"
+EXPECTED_ORDER = ["one-c-erp-diagnostics", "unica", "1c-skills", "1c-skills-py"]
 EXPECTED_SOURCES = {
-    "one-c-erp-diagnostics": {
-        "source": "local",
-        "path": "./plugins/one-c-erp-diagnostics",
-    },
+    "one-c-erp-diagnostics": {"source": "local", "path": "./plugins/one-c-erp-diagnostics"},
     "unica": {
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
@@ -67,25 +53,23 @@ def load_json(path: Path) -> dict:
 
 def main() -> int:
     errors: list[str] = []
-
     for path in REQUIRED_FILES:
         if not path.is_file():
             errors.append(f"Missing required ecosystem/publication file: {path.relative_to(ROOT)}")
 
     try:
         marketplace = load_json(MARKETPLACE)
-    except Exception as exc:  # noqa: BLE001 - validator reports malformed input
+    except Exception as exc:
         errors.append(f"Invalid marketplace JSON: {exc}")
         marketplace = {}
-
     try:
         manifest = load_json(MANIFEST)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         errors.append(f"Invalid plugin manifest JSON: {exc}")
         manifest = {}
 
     if marketplace.get("name") != MARKETPLACE_ID:
-        errors.append("Unexpected marketplace name; the installation identity must remain stable")
+        errors.append("Unexpected marketplace name; installation identity must remain stable")
     if (marketplace.get("interface") or {}).get("displayName") != "1C ERP Diagnostics Ecosystem":
         errors.append("Unexpected marketplace displayName")
 
@@ -93,18 +77,13 @@ def main() -> int:
     if not isinstance(plugins, list):
         errors.append("marketplace.plugins must be a list")
         plugins = []
-
     names = [item.get("name") for item in plugins if isinstance(item, dict)]
     if names != EXPECTED_ORDER:
         errors.append(f"Unexpected plugin order/content: {names!r}")
     if len(names) != len(set(names)):
         errors.append("Duplicate marketplace plugin names")
 
-    by_name = {
-        item.get("name"): item
-        for item in plugins
-        if isinstance(item, dict) and isinstance(item.get("name"), str)
-    }
+    by_name = {item.get("name"): item for item in plugins if isinstance(item, dict) and isinstance(item.get("name"), str)}
     for name, expected_source in EXPECTED_SOURCES.items():
         item = by_name.get(name)
         if not item:
@@ -129,9 +108,7 @@ def main() -> int:
     interface = manifest.get("interface") or {}
     if manifest.get("version") != EXPECTED_VERSION:
         errors.append(f"Plugin manifest version must be {EXPECTED_VERSION}")
-    if interface.get("termsOfServiceURL") != (
-        "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md"
-    ):
+    if interface.get("termsOfServiceURL") != "https://github.com/akim-kaneyev/1c-erp-diagnostics/blob/main/TERMS.md":
         errors.append("Manifest termsOfServiceURL is missing or unexpected")
     if "единая экосистема" not in str(interface.get("shortDescription", "")):
         errors.append("Short description does not identify the unified ecosystem")

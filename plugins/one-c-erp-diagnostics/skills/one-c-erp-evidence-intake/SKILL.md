@@ -32,6 +32,18 @@ Keep two gaps separate:
 
 A final `УСТАНОВЛЕНО` conclusion is forbidden if material supplied evidence remains `unreadable` or `blocked` and could reasonably falsify the conclusion.
 
+## Artifact-anchor and derivation contract
+
+Evidence created by parsing, filtering, normalization, joining, comparison, OCR/export or another transformation is derived evidence. It must keep a traceable lineage to the original artifact:
+
+- parent Evidence ID(s) in `derived_from`;
+- transformation name;
+- tool and version/ref when applicable;
+- `run_id` for executable transformations;
+- output hash/identifier when the derived result is persisted or deterministically serializable.
+
+Do not treat a derived table/report as proof of what the original file contained if the parent anchor or transformation is missing. If a material derivation chain is broken, record the evidence as provenance-incomplete and block any final conclusion that depends on that gap.
+
 Do not infer hidden 1C fields or objects from visual similarity. For `.mxl`, do not pretend to have a universal parser; prefer a verified export to XLSX/XML/HTML/TXT plus PDF for visual control when needed.
 
 List the smallest missing evidence set required to advance a blocked conclusion.

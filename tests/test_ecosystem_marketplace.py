@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-PLUGIN_VERSION = "0.3.1"
+PLUGIN_VERSION = "0.3.2"
 UNICA_COMMIT = "aefc880f9bab606a5c55ed11af563b740054a549"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
@@ -22,7 +22,6 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         }
 
     def test_marketplace_identity_and_order(self) -> None:
-        # The internal ID is installation identity and must remain stable across upgrades.
         self.assertEqual(self.marketplace["name"], MARKETPLACE_ID)
         self.assertEqual(
             self.marketplace["interface"]["displayName"],

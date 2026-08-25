@@ -228,7 +228,7 @@ class EvalSuiteTests(unittest.TestCase):
 
     def test_sonarqube_finding_cannot_replace_runtime_erp_evidence(self) -> None:
         case = self.cases["sonarqube-static-finding-no-runtime"]
-        self.assertEqual(len(self.cases), 14)
+        self.assertEqual(len(self.cases), 16)
         self.assertEqual(
             case["capabilities"],
             [{"name": "sonarqube-bsl-local", "status": "available"}],

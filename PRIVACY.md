@@ -2,13 +2,13 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.1 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.2 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
 ## Data handling
 
-The plugin instructions may ask ChatGPT or Codex to analyze evidence the user provides or to use tools/apps that the user has already enabled when they are relevant to the task. Those host products and third-party services have their own data-handling policies and permissions.
+The plugin instructions may ask ChatGPT or Codex to analyze evidence the user provides or to use tools/apps that the user has already enabled when relevant. Those host products and third-party services have their own data-handling policies and permissions.
 
 The `1C ERP Diagnostics` package itself does not intentionally collect or transmit case data to a developer-operated service.
 
@@ -17,6 +17,12 @@ The `1C ERP Diagnostics` package itself does not intentionally collect or transm
 Users should not provide production `.dt` files, full database backups, plaintext credentials, tokens, unnecessary personal data or broad confidential exports merely for convenience. Prefer the smallest evidence slice that can answer the diagnostic question and pseudonymize organizations, counterparties and people when possible.
 
 Before sharing a file, review hidden spreadsheet sheets, document properties, embedded metadata, comments, connection strings and credentials.
+
+## Evidence lineage and execution records
+
+v0.3.2 may record evidence identifiers/hashes, parent/derived relationships, transformation/tool versions, run identifiers, timestamps and output hashes in case state when those details are needed for reproducibility. These records are diagnostic metadata, not a reason to persist confidential source content. Case state and runtime evidence should remain local/ignored unless explicitly sanitized for publication.
+
+Execution identity must not contain plaintext secrets. Authentication material remains outside evidence/state records even when a tool invocation is recorded.
 
 ## Companion plugins and connected tools
 
@@ -30,15 +36,17 @@ The optional SonarQube BSL adapter defaults to a user-managed loopback-only inst
 
 Scanner and API tokens are not plugin data and must not be stored in the repository, configuration, reports, logs or conversations. The scanner receives `SONAR_TOKEN` only in its child-process environment. API reads use a separate least-privilege Bearer token supplied only for the API child process. The adapter does not automatically create projects or tokens, delete projects, or change quality profiles.
 
-A remote SonarQube endpoint is a separate external data destination. `sonarqube-bsl-local` prohibits it. Any separate workflow that uploads source or writes analysis state remotely is `R3` and requires exact approval, HTTPS, and review of the remote operator's retention, access and privacy terms. A separately approved read of an existing remote report does not upload source, but still requires endpoint/access review.
+A remote SonarQube endpoint is a separate external data destination. `sonarqube-bsl-local` prohibits it. Any separate workflow that uploads source or writes analysis state remotely is `R3` and requires exact approval, HTTPS, and review of the remote operator's retention, access and privacy terms.
 
 ## Isolated execution
 
 OpenSandbox or another isolated executor may be used only when executable validation adds measurable value. Isolation does not replace data minimization. Secrets should be injected through supported secret-management mechanisms rather than stored in files. Sandbox output is evidence to verify, not truth by itself.
 
-## Repository security controls
+## Repository security and publication controls
 
-The public repository uses protected-branch rules, required CI and CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection. These GitHub controls reduce distribution risk but do not replace user-side data minimization or review of every material conclusion.
+The public repository uses protected-branch rules, required CI and CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection. v0.3.2 additionally validates the actual release archive tree and scans the complete available Git history for prohibited case/database/key/environment paths, plaintext credential assignments and user-machine absolute paths. CI requires a non-shallow checkout for this claim.
+
+These controls reduce distribution risk but do not replace user-side data minimization, GitHub's own security controls or manual review of every material conclusion.
 
 ## Public issues and examples
 
