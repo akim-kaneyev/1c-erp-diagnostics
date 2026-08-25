@@ -35,7 +35,7 @@ Apply `one-c-erp-route-case` and `one-c-erp-dynamic-plan`. Select one primary do
 ### Gate 4 — investigate
 Run selected domain skills plus `one-c-erp-diagnose-core`. Specialists may run in parallel only for independent read-only questions. Every output contains claim IDs, evidence references, analytic keys, assumptions, falsifiers and provenance. External executable output also carries execution identity.
 
-If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep linked incident `open`/`blocked`. No decorated statuses.
+If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep linked incident `open`/`blocked`. Never use `passed*` or another decorated status.
 
 ### Gate 5 — execute when justified
 Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution` and `one-c-erp-risk-control`.
