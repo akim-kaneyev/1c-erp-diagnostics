@@ -17,8 +17,22 @@ Build a claim ledger:
 - consuming mechanism;
 - alternatives tested;
 - falsifier;
-- specialist/capability provenance.
+- specialist/capability provenance;
+- provenance closure status: `closed | open | broken`.
+
+## Provenance closure contract
+
+For every material claim, trace each material premise and causal link back to either:
+
+1. original source evidence with a stable identifier/hash where available; or
+2. derived evidence whose `derived_from`, transformation, tool/version and execution record link it to its parent artifact.
+
+The required closure is:
+
+`source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
+
+A list of evidence IDs is not sufficient if the transition between them is inferred but not demonstrated. Mark closure `open` when a required link still needs evidence and `broken` when a relied-upon derived result has no recoverable parent/transformation identity.
+
+A preliminary `УСТАНОВЛЕНО` requires both a complete causal chain and `closed` provenance closure for every material causal link, but remains preliminary until Gate 7 passes.
 
 Deduplicate equivalent claims but never erase disagreement. Resolve conflicts by returning to original evidence and analytic keys, not by majority vote or specialist confidence.
-
-A preliminary `УСТАНОВЛЕНО` requires a complete causal chain, but remains preliminary until Gate 7 passes.
