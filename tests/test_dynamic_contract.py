@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.2"
+PLUGIN_VERSION = "0.3.3"
 
 
 def load_artifact_module():
@@ -80,7 +80,7 @@ class DynamicContractTests(unittest.TestCase):
 
         self.assertIn("current goal/task scope", root_skill)
         self.assertIn("linked incident scope", root_skill)
-        self.assertIn("Do not use decorated statuses such as `passed*`", root_skill)
+        self.assertIn("No decorated/noncanonical Gate statuses", root_skill)
         self.assertIn("Current goal status", final_review)
         self.assertIn("Linked incident status", final_review)
         self.assertIn("Current goal status:", state)
@@ -237,6 +237,29 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("mismatched execution identity", verify)
         self.assertIn("## Execution records", state)
         self.assertIn("Provenance closure", state)
+
+    def test_strict_eval_result_contract_is_explicit(self) -> None:
+        root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        packaged = (PLUGIN / "skills" / "one-c-erp-diagnostics" / "SKILL.md").read_text(encoding="utf-8")
+        portable = (ROOT / "skills" / "one-c-erp-diagnostics" / "SKILL.md").read_text(encoding="utf-8")
+        final_review = (PLUGIN / "skills" / "one-c-erp-final-review" / "SKILL.md").read_text(encoding="utf-8")
+        risk_control = (PLUGIN / "skills" / "one-c-erp-risk-control" / "SKILL.md").read_text(encoding="utf-8")
+        action_decision = (PLUGIN / "skills" / "one-c-erp-action-decision" / "SKILL.md").read_text(encoding="utf-8")
+
+        for skill in (root_skill, packaged, portable, final_review):
+            self.assertIn("EVAL_RESULT_JSON", skill)
+            self.assertIn("exactly one JSON object", skill)
+            self.assertIn("causal_chain.complete", skill)
+            self.assertIn("EVIDENCE_REQUIRED", skill)
+            self.assertIn("actions", skill)
+        for skill in (root_skill, packaged, portable):
+            self.assertIn("{id, status, text, evidence_ids, falsifier}", skill)
+            self.assertIn("read-only", skill)
+            self.assertIn("R0", skill)
+            self.assertIn("NO-GO", skill)
+        self.assertIn("Risk classifies the blast radius", risk_control)
+        self.assertIn("R0 + EVIDENCE_REQUIRED", action_decision)
+        self.assertIn("not_in_scope", final_review)
 
 
 if __name__ == "__main__":
