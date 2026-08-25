@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.2 — provenance closure and publication integrity
+
+- added artifact-anchor/derivation lineage for material derived evidence, including parent Evidence IDs, transformation, tool/version/ref, execution run and output identity where applicable;
+- added `closed | open | broken` provenance closure across source artifact → evidence → premise → causal link → conclusion;
+- added execution identity and stale-result handling so an old or mismatched tool report cannot prove the current case/input state;
+- strengthened Gate 7 to independently verify lineage and execution freshness in addition to evidence coverage and causal links;
+- extended resumable case state with derivation and execution ledgers;
+- expanded the executable acceptance suite from 14 to 16 cases with required `provenance_closure` and `execution_identity` controls;
+- added a full-history publication validator that verifies `git archive HEAD`, rejects shallow-history release claims and scans historical paths/text for prohibited artifacts, credential assignments and user-machine paths;
+- changed CI checkout to `fetch-depth: 0` and made publication-history validation mandatory on Python 3.10/3.12;
+- retained 32 packaged skills, the stable four-plugin marketplace and all immutable companion pins;
+- adopted only general engineering methodology from the reviewed Grok reconstruction repository; no external reconstructed implementation code was copied.
+
 ## 0.3.1 — factual SonarQube Gate 0 discovery
 
 - fixed Gate 0 so absence of a dedicated SonarQube MCP/app/tool name is not treated as evidence that the local runtime is unavailable;
