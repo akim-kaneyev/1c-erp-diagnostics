@@ -29,7 +29,7 @@ Marketplace presence does not prove runtime availability. Missing required capab
 
 ## Gate 1 — Goal contract
 
-Define concrete outcome, scope, completion evidence, exclusions and stop condition. Separate the current goal/task scope from any linked 1C incident that may remain unresolved. Do not describe the incident itself as closed merely because a narrower assessment is complete.
+Define concrete outcome, scope, completion evidence, exclusions and stop condition. Separate the **current goal/task scope** from the **linked incident scope** whenever the underlying 1C incident is broader. Do not describe the incident itself as closed merely because a narrower assessment is complete.
 
 ## Gate 2 — Evidence intake
 
@@ -57,7 +57,7 @@ The earliest proven divergence matters more than the last visible symptom. Code/
 
 For every external companion output record canonical identity, assigned operation, evidence inputs, version/ref, execution identity when applicable, output location/hash, limitations and whether another method reproduced the material result.
 
-If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the linked incident separately `open`/`blocked`. Never hide unresolved scope with decorated statuses.
+If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the linked incident separately `open`/`blocked`. Do not use decorated statuses such as `passed*`.
 
 ## Gate 5 — Executable validation and sandbox decision
 
