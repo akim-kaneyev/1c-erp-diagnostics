@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.2 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.3 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -20,9 +20,9 @@ Before sharing a file, review hidden spreadsheet sheets, document properties, em
 
 ## Evidence lineage and execution records
 
-v0.3.2 may record evidence identifiers/hashes, parent/derived relationships, transformation/tool versions, run identifiers, timestamps and output hashes in case state when those details are needed for reproducibility. These records are diagnostic metadata, not a reason to persist confidential source content. Case state and runtime evidence should remain local/ignored unless explicitly sanitized for publication.
+The plugin may record evidence identifiers/hashes, parent/derived relationships, transformation/tool versions, run identifiers, timestamps and output hashes in case state when those details are needed for reproducibility. These records are diagnostic metadata, not a reason to persist confidential source content. Case state and runtime evidence should remain local/ignored unless explicitly sanitized for publication.
 
-Execution identity must not contain plaintext secrets. Authentication material remains outside evidence/state records even when a tool invocation is recorded.
+Execution identity and strict `EVAL_RESULT_JSON` output must not contain plaintext secrets. Authentication material remains outside evidence/state/result records even when a tool invocation is recorded.
 
 ## Companion plugins and connected tools
 
@@ -44,7 +44,7 @@ OpenSandbox or another isolated executor may be used only when executable valida
 
 ## Repository security and publication controls
 
-The public repository uses protected-branch rules, required CI and CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection. v0.3.2 additionally validates the actual release archive tree and scans the complete available Git history for prohibited case/database/key/environment paths, plaintext credential assignments and user-machine absolute paths. CI requires a non-shallow checkout for this claim.
+The public repository uses protected-branch rules, required CI and CodeQL results, private vulnerability reporting, Dependabot alerts/security updates, secret scanning and push protection. The release process validates the actual release archive tree and scans the complete available Git history for prohibited case/database/key/environment paths, plaintext credential assignments and user-machine absolute paths. CI requires a non-shallow checkout for this claim.
 
 These controls reduce distribution risk but do not replace user-side data minimization, GitHub's own security controls or manual review of every material conclusion.
 
