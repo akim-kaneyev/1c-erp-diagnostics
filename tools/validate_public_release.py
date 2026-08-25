@@ -36,6 +36,7 @@ REQUIRED_FILES = [
     ROOT / "tests" / "test_evals.py",
     ROOT / "tools" / "validate_evals.py",
     ROOT / "tools" / "validate_runtime_run.py",
+    ROOT / "tools" / "validate_publication_history.py",
     ROOT / "tools" / "unpack_1c_artifact.py",
     MANIFEST,
     MARKETPLACE,
@@ -83,7 +84,7 @@ def fail(errors: list[str], message: str) -> None:
 def load_json(path: Path, errors: list[str]) -> dict:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001 - validator reports malformed files
+    except Exception as exc:
         fail(errors, f"Invalid JSON: {path.relative_to(ROOT)}: {exc}")
         return {}
     if not isinstance(value, dict):
@@ -128,7 +129,6 @@ def validate_skill(path: Path, errors: list[str]) -> str | None:
 
 
 def validate_png(path: Path, errors: list[str]) -> None:
-    """Validate PNG framing, critical chunks and CRCs without Pillow."""
     try:
         data = path.read_bytes()
     except OSError as exc:
