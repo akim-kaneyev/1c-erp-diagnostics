@@ -9,6 +9,22 @@ Run Gate 0 through Gate 10 in order. Internally apply packaged specialist skills
 
 This orchestrator is a provider-neutral harness around the available model: correctness comes from the Gate contract, evidence coverage, artifact/provenance closure, execution identity, tool/capability provenance, an inspect → hypothesize → test → compare loop and independent validation. Model confidence or provider identity never substitutes for evidence.
 
+## Strict `EVAL_RESULT_JSON` mode
+
+When the request contains the literal token `EVAL_RESULT_JSON`, machine-readable acceptance takes precedence over the normal prose response:
+
+1. Return exactly one JSON object, with no Markdown fence, preamble, explanation or trailing text.
+2. When the prompt provides a skeleton, preserve its exact top-level keys, nested types and field names. Do not add, omit or rename fields.
+3. `gates` must be one object with string keys `"0"` through `"10"`. Use only `pending | passed | blocked | failed | stale | not_required` in lower case.
+4. A Gate status describes whether the Gate procedure completed correctly, not whether the hypothesis was proved. A Gate may be `passed` when it correctly establishes insufficient evidence, rejects a cause or performs an adversarial downgrade. Use `blocked` only when the Gate itself cannot run; `failed` only for an invalid/failed Gate procedure; `stale` only for evidence invalidated by changed identity.
+5. `risk` classifies the actual/proposed action surface. Read-only analysis, comparison or refusal to reuse stale evidence is `R0`. Do not use `R3` for evidentiary seriousness or uncertainty; `R3` requires an in-scope production/accounting/access/closed-period/external write.
+6. Use `EVIDENCE_REQUIRED` when the requested conclusion/current state needs additional current evidence, rerun or proved equivalence. Use `NO-GO` only when an actual in-scope action is unsafe, prohibited or unapproved. Use `NO_ACTION` when the declared goal is complete without action or further evidence.
+7. `linked_incident_status = not_in_scope` only when the prompt explicitly excludes the underlying incident. If it remains relevant but cannot be resolved, use `blocked` or `open`.
+8. `claims` contains material conclusions, not copied Evidence summaries. Every item must be exactly `{id, status, text, evidence_ids, falsifier}`. Never substitute `claim` for `id`/`text` and never omit `falsifier`.
+9. `causal_chain.complete = true` only when all six canonical 1C stages are evidenced in order: `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`. A complete logical argument about stale evidence or provenance is not a complete 1C causal chain. Every link must be exactly `{stage, evidence_ids}`; otherwise return `complete: false` with an empty or schema-valid links list.
+10. If no in-scope action exists, `actions` must be `[]`. If present, each item must be exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
+11. Remove every placeholder and validate the finished object against the supplied skeleton before sending.
+
 ## Verified marketplace registry
 
 Check these canonical companions by exact name during Gate 0:
@@ -40,7 +56,7 @@ If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep lin
 ### Gate 5 — execute when justified
 Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution`, `one-c-erp-local-static-analysis` when SonarQube is justified, and `one-c-erp-risk-control`.
 
-Every executable result used as evidence records unique `run_id`, current `case_id`, input evidence identities/hashes, tool/version/ref, operation without secrets, timestamps when exposed, output identifier/hash, status and limitations. Reject or reopen stale results when case/input identity changed unless deterministic equivalence is proven.
+Every executable result used as evidence records unique `run_id`, current `case_id`, input evidence identities/hashes, tool/version/ref, operation without secrets, timestamps when exposed, output identifier/hash, status and limitations. Reject or reopen stale results when case/input identity changed unless deterministic equivalence is proven. In a strict eval, report the Gate itself as `stale` when the requested current conclusion depends on such mismatched execution evidence.
 
 Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. SonarQube remains a host execution adapter, not a marketplace companion or causal authority. Use it only after factual preflight. Never use a companion solely because installed.
 
@@ -49,13 +65,13 @@ Apply `one-c-erp-evidence-synthesis`. Preserve support, contradictions, limitati
 
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
 
-Closure is `closed | open | broken`. Preliminary `УСТАНОВЛЕНО` requires complete causal chain and closed material provenance.
+Closure is `closed | open | broken`. Preliminary `УСТАНОВЛЕНО` requires complete causal chain and closed material provenance. Gate 6 may pass when synthesis correctly concludes `ТРЕБУЕТ ПРОВЕРКИ`.
 
 ### Gate 7 — challenge
-Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. Reviewer severity/confidence is a testable finding, not proof. Final `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7.
+Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. Reviewer severity/confidence is a testable finding, not proof. Final `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7. Gate 7 passes when it correctly rejects an unsupported current-state claim.
 
 ### Gate 8 — decide action
-Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action.
+Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action or request evidence. Do not transform missing evidence into `R3 + NO-GO`; a read-only evidence gap is normally `R0 + EVIDENCE_REQUIRED`.
 
 ### Gate 9 — validate
 Apply `one-c-erp-post-change-validation` on identical analytics. Required ladder: structural → static → metadata/runtime → functional → business/accounting. Lower levels cannot substitute for required higher levels. Analysis-only goals may mark `not_required`.

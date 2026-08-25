@@ -15,6 +15,31 @@ The user invokes one command. The orchestrator discovers capabilities, selects i
 
 The orchestrator is a provider-neutral harness around the available model. Correctness comes from explicit instructions, evidence coverage, artifact/provenance closure, capability/tool provenance, execution identity, an inspect → hypothesize → test → compare loop and independent validation. Model/provider identity or confidence is runtime provenance, never proof.
 
+## Strict `EVAL_RESULT_JSON` mode
+
+When the request contains literal `EVAL_RESULT_JSON`, the normal narrative response is prohibited and the following protocol is mandatory:
+
+1. Return exactly one JSON object without Markdown, code fences, preamble, commentary or trailing text.
+2. If the prompt supplies a skeleton, preserve the exact top-level keys, nested data types and field names. Do not add, omit or rename fields.
+3. `gates` is one object with string keys `"0"` through `"10"`. Allowed values are only `pending | passed | blocked | failed | stale | not_required`, exactly in lower case.
+4. Gate status describes whether that Gate procedure completed correctly, not whether the investigated hypothesis was proved:
+   - `passed` — the Gate correctly completed its task, including correctly establishing insufficiency, contradiction, rejection or downgrade;
+   - `blocked` — the Gate itself cannot be completed because required evidence, capability or approval is absent;
+   - `failed` — the Gate procedure/output is invalid;
+   - `stale` — the Gate depends on evidence invalidated by changed case/input/execution identity;
+   - `not_required` — genuinely outside the declared goal.
+5. `risk` classifies the blast radius of the actual/proposed action, never evidentiary severity. Read-only reasoning, comparison or refusal to reuse stale evidence is `R0`. `R3` requires an in-scope production/accounting/access/closed-period/configuration/external write.
+6. Decision values have distinct meanings:
+   - `EVIDENCE_REQUIRED` — the requested conclusion/current state needs additional current evidence, rerun or proved equivalence;
+   - `NO-GO` — an actual in-scope action is unsafe, prohibited, unapproved or missing mandatory controls;
+   - `NO_ACTION` — the declared goal is complete without action or additional evidence;
+   - `GO` — a specifically scoped action is authorized by the applicable risk gate.
+7. `linked_incident_status = not_in_scope` only when the prompt explicitly excludes the underlying incident. Missing or stale evidence means `blocked` or `open`, not `not_in_scope`.
+8. `claims` contains material conclusions, not copied Evidence summaries. Each item is exactly `{id, status, text, evidence_ids, falsifier}`. Do not use `claim` instead of `id`/`text`; do not omit `falsifier`; do not create trivial `УСТАНОВЛЕНО` claims merely by restating input identities.
+9. `causal_chain.complete = true` only when all six canonical 1C causal stages are evidenced in order: `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`. A complete logical argument about provenance or stale evidence is not a complete 1C causal chain. Each link is exactly `{stage, evidence_ids}`. Otherwise use `complete: false` and an empty or schema-valid links list.
+10. If no actual/proposed in-scope action exists, `actions` must be `[]`. If present, each action is exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
+11. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
+
 ## Gate 0 — Capability and state discovery
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.
@@ -25,7 +50,7 @@ The orchestrator is a provider-neutral harness around the available model. Corre
 6. Record version/ref when exposed, permissions, write-risk, provenance and exact purpose. Model/provider identity is provenance only.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
 
-Marketplace presence does not prove runtime availability. Missing required capability becomes documented fallback or `blocked`, never simulated output.
+Marketplace presence does not prove runtime availability. A failed public-plugin/dependency resolver lookup does not prove that a selected skills-first custom-marketplace plugin is uninstalled; report only what that resolver actually established. Missing required capability becomes documented fallback or `blocked`, never simulated output. A Gate 0 inventory can pass even when optional capabilities are unavailable, provided their status and consequences are recorded honestly.
 
 ## Gate 1 — Goal contract
 
@@ -39,7 +64,7 @@ Every supplied source/attachment receives an Evidence ID and disposition: `exami
 
 For every derived artifact produced by extraction, filtering, normalization, joining, comparison, parser/export or similar transformation, record its parent Evidence ID(s), transformation, tool/version/ref, execution `run_id` when applicable, and output hash/identifier. A material derived result with no traceable parent/derivation is provenance-incomplete and cannot independently support final `УСТАНОВЛЕНО`.
 
-A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could falsify the conclusion, or when a material derivation chain is broken.
+A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could falsify the conclusion, or when a material derivation chain is broken. Gate 2 may still pass when every supplied item is accounted for and the missing primary source is explicitly recorded as expected-but-missing evidence.
 
 ## Gate 3 — Dynamic execution graph
 
@@ -65,7 +90,7 @@ Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime, OpenSandbox or `one
 
 Every executable result relied on later must have an execution identity: unique `run_id`, current `case_id`, input Evidence IDs and hashes/stable identifiers, tool/runtime version/ref, operation without secrets, timestamps when exposed, output hash/identifier, status and limitations.
 
-Before reusing an earlier result, compare its case/input identities with current evidence. A result from another case, mismatched input, or execution preceding a material input change is `stale`; rerun it or prove deterministic equivalence. Never silently promote stale output into current evidence.
+Before reusing an earlier result, compare its case/input identities with current evidence. A result from another case, mismatched input, or execution preceding a material input change is `stale`; rerun it or prove deterministic equivalence. Never silently promote stale output into current evidence. In an eval where the current conclusion depends on that mismatched report, Gate 5 is `stale`, not a custom value such as `REJECT_CURRENT_STATE_USE`.
 
 Use SonarQube only after factual Gate 0 preflight; keep credentials in child-process environment only. If required execution is unavailable, mark the gate `blocked`; never simulate it.
 
@@ -77,7 +102,7 @@ For every material claim record provenance closure `closed | open | broken` and 
 
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
 
-A list of evidence IDs is not sufficient if a transition is merely inferred. Preliminary `УСТАНОВЛЕНО` requires a complete causal chain and closed provenance for every material causal link.
+A list of evidence IDs is not sufficient if a transition is merely inferred. Preliminary `УСТАНОВЛЕНО` requires a complete causal chain and closed provenance for every material causal link. Gate 6 may pass when synthesis correctly concludes that the cause/current state remains `ТРЕБУЕТ ПРОВЕРКИ`.
 
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`.
 
@@ -87,11 +112,13 @@ A distinct reviewer re-reads original evidence, not only synthesis. It challenge
 
 A label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof. Convert each finding into a testable claim and reproduce/evidence-link it. Absence of findings is not proof either.
 
-Final `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity.
+Final `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity. Gate 7 is `passed` when it correctly rejects an unsupported conclusion or stale-evidence reuse.
 
 ## Gate 8 — Risk-controlled action decision
 
 Classify action: `R0` read-only; `R1` derived local artifact/report; `R2` reversible test-environment change; `R3` production/accounting/access/closed periods/broad reposting.
+
+Risk describes the action surface, not the seriousness of uncertainty. A read-only decision not to trust `R-OLD` remains `R0`. Missing current evidence normally leads to `EVIDENCE_REQUIRED`; `NO-GO` is reserved for an actual unsafe/unapproved in-scope action.
 
 R3 requires explicit approval, tested rollback, affected scope and post-change validation. Prefer standard 1C settings/NSI, standard documents/mechanisms, then correction of actual source document in an allowed period. Do not automatically grant broad rights, open closed periods, mass repost or modify standard configuration.
 
@@ -128,6 +155,7 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No producer self-report treated as independent validation.
 - No final `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
 - No production-changing action without the applicable risk gate.
-- No decorated gate statuses.
+- No decorated/noncanonical Gate statuses.
+- No `EVAL_RESULT_JSON` object that violates the supplied skeleton.
 - No incident closure claim when only a narrower goal is complete.
 - No restart from zero when valid state exists.

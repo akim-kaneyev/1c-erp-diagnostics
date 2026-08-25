@@ -13,6 +13,22 @@ The user should not need to manually chain subordinate skills, prompts, plugins,
 
 Treat this skill as a provider-neutral harness around the available model. Correctness is defined by evidence coverage, artifact/provenance closure, execution identity and the Gate contract, not by model brand, confidence or self-reported success. Use an inspect → hypothesize → test → compare loop and reopen the earliest affected gate when evidence disagrees or input identity changes.
 
+## Strict `EVAL_RESULT_JSON` mode
+
+When the prompt contains `EVAL_RESULT_JSON`:
+
+- return exactly one JSON object, without Markdown or prose;
+- preserve the exact supplied skeleton, keys, field names and data types; no extra/missing/renamed fields;
+- use a `gates` object with keys `"0"`–`"10"` and only `pending | passed | blocked | failed | stale | not_required`;
+- treat Gate status as status of the Gate procedure, not proof status: a Gate may pass after correctly rejecting a hypothesis or establishing insufficiency;
+- classify action risk, not evidentiary severity: read-only analysis/refusal to reuse stale evidence is `R0`; use `R3` only for an in-scope production/accounting/access/closed-period/external write;
+- use `EVIDENCE_REQUIRED` for missing current evidence/rerun/equivalence; reserve `NO-GO` for an unsafe/prohibited/unapproved in-scope action;
+- use `linked_incident_status = not_in_scope` only when the incident was explicitly excluded;
+- make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries;
+- set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; logical freshness/provenance reasoning is not that causal chain;
+- use `actions: []` when no action exists; otherwise use exact action objects;
+- remove placeholders and validate the object against the skeleton before sending.
+
 ## Gate 0 — Capability and state discovery
 
 Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only.
@@ -52,13 +68,13 @@ Before reuse, compare run identity with current inputs. Changed/mismatched input
 ## Gate 6 — Preliminary conclusion
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`. For each material claim record support, contradiction, falsifier and provenance closure `closed | open | broken` through:
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
-A list of references does not close an inferred transition.
+A list of references does not close an inferred transition. Gate 6 may pass after correctly concluding that the claim remains unproved.
 
 ## Gate 7 — Independent/adversarial verification
-Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final `УСТАНОВЛЕНО` is forbidden without surviving this gate.
+Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
 
 ## Gate 8 — Action decision
-Choose smallest safe reversible action. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. R3 requires explicit approval, rollback and validation plan.
+Choose smallest safe reversible action or request evidence. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. Missing evidence normally means `R0 + EVIDENCE_REQUIRED`, not `R3 + NO-GO`. R3 requires explicit approval, rollback and validation plan.
 
 ## Gate 9 — Post-change validation
 Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.

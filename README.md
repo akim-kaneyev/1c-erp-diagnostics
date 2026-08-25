@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.2" src="https://img.shields.io/badge/version-0.3.2-0D1B2A.svg" />
+  <img alt="Version 0.3.3" src="https://img.shields.io/badge/version-0.3.3-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -103,6 +103,20 @@ For derived evidence, the project additionally requires artifact lineage: parent
 
 An executable report is not reusable merely because it looks current. Gate 5 records the case, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs are `stale` until rerun or proven equivalent.
 
+## Strict machine-readable evaluation
+
+When a synthetic acceptance prompt contains `EVAL_RESULT_JSON`, the plugin must return exactly one JSON object matching the supplied skeleton. Version 0.3.3 explicitly prevents the runtime mistakes observed during the first 0.3.2 smoke test:
+
+- upper-case, combined or custom Gate statuses instead of canonical lower-case values;
+- classifying evidentiary uncertainty as `R3`;
+- returning `NO-GO` where the correct decision is `EVIDENCE_REQUIRED`;
+- using `not_in_scope` merely because current evidence is missing;
+- renaming required claim fields or omitting falsifiers;
+- marking a logical stale-evidence argument as a complete six-stage 1C causal chain;
+- returning string arrays where the schema requires structured claim/link/action objects.
+
+The strict mode distinguishes the status of a Gate procedure from the proof status of a claim: Gate 6 or Gate 7 can pass because they correctly reject an unsupported conclusion, while Gate 10 remains blocked.
+
 ## Additional capabilities
 
 - PDF, Spreadsheets and Documents for evidence extraction;
@@ -162,7 +176,7 @@ See `SECURITY.md`, `PRIVACY.md`, `TERMS.md`, `SUPPORT.md` and [`plugins/one-c-er
 
 ## Project structure
 
-- `SKILL.md` — authoritative dynamic Gate 0–10 contract;
+- `SKILL.md` — authoritative dynamic Gate 0–10 and strict evaluation contract;
 - `.agents/plugins/marketplace.json` — unified verified 1C marketplace;
 - `plugins/one-c-erp-diagnostics/` — primary ChatGPT/Codex plugin;
 - `playbooks/` — domain-specific diagnostic rules;
@@ -175,7 +189,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.2 Public Preview release candidate.** This patch strengthens artifact provenance closure, execution identity/stale-result handling and full-history publication validation while preserving the verified four-plugin marketplace, 32 packaged skills, approved Velis assets, Gate 0–10 and `R0–R3`. Protected Pull Request CI, merge and exact-version clean-session acceptance for `0.3.2` remain separate evidence until completed.
+**v0.3.3 Public Preview release candidate.** This hotfix strengthens strict `EVAL_RESULT_JSON` conformance after the 0.3.2 clean-chat smoke test correctly rejected stale evidence semantically but violated the machine-readable risk, decision, Gate, claim, causal-chain and action contracts. It preserves artifact provenance closure, execution identity, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+
+Protected Pull Request CI, merge and exact-version clean-session acceptance for `0.3.3` remain separate evidence until completed. The repository must not claim runtime acceptance before the updated installed plugin passes the canonical rendered stale-execution and provenance-closure cases.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state.
 

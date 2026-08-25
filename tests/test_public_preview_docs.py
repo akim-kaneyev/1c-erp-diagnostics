@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.2"
+VERSION = "0.3.3"
 
 
 class PublicPreviewDocumentationTests(unittest.TestCase):
@@ -14,6 +14,7 @@ class PublicPreviewDocumentationTests(unittest.TestCase):
         self.assertIn(f"version-{VERSION}", readme)
         self.assertIn("status-public%20preview", readme)
         self.assertIn("Velis", readme)
+        self.assertIn("EVAL_RESULT_JSON", readme)
         self.assertNotIn("v0.2.3 Public Preview is live", readme)
 
     def test_privacy_scope_matches_current_ecosystem(self) -> None:
@@ -39,6 +40,7 @@ class PublicPreviewDocumentationTests(unittest.TestCase):
         self.assertIn("No known critical control", audit_text)
         self.assertIn("Velis", release_text)
         self.assertIn("CodeQL", release_text)
+        self.assertIn("EVAL_RESULT_JSON", release_text)
         self.assertIn(f"Public release checklist — v{VERSION}", checklist_text)
         self.assertIn("Repository visibility is Public", checklist_text)
         self.assertIn("Private vulnerability reporting is enabled", checklist_text)

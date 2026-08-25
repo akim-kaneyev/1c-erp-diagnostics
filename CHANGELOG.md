@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.3 — strict runtime evaluation output
+
+- added mandatory strict `EVAL_RESULT_JSON` mode to the authoritative, packaged and portable orchestrators;
+- require exactly one JSON object matching the supplied skeleton, with no renamed, missing or additional fields;
+- clarified that Gate status describes Gate-procedure completion rather than whether a hypothesis was proved;
+- prohibit upper-case, combined and custom Gate values and retain only `pending | passed | blocked | failed | stale | not_required`;
+- clarified that `R0–R3` classifies the actual/proposed action surface, so read-only rejection of stale evidence is `R0`, not `R3`;
+- separated `EVIDENCE_REQUIRED` from `NO-GO`: missing current evidence/rerun/equivalence is an evidence decision, while `NO-GO` blocks an unsafe or unapproved action;
+- restricted `not_in_scope` to incidents explicitly excluded by the prompt;
+- fixed the strict claim, causal-link and action object contracts and prohibited treating a logical stale-evidence argument as a complete six-stage 1C causal chain;
+- added regression assertions covering the runtime mistakes observed after installing v0.3.2;
+- retained artifact provenance closure, execution identity, the 16-case suite, 32 packaged skills, stable marketplace identity and immutable companion pins.
+
 ## 0.3.2 — provenance closure and publication integrity
 
 - added artifact-anchor/derivation lineage for material derived evidence, including parent Evidence IDs, transformation, tool/version/ref, execution run and output identity where applicable;

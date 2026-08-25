@@ -13,7 +13,7 @@ MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 MANIFEST = ROOT / "plugins" / "one-c-erp-diagnostics" / ".codex-plugin" / "plugin.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.3.2"
+EXPECTED_VERSION = "0.3.3"
 EXPECTED_ORDER = ["one-c-erp-diagnostics", "unica", "1c-skills", "1c-skills-py"]
 EXPECTED_SOURCES = {
     "one-c-erp-diagnostics": {"source": "local", "path": "./plugins/one-c-erp-diagnostics"},
