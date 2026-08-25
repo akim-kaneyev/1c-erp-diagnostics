@@ -36,9 +36,12 @@ For each requested capability, record:
 2. Gate 0 status: `available | confirmation_required | unavailable | prohibited`;
 3. exact task assigned and evidence IDs;
 4. read/write surface and `R0–R3` risk;
-5. output location/hash and tool version/ref where available;
-6. limitations, errors and fallback;
-7. whether another method independently reproduced the material result.
+5. tool version/ref where available;
+6. execution identity when the operation produces executable evidence: `run_id`, `case_id`, input evidence hashes/identifiers, timestamps when available, output location/hash;
+7. limitations, errors and fallback;
+8. whether another method independently reproduced the material result.
+
+Never reuse a companion result merely because its filename, issue ID or report title matches. If its execution identity does not match the current case and current material inputs, classify it as stale until rerun or proven equivalent.
 
 Use the smallest sufficient companion set. Prefer one primary specialist and no more than two secondary specialists unless the dependency graph proves additional value.
 
@@ -47,7 +50,7 @@ Use the smallest sufficient companion set. Prefer one primary specialist and no 
 When companion outputs disagree:
 
 - preserve both outputs and provenance;
-- compare inputs, versions, scope and analytic keys;
+- compare inputs, versions, run identities, scope and analytic keys;
 - do not vote by majority;
 - seek the earliest factual divergence in the case evidence;
 - downgrade the conclusion until the contradiction is resolved.
