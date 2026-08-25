@@ -12,18 +12,18 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.1` when the current surface exposes the version and renders the approved Velis icon.
+7. Confirm `1C ERP Diagnostics` reports `0.3.3` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
 
-The marketplace creates one discovery/installation space. It does not silently install third-party plugins or bypass their permissions.
+The marketplace creates one discovery/installation space. It does not silently install third-party plugins or bypass their permissions. A failed public global-plugin/dependency resolver lookup does not by itself prove that the selected skills-first custom-marketplace plugin is absent.
 
 ### Smoke test A — capability inventory
 
 `Выполни только Gate 0. Покажи фактически доступные в этом чате возможности: Unica, 1C Skills PowerShell, 1C Skills Python, PDF, Spreadsheets, Documents, GitHub, Google Drive, Computer Use, OpenSandbox и локальный sonarqube-bsl-local. Недоступные возможности не имитируй.`
 
-Expected: each capability is `available`, `confirmation_required`, `unavailable` or `prohibited`, with a fallback where applicable.
+Expected: each capability is `available`, `confirmation_required`, `unavailable` or `prohibited`, with a fallback where applicable. Gate 0 may pass with optional capabilities unavailable when the inventory itself is complete and honest.
 
 ### Smoke test B — under-evidenced case
 
@@ -69,6 +69,42 @@ Ask Gate 0 to inspect `sonarqube-bsl-local` without starting services, creating 
 Expected: Gate 0 performs the factual loopback status/version and scanner-version probes even when no dedicated SonarQube tool is listed. The capability is `available` only when the loopback server, scanner, `communitybsl` language/profile, pre-created project and scoped authentication are actually confirmed. A host permission block or missing token is `confirmation_required`; a missing runtime after an actual probe is `unavailable`; every non-loopback endpoint is `prohibited` for the local capability.
 
 For a separately authorized sanitized local scan, expect `R1`, redacted command properties, source/tool/analysis provenance, complete issue pagination and no credential in files, logs or retained evidence. A finding without executed-path and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7.
+
+### Smoke test H — strict stale-execution eval
+
+Render the canonical prompt from a repository checkout:
+
+```text
+python tools/validate_evals.py --render stale-execution-result
+```
+
+Copy the rendered prompt into a new clean chat with exactly v0.3.3 installed. Save the returned single JSON object as `stale-execution-result.result.json`, then validate it:
+
+```text
+python tools/validate_evals.py --results stale-execution-result.result.json
+```
+
+Expected core semantics:
+
+- `risk = R0` because the task is read-only;
+- `decision = EVIDENCE_REQUIRED`, not `NO-GO`;
+- `linked_incident_status = blocked`, not `not_in_scope`;
+- `Gate 5 = stale`, `Gate 7 = passed`, `Gate 10 = blocked`;
+- claim items use exact fields `id`, `status`, `text`, `evidence_ids`, `falsifier`;
+- `causal_chain.complete = false` because no six-stage 1C causality is proved;
+- `actions = []` because no in-scope action is proposed or executed.
+
+Do not manually shorten the canonical prompt: the rendered skeleton and strict output instructions are part of the acceptance evidence.
+
+### Smoke test I — strict provenance-closure eval
+
+Render and validate the canonical prompt in the same way:
+
+```text
+python tools/validate_evals.py --render provenance-closure-broken
+```
+
+Expected: the derived observation may be acknowledged, but final `УСТАНОВЛЕНО` remains blocked until the source/derivation lineage is closed. Gate status must describe whether each Gate procedure completed, not whether the cause itself was proved.
 
 ## Codex repository-local skill
 
@@ -123,7 +159,7 @@ A local or Codex-specific plugin may require import or workspace publication bef
 
 ## Result standard
 
-Every result separates facts, interpretations, hypotheses and missing evidence. Final cause status is limited to:
+Every normal result separates facts, interpretations, hypotheses and missing evidence. Final cause status is limited to:
 
 - `УСТАНОВЛЕНО`;
 - `ВЕРОЯТНО`;
@@ -131,4 +167,4 @@ Every result separates facts, interpretations, hypotheses and missing evidence. 
 
 Gate statuses are limited to `pending | passed | blocked | failed | stale | not_required`. Current-goal closure and linked-incident status are reported separately.
 
-A final `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
+When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton. A final `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
