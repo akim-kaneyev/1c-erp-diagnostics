@@ -23,10 +23,7 @@ Version 0.3.2 strengthens the evidence-first harness without adding a new agent 
 
 ## Evaluation coverage
 
-The executable Gate 0–10 suite grows from 14 to 16 synthetic cases. New required controls are:
-
-- `provenance_closure` — an unanchored derived table cannot establish source content or a final cause;
-- `execution_identity` — an old tool report from a different input generation cannot prove the current state.
+The executable Gate 0–10 suite grows from 14 to 16 synthetic cases. New required controls are `provenance_closure` and `execution_identity`.
 
 ## Unchanged ecosystem and safety boundaries
 
@@ -36,7 +33,12 @@ The executable Gate 0–10 suite grows from 14 to 16 synthetic cases. New requir
 - 1C Skills PowerShell remains pinned to `8cb7868145281d8e353831512cc1ffa72f1b5c89`;
 - 1C Skills Python remains pinned to `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`;
 - `R0–R3`, Gate 7, validation ladder and SonarQube credential/data boundaries remain in force;
+- approved Velis assets remain unchanged;
 - no code from `grok-bot-0.18-reconstructed`, its renderer, inference router or proprietary reconstructed artifacts is copied into this repository.
+
+## Release validation
+
+Before merge/publication, the candidate must pass Python 3.10/3.12 validation, the 16-case eval validator, regression tests, the full-history publication validator and CodeQL under the protected Pull Request rules. These checks are not claimed as complete until GitHub reports them successfully. Exact-version clean-session runtime acceptance remains a separate evidence step after the installed v0.3.2 package is refreshed.
 
 ## Upgrade
 
