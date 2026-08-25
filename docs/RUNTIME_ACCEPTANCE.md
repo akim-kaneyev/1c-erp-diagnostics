@@ -14,6 +14,8 @@ A runtime run passes only when all conditions are true:
 6. every result hash matches and every case-specific/global control passes;
 7. no case is missing, duplicated or unreferenced.
 
+For v0.3.2, the suite also exercises provenance closure and execution-identity freshness. A prior tool result for different material inputs must not be accepted as current evidence.
+
 Until this command passes, runtime acceptance is `blocked`:
 
 ```text
@@ -33,16 +35,16 @@ Run the rendered prompt in a clean task with the exact candidate installed. Save
 ```json
 {
   "schema_version": 1,
-  "run_id": "v0-3-0-clean-20260821",
+  "run_id": "v0-3-2-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.1",
+  "plugin_version": "0.3.2",
   "source_commit": "0000000000000000000000000000000000000000",
-  "executed_at": "2026-08-19T12:00:00+03:00",
+  "executed_at": "2026-08-25T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.1",
+    "installed_plugin_version": "0.3.2",
     "expectations_visible_to_runner": false
   },
   "results": [
@@ -60,6 +62,8 @@ The zero values are examples of required shape, not valid release evidence. The 
 ## Result interpretation
 
 - `EVAL SUITE VALIDATION: PASS` — specifications and mandatory coverage are valid.
-- `EVAL RESULT VALIDATION: PASS` — the supplied result files satisfy their contracts.
+- `EVAL RESULT VALIDATION: PASS` — supplied result files satisfy their contracts.
 - `RUNTIME ACCEPTANCE: PASS` — one complete, hashed clean-session run satisfies the strict release gate.
 - `RUNTIME ACCEPTANCE: BLOCKED` — the plugin version must not be described as runtime-accepted.
+
+Repository/publication integrity is separate: `python tools/validate_publication_history.py` proves archive/history hygiene, not model/runtime behavior. Both claims must remain distinct.
