@@ -13,167 +13,121 @@ argument-hint: "[case path or task description]"
 
 The user invokes one command. The orchestrator discovers capabilities, selects internal specialist skills and installed companion plugins, runs verification and reports one consolidated result. Never require the user to manually chain skills.
 
-The orchestrator is a provider-neutral harness around the available model. Correctness comes from explicit instructions, evidence coverage, capability/tool provenance, an inspect → hypothesize → test → compare loop and independent validation. Model/provider identity or confidence is runtime provenance, never proof.
+The orchestrator is a provider-neutral harness around the available model. Correctness comes from explicit instructions, evidence coverage, artifact/provenance closure, capability/tool provenance, execution identity, an inspect → hypothesize → test → compare loop and independent validation. Model/provider identity or confidence is runtime provenance, never proof.
 
 ## Gate 0 — Capability and state discovery
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.
 2. Inventory only capabilities actually exposed in the current host/session.
-3. Check the canonical marketplace companions by exact identity:
-   - `unica` — Unica 1C developer workflows;
-   - `1c-skills` — 1C Skills PowerShell;
-   - `1c-skills-py` — 1C Skills Python.
-4. Also inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and the optional local `sonarqube-bsl-local` adapter. For SonarQube, do not classify from named-tool inventory: when local execution and loopback HTTP exist, apply `one-c-erp-local-static-analysis` and run its read-only server/scanner preflight.
+3. Check the canonical marketplace companions by exact identity: `unica`, `1c-skills`, `1c-skills-py`.
+4. Inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and optional `sonarqube-bsl-local`. For SonarQube, do not classify from named-tool inventory: when local execution and loopback HTTP exist, apply `one-c-erp-local-static-analysis` and run its read-only server/scanner preflight.
 5. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
-6. Record version/ref when exposed, permissions, write-risk, provenance and the exact purpose for which a capability may be used. Record model/provider identity only as provenance when exposed; acceptance criteria remain unchanged across providers.
+6. Record version/ref when exposed, permissions, write-risk, provenance and exact purpose. Model/provider identity is provenance only.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
 
-The unified marketplace makes companions discoverable; it does not prove installation or cross-plugin invocation support. Do not claim availability until the host exposes the capability.
-
-### Capability routing baseline
-
-- `unica`: metadata/BSL navigation, developer workflows and controlled build/test investigation.
-- `1c-skills`: Windows-first configurator, XML, MXL/СКД/form/report and web-client tooling.
-- `1c-skills-py`: cross-platform artifact parsing, comparison and controlled automation.
-- internal domain skills: accounting causality, movements/registers/postings, ERP process and release analysis.
-- OpenSandbox: isolated executable validation, never a source of 1C truth.
-- `sonarqube-bsl-local`: static BSL findings from an actually discovered loopback SonarQube instance; read existing analysis as `R0`, and route a new sanitized scan through Gate 5 as `R1`.
-
-Use the smallest sufficient set. If the preferred capability is unavailable, use a documented read-only fallback or mark the dependent node `blocked`.
+Marketplace presence does not prove runtime availability. Missing required capability becomes documented fallback or `blocked`, never simulated output.
 
 ## Gate 1 — Goal contract
 
-Define the concrete outcome, scope, evidence of completion, exclusions and stop condition. Use the measurable quality bar from OpenAI `define-goal`, but do not turn ordinary work into a separate persistent goal automatically.
-
-### Scope model
-
-Separate two statuses whenever the current request is narrower than the underlying 1C incident:
-
-- **current goal/task scope** — the exact analysis or decision the user requested now;
-- **linked incident scope** — the accounting, operational or technical incident that may remain unresolved.
-
-Example: a request to assess whether mass reposting is safe may be completed as a safety assessment even though the root cause of the cost incident remains open. Do not silently convert a safety-assessment goal into a root-cause diagnosis, and do not describe the incident itself as closed merely because the narrower assessment is complete.
+Define concrete outcome, scope, completion evidence, exclusions and stop condition. Separate the current goal/task scope from any linked 1C incident that may remain unresolved. Do not describe the incident itself as closed merely because a narrower assessment is complete.
 
 ## Gate 2 — Evidence intake
 
-Inventory all files, screenshots, reports, movements, register records, postings, code and official sources. State what each item proves and cannot prove. Preserve identifiers and hashes when possible. For CF/CFE/EPF or unpacked BSL/JSON, apply the artifact-extraction skill and checklist.
+Inventory all files, screenshots, reports, movements, register records, postings, code and official sources. State what each proves and cannot prove. Preserve identifiers and hashes when possible.
 
-Every supplied source/attachment must receive an Evidence ID and an explicit disposition: `examined`, `unreadable`, `duplicate`, `irrelevant_with_reason` or `blocked`. Gate 2 cannot pass while supplied evidence is unaccounted for. Keep supplied-but-unexamined evidence separate from expected-but-missing evidence. A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could reasonably falsify the conclusion.
+Every supplied source/attachment receives an Evidence ID and disposition: `examined`, `unreadable`, `duplicate`, `irrelevant_with_reason` or `blocked`. Gate 2 cannot pass while supplied evidence is unaccounted for. Keep supplied-but-unexamined evidence separate from expected-but-missing evidence.
+
+For every derived artifact produced by extraction, filtering, normalization, joining, comparison, parser/export or similar transformation, record its parent Evidence ID(s), transformation, tool/version/ref, execution `run_id` when applicable, and output hash/identifier. A material derived result with no traceable parent/derivation is provenance-incomplete and cannot independently support final `УСТАНОВЛЕНО`.
+
+A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could falsify the conclusion, or when a material derivation chain is broken.
 
 ## Gate 3 — Dynamic execution graph
 
-Choose one primary domain and no more than two justified secondary domains. Build a directed execution graph containing:
+Choose one primary domain and no more than two justified secondary domains. Build a directed graph containing specialist objective, evidence inputs/analytic keys, dependencies, exact skill/capability, R0–R3 risk, output schema/provenance, required validation level, independent acceptance evidence, stop/falsification condition and fallback.
 
-- specialist objective;
-- input evidence IDs and analytic keys;
-- dependency nodes;
-- exact internal skill or canonical companion capability;
-- read/write surface and `R0–R3` risk;
-- output schema and provenance fields;
-- required validation level and independent acceptance evidence;
-- stop/falsification condition;
-- fallback if the assigned companion is unavailable.
-
-Validation levels are `structural → static → metadata_runtime → functional → business_accounting`. Before execution, define how each material claim/change will be checked independently of the producing specialist using original evidence, reproduced output or another independently derived observation. A lower validation level cannot substitute for a required higher one.
-
-Run specialists in parallel only when they do not mutate shared state and their questions are independent. Do not activate more than four specialist nodes without explicit dependency justification.
+Validation levels: `structural → static → metadata_runtime → functional → business_accounting`. Define independent validation before execution. A lower level cannot substitute for a required higher level. Normally use no more than four active specialist nodes without explicit dependency justification.
 
 ## Gate 4 — Specialist analysis
 
-Each specialist must separate facts, interpretations, hypotheses and missing evidence. The core causal chain is:
+Each specialist separates facts, interpretations, hypotheses and missing evidence. Core causal chain:
 
 `document → movement → record/register → consuming mechanism → accounting/stock/access result → symptom`
 
-The earliest proven divergence is more important than the latest visible symptom. Code or tooling findings remain hypotheses until linked to the factual case chain.
+The earliest proven divergence matters more than the last visible symptom. Code/tool findings remain hypotheses until linked to the factual case chain.
 
-For every external companion output record canonical plugin/tool identity, assigned operation, evidence inputs, version/ref when available, output location/hash, limitations and whether another method reproduced the material result.
+For every external companion output record canonical identity, assigned operation, evidence inputs, version/ref, execution identity when applicable, output location/hash, limitations and whether another method reproduced the material result.
 
-When root-cause investigation is explicitly outside the current goal, mark Gate 4 `not_required` for that goal and record the linked incident as `open` or `blocked`. Do not use decorated or qualified gate values such as `passed*` to hide an unresolved diagnostic branch.
+If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the linked incident separately `open`/`blocked`. Never hide unresolved scope with decorated statuses.
 
 ## Gate 5 — Executable validation and sandbox decision
 
-Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime capabilities, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs.
+Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs.
 
-- Use 1C Skills PowerShell for Windows-first operations only when Windows/1C runtime prerequisites are confirmed.
-- Use 1C Skills Python for cross-platform artifact operations when its implementation supports the exact format/task.
-- Use Unica build/test/write capabilities only after the relevant risk classification and confirmation.
-- Use OpenSandbox for isolation, not to bypass permissions or data minimization.
-- Use `sonarqube-bsl-local` only after Gate 0 confirms the loopback server, scanner, BSL plugin/profile, pre-created project and scoped authentication. Keep scanner credentials only in the child-process environment and treat every static finding as a hypothesis until linked to case evidence.
+Every executable result relied on later must have an execution identity: unique `run_id`, current `case_id`, input Evidence IDs and hashes/stable identifiers, tool/runtime version/ref, operation without secrets, timestamps when exposed, output hash/identifier, status and limitations.
 
-If required execution is unavailable, mark the gate `blocked`; never simulate it.
+Before reusing an earlier result, compare its case/input identities with current evidence. A result from another case, mismatched input, or execution preceding a material input change is `stale`; rerun it or prove deterministic equivalence. Never silently promote stale output into current evidence.
+
+Use SonarQube only after factual Gate 0 preflight; keep credentials in child-process environment only. If required execution is unavailable, mark the gate `blocked`; never simulate it.
 
 ## Gate 6 — Evidence synthesis
 
-Merge specialist outputs by source, evidence and claim ID. Preserve supporting and contradicting evidence, capability provenance and falsifiers. Resolve contradictions explicitly; a majority vote is not evidence. Produce a preliminary status only from:
+Merge specialist outputs by source, evidence and claim ID. Preserve support, contradictions, capability provenance and falsifiers. Resolve contradictions by evidence, not majority vote.
 
-- `УСТАНОВЛЕНО`;
-- `ВЕРОЯТНО`;
-- `ТРЕБУЕТ ПРОВЕРКИ`.
+For every material claim record provenance closure `closed | open | broken` and trace:
+
+`source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
+
+A list of evidence IDs is not sufficient if a transition is merely inferred. Preliminary `УСТАНОВЛЕНО` requires a complete causal chain and closed provenance for every material causal link.
+
+Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`.
 
 ## Gate 7 — Adversarial verification
 
-A distinct reviewer re-reads original evidence, not only the synthesis. It challenges every causal link, checks identical analytics, searches for an earlier divergence, tests alternatives, identifies invented objects and records a falsifier. It must also confirm that every material supplied source/attachment is accounted for.
+A distinct reviewer re-reads original evidence, not only synthesis. It challenges every causal link, checks identical analytics, searches for earlier divergence, tests alternatives, identifies invented objects and records a falsifier. It confirms evidence coverage, provenance closure and execution freshness for every relied-upon tool result.
 
-A review label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof of a defect. Convert each material review finding into a testable claim and independently reproduce it or link it to original case evidence. Absence of findings is likewise not proof of correctness. Resolve reviewer disagreement by evidence, not majority vote or confidence wording.
+A label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof. Convert each finding into a testable claim and reproduce/evidence-link it. Absence of findings is not proof either.
 
-Final `УСТАНОВЛЕНО` is forbidden if this gate is unavailable or fails. An external plugin's conclusion is not exempt from this review.
+Final `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity.
 
 ## Gate 8 — Risk-controlled action decision
 
-Classify the action:
+Classify action: `R0` read-only; `R1` derived local artifact/report; `R2` reversible test-environment change; `R3` production/accounting/access/closed periods/broad reposting.
 
-- `R0` — read-only analysis;
-- `R1` — derived local files or reports;
-- `R2` — reversible test-environment change;
-- `R3` — production, accounting, access rights, closed periods or broad reposting.
-
-R3 requires explicit user approval, tested rollback, affected-scope statement and post-change validation plan. Prefer standard 1C configuration/NSI, then a standard document/mechanism, then correction of the actual source document in an allowed period. Do not automatically grant broad rights, open closed periods, mass repost or modify the standard configuration.
+R3 requires explicit approval, tested rollback, affected scope and post-change validation. Prefer standard 1C settings/NSI, standard documents/mechanisms, then correction of actual source document in an allowed period. Do not automatically grant broad rights, open closed periods, mass repost or modify standard configuration.
 
 ## Gate 9 — Post-change validation
 
-Use the validation ladder required by the change:
+Use required ladder: structural/syntax → static → metadata/runtime → functional → business/accounting. Passing syntax/static/build does not prove runtime or accounting correctness. If required runtime/business validation cannot be executed, Gate 9 is `blocked`.
 
-1. structural/syntax;
-2. static;
-3. metadata/runtime;
-4. functional;
-5. business/accounting.
+Compare identical analytics before/after: movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates, side effects or access matrix. A disappearing UI error is insufficient proof. Analysis-only work may mark Gate 9 `not_required`.
 
-Passing syntax, static analysis or build checks does not prove runtime, functional or accounting correctness. If a required runtime/business level cannot be executed, Gate 9 is `blocked` rather than passed from a lower-level check or the producer's self-report.
-
-Compare the same analytic key before and after. Check movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates, side effects or access matrix. Disappearance of an interface error is not sufficient proof. Analysis-only work may mark Gate 9 `not_required` explicitly.
-
-If validation exposes a defect or omission that survived an earlier control, record where it escaped and strengthen the earliest applicable gate, checklist or regression eval when reproducible.
+If a defect/omission survives an earlier control, record where it escaped and strengthen the earliest applicable gate/checklist/regression eval.
 
 ## Gate 10 — Final closure
 
 Return:
-
 1. **Краткий вывод** — final status and proven cause or explicit uncertainty.
-2. **Основание** — evidence, causal chain and verification result.
+2. **Основание** — evidence, causal chain, provenance closure and verification result.
 3. **Что делать дальше** — safe action or smallest missing evidence set.
-4. Compact Gate 0–10 status, active specialist graph and capability provenance.
+4. Compact Gate 0–10 status, active graph and capability provenance.
 5. **Current goal status** — `closed | blocked | open`.
 6. **Linked incident status** — `resolved | open | blocked | not_in_scope`.
 
-Allowed gate statuses are only `pending | passed | blocked | failed | stale | not_required`. Do not use decorated statuses such as `passed*`.
-
-Gate 10 may be `passed` for a narrowly defined safety assessment when all gates required by that assessment are `passed` or `not_required`. In that case the output must say, for example, `Current goal: closed; linked incident: open`, and must not state that the 1C incident or root cause is closed.
-
-If the current goal includes root-cause diagnosis or correction, any required `blocked`, `failed`, `pending` or `stale` gate prevents Gate 10 from passing. New evidence invalidates downstream gates from the earliest affected point.
+Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence or changed input identity invalidates downstream gates from the earliest affected point.
 
 ## Non-negotiable controls
 
 - No invented 1C objects.
-- No hidden use of unavailable companion plugins.
-- No copied or simulated Unica/1C Skills output.
+- No hidden use or simulated output of unavailable companions.
 - No external plugin output treated as truth without evidence linkage.
-- No supplied material evidence silently omitted from a final conclusion.
-- No reviewer severity/confidence label treated as a defect without reproduction or evidence linkage.
-- No lower-level validation promoted into proof of a required higher-level 1C result.
-- No self-reported success from the producing specialist treated as independent validation.
-- No final cause without Gate 7.
+- No supplied material evidence silently omitted.
+- No material derived evidence accepted without artifact anchor/derivation lineage.
+- No stale or mismatched executable result accepted as current evidence.
+- No reviewer severity/confidence label treated as defect without reproduction/evidence linkage.
+- No lower-level validation promoted into proof of a required higher-level result.
+- No producer self-report treated as independent validation.
+- No final `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
 - No production-changing action without the applicable risk gate.
-- No decorated gate statuses or ambiguous asterisk qualifications.
-- No statement that an incident is closed when only a narrower assessment is complete.
+- No decorated gate statuses.
+- No incident closure claim when only a narrower goal is complete.
 - No restart from zero when valid state exists.
