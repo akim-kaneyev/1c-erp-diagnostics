@@ -17,7 +17,7 @@ Treat this skill as a provider-neutral harness around the available model. Corre
 
 When the prompt contains `EVAL_RESULT_JSON`:
 
-- return one JSON object only, without Markdown or prose;
+- return exactly one JSON object, without Markdown or prose;
 - preserve the exact supplied skeleton, keys, field names and data types; no extra/missing/renamed fields;
 - use a `gates` object with keys `"0"`–`"10"` and only `pending | passed | blocked | failed | stale | not_required`;
 - treat Gate status as status of the Gate procedure, not proof status: a Gate may pass after correctly rejecting a hypothesis or establishing insufficiency;
