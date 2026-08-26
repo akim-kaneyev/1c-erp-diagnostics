@@ -12,9 +12,11 @@ Before deciding Gate 10, distinguish:
 - **current goal/task scope** — what the user asked to complete in this run;
 - **linked incident scope** — the underlying accounting, operational or technical incident.
 
-A safety assessment, file comparison or risk decision may be complete while the linked incident remains unresolved. Never call the whole case or incident closed merely because the narrower task is complete.
+A safety assessment, evidence-sufficiency assessment, file comparison or risk decision may be complete while the linked incident remains unresolved. Never call the whole case or incident closed merely because the narrower task is complete.
 
-`linked_incident_status = not_in_scope` is allowed only when the prompt explicitly excludes the underlying incident. Missing or stale evidence does not make an incident out of scope; use `blocked` or `open` according to the evidence state.
+`linked_incident_status = not_in_scope` is allowed only when the prompt explicitly excludes the underlying incident. Missing, stale or provenance-incomplete evidence does not make an incident out of scope; use `blocked` or `open` according to the evidence state.
+
+`EVIDENCE_REQUIRED` does not automatically force `current_goal_status = blocked`. When the declared current goal is only to assess whether existing evidence is sufficient, that assessment may close with Gate 10 `passed` after it correctly concludes that additional evidence is required. In that case, keep the linked incident `blocked` or `open`. When the declared goal is to establish the cause/current state itself, missing evidence blocks the current goal and Gate 10.
 
 ## Gate status rules
 
@@ -43,12 +45,15 @@ When the request contains literal `EVAL_RESULT_JSON`, verify the candidate outpu
 1. exactly one JSON object, without Markdown or explanatory text;
 2. exact supplied top-level keys and data types; no missing, renamed or extra fields;
 3. `gates` is an object with string keys `"0"` through `"10"` and canonical lower-case statuses only;
-4. `claims` contains material conclusions, not a copied evidence inventory; each item is exactly `{id, status, text, evidence_ids, falsifier}`;
-5. `causal_chain.complete` is true only for the six canonical 1C causal stages in order; a complete logical argument about evidence freshness is not a complete 1C causal chain;
-6. every causal link is exactly `{stage, evidence_ids}`; otherwise use `complete: false` and an empty/valid links list;
-7. `actions` is empty when no in-scope action exists; otherwise every item uses the exact action-object contract;
-8. risk and decision follow action semantics: read-only evidence assessment is `R0`; missing/current evidence is `EVIDENCE_REQUIRED`; `NO-GO` is reserved for an in-scope unsafe/unapproved action;
-9. remove all placeholder values and validate the object against the supplied skeleton before sending.
+4. `capabilities` contains only the capability snapshot explicitly supplied by the synthetic case; internal reasoning steps, packaged skills, synthesis/review roles and invented tool names are not capabilities; when none are declared, use `[]`;
+5. `claims` contains material conclusions, not a copied evidence inventory; each item is exactly `{id, status, text, evidence_ids, falsifier}`;
+6. assess each claim independently: a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` while source content and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`;
+7. `causal_chain.complete` is true only for the six canonical 1C causal stages in order; a complete logical argument about evidence freshness/provenance is not a complete 1C causal chain;
+8. every causal link is exactly `{stage, evidence_ids}`; otherwise use `complete: false` and an empty/valid links list;
+9. `actions` is empty when no in-scope action exists; otherwise every item uses the exact action-object contract;
+10. risk and decision follow action semantics: read-only evidence assessment is `R0`; missing/current evidence is `EVIDENCE_REQUIRED`; `NO-GO` is reserved for an in-scope unsafe/unapproved action;
+11. `not_in_scope` requires an explicit exclusion; a completed evidence-sufficiency assessment may close the current goal while leaving the linked incident blocked;
+12. remove all placeholder values and validate the object against the supplied skeleton before sending.
 
 ## Required normal final output
 
@@ -62,6 +67,7 @@ When the request contains literal `EVAL_RESULT_JSON`, verify the candidate outpu
 
 Examples:
 
+- Evidence-sufficiency assessment completed; underlying source/cause remains unproved: `Current goal: closed; linked incident: blocked`.
 - Safety assessment completed, root cause not investigated: `Current goal: closed; linked incident: open`.
 - Root-cause diagnosis lacks evidence: `Current goal: blocked; linked incident: blocked`.
 - Root cause and correction are verified: `Current goal: closed; linked incident: resolved`.
