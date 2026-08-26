@@ -41,6 +41,41 @@ def skill_text(name: str, body: str = "") -> str:
 
 
 class SkillGovernanceTests(unittest.TestCase):
+    def test_current_repository_governance_and_lock_pass(self) -> None:
+        report = VALIDATE.validate_repository(ROOT)
+        self.assertEqual(report.errors, [])
+        self.assertGreaterEqual(report.skill_count, 32)
+
+        expected = LOCK.build_lock(ROOT)
+        actual = LOCK.load_lock(ROOT / "SKILLS.lock.json")
+        self.assertEqual(actual, expected)
+        self.assertEqual(actual["file_count"], 52)
+        self.assertEqual(
+            actual["manifest_sha256"],
+            "55b1b4c843f181f8674b130afecb38601f8251619051956434dc536f1536053e",
+        )
+
+    def test_reviewed_sources_and_boundaries_are_recorded(self) -> None:
+        authoring = (ROOT / "docs" / "SKILL_AUTHORING_STANDARD.md").read_text(encoding="utf-8")
+        discovery = (ROOT / "docs" / "TOOLCHAIN_DISCOVERY.md").read_text(encoding="utf-8")
+        integrations = (ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md").read_text(encoding="utf-8")
+        notice = (ROOT / "NOTICE.md").read_text(encoding="utf-8")
+        combined = "\n".join((authoring, discovery, integrations, notice))
+
+        for token in (
+            "0479242522549dfdb389bb9b7807ad4d6016ffb7",
+            "82a7b4c16f0dab0264ddd664b741019ce60aba81",
+            "https://infostart.ru/1c/articles/2772307/",
+            "not copied",
+            "not bundled",
+            "R0–R3",
+        ):
+            self.assertIn(token, combined)
+
+        marketplace = (ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8").lower()
+        self.assertNotIn("rampstack", marketplace)
+        self.assertNotIn("stacktechnologies1c", marketplace)
+
     def test_lock_is_deterministic_and_detects_drift(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
