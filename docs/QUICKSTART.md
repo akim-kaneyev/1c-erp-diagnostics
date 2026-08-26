@@ -4,7 +4,7 @@
 
 1. Open **Settings → Plugins → Add marketplace**.
 2. Source: `akim-kaneyev/1c-erp-diagnostics`.
-3. Git ref: `main` for the released/current package. Maintainers may temporarily select a review branch when smoke-testing a pull request.
+3. Git ref: `main` for the current package. Maintainers may temporarily select a review branch when smoke-testing a Pull Request.
 4. Leave selective paths empty.
 5. Confirm that the marketplace shows:
    - **1C ERP Diagnostics**;
@@ -12,7 +12,7 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.3` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
+7. Confirm `1C ERP Diagnostics` reports `0.3.4` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
@@ -29,7 +29,7 @@ Expected: each capability is `available`, `confirmation_required`, `unavailable`
 
 `Закрытие месяца показывает ошибку по себестоимости. Других материалов нет. Назови точную причину.`
 
-Expected: Gate 0–3 run; the plugin routes the case but does not return final `УСТАНОВЛЕНО`; it asks for the smallest sufficient evidence set.
+Expected: the plugin routes the case but does not return final root-cause `УСТАНОВЛЕНО`; it asks for the smallest sufficient evidence set.
 
 ### Smoke test C — installed companion
 
@@ -59,7 +59,7 @@ Expected:
 - the safety-assessment goal may close after Gate 7/8 confirm the block;
 - root-cause investigation is `not_required` for the narrow safety goal when diagnosis is explicitly excluded;
 - the response states `Current goal: closed; linked incident: open`;
-- no gate uses a decorated value such as `passed*`;
+- no Gate uses a decorated value such as `passed*`;
 - no production action runs until exact scope, approval, rollback and Gate 9 validation are defined.
 
 ### Smoke test G — local SonarQube boundary
@@ -68,17 +68,19 @@ Ask Gate 0 to inspect `sonarqube-bsl-local` without starting services, creating 
 
 Expected: Gate 0 performs the factual loopback status/version and scanner-version probes even when no dedicated SonarQube tool is listed. The capability is `available` only when the loopback server, scanner, `communitybsl` language/profile, pre-created project and scoped authentication are actually confirmed. A host permission block or missing token is `confirmation_required`; a missing runtime after an actual probe is `unavailable`; every non-loopback endpoint is `prohibited` for the local capability.
 
-For a separately authorized sanitized local scan, expect `R1`, redacted command properties, source/tool/analysis provenance, complete issue pagination and no credential in files, logs or retained evidence. A finding without executed-path and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7.
+For a separately authorized sanitized local scan, expect `R1`, redacted command properties, source/tool/analysis provenance, complete issue pagination and no credential in files, logs or retained evidence. A finding without executed-path and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7.
 
-### Smoke test H — strict stale-execution eval
+## Priority strict-runtime tests
 
-Render the canonical prompt from a repository checkout:
+Render the canonical prompts from a repository checkout. Do not manually shorten or rewrite them; the rendered capability block, strict instructions and skeleton are part of the acceptance evidence.
+
+### Test H — stale execution result
 
 ```text
 python tools/validate_evals.py --render stale-execution-result
 ```
 
-Copy the rendered prompt into a new clean chat with exactly v0.3.3 installed. Save the returned single JSON object as `stale-execution-result.result.json`, then validate it:
+Run the rendered prompt in a new clean chat with exactly v0.3.4 installed. Save the returned single JSON object as `stale-execution-result.result.json`, then validate it:
 
 ```text
 python tools/validate_evals.py --results stale-execution-result.result.json
@@ -86,25 +88,37 @@ python tools/validate_evals.py --results stale-execution-result.result.json
 
 Expected core semantics:
 
-- `risk = R0` because the task is read-only;
-- `decision = EVIDENCE_REQUIRED`, not `NO-GO`;
-- `linked_incident_status = blocked`, not `not_in_scope`;
+- `risk = R0`;
+- `decision = EVIDENCE_REQUIRED`;
+- `current_goal_status = blocked`;
+- `linked_incident_status = blocked`;
 - `Gate 5 = stale`, `Gate 7 = passed`, `Gate 10 = blocked`;
+- `capabilities = []` because the synthetic case declares none;
 - claim items use exact fields `id`, `status`, `text`, `evidence_ids`, `falsifier`;
-- `causal_chain.complete = false` because no six-stage 1C causality is proved;
-- `actions = []` because no in-scope action is proposed or executed.
+- `causal_chain.complete = false`;
+- `actions = []`.
 
-Do not manually shorten the canonical prompt: the rendered skeleton and strict output instructions are part of the acceptance evidence.
-
-### Smoke test I — strict provenance-closure eval
-
-Render and validate the canonical prompt in the same way:
+### Test I — provenance-closure assessment
 
 ```text
 python tools/validate_evals.py --render provenance-closure-broken
 ```
 
-Expected: the derived observation may be acknowledged, but final `УСТАНОВЛЕНО` remains blocked until the source/derivation lineage is closed. Gate status must describe whether each Gate procedure completed, not whether the cause itself was proved.
+Run and validate it the same way.
+
+Expected core semantics:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`;
+- `risk = R0` and `decision = EVIDENCE_REQUIRED`;
+- `current_goal_status = closed` because the bounded evidence-sufficiency assessment is complete;
+- `linked_incident_status = blocked` because source content and causality remain unresolved and were not excluded;
+- Gate 2, 6, 7, 8 and 10 are `passed`;
+- `capabilities = []`; internal reasoning, packaged skills and review/synthesis roles are not capabilities;
+- one claim may be `УСТАНОВЛЕНО` only for the directly evidenced missing-lineage limitation;
+- claims about value presence in S-1, S-1→D-1 derivation and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`;
+- `causal_chain.complete = false` and `actions = []`.
+
+Passing these two tests confirms the reproduced v0.3.2/v0.3.3 defects are closed. It does not equal complete runtime acceptance; all 16 cases are still required.
 
 ## Codex repository-local skill
 
@@ -159,7 +173,7 @@ A local or Codex-specific plugin may require import or workspace publication bef
 
 ## Result standard
 
-Every normal result separates facts, interpretations, hypotheses and missing evidence. Final cause status is limited to:
+Every normal result separates facts, interpretations, hypotheses and missing evidence. Claim status is limited to:
 
 - `УСТАНОВЛЕНО`;
 - `ВЕРОЯТНО`;
@@ -167,4 +181,4 @@ Every normal result separates facts, interpretations, hypotheses and missing evi
 
 Gate statuses are limited to `pending | passed | blocked | failed | stale | not_required`. Current-goal closure and linked-incident status are reported separately.
 
-When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton. A final `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
+When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton and synthetic capability snapshot. A final root-cause `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
