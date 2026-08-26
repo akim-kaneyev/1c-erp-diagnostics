@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.3
+# 1C ERP Diagnostics plugin — v0.3.4
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -14,6 +14,7 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - execution identity/stale-result controls for tool and sandbox evidence;
 - evidence synthesis, contradiction handling and adversarial verification;
 - strict `EVAL_RESULT_JSON` output with exact schema/risk/decision/Gate semantics;
+- deterministic synthetic capability snapshots and scoped current-goal/linked-incident closure;
 - `R0–R3` action-risk controls and same-analytics validation;
 - artifact/open-source intake rules;
 - deterministic Python helpers and publication-integrity validation;
@@ -36,13 +37,19 @@ They remain separate plugins. They are not silently installed, copied, relicense
 
 Gate 0 records whether Unica, 1C Skills, document tools, GitHub/Drive, Computer Use, OpenSandbox and local SonarQube are actually available and permitted. Missing capabilities become fallback or `blocked`, never simulated. A public global-plugin/dependency resolver miss is not by itself proof that the currently selected skills-first custom-marketplace plugin is absent.
 
+In synthetic `EVAL_RESULT_JSON` cases, the case capability snapshot is authoritative. Internal reasoning steps, packaged skills and reviewer/synthesis roles are not host capabilities. If the synthetic case declares none, the result must contain `capabilities: []`.
+
 When a companion/tool result is used as executable evidence, Gate 5 records its run/case/input/tool/output identity. A result tied to a previous or different material input is stale until rerun or proven equivalent.
 
-Derived evidence must preserve its source anchor and transformation. Gate 6/7 require closed provenance across every material causal transition before `УСТАНОВЛЕНО` can become final.
+Derived evidence must preserve its source anchor and transformation. Gate 6/7 require closed provenance across every material causal transition before a root-cause `УСТАНОВЛЕНО` can become final. A directly evidenced limitation such as missing lineage may itself be established without proving source content or cause.
 
 ## Strict evaluation output
 
-When a prompt contains `EVAL_RESULT_JSON`, the plugin returns one JSON object only and must match the supplied skeleton exactly. Gate status records whether the Gate procedure completed, not whether the cause was proved. Read-only rejection of stale evidence is `R0 + EVIDENCE_REQUIRED`; `R3 + NO-GO` is reserved for an actual unsafe or unapproved write action. Claim, causal-link and action arrays use their exact structured item contracts, and `causal_chain.complete=true` is reserved for the six canonical 1C stages in order.
+When a prompt contains `EVAL_RESULT_JSON`, the plugin returns one JSON object only and must match the supplied skeleton exactly. Gate status records whether the Gate procedure completed, not whether the cause was proved. Read-only rejection of stale evidence is `R0 + EVIDENCE_REQUIRED`; `R3 + NO-GO` is reserved for an actual unsafe or unapproved write action.
+
+The declared current goal and linked incident close independently. A bounded evidence-sufficiency assessment may close after correctly requiring more evidence, while the linked source/root-cause incident remains `blocked` or `open`. `not_in_scope` requires an explicit exclusion.
+
+Claim, causal-link and action arrays use their exact structured item contracts, and `causal_chain.complete=true` is reserved for the six canonical 1C stages in order.
 
 ## Safety
 
