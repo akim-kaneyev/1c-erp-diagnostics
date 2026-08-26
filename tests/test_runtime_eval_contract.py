@@ -165,6 +165,101 @@ def observed_v035_stale_shape() -> dict[str, Any]:
     return result
 
 
+
+def canonical_under_evidenced_result() -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "case_id": "under-evidenced-cost",
+        "final_status": "ТРЕБУЕТ ПРОВЕРКИ",
+        "risk": "R0",
+        "decision": "EVIDENCE_REQUIRED",
+        "current_goal_status": "blocked",
+        "linked_incident_status": "blocked",
+        "gates": {
+            "0": "passed",
+            "1": "passed",
+            "2": "passed",
+            "3": "passed",
+            "4": "blocked",
+            "5": "not_required",
+            "6": "passed",
+            "7": "passed",
+            "8": "passed",
+            "9": "not_required",
+            "10": "blocked",
+        },
+        "capabilities": [],
+        "evidence_ids_used": ["E-COST-1"],
+        "claims": [
+            {
+                "id": "C-COST-1",
+                "status": "ТРЕБУЕТ ПРОВЕРКИ",
+                "text": (
+                    "Доказан только заявленный симптом ошибки себестоимости при "
+                    "закрытии месяца; точная причина не установлена."
+                ),
+                "evidence_ids": ["E-COST-1"],
+                "falsifier": (
+                    "Движения, регистратор, записи регистров и механизм расчета "
+                    "образуют проверяемую причинную цепочку к симптому."
+                ),
+            }
+        ],
+        "causal_chain": {"complete": False, "links": []},
+        "requested_evidence": [
+            "Точный текст/скриншот ошибки с периодом и организацией.",
+            "Расшифровка проблемной строки или объекта из закрытия месяца.",
+            "Движения и записи по выявленному объекту за тот же период.",
+        ],
+        "actions": [],
+        "summary": (
+            "Доказан только симптом; точная причина требует минимального набора "
+            "первичных доказательств."
+        ),
+    }
+
+
+def observed_v036_under_evidenced_shape() -> dict[str, Any]:
+    # Reproduce the exact under-evidenced contract failures observed in v0.3.6.
+    result = canonical_under_evidenced_result()
+    result["gates"].update(
+        {
+            "2": "blocked",
+            "3": "not_required",
+            "4": "not_required",
+            "6": "not_required",
+            "8": "not_required",
+            "10": "passed",
+        }
+    )
+    result["claims"] = [
+        {
+            "claim": "При закрытии месяца заявлен симптом ошибки себестоимости.",
+            "status": "УСТАНОВЛЕНО",
+            "evidence_ids": ["E-COST-1"],
+        },
+        {
+            "claim": "Точная причина ошибки себестоимости установлена.",
+            "status": "ТРЕБУЕТ ПРОВЕРКИ",
+            "evidence_ids": [],
+        },
+    ]
+    result["requested_evidence"] = [
+        {
+            "item": "Полный текст или скриншот сообщения ошибки.",
+            "purpose": "Зафиксировать точный симптом.",
+        }
+    ]
+    result["actions"] = [
+        {
+            "action": "Не назначать точную причину до получения данных.",
+            "type": "read_only",
+            "risk": "R0",
+        }
+    ]
+    return result
+
+
 def canonical_provenance_result() -> dict[str, Any]:
     return {
         "schema_version": 1,
@@ -341,6 +436,7 @@ class RuntimeEvalContractTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.suite, cls.cases, cls.suite_errors = validate_evals.load_suite()
         cls.stale_case = cls.cases["stale-execution-result"]
+        cls.under_evidenced_case = cls.cases["under-evidenced-cost"]
         cls.provenance_case = cls.cases["provenance-closure-broken"]
         cls.capability_case = cls.cases["capability-inventory"]
 
@@ -385,6 +481,34 @@ class RuntimeEvalContractTests(unittest.TestCase):
         )
         self.assertIn("unexpected fields: action_id, status, type", joined)
 
+
+
+    def test_canonical_under_evidenced_result_passes_validator(self) -> None:
+        self.assertEqual(
+            validate_evals.validate_result(
+                canonical_under_evidenced_result(), self.under_evidenced_case
+            ),
+            [],
+        )
+
+    def test_observed_v036_under_evidenced_shape_is_rejected(self) -> None:
+        errors = validate_evals.validate_result(
+            observed_v036_under_evidenced_shape(), self.under_evidenced_case
+        )
+        joined = "\n".join(errors)
+        self.assertIn("Gate 2 must be 'passed', got 'blocked'", joined)
+        self.assertIn("Gate 4 must be 'blocked', got 'not_required'", joined)
+        self.assertIn("Gate 10 must be 'blocked', got 'passed'", joined)
+        self.assertIn("Gate 10 passed requires current_goal_status closed", joined)
+        self.assertIn("missing fields: falsifier, id, text", joined)
+        self.assertIn("unexpected fields: claim", joined)
+        self.assertIn("established claims 1 exceed allowed maximum 0", joined)
+        self.assertIn("requested_evidence must be a text list", joined)
+        self.assertIn(
+            "missing fields: approval_reference, approved, description, executed, rollback, validation",
+            joined,
+        )
+        self.assertIn("unexpected fields: action, type", joined)
 
     def test_each_reproduced_semantic_misclassification_fails_independently(self) -> None:
         mutations = {
@@ -491,6 +615,21 @@ class RuntimeEvalContractTests(unittest.TestCase):
         self.assertIn("Gate 10=blocked", rendered)
         self.assertIn("actions=[]", rendered)
         self.assertIn("ровно одну строку", rendered)
+        self.assertNotIn('"expect"', rendered)
+
+
+    def test_rendered_under_evidenced_prompt_contains_exact_contract(self) -> None:
+        rendered = validate_evals.render_prompt(self.under_evidenced_case)
+        for token in (
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ",
+            "Gate 0–3=passed",
+            "Gate 4=blocked",
+            "Gate 2 проходит",
+            "ровно в одном материальном claim",
+            "requested_evidence должен быть массивом",
+            "actions=[]",
+        ):
+            self.assertIn(token, rendered)
         self.assertNotIn('"expect"', rendered)
 
     def test_rendered_capability_prompt_contains_inventory_only_contract(self) -> None:

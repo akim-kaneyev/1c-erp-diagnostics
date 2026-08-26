@@ -1,4 +1,4 @@
-# Public release checklist — v0.3.6
+# Public release checklist — v0.3.7
 
 ## Repository and plugin package
 
@@ -7,104 +7,71 @@
 - [x] 32 packaged skills cover principal 1C:ERP diagnostic/control domains.
 - [x] `R0–R3` controls protect production/accounting/access/closed-period actions.
 - [x] Every supplied material source must be accounted for before a conclusion it could falsify becomes final.
+- [x] Gate 2 distinguishes supplied-but-unexamined evidence from expected-but-missing evidence.
+- [x] Missing expected evidence blocks the affected diagnostic Gate rather than a completed evidence-intake procedure.
 - [x] Material derived evidence requires artifact anchor and derivation lineage.
-- [x] Material claims require provenance closure across source → evidence → premise → causal link → conclusion.
-- [x] A directly evidenced missing-lineage limitation may be established without promoting source content or root cause.
-- [x] Executable evidence requires run/case/input/tool/output identity; mismatched prior output becomes `stale`.
+- [x] Executable evidence requires current run/case/input/tool/output identity.
 - [x] Literal `EVAL_RESULT_JSON` activates a strict one-object/no-Markdown contract.
-- [x] Strict mode requires exact skeleton fields, canonical Gate statuses and structured capability/claim/link/action items.
-- [x] Gate-procedure status is explicitly separated from claim proof status.
-- [x] A closed current goal requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal.
-- [x] `УСТАНОВЛЕНО` requires Gate 7 passed, Gate 10 passed, a closed goal and complete six-stage causality.
-- [x] Risk classifies the action surface; read-only inventory is `R0`.
-- [x] `EVIDENCE_REQUIRED`, `NO_ACTION` and `NO-GO` have non-overlapping meanings.
-- [x] `not_in_scope` requires explicit scope exclusion.
-- [x] Synthetic result capabilities must exactly match the case-declared snapshot; internal reasoning/skills/roles are prohibited as capabilities.
-- [x] Every strict capability item is exactly `{name,status,simulated}` with `simulated=false`.
-- [x] Capability rows cannot contain `evidence_id`; snapshot evidence remains in `evidence_ids_used`.
-- [x] Capability status rows are not diagnostic claims.
-- [x] Inventory-only acceptance requires `claims=[]`, Gate 0/10 passed and Gates 1–9 not required.
-- [x] `causal_chain.complete` remains restricted to all six canonical 1C causal stages.
-- [x] Strict runtime acceptance requires a complete clean-session run, exact installed version and SHA-256 result evidence.
-- [x] Public package validation checks manifest, policies, case leakage, forbidden artifacts, credentials and assets.
-- [x] Skill governance and deterministic `SKILLS.lock.json` validation are mandatory.
-- [x] Publication-history validation checks full Git history and actual `git archive HEAD` tree.
-- [x] CI checkout uses full history rather than a shallow release-safety scan.
-- [x] `.scannerwork/` and local runtime evidence are excluded from Git.
+- [x] Strict mode requires exact skeleton fields and structured capability/claim/link/action items.
+- [x] Gate-procedure status is separated from claim proof status.
+- [x] A closed current goal requires Gate 10 `passed`.
+- [x] `УСТАНОВЛЕНО` requires Gate 7, Gate 10, a closed goal and complete six-stage causality.
+- [x] Synthetic capability output exactly matches the case-declared snapshot.
+- [x] Inventory-only, stale-execution, provenance-closure and under-evidenced profiles are explicit.
+- [x] `under-evidenced-cost` requires Gate 2 passed, Gate 4 blocked, Gate 7 passed and Gate 10 blocked.
+- [x] Under-evidenced symptom statements cannot become copied `УСТАНОВЛЕНО` claims.
+- [x] Evidence requests are string arrays; absence of an executable action requires `actions=[]`.
+- [x] Public package, skill governance, deterministic lock and full-history publication checks are mandatory.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.6`.
-- [x] v0.3.6 release notes and self-audit exist without claiming pending runtime steps as complete.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.7`.
+- [x] v0.3.7 release notes and self-audit exist without claiming pending runtime steps as complete.
 
 ## Unified 1C ecosystem marketplace
 
-- [x] Primary `one-c-erp-diagnostics` plugin is declared locally.
-- [x] Canonical Unica `0.12.0` source remains pinned to immutable SHA `aefc880f9bab606a5c55ed11af563b740054a549` and path `plugins/unica`.
+- [x] Primary `one-c-erp-diagnostics` plugin remains local.
+- [x] Marketplace ID remains `one-c-erp-diagnostics-marketplace`.
+- [x] Marketplace contains exactly four independently installed entries.
+- [x] Unica remains pinned to `aefc880f9bab606a5c55ed11af563b740054a549` (`v0.12.0`).
 - [x] 1C Skills PowerShell remains pinned to `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
 - [x] 1C Skills Python remains pinned to `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
 - [x] Third-party sources, licenses, permissions and update boundaries remain documented.
-- [x] External plugins remain independently installed; no code copying or permission bypass.
-- [x] Internal marketplace ID remains `one-c-erp-diagnostics-marketplace`.
-- [x] Visible title remains `1C ERP Diagnostics Ecosystem`.
-- [x] Primary plugin/package version is `0.3.6`.
 
-## Runtime findings and smoke tests
+## Runtime findings and required re-test
 
-- [x] Installed v0.3.2 rejected stale evidence substantively but reproduced strict schema/semantic deviations.
-- [x] Installed v0.3.3 canonical `stale-execution-result` passed after the v0.3.3 hotfix.
-- [x] Installed v0.3.3 `provenance-closure-broken` exposed linked-scope and invented-capability gaps.
-- [x] v0.3.4 corrected provenance scope, exact synthetic capability snapshots and statement-specific limitation claims.
-- [x] Installed v0.3.4 `capability-inventory` preserved `R0`, `NO_ACTION`, the four supplied capability statuses and false causal-chain completeness.
-- [x] The same v0.3.4 result reproduced six official-contract failures: wrong final status, Gate 10, capability item fields, claim schema/count and cross-field proof consistency.
-- [x] v0.3.5 adds the exact inventory-only semantic profile and a regression fixture reproducing the v0.3.4 output.
-- [ ] Refresh/re-import the marketplace after merge and confirm installed version `0.3.5` when the surface exposes it.
-- [ ] Run the exact rendered `capability-inventory` prompt in a new clean session.
-- [ ] Confirm `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required.
-- [ ] Confirm capability rows preserve the supplied order and contain exactly `name`, `status`, `simulated=false`; `E-CAP-1` appears only in `evidence_ids_used`.
-- [ ] Confirm `claims=[]`, `causal_chain.complete=false`, empty links/requested evidence/actions.
-- [ ] Validate the saved result with `tools/validate_evals.py`.
-- [ ] Repeat canonical `stale-execution-result` and `provenance-closure-broken` clean-session tests to prove no regression.
-- [ ] Repeat the under-evidenced case and confirm no invented final cause.
-- [ ] Repeat scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open`.
-- [ ] Confirm SonarQube missing auth/runtime remains honest (`confirmation_required`/`unavailable`) without simulated findings.
-- [ ] Run authorized sanitized local SonarQube smoke test with complete provenance and no token retention.
-- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.5 run.
-
-- [x] Installed v0.3.5 `capability-inventory` passed the exact inventory-only contract.
-- [x] Installed v0.3.5 `stale-execution-result` preserved `R0` and `EVIDENCE_REQUIRED` but reproduced stale/scope/schema failures: Gate 5 passed, Gate 7 not required, Gate 10 passed, linked incident out of scope, malformed claims/links/request/actions.
-- [x] v0.3.6 adds the exact stale-execution profile and executable regression.
-- [ ] Refresh/install v0.3.6 and re-run capability inventory, stale execution and provenance closure in separate clean sessions.
+- [x] Installed v0.3.6 `capability-inventory` passed.
+- [x] Installed v0.3.6 `stale-execution-result` passed.
+- [x] Installed v0.3.6 `provenance-closure-broken` passed.
+- [x] Installed v0.3.6 `under-evidenced-cost` preserved `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`, blocked scopes, empty capabilities and incomplete causality.
+- [x] The same result reproduced official-contract failures in Gate 2/4/10, claim schema/status, requested-evidence type and action schema.
+- [x] v0.3.7 adds the exact under-evidenced semantic profile and rejected regression fixture.
+- [ ] Refresh/re-import the marketplace and confirm installed version `0.3.7` when exposed.
+- [ ] Re-run `capability-inventory` in a clean session.
+- [ ] Re-run `stale-execution-result` in a separate clean session.
+- [ ] Re-run `provenance-closure-broken` in a separate clean session.
+- [ ] Re-run `under-evidenced-cost` and validate the saved result.
+- [ ] Complete and hash all 16 clean-session results.
+- [ ] Pass `tools/validate_runtime_run.py` for exact installed v0.3.7.
 
 ## GitHub identity, security and presentation
 
-- [x] Final username: `akim-kaneyev`.
 - [x] Repository visibility is Public.
 - [x] README, logo, license and policy/support files are reachable publicly.
-- [x] Issues and Pull Requests are enabled.
-- [x] Effective `main` ruleset requires Pull Request, Python 3.10/3.12 checks, current branch state, resolved conversations and CodeQL results.
-- [x] Effective `main` ruleset requires linear history and blocks force-push and deletion.
+- [x] Pull Request, linear-history and conversation-resolution controls are configured.
 - [x] Private vulnerability reporting is enabled.
-- [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
-- [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm v0.3.6 protected PR CodeQL and required checks are green before merge.
-
-## Public repository and versioned release
-
-- [x] Public repository is live.
-- [ ] Open the v0.3.6 Pull Request from `hotfix/capability-inventory-contract-0.3.5`.
-- [ ] Pass Python 3.10/3.12 validation, skill governance/lock, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
-- [ ] Squash-merge v0.3.5 only through the protected `main` ruleset.
+- [x] Dependabot, secret scanning and push protection are enabled.
+- [ ] Confirm v0.3.7 Pull Request Python 3.10/3.12 and CodeQL checks are green before merge.
 - [ ] Verify post-merge `main` validation and CodeQL.
-- [ ] If a versioned GitHub release is desired, create the tag/release only on the exact approved `main` commit.
-- [ ] Verify release metadata/tagged documentation and source archives anonymously before making a release claim.
 
 ## Global ChatGPT Plugin Directory
 
-- [ ] Use the supported ChatGPT/workspace import or publish flow for the public plugin source.
-- [ ] Review listing metadata, skills, policy URLs and companion requirements.
-- [ ] Publish only after the supported platform review/configuration is complete.
-- [ ] Install the public listing in a clean session and repeat capability inventory, stale-run, provenance, under-evidenced and R3 smoke tests.
+- [ ] Use the supported ChatGPT/workspace import or publish flow.
+- [ ] Review listing metadata, skills, policies and companion requirements.
+- [ ] Publish only after supported platform review/configuration is complete.
+- [ ] Repeat clean-session acceptance on the installed public listing.
 
 ## Stop condition
 
-Do **not** claim v0.3.5 runtime acceptance or publish a global listing while any required CI, CodeQL, publication-history or clean-session control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present.
+Do **not** claim v0.3.7 runtime acceptance while the complete hashed 16-case run is
+missing or invalid. Repository CI, CodeQL and publication-history PASS do not substitute
+for exact-version runtime evidence.

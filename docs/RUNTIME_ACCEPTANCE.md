@@ -23,6 +23,8 @@ A semantically plausible response still fails when it invents internal reasoning
 
 Version 0.3.6 fixes the subsequently reproduced stale-execution output: Gate 5 must be `stale`, Gate 7 `passed`, Gate 10 `blocked`, the linked incident remains blocked, and claim/link/request/action arrays must use the exact schema.
 
+Version 0.3.7 fixes the next clean-session failure in `under-evidenced-cost`: Gate 2 passes after all supplied evidence is accounted for, Gate 4 and Gate 10 remain blocked, Gate 7 passes by rejecting an unsupported cause, and claim/request/action collections use the exact schema.
+
 Until this command passes, runtime acceptance is `blocked`:
 
 ```text
@@ -48,16 +50,16 @@ Calculate SHA-256 for each result file and create `run.json`:
 ```json
 {
   "schema_version": 1,
-  "run_id": "v0-3-6-clean-example",
+  "run_id": "v0-3-7-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.6",
+  "plugin_version": "0.3.7",
   "source_commit": "0000000000000000000000000000000000000000",
   "executed_at": "2026-08-26T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.6",
+    "installed_plugin_version": "0.3.7",
     "expectations_visible_to_runner": false
   },
   "results": [
@@ -72,7 +74,7 @@ Calculate SHA-256 for each result file and create `run.json`:
 
 The zero values are examples of required shape, not valid release evidence. The strict validator rejects incomplete suites, placeholder hashes, hash mismatches, wrong versions and non-clean runs.
 
-## Priority re-test after 0.3.6 installation
+## Priority re-test after 0.3.7 installation
 
 Before running all 16 cases, validate these three exact rendered prompts in separate clean tasks.
 
@@ -118,7 +120,21 @@ Required result:
 - `causal_chain.complete=false`;
 - `actions=[]`.
 
-Passing these three smoke tests does not equal complete runtime acceptance. It only confirms that the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed before spending time on the full suite.
+### 4. `under-evidenced-cost`
+
+Required result:
+
+- `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `risk=R0`, `decision=EVIDENCE_REQUIRED`;
+- current goal and linked incident `blocked`;
+- Gates 0–3 `passed`, Gate 4 `blocked`, Gate 5 `not_required`, Gates 6–8 `passed`, Gate 9 `not_required`, Gate 10 `blocked`;
+- Gate 2 `passed` because the supplied symptom statement is fully accounted for;
+- exactly one non-established exact-schema claim using `E-COST-1`;
+- incomplete empty causal chain;
+- string-only minimal requested evidence and `actions=[]`.
+
+Passing these four priority tests does not equal complete runtime acceptance. It only
+confirms that the reproduced strict-contract defects are closed before spending time
+on the full suite.
 
 ## Result interpretation
 

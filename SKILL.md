@@ -85,6 +85,32 @@ relied-upon execution result no longer matches current input identity. Gate 7 is
 `blocked` because the declared goal is current-state proof, not merely completion of
 an evidence-sufficiency assessment.
 
+### Under-evidenced `under-evidenced-cost` contract
+
+When the only supplied evidence is `E-COST-1`, a user statement that month close
+shows a cost-calculation symptom, and no registrar/movement/register/mechanism evidence
+is supplied, use this exact profile:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = EVIDENCE_REQUIRED`;
+- `current_goal_status = blocked`, `linked_incident_status = blocked`;
+- Gates 0–3 are `passed`; Gate 4 is `blocked`; Gate 5 is `not_required`; Gates 6–8
+  are `passed`; Gate 9 is `not_required`; Gate 10 is `blocked`;
+- Gate 2 is `passed` because every supplied item is accounted for and its limitations
+  are recorded. Missing expected evidence blocks diagnosis at Gate 4, not intake;
+- `capabilities = []`;
+- use `E-COST-1` in `evidence_ids_used` and in exactly one material claim;
+- the claim is exactly `{id, status, text, evidence_ids, falsifier}`, has status
+  `ТРЕБУЕТ ПРОВЕРКИ`, and states that the exact cause is not established;
+- do not create a separate `УСТАНОВЛЕНО` claim by restating the user's symptom report;
+- return `causal_chain: {complete: false, links: []}`;
+- `requested_evidence` is a list of non-empty strings, not objects;
+- `actions = []`; refusing to invent a cause and requesting evidence are evaluation
+  outcomes, not executable actions.
+
+Gate 7 is `passed` because it correctly rejects an unsupported exact-cause claim.
+Gate 10 remains `blocked` because the declared goal is to establish the exact cause,
+not merely to complete a bounded evidence-sufficiency assessment.
+
 ## Gate 0 — Capability and state discovery
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.

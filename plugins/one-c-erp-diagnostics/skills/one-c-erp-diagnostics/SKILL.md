@@ -62,6 +62,24 @@ Do not use `not_in_scope`, do not report Gate 5 as `passed`, and do not turn the
 logical run/input/report graph into causal-chain link objects. Gate 7 passes by
 rejecting stale reuse; Gate 10 is blocked because the current state remains unproved.
 
+### Exact `under-evidenced-cost` profile
+
+For the synthetic case where only `E-COST-1` reports a month-close cost symptom and
+no registrar, movement, register or consuming-mechanism evidence exists:
+
+- use `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`;
+- keep current goal and linked incident `blocked`;
+- set Gates 0–3 `passed`, Gate 4 `blocked`, Gate 5 `not_required`, Gates 6–8
+  `passed`, Gate 9 `not_required`, Gate 10 `blocked`;
+- Gate 2 passes because the supplied statement is accounted for; missing expected
+  evidence blocks Gate 4 rather than Gate 2;
+- return no capabilities, one schema-valid non-established claim, an incomplete empty
+  1C causal chain, string-only requested evidence and no actions;
+- never convert the symptom statement into an `УСТАНОВЛЕНО` claim.
+
+Gate 7 passes by rejecting a precise cause that lacks the required evidence chain.
+Gate 10 cannot pass while the exact-cause goal remains blocked.
+
 ## Verified marketplace registry
 
 Check these canonical companions by exact name during Gate 0:

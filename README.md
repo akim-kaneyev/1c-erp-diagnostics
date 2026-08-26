@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.6" src="https://img.shields.io/badge/version-0.3.6-0D1B2A.svg" />
+  <img alt="Version 0.3.7" src="https://img.shields.io/badge/version-0.3.7-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -129,6 +129,8 @@ The strict mode separates three concepts that must not be collapsed: capability 
 
 Version 0.3.6 closes the stale-execution runtime regression reproduced in installed v0.3.5: the exact case now fixes Gate 5 as `stale`, Gate 7 as `passed`, Gate 10 as `blocked`, keeps the linked incident blocked, and requires schema-valid claims, empty 1C causal links, string requested evidence and no pseudo-actions.
 
+Version 0.3.7 closes the under-evidenced month-close regression reproduced in installed v0.3.6: Gate 2 passes after the supplied symptom is accounted for, Gate 4 and Gate 10 remain blocked, Gate 7 rejects an unsupported cause, claims use the exact schema below established, requested evidence is string-only and `actions=[]`.
+
 ## Additional capabilities
 
 - PDF, Spreadsheets and Documents for evidence extraction;
@@ -201,9 +203,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.6 Public Preview release candidate.** This hotfix corrects the exact clean-session capability-inventory deviations observed in installed v0.3.4. It preserves earlier stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.7 Public Preview release candidate.** This hotfix corrects the exact clean-session `under-evidenced-cost` deviations observed in installed v0.3.6. It preserves the accepted capability-inventory, stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance for `0.3.5` remain separate evidence until completed. Runtime acceptance is **BLOCKED** until the refreshed installed version passes the canonical `capability-inventory` case, the two earlier priority cases and then the full 16-case run.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance is **BLOCKED** until installed v0.3.7 passes the four priority cases and then one complete hashed 16-case run.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

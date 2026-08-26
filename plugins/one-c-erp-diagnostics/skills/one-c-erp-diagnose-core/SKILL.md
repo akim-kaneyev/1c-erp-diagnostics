@@ -14,3 +14,4 @@ Use for Gate 4.
 5. Build the chain `document → movement → record/register → consuming mechanism → result → symptom`.
 6. For every hypothesis record support, contradiction, confirm condition and falsify condition.
 7. Do not name a root cause until the mechanism consuming the divergent record is shown or otherwise proven.
+8. If the declared goal is an exact cause but the only evidence is a symptom statement, Gate 4 is `blocked`, not `not_required`; later synthesis/review may still pass by correctly rejecting an unsupported cause.

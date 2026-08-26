@@ -60,6 +60,24 @@ A stale report is not a passed Gate 5. Rejecting it is a passed Gate 7. The link
 incident is not out of scope, and Gate 10 cannot pass while current-state evidence is
 absent.
 
+### Exact under-evidenced profile
+
+For `under-evidenced-cost`, where only `E-COST-1` reports a month-close cost symptom:
+
+- use `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`;
+- keep both current goal and linked incident `blocked`;
+- set Gates 0–3 `passed`, Gate 4 `blocked`, Gate 5 `not_required`, Gates 6–8
+  `passed`, Gate 9 `not_required`, Gate 10 `blocked`;
+- Gate 2 is `passed` after the supplied statement and its limits are accounted for;
+  missing registrar/movement/register/mechanism evidence blocks Gate 4;
+- return one exact `{id, status, text, evidence_ids, falsifier}` claim below
+  established, an empty incomplete causal chain, string-only requested evidence and
+  `actions = []`.
+
+Do not restate the symptom as an established claim. Gate 7 passes by rejecting the
+unsupported exact cause; Gate 10 stays blocked because the exact-cause goal is not
+complete.
+
 ## Gate 0 — Capability and state discovery
 
 Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only. In synthetic evals, the case-supplied capability snapshot is authoritative; do not invent capabilities from analysis roles or packaged skills.
