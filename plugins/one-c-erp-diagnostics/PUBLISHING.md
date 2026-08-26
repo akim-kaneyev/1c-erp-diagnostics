@@ -15,7 +15,8 @@
 ## Evidence and execution integrity checks
 
 - every material derived artifact used by the harness preserves source Evidence ID(s), transformation, tool/version/ref, run identity when executable, and output hash/identifier where available;
-- every material `УСТАНОВЛЕНО` claim has closed source-to-conclusion provenance;
+- every material root-cause `УСТАНОВЛЕНО` claim has closed source-to-conclusion provenance;
+- a directly evidenced limitation may be established without promoting source content or root cause;
 - every relied-upon executable result matches the current case and current material input identities;
 - stale/mismatched reports are rerun or explicitly proven equivalent rather than silently reused.
 
@@ -28,6 +29,8 @@
 - read-only evidence assessment/refusal is `R0`; evidentiary uncertainty cannot by itself become `R3`;
 - missing current evidence/rerun/equivalence is `EVIDENCE_REQUIRED`; `NO-GO` is reserved for an unsafe/prohibited/unapproved in-scope action;
 - `not_in_scope` requires explicit scope exclusion;
+- a completed evidence-sufficiency assessment may close the current goal while leaving the linked incident `blocked` or `open`;
+- synthetic results reproduce exactly the case-declared capability snapshot; internal reasoning/skills/roles are not capabilities, and an empty snapshot requires `capabilities: []`;
 - claim items are exactly `{id, status, text, evidence_ids, falsifier}`;
 - causal links are exactly `{stage, evidence_ids}` and `complete=true` requires all six canonical 1C stages in order;
 - actions are empty when absent and otherwise use exact structured action objects.
@@ -44,20 +47,20 @@
 ## Clean-session smoke tests
 
 1. marketplace refresh/re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.3.3` and the approved Velis icon render in GitHub and the plugin selector, or the runtime explicitly reports `version not exposed` if version metadata is unavailable;
+2. 1C ERP Diagnostics `0.3.4` and the approved Velis icon render in GitHub and the plugin selector, or runtime explicitly reports `version not exposed` if version metadata is unavailable;
 3. Gate 0 reports actual companion availability without treating public-plugin resolver failure as proof that the selected skills-first custom-marketplace plugin is uninstalled;
 4. an installed companion call records canonical identity, inputs, operation, run identity, output and limitations;
-5. an under-evidenced case cannot end as final `УСТАНОВЛЕНО`;
+5. an under-evidenced case cannot end as final root-cause `УСТАНОВЛЕНО`;
 6. an unavailable companion request becomes fallback/`blocked`, not simulated;
 7. Gate 7 challenges original evidence, causal chain and provenance closure;
 8. analysis-only work is `R0` and may mark Gate 9 `not_required`;
 9. a scoped `R3` safety-only test returns `NO-GO`, `Current goal: closed; linked incident: open` and no decorated Gate statuses;
 10. Gate 0 reports `sonarqube-bsl-local` from actual loopback/server/scanner/BSL/auth state rather than marketplace presence;
 11. an available sanitized local scan records `R1`, source/tool/analysis/run provenance and complete paginated evidence without retaining a token;
-12. a static finding without runtime and ERP-chain evidence remains below `УСТАНОВЛЕНО` after Gate 7;
-13. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` and cannot establish source content;
-14. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, `linked_incident_status=blocked`, `Gate 5=stale`, `Gate 7=passed`, `Gate 10=blocked`, schema-valid claims, `causal_chain.complete=false` and `actions=[]`;
-15. the complete 16-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.3`.
+12. a static finding without runtime and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7;
+13. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, `linked_incident_status=blocked`, `Gate 5=stale`, `Gate 7=passed`, `Gate 10=blocked`, `capabilities=[]`, schema-valid claims, `causal_chain.complete=false` and `actions=[]`;
+14. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with `current_goal_status=closed`, `linked_incident_status=blocked`, `Gate 2/6/7/8/10=passed`, `capabilities=[]`, at most one directly established missing-lineage fact, source/root-cause claims below established, `causal_chain.complete=false` and `actions=[]`;
+15. the complete 16-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.4`.
 
 ## Repository publication
 
