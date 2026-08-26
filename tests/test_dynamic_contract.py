@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.3"
+PLUGIN_VERSION = "0.3.4"
 
 
 def load_artifact_module():
@@ -87,6 +87,8 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("Linked incident status:", state)
         self.assertIn("not_required", packaged)
         self.assertIn("Never use `passed*`", packaged)
+        self.assertIn("evidence-sufficiency", root_skill)
+        self.assertIn("Current goal: closed; linked incident: blocked", final_review)
 
     def test_required_dynamic_skills_are_packaged(self) -> None:
         required = {
@@ -237,6 +239,7 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("mismatched execution identity", verify)
         self.assertIn("## Execution records", state)
         self.assertIn("Provenance closure", state)
+        self.assertIn("directly evidenced limitation", synthesis)
 
     def test_strict_eval_result_contract_is_explicit(self) -> None:
         root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -245,6 +248,7 @@ class DynamicContractTests(unittest.TestCase):
         final_review = (PLUGIN / "skills" / "one-c-erp-final-review" / "SKILL.md").read_text(encoding="utf-8")
         risk_control = (PLUGIN / "skills" / "one-c-erp-risk-control" / "SKILL.md").read_text(encoding="utf-8")
         action_decision = (PLUGIN / "skills" / "one-c-erp-action-decision" / "SKILL.md").read_text(encoding="utf-8")
+        capability_discovery = (PLUGIN / "skills" / "one-c-erp-capability-discovery" / "SKILL.md").read_text(encoding="utf-8")
 
         for skill in (root_skill, packaged, portable, final_review):
             self.assertIn("EVAL_RESULT_JSON", skill)
@@ -257,9 +261,12 @@ class DynamicContractTests(unittest.TestCase):
             self.assertIn("read-only", skill)
             self.assertIn("R0", skill)
             self.assertIn("NO-GO", skill)
+            self.assertIn("capabilities: []", skill)
         self.assertIn("Risk classifies the blast radius", risk_control)
         self.assertIn("R0 + EVIDENCE_REQUIRED", action_decision)
         self.assertIn("not_in_scope", final_review)
+        self.assertIn("synthetic case capability snapshot", capability_discovery)
+        self.assertIn("Internal reasoning steps", capability_discovery)
 
 
 if __name__ == "__main__":
