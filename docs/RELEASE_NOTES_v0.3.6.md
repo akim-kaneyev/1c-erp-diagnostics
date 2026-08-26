@@ -11,9 +11,11 @@ unsupported `УСТАНОВЛЕНО` claims.
 
 ## Corrected behavior
 
+In strict `EVAL_RESULT_JSON` mode:
+
 - `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `risk=R0`, `decision=EVIDENCE_REQUIRED`;
 - current goal and linked incident remain `blocked`;
-- Gates 0–4 pass, Gate 5 is `stale`, Gates 6–8 pass, Gate 9 is `not_required`, Gate 10 is `blocked`;
+- Gates 0–4 pass, Gate 5 is `stale`, Gate 6 is `passed`, Gate 7 is `passed`, Gate 8 is `passed`, Gate 9 is `not_required`, Gate 10 is `blocked`;
 - capability snapshot remains empty;
 - one material claim uses exactly `id`, `status`, `text`, `evidence_ids`, `falsifier` and remains below established;
 - input/run/report identity facts are not copied into separate established claims;
