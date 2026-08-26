@@ -8,6 +8,7 @@ import ast
 import importlib.util
 import re
 import sys
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable
@@ -108,6 +109,8 @@ def validate_local_links(path: Path, root: Path, report: ValidationReport) -> No
         target = raw_target.strip().strip("<>")
         if not target or target.startswith("#") or _is_external_link(target):
             continue
+        # Markdown permits an optional quoted title after the URL. Paths that
+        # contain spaces should be percent-encoded or wrapped in angle brackets.
         target = target.split(maxsplit=1)[0]
         target = unquote(target.split("#", 1)[0].split("?", 1)[0])
         if not target:
@@ -128,17 +131,23 @@ def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
         report.fail(f"Missing packaged skills directory: {PACKAGED_SKILLS}")
         return
 
-    names: dict[str, Path] = {}
-    skill_paths = sorted(directory.glob("*/SKILL.md"))
-    report.skill_count = len(skill_paths)
-    if len(skill_paths) < 32:
-        report.fail(f"Expected at least 32 packaged skills, found {len(skill_paths)}")
+    skill_dirs = sorted(path for path in directory.iterdir() if path.is_dir())
+    report.skill_count = len(skill_dirs)
+    if len(skill_dirs) < 32:
+        report.fail(f"Expected at least 32 packaged skills, found {len(skill_dirs)}")
 
-    for skill_md in skill_paths:
-        relative = skill_md.relative_to(root)
-        folder_name = skill_md.parent.name
+    names: dict[str, Path] = {}
+    for skill_dir in skill_dirs:
+        skill_md = skill_dir / "SKILL.md"
+        relative_dir = skill_dir.relative_to(root)
+        folder_name = skill_dir.name
         if not folder_name.startswith("one-c-erp-"):
-            report.fail(f"Foreign or unscoped packaged skill namespace: {relative}")
+            report.fail(f"Foreign or unscoped packaged skill namespace: {relative_dir}")
+        if not skill_md.is_file():
+            report.fail(f"Packaged skill directory has no SKILL.md: {relative_dir}")
+            continue
+
+        relative = skill_md.relative_to(root)
         try:
             fields, body = parse_frontmatter(skill_md)
         except ValueError as exc:
@@ -149,27 +158,32 @@ def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
         description = fields.get("description", "")
         if not name:
             report.fail(f"{relative}: frontmatter name is required")
-        elif name != folder_name:
-            report.fail(f"{relative}: name {name!r} does not match folder {folder_name!r}")
-        elif name in names:
-            report.fail(f"Duplicate packaged skill name {name!r}: {names[name].relative_to(root)} and {relative}")
         else:
-            names[name] = skill_md
+            if name != folder_name:
+                report.fail(f"{relative}: name {name!r} does not match folder {folder_name!r}")
+            if name in names:
+                report.fail(f"Duplicate packaged skill name {name!r}: {names[name].relative_to(root)} and {relative}")
+            else:
+                names[name] = skill_md
         if not description:
             report.fail(f"{relative}: frontmatter description is required")
         elif len(description) < 40:
-            report.warn(f"{relative}: description is short; add explicit task and trigger context")
+            report.warn(f"short_description: {relative}")
 
         line_count = len(skill_md.read_text(encoding="utf-8").splitlines())
         if line_count > 500:
             report.fail(f"{relative}: SKILL.md exceeds 500 lines ({line_count})")
         elif line_count > 400:
-            report.warn(f"{relative}: SKILL.md is large ({line_count} lines); move depth to references")
+            report.warn(f"large_skill: {relative} ({line_count} lines)")
 
         for heading in RECOMMENDED_HEADINGS:
             if heading not in body:
-                report.warn(f"{relative}: recommended section absent: {heading}")
-        validate_local_links(skill_md, root, report)
+                report.warn(f"missing_heading:{heading}: {relative}")
+
+        # Validate the owning SKILL.md and every Markdown reference shipped
+        # beside it, so moving depth into references cannot bypass link checks.
+        for markdown in sorted(skill_dir.rglob("*.md")):
+            validate_local_links(markdown, root, report)
 
 
 def validate_surface_sync(root: Path, report: ValidationReport) -> None:
@@ -231,10 +245,19 @@ def validate_repository(root: Path, *, check_lock: bool = True) -> ValidationRep
     return report
 
 
+def summarize_warnings(warnings: list[str]) -> list[str]:
+    counts: Counter[str] = Counter()
+    for warning in warnings:
+        category = warning.split(":", 1)[0]
+        counts[category] += 1
+    return [f"{category}: {count}" for category, count in sorted(counts.items())]
+
+
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT)
     parser.add_argument("--skip-lock", action="store_true", help="Bootstrap only: skip tracked lock validation")
+    parser.add_argument("--show-warnings", action="store_true", help="Print every advisory warning")
     parser.add_argument("--warnings-as-errors", action="store_true")
     return parser.parse_args(argv)
 
@@ -243,8 +266,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     args = parse_args(argv)
     report = validate_repository(args.root, check_lock=not args.skip_lock)
     print(f"Packaged skills: {report.skill_count}")
-    for warning in report.warnings:
-        print(f"WARNING: {warning}")
+    if args.show_warnings or args.warnings_as_errors:
+        for warning in report.warnings:
+            print(f"WARNING: {warning}")
+    else:
+        for summary in summarize_warnings(report.warnings):
+            print(f"WARNING SUMMARY: {summary}")
     if report.errors or (args.warnings_as_errors and report.warnings):
         print("SKILL GOVERNANCE VALIDATION: FAIL", file=sys.stderr)
         for error in report.errors:
