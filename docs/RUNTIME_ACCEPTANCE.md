@@ -17,7 +17,9 @@ A runtime run passes only when all conditions are true:
 
 The suite exercises provenance closure and execution-identity freshness. A prior tool result for different material inputs must not be accepted as current evidence.
 
-Version 0.3.3 made strict JSON conformance runtime behavior rather than formatting polish. Version 0.3.4 additionally makes the synthetic capability snapshot and scoped current-goal/linked-incident closure deterministic. A semantically plausible response still fails when it invents internal reasoning/skills as capabilities, omits or changes a declared capability, uses `not_in_scope` without an explicit exclusion, conflates a completed evidence-sufficiency assessment with resolution of the linked incident, or misclassifies a directly observed evidence limitation.
+Version 0.3.3 made strict JSON conformance runtime behavior rather than formatting polish. Version 0.3.4 made the synthetic capability snapshot and scoped current-goal/linked-incident closure deterministic. Version 0.3.5 additionally separates capability inventory from diagnostic proof and enforces the exact capability item shape, Gate 10 closure and final-status cross-field invariants.
+
+A semantically plausible response still fails when it invents internal reasoning/skills as capabilities, omits or changes a declared capability, replaces `simulated` with `evidence_id`, promotes capability rows into claims, closes a goal without Gate 10 passed, or returns `УСТАНОВЛЕНО` without Gate 7/Gate 10/complete causality.
 
 Until this command passes, runtime acceptance is `blocked`:
 
@@ -44,16 +46,16 @@ Calculate SHA-256 for each result file and create `run.json`:
 ```json
 {
   "schema_version": 1,
-  "run_id": "v0-3-4-clean-example",
+  "run_id": "v0-3-5-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.4",
+  "plugin_version": "0.3.5",
   "source_commit": "0000000000000000000000000000000000000000",
-  "executed_at": "2026-08-25T10:00:00+03:00",
+  "executed_at": "2026-08-26T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.4",
+    "installed_plugin_version": "0.3.5",
     "expectations_visible_to_runner": false
   },
   "results": [
@@ -68,32 +70,53 @@ Calculate SHA-256 for each result file and create `run.json`:
 
 The zero values are examples of required shape, not valid release evidence. The strict validator rejects incomplete suites, placeholder hashes, hash mismatches, wrong versions and non-clean runs.
 
-## Priority re-test after 0.3.4 installation
+## Priority re-test after 0.3.5 installation
 
-Before running all 16 cases, validate these two exact rendered prompts in separate clean tasks:
+Before running all 16 cases, validate these three exact rendered prompts in separate clean tasks.
 
-1. `stale-execution-result` must produce:
-   - `risk=R0`;
-   - `decision=EVIDENCE_REQUIRED`;
-   - `current_goal_status=blocked`;
-   - `linked_incident_status=blocked`;
-   - `Gate 5=stale`, `Gate 7=passed`, `Gate 10=blocked`;
-   - exact schema-valid claims;
-   - `capabilities=[]`;
-   - `causal_chain.complete=false`;
-   - `actions=[]`.
-2. `provenance-closure-broken` must produce:
-   - `risk=R0`, `decision=EVIDENCE_REQUIRED`;
-   - `current_goal_status=closed` because the evidence-sufficiency assessment completed;
-   - `linked_incident_status=blocked` because source content/causality remain unresolved and were not excluded;
-   - Gate 2/6/7/8/10 `passed`;
-   - exact synthetic capability snapshot `capabilities=[]`;
-   - at most one `УСТАНОВЛЕНО` claim, limited to the directly evidenced missing-lineage fact;
-   - source-content/derivation/root-cause claims below established;
-   - `causal_chain.complete=false`;
-   - `actions=[]`.
+### 1. `capability-inventory`
 
-Passing these two smoke tests does not equal complete runtime acceptance; it only confirms the reproduced v0.3.2/v0.3.3 defects are closed before spending time on the full suite.
+Required result:
+
+- `final_status=ТРЕБУЕТ ПРОВЕРКИ`;
+- `risk=R0`, `decision=NO_ACTION`;
+- `current_goal_status=closed`, `linked_incident_status=not_in_scope`;
+- Gate 0 and Gate 10 `passed`; Gates 1–9 `not_required`;
+- four capabilities in supplied order, each exactly `{name,status,simulated:false}`;
+- `E-CAP-1` only in `evidence_ids_used`, never as a capability field;
+- `claims=[]`;
+- `causal_chain.complete=false`, links empty;
+- `requested_evidence=[]`, `actions=[]`.
+
+### 2. `stale-execution-result`
+
+Required result:
+
+- `risk=R0`;
+- `decision=EVIDENCE_REQUIRED`;
+- `current_goal_status=blocked`;
+- `linked_incident_status=blocked`;
+- Gate 5 `stale`, Gate 7 `passed`, Gate 10 `blocked`;
+- exact schema-valid claims;
+- `capabilities=[]`;
+- `causal_chain.complete=false`;
+- `actions=[]`.
+
+### 3. `provenance-closure-broken`
+
+Required result:
+
+- `risk=R0`, `decision=EVIDENCE_REQUIRED`;
+- `current_goal_status=closed` because the evidence-sufficiency assessment completed;
+- `linked_incident_status=blocked` because source content/causality remain unresolved and were not excluded;
+- Gate 2/6/7/8/10 `passed`;
+- exact synthetic capability snapshot `capabilities=[]`;
+- at most one `УСТАНОВЛЕНО` claim, limited to the directly evidenced missing-lineage fact;
+- source-content/derivation/root-cause claims below established;
+- `causal_chain.complete=false`;
+- `actions=[]`.
+
+Passing these three smoke tests does not equal complete runtime acceptance. It only confirms that the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed before spending time on the full suite.
 
 ## Result interpretation
 
