@@ -61,9 +61,6 @@ jobs:
       - name: Validate plugin and public package
         run: python tools/validate_public_release.py
 
-      - name: Print canonical deterministic SHA-256 skill lock
-        run: python tools/update_skill_lock.py --print
-
       - name: Validate skill governance and synchronization
         run: python tools/validate_skills.py
 
