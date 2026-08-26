@@ -1,0 +1,38 @@
+name: Apply v0.3.6 stale-execution hotfix
+
+on:
+  push:
+    branches:
+      - hotfix/stale-execution-runtime-contract-0.3.6
+    paths:
+      - tools/apply_v036_hotfix.py
+      - .github/workflows/apply-v036-hotfix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: hotfix/stale-execution-runtime-contract-0.3.6
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Apply asserted hotfix edits
+        run: python tools/apply_v036_hotfix.py
+      - name: Refresh deterministic skill lock
+        run: python tools/update_skill_lock.py --write
+      - name: Commit generated hotfix
+        run: |
+          git config user.name "Akim Kaneev"
+          git config user.email "290311329+akim-kaneyev@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Fix stale-execution runtime contract for v0.3.6"
+          git push origin HEAD:hotfix/stale-execution-runtime-contract-0.3.6
