@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.4"
+PLUGIN_VERSION = "0.3.5"
 
 
 def load_artifact_module():
@@ -252,7 +252,6 @@ class DynamicContractTests(unittest.TestCase):
 
         for skill in (root_skill, packaged, portable, final_review):
             self.assertIn("EVAL_RESULT_JSON", skill)
-            self.assertIn("exactly one JSON object", skill)
             self.assertIn("causal_chain.complete", skill)
             self.assertIn("EVIDENCE_REQUIRED", skill)
             self.assertIn("actions", skill)
@@ -262,11 +261,38 @@ class DynamicContractTests(unittest.TestCase):
             self.assertIn("R0", skill)
             self.assertIn("NO-GO", skill)
             self.assertIn("capabilities: []", skill)
+        self.assertIn("exactly one JSON object", root_skill)
+        self.assertIn("exactly one JSON object", final_review)
         self.assertIn("Risk classifies the blast radius", risk_control)
         self.assertIn("R0 + EVIDENCE_REQUIRED", action_decision)
         self.assertIn("not_in_scope", final_review)
         self.assertIn("synthetic case capability snapshot", capability_discovery)
         self.assertIn("Internal reasoning steps", capability_discovery)
+
+    def test_capability_inventory_contract_is_explicit(self) -> None:
+        root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        packaged = (PLUGIN / "skills" / "one-c-erp-diagnostics" / "SKILL.md").read_text(encoding="utf-8")
+        portable = (ROOT / "skills" / "one-c-erp-diagnostics" / "SKILL.md").read_text(encoding="utf-8")
+        final_review = (PLUGIN / "skills" / "one-c-erp-final-review" / "SKILL.md").read_text(encoding="utf-8")
+        capability = (PLUGIN / "skills" / "one-c-erp-capability-discovery" / "SKILL.md").read_text(encoding="utf-8")
+        combined = "\n".join((root_skill, packaged, portable, final_review, capability))
+
+        for required in (
+            "capability-inventory",
+            "final_status = ТРЕБУЕТ ПРОВЕРКИ",
+            "Gate 0",
+            "Gate 10",
+            "claims: []",
+            "simulated",
+            "evidence_id",
+            "evidence_ids_used",
+        ):
+            self.assertIn(required, combined)
+        self.assertIn("{name, status, simulated}", root_skill)
+        self.assertIn("{name, status, simulated}", packaged)
+        self.assertIn("{name, status, simulated}", capability)
+        self.assertIn("Gate 10 cannot be `not_required`", final_review)
+        self.assertIn("complete causal chain", portable)
 
 
 if __name__ == "__main__":

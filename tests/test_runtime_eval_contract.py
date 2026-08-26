@@ -181,12 +181,95 @@ def observed_v033_provenance_shape() -> dict[str, Any]:
     return result
 
 
+def canonical_capability_inventory_result() -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "case_id": "capability-inventory",
+        "final_status": "ТРЕБУЕТ ПРОВЕРКИ",
+        "risk": "R0",
+        "decision": "NO_ACTION",
+        "current_goal_status": "closed",
+        "linked_incident_status": "not_in_scope",
+        "gates": {
+            "0": "passed",
+            "1": "not_required",
+            "2": "not_required",
+            "3": "not_required",
+            "4": "not_required",
+            "5": "not_required",
+            "6": "not_required",
+            "7": "not_required",
+            "8": "not_required",
+            "9": "not_required",
+            "10": "passed",
+        },
+        "capabilities": [
+            {"name": "unica", "status": "unavailable", "simulated": False},
+            {
+                "name": "1c-skills",
+                "status": "confirmation_required",
+                "simulated": False,
+            },
+            {"name": "1c-skills-py", "status": "available", "simulated": False},
+            {"name": "opensandbox", "status": "prohibited", "simulated": False},
+        ],
+        "evidence_ids_used": ["E-CAP-1"],
+        "claims": [],
+        "causal_chain": {"complete": False, "links": []},
+        "requested_evidence": [],
+        "actions": [],
+        "summary": (
+            "Инвентаризация Gate 0 завершена по переданному синтетическому "
+            "snapshot; вывод о состоянии или причине 1С не устанавливался."
+        ),
+    }
+
+
+def observed_v034_capability_inventory_shape() -> dict[str, Any]:
+    """Reproduce the exact contract failures observed in the v0.3.4 clean session."""
+    result = canonical_capability_inventory_result()
+    result["final_status"] = "УСТАНОВЛЕНО"
+    result["gates"]["10"] = "not_required"
+    result["capabilities"] = [
+        {
+            "name": "unica",
+            "status": "unavailable",
+            "evidence_id": "E-CAP-1",
+        },
+        {
+            "name": "1c-skills",
+            "status": "confirmation_required",
+            "evidence_id": "E-CAP-1",
+        },
+        {
+            "name": "1c-skills-py",
+            "status": "available",
+            "evidence_id": "E-CAP-1",
+        },
+        {
+            "name": "opensandbox",
+            "status": "prohibited",
+            "evidence_id": "E-CAP-1",
+        },
+    ]
+    result["claims"] = [
+        {
+            "claim": f"Inventory observation {index}",
+            "status": "УСТАНОВЛЕНО",
+            "evidence_ids": ["E-CAP-1"],
+        }
+        for index in range(1, 7)
+    ]
+    return result
+
+
 class RuntimeEvalContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.suite, cls.cases, cls.suite_errors = validate_evals.load_suite()
         cls.stale_case = cls.cases["stale-execution-result"]
         cls.provenance_case = cls.cases["provenance-closure-broken"]
+        cls.capability_case = cls.cases["capability-inventory"]
 
     def test_canonical_stale_result_passes_validator(self) -> None:
         self.assertEqual(self.suite_errors, [])
@@ -262,6 +345,36 @@ class RuntimeEvalContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_canonical_capability_inventory_result_passes_validator(self) -> None:
+        self.assertEqual(
+            validate_evals.validate_result(
+                canonical_capability_inventory_result(), self.capability_case
+            ),
+            [],
+        )
+
+    def test_observed_v034_capability_inventory_shape_is_rejected(self) -> None:
+        errors = validate_evals.validate_result(
+            observed_v034_capability_inventory_shape(), self.capability_case
+        )
+        joined = "\n".join(errors)
+        self.assertIn(
+            "final_status 'УСТАНОВЛЕНО' is forbidden for this case", joined
+        )
+        self.assertIn("Gate 10 must be 'passed', got 'not_required'", joined)
+        self.assertIn("closed current goal requires Gate 10 passed", joined)
+        self.assertIn("missing fields: simulated", joined)
+        self.assertIn("unexpected fields: evidence_id", joined)
+        self.assertIn("simulated must be false", joined)
+        self.assertIn("missing fields: falsifier, id, text", joined)
+        self.assertIn("unexpected fields: claim", joined)
+        self.assertIn("established claims 6 exceed allowed maximum 0", joined)
+        self.assertIn("УСТАНОВЛЕНО requires Gate 7 passed", joined)
+        self.assertIn("УСТАНОВЛЕНО requires a complete causal chain", joined)
+        self.assertIn(
+            "УСТАНОВЛЕНО requires closed goal and Gate 10 passed", joined
+        )
+
     def test_rendered_prompt_contains_exact_machine_and_capability_contract(self) -> None:
         rendered = validate_evals.render_prompt(self.stale_case)
         self.assertIn("Верни только один JSON-объект без Markdown", rendered)
@@ -276,6 +389,16 @@ class RuntimeEvalContractTests(unittest.TestCase):
         self.assertIn('"causal_chain": {', rendered)
         self.assertIn('"actions": []', rendered)
         self.assertIn("верни capabilities: []", rendered)
+        self.assertNotIn('"expect"', rendered)
+
+    def test_rendered_capability_prompt_contains_inventory_only_contract(self) -> None:
+        rendered = validate_evals.render_prompt(self.capability_case)
+        self.assertIn("final_status=ТРЕБУЕТ ПРОВЕРКИ", rendered)
+        self.assertIn("Gate 0 и Gate 10=passed", rendered)
+        self.assertIn("Gates 1–9=not_required", rendered)
+        self.assertIn("ровно name, status, simulated", rendered)
+        self.assertIn("claims=[]", rendered)
+        self.assertIn("E-CAP-1 укажи только в evidence_ids_used", rendered)
         self.assertNotIn('"expect"', rendered)
 
 

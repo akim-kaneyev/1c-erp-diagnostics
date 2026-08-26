@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.5 — capability inventory strict output
+
+- added an explicit inventory-only `capability-inventory` profile: `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required;
+- separated successful inventory procedure closure from diagnostic/root-cause proof status;
+- require every strict capability item to be exactly `{name, status, simulated}` with `simulated=false`;
+- prohibited `evidence_id`, category, purpose and other extra fields inside strict capability rows; snapshot evidence remains in `evidence_ids_used`;
+- prohibited promoting capability status rows into claims and require `claims=[]` for the inventory-only acceptance case;
+- made closed-goal/Gate-10 and final-`УСТАНОВЛЕНО` cross-field invariants explicit;
+- expanded the canonical capability-inventory case to require all eleven Gate statuses and exact output semantics;
+- added a canonical passing inventory result plus a regression fixture reproducing every observed v0.3.4 clean-session deviation;
+- retained the earlier stale-execution/provenance fixes, 16-case suite, 32 packaged skills, deterministic skill lock, stable marketplace identity and immutable companion pins;
+- kept runtime acceptance blocked until exact installed v0.3.5 clean-session evidence and the complete hashed run pass.
+
 ## 0.3.4 — provenance scope and deterministic capability snapshots
 
 - made synthetic `EVAL_RESULT_JSON` capability output match the exact case-declared snapshot;

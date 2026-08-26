@@ -19,7 +19,31 @@ For every candidate capability record:
 
 A capability is a host-visible external/plugin/tool surface. Internal reasoning steps, packaged skills, synthesis/review roles, or names invented to describe what the model can do are not capabilities and must not be emitted in a capability map.
 
-In `EVAL_RESULT_JSON` cases, the synthetic case capability snapshot is authoritative. Report exactly the declared capability names/statuses and no additional inferred entries. When the case declares no capabilities, return `capabilities: []`; Gate 0 may still pass after recording that no runtime capability is required for the read-only evidence assessment.
+## Strict synthetic inventory output
+
+In `EVAL_RESULT_JSON` cases, the synthetic case capability snapshot is authoritative. Report exactly the declared capability names/statuses in their supplied order and no additional inferred entries.
+
+Every strict capability item is exactly:
+
+`{name, status, simulated}`
+
+`simulated` is always `false`. Do not add `evidence_id`, `evidence_ids`, category, purpose, reason, provenance, fallback or other fields to the strict result item. Reference the snapshot evidence only in the top-level `evidence_ids_used` array.
+
+Capability rows are inventory data, not diagnostic claims. Do not create claims that merely restate `available`, `confirmation_required`, `unavailable` or `prohibited` statuses.
+
+When the synthetic case declares no capabilities, return `capabilities: []`; Gate 0 may still pass after recording that no runtime capability is required for the read-only evidence assessment.
+
+For the inventory-only `capability-inventory` acceptance case:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`;
+- `risk = R0`, `decision = NO_ACTION`;
+- `current_goal_status = closed`, `linked_incident_status = not_in_scope`;
+- Gate 0 and Gate 10 are `passed`; Gates 1–9 are `not_required`;
+- `claims = []`;
+- `causal_chain.complete = false` with empty links;
+- no requested evidence and no actions.
+
+Successful inventory completion is represented by Gate 10/current-goal closure. It is not a proved 1C/root-cause conclusion and must not produce `final_status = УСТАНОВЛЕНО`.
 
 Candidate companions may include Unica, 1C Skills (Python), 1C Skills (PowerShell), PDF, Spreadsheets, Documents, GitHub, Google Drive, Computer Use and OpenSandbox. Candidate host adapters may include `sonarqube-bsl-local`. This list is not proof that any candidate is installed.
 

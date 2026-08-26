@@ -35,11 +35,27 @@ When the request contains literal `EVAL_RESULT_JSON`, the normal narrative respo
    - `NO_ACTION` — the declared goal is complete without action or additional evidence;
    - `GO` — a specifically scoped action is authorized by the applicable risk gate.
 7. `linked_incident_status = not_in_scope` only when the prompt explicitly excludes the underlying incident. Missing, stale or provenance-incomplete evidence means `blocked` or `open`, not `not_in_scope`. `EVIDENCE_REQUIRED` does not by itself force `current_goal_status = blocked`: a bounded evidence-sufficiency/provenance assessment may close after correctly determining that more evidence is required, while the linked incident remains blocked/open.
-8. `capabilities` contains only the capability snapshot explicitly supplied by the synthetic case. Internal reasoning steps, packaged skills, synthesis/review roles and invented tool names are not capabilities. If the case declares none, return `capabilities: []`.
-9. `claims` contains material conclusions, not copied Evidence summaries. Each item is exactly `{id, status, text, evidence_ids, falsifier}`. Do not use `claim` instead of `id`/`text`; do not omit `falsifier`; do not create trivial `УСТАНОВЛЕНО` claims merely by restating input identities. Assess claims independently: a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` while source content and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`.
+8. `capabilities` contains only the capability snapshot explicitly supplied by the synthetic case. Every item is exactly `{name, status, simulated}` and `simulated` is always `false`. `evidence_id`, `evidence_ids`, category, purpose, reason and other fields are forbidden in strict capability items; evidence belongs in `evidence_ids_used`. Internal reasoning steps, packaged skills, synthesis/review roles and invented tool names are not capabilities. If the case declares none, return `capabilities: []`.
+9. `claims` contains material conclusions, not copied Evidence summaries. Each item is exactly `{id, status, text, evidence_ids, falsifier}`. Do not use `claim` instead of `id`/`text`; do not omit `falsifier`; do not create trivial `УСТАНОВЛЕНО` claims merely by restating input identities or capability statuses. Assess claims independently: a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` while source content and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`.
 10. `causal_chain.complete = true` only when all six canonical 1C causal stages are evidenced in order: `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`. A complete logical argument about provenance or stale evidence is not a complete 1C causal chain. Each link is exactly `{stage, evidence_ids}`. Otherwise use `complete: false` and an empty or schema-valid links list.
 11. If no actual/proposed in-scope action exists, `actions` must be `[]`. If present, each action is exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
-12. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
+12. Enforce cross-field invariants before sending: `current_goal_status = closed` requires Gate 10 `passed`; Gate 10 `passed` requires a closed current goal; `final_status = УСТАНОВЛЕНО` requires Gate 7 `passed`, Gate 10 `passed`, a closed goal and `causal_chain.complete = true`.
+13. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
+
+### Inventory-only `capability-inventory` contract
+
+When the synthetic case asks only for Gate 0 capability inventory, completion of the inventory is not a proved 1C/root-cause conclusion. Use this exact semantic contract:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`;
+- `risk = R0`, `decision = NO_ACTION`;
+- `current_goal_status = closed`, `linked_incident_status = not_in_scope`;
+- Gate 0 and Gate 10 are `passed`; Gates 1–9 are `not_required`;
+- preserve the supplied capability order and emit each row as exactly `{name, status, simulated: false}`;
+- put the snapshot Evidence ID only in `evidence_ids_used`, never inside a capability row;
+- capability statuses are inventory rows, not claims: return `claims: []`;
+- return `causal_chain: {complete: false, links: []}`, `requested_evidence: []` and `actions: []`.
+
+Do not convert “the inventory procedure completed” into `final_status = УСТАНОВЛЕНО`. Goal completion is represented by Gate 10 and `current_goal_status`; diagnostic proof status is represented separately by `final_status`.
 
 ## Gate 0 — Capability and state discovery
 
@@ -149,12 +165,16 @@ Return:
 
 A completed evidence-sufficiency/provenance assessment may close with Gate 10 `passed` and `EVIDENCE_REQUIRED`, while the linked incident remains `blocked`. If the declared goal is to establish the cause/current state itself, missing evidence blocks the current goal and Gate 10.
 
+For any closed current goal, including a Gate-0-only inventory, Gate 10 is `passed`, never `not_required`. Gate 10 records successful closure of the bounded procedure; it does not assert that a 1C cause was established.
+
 Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence or changed input identity invalidates downstream gates from the earliest affected point.
 
 ## Non-negotiable controls
 
 - No invented 1C objects.
 - No invented capabilities from internal reasoning operations, packaged skills or role names.
+- No strict capability item containing `evidence_id` instead of `simulated: false`.
+- No capability inventory rows promoted into claims.
 - No hidden use or simulated output of unavailable companions.
 - No external plugin output treated as truth without evidence linkage.
 - No supplied material evidence silently omitted.
@@ -164,6 +184,7 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No lower-level validation promoted into proof of a required higher-level result.
 - No producer self-report treated as independent validation.
 - No final root-cause `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
+- No `final_status = УСТАНОВЛЕНО` when Gate 7/Gate 10 is not `passed` or the causal chain is incomplete.
 - No production-changing action without the applicable risk gate.
 - No decorated/noncanonical Gate statuses.
 - No `EVAL_RESULT_JSON` object that violates the supplied skeleton or synthetic capability snapshot.

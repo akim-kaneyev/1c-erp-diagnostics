@@ -12,14 +12,14 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.4` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
+7. Confirm `1C ERP Diagnostics` reports `0.3.5` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
 
 The marketplace creates one discovery/installation space. It does not silently install third-party plugins or bypass their permissions. A failed public global-plugin/dependency resolver lookup does not by itself prove that the selected skills-first custom-marketplace plugin is absent.
 
-### Smoke test A — capability inventory
+### Smoke test A — live capability inventory
 
 `Выполни только Gate 0. Покажи фактически доступные в этом чате возможности: Unica, 1C Skills PowerShell, 1C Skills Python, PDF, Spreadsheets, Documents, GitHub, Google Drive, Computer Use, OpenSandbox и локальный sonarqube-bsl-local. Недоступные возможности не имитируй.`
 
@@ -74,13 +74,40 @@ For a separately authorized sanitized local scan, expect `R1`, redacted command 
 
 Render the canonical prompts from a repository checkout. Do not manually shorten or rewrite them; the rendered capability block, strict instructions and skeleton are part of the acceptance evidence.
 
-### Test H — stale execution result
+### Test H — capability inventory contract
+
+```text
+python tools/validate_evals.py --render capability-inventory
+```
+
+Run the rendered prompt in a new clean chat with exactly v0.3.5 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
+
+```text
+python tools/validate_evals.py --results capability-inventory.result.json
+```
+
+Expected exact semantics:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`;
+- `risk = R0`, `decision = NO_ACTION`;
+- `current_goal_status = closed`, `linked_incident_status = not_in_scope`;
+- Gate 0 and Gate 10 are `passed`; Gates 1–9 are `not_required`;
+- capabilities remain in the supplied order: `unica`, `1c-skills`, `1c-skills-py`, `opensandbox`;
+- every capability object contains exactly `name`, `status`, `simulated`; `simulated=false`;
+- no capability object contains `evidence_id`; `E-CAP-1` appears only in `evidence_ids_used`;
+- `claims = []`;
+- `causal_chain.complete = false`, links empty;
+- `requested_evidence = []`, `actions = []`.
+
+The inventory procedure can close successfully without producing a proved 1C conclusion. Gate 10/current-goal closure and `final_status` are separate fields with separate meanings.
+
+### Test I — stale execution result
 
 ```text
 python tools/validate_evals.py --render stale-execution-result
 ```
 
-Run the rendered prompt in a new clean chat with exactly v0.3.4 installed. Save the returned single JSON object as `stale-execution-result.result.json`, then validate it:
+Run the rendered prompt in another new clean chat with exactly v0.3.5 installed. Save and validate it:
 
 ```text
 python tools/validate_evals.py --results stale-execution-result.result.json
@@ -98,7 +125,7 @@ Expected core semantics:
 - `causal_chain.complete = false`;
 - `actions = []`.
 
-### Test I — provenance-closure assessment
+### Test J — provenance-closure assessment
 
 ```text
 python tools/validate_evals.py --render provenance-closure-broken
@@ -118,7 +145,7 @@ Expected core semantics:
 - claims about value presence in S-1, S-1→D-1 derivation and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`;
 - `causal_chain.complete = false` and `actions = []`.
 
-Passing these two tests confirms the reproduced v0.3.2/v0.3.3 defects are closed. It does not equal complete runtime acceptance; all 16 cases are still required.
+Passing these three priority tests confirms the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed. It does not equal complete runtime acceptance; all 16 cases are still required.
 
 ## Codex repository-local skill
 
@@ -181,4 +208,4 @@ Every normal result separates facts, interpretations, hypotheses and missing evi
 
 Gate statuses are limited to `pending | passed | blocked | failed | stale | not_required`. Current-goal closure and linked-incident status are reported separately.
 
-When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton and synthetic capability snapshot. A final root-cause `УСТАНОВЛЕНО` requires Gate 7. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
+When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton and synthetic capability snapshot. A final root-cause `УСТАНОВЛЕНО` requires Gate 7, Gate 10 and complete causality. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
