@@ -1,0 +1,44 @@
+name: Apply v0.3.7 under-evidenced hotfix
+
+on:
+  push:
+    branches:
+      - hotfix/under-evidenced-cost-contract-0.3.7
+    paths:
+      - tools/apply_v037_hotfix.py
+      - .github/workflows/apply-v037-hotfix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: hotfix/under-evidenced-cost-contract-0.3.7
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Compile applicator
+        run: python -m py_compile tools/apply_v037_hotfix.py
+      - name: Apply asserted hotfix edits
+        run: python tools/apply_v037_hotfix.py
+      - name: Refresh deterministic skill lock
+        run: python tools/update_skill_lock.py --write
+      - name: Compile and run focused regressions
+        run: |
+          python -m compileall -q tools tests
+          python -m unittest tests.test_runtime_eval_contract tests.test_dynamic_contract -v
+      - name: Commit generated hotfix
+        run: |
+          git config user.name "Akim Kaneev"
+          git config user.email "290311329+akim-kaneyev@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Fix under-evidenced runtime contract for v0.3.7"
+          git push origin HEAD:hotfix/under-evidenced-cost-contract-0.3.7
