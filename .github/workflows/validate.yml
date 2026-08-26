@@ -61,6 +61,20 @@ jobs:
       - name: Validate plugin and public package
         run: python tools/validate_public_release.py
 
+      - name: Validate skill governance (bootstrap without tracked lock)
+        run: python tools/validate_skills.py --skip-lock
+
+      - name: Generate canonical SHA-256 skill lock
+        run: python tools/update_skill_lock.py --write --output /tmp/SKILLS.lock.json
+
+      - name: Upload canonical skill lock
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: skills-lock-python-${{ matrix.python-version }}
+          path: /tmp/SKILLS.lock.json
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Validate clean publication tree and Git history
         run: python tools/validate_publication_history.py
 
