@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.8 — deterministic accounting and state integrity
+
+- added exact fact/plan, share, distribution, residual, row-coverage and observed-allocation controls without float arithmetic;
+- added deterministic before/after classification for completeness, allocation proportion, analytic key, cardinality and no-material-change effects;
+- kept arithmetic verification independent from semantic Gate 7 and required business justification when a proposal changes allocation proportions;
+- added executable case-state identity, lineage, invalidation and material-claim evidence validation;
+- expanded the synthetic suite from 16 to 26 cases with accounting, state, artifact-view and credential-response regressions;
+- hardened XLSX/ZIP metadata, parser, credential, machine-path, release-tree and complete reachable-history checks with bounded fail-closed behavior;
+- retained 32 packaged skills, marketplace identity, immutable companion pins, approved Velis assets and the earlier strict runtime contracts;
+- kept runtime acceptance blocked until the exact installed v0.3.8 package passes one complete hashed 26-case clean-session run.
+
 ## 0.3.7 — exact under-evidenced cost contract
 
 - reproduced the installed v0.3.6 `under-evidenced-cost` failure after the first three priority cases passed;

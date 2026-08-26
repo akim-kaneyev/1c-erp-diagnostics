@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.7
+# 1C ERP Diagnostics plugin — v0.3.8
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -65,4 +65,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for the v0.3.7 baseline remains blocked until the exact installed capability-inventory result and the complete hashed 16-case clean-session run pass their validators. The accounting/state changes in this branch are an unversioned candidate and remain blocked from publication until an explicitly approved synchronized version passes the complete hashed 26-case clean-session run.
+Runtime acceptance for v0.3.8 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. Repository validation, CodeQL and publication-history checks remain separate evidence.

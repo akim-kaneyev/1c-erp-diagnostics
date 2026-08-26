@@ -1,4 +1,4 @@
-# Public release checklist — v0.3.7 baseline and unversioned accounting/state candidate
+# Public release checklist — v0.3.8 accounting and state integrity candidate
 
 ## Repository and plugin package
 
@@ -31,9 +31,9 @@
 - [x] The validated synthetic suite contains 26 cases, including the 10 accounting/state/security regressions in this candidate.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.7`.
-- [x] v0.3.7 release notes and self-audit exist without claiming pending runtime steps as complete.
-- [ ] Approve and apply a new synchronized version before publishing the accounting/state runtime changes. This branch intentionally remains unversioned under the current task and is not a release candidate.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.8`.
+- [x] v0.3.8 release notes and self-audit exist without claiming pending runtime steps as complete.
+- [x] The synchronized v0.3.8 version bump was explicitly approved and applied on the release Pull Request.
 
 ## Unified 1C ecosystem marketplace
 
@@ -53,14 +53,14 @@
 - [x] Installed v0.3.6 `under-evidenced-cost` preserved `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`, blocked scopes, empty capabilities and incomplete causality.
 - [x] The same result reproduced official-contract failures in Gate 2/4/10, claim schema/status, requested-evidence type and action schema.
 - [x] v0.3.7 adds the exact under-evidenced semantic profile and rejected regression fixture.
-- [ ] Refresh/re-import the marketplace and confirm installed version `0.3.7` when exposed.
+- [ ] Refresh/re-import the marketplace and confirm installed version `0.3.8` when exposed.
 - [ ] Re-run `capability-inventory` in a clean session.
 - [ ] Re-run `stale-execution-result` in a separate clean session.
 - [ ] Re-run `provenance-closure-broken` in a separate clean session.
 - [ ] Re-run `under-evidenced-cost` and validate the saved result.
-- [ ] Complete and hash all 16 clean-session results.
-- [ ] Pass `tools/validate_runtime_run.py` for exact installed v0.3.7.
-- [ ] After an explicitly approved synchronized version, run and hash all 26 cases in fresh clean sessions for that exact installed package.
+- [ ] Complete and hash all 26 clean-session results.
+- [ ] Pass `tools/validate_runtime_run.py` for exact installed v0.3.8.
+- [ ] Run and hash all 26 cases in fresh clean sessions for the exact installed v0.3.8 package.
 - [ ] Run the canonical six-row baseline and patched accounting inputs against the exact packaged helper and record helper/input/result hashes.
 - [ ] Keep accounting/state runtime acceptance blocked until the 26-case run and `tools/validate_runtime_run.py` both pass.
 
@@ -72,12 +72,12 @@
 - [x] Private vulnerability reporting is enabled.
 - [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
 - [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm the future versioned protected PR CodeQL and required checks are green before merge.
+- [ ] Confirm the v0.3.8 protected PR CodeQL and required checks are green before merge.
 
 ## Public repository and versioned release
 
 - [x] Public repository is live.
-- [ ] After an explicitly approved version bump, open a Pull Request from `codex/accounting-invariants`.
+- [x] Draft Pull Request #25 is open from `codex/accounting-invariants` with the approved version scope.
 - [ ] Pass Python 3.10/3.12 validation, skill governance/lock, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
 - [ ] Squash-merge the synchronized new version only through the protected `main` ruleset.
 - [ ] Verify post-merge `main` validation and CodeQL.
@@ -91,4 +91,4 @@
 
 ## Stop condition
 
-Do **not** claim v0.3.7 baseline runtime acceptance while its complete hashed 16-case run is missing or invalid. Do **not** publish or claim runtime acceptance for the unversioned accounting/state candidate while the approved synchronized version, CI, CodeQL, publication-history or 26-case clean-session controls remain incomplete; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present. Repository CI, CodeQL and publication-history PASS do not substitute for exact-version runtime evidence.
+Do **not** publish or claim runtime acceptance for v0.3.8 while CI, CodeQL, publication-history or the complete 26-case clean-session runtime controls remain incomplete; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present. Repository CI, CodeQL and publication-history PASS do not substitute for exact-version runtime evidence.

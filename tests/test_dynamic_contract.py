@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.7"
+PLUGIN_VERSION = "0.3.8"
 
 
 def load_artifact_module():

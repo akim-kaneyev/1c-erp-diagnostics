@@ -12,7 +12,7 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.7` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
+7. Confirm `1C ERP Diagnostics` reports `0.3.8` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
@@ -80,7 +80,7 @@ Render the canonical prompts from a repository checkout. Do not manually shorten
 python tools/validate_evals.py --render capability-inventory
 ```
 
-Run the rendered prompt in a new clean chat with exactly v0.3.7 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
+Run the rendered prompt in a new clean chat with exactly v0.3.8 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
 
 ```text
 python tools/validate_evals.py --results capability-inventory.result.json
@@ -107,7 +107,7 @@ The inventory procedure can close successfully without producing a proved 1C con
 python tools/validate_evals.py --render stale-execution-result
 ```
 
-Run the rendered prompt in another new clean chat with exactly v0.3.7 installed. Save and validate it:
+Run the rendered prompt in another new clean chat with exactly v0.3.8 installed. Save and validate it:
 
 ```text
 python tools/validate_evals.py --results stale-execution-result.result.json
@@ -145,7 +145,7 @@ Expected core semantics:
 - claims about value presence in S-1, S-1→D-1 derivation and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`;
 - `causal_chain.complete = false` and `actions = []`.
 
-Passing these three priority tests confirms the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed. It does not equal complete runtime acceptance; all 16 v0.3.6 cases are still required. The unversioned accounting/state candidate has a separate 26-case acceptance set and cannot reuse this result.
+Passing these three priority tests confirms the earlier strict-contract defects remain closed. Re-run `under-evidenced-cost` as the fourth priority case. These checks do not equal complete runtime acceptance; all 26 v0.3.8 cases must run in separate clean sessions and pass the complete hashed runtime validator.
 
 ## Codex repository-local skill
 

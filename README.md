@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.7" src="https://img.shields.io/badge/version-0.3.7-0D1B2A.svg" />
+  <img alt="Version 0.3.8" src="https://img.shields.io/badge/version-0.3.8-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -131,6 +131,8 @@ Version 0.3.6 closes the stale-execution runtime regression reproduced in instal
 
 Version 0.3.7 closes the under-evidenced month-close regression reproduced in installed v0.3.6: Gate 2 passes after the supplied symptom is accounted for, Gate 4 and Gate 10 remain blocked, Gate 7 rejects an unsupported cause, claims use the exact schema below established, requested evidence is string-only and `actions=[]`.
 
+Version 0.3.8 adds deterministic accounting and case-state controls: exact fact/plan/share/allocation arithmetic, observed-allocation and row-coverage checks, independent effect classification, executable identity/lineage/invalidation validation, fail-closed XLSX/ZIP and publication-history scanning, and 10 new accounting/state/security regressions. Accounting arithmetic remains independent from semantic Gate 7 and cannot establish a 1C root cause by itself.
+
 ## Additional capabilities
 
 - PDF, Spreadsheets and Documents for evidence extraction;
@@ -203,9 +205,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.7 Public Preview release candidate.** This hotfix corrects the exact clean-session `under-evidenced-cost` deviations observed in installed v0.3.6. It preserves the accepted capability-inventory, stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.8 Public Preview release candidate.** This release adds deterministic accounting invariants, exact before/after effect classification, executable case-state integrity, stronger artifact/publication security and a 26-case synthetic suite. It preserves the accepted capability-inventory, stale-execution, provenance-closure and under-evidenced controls, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for the v0.3.7 baseline is **BLOCKED** until installed v0.3.7 passes the four priority cases and one complete hashed 16-case run. The accounting/state changes on this branch are an unversioned candidate layered on that baseline: publication requires an explicitly approved synchronized version bump followed by a fresh complete 26-case clean-session run of that exact package.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for v0.3.8 is **BLOCKED** until the exact installed package passes all 26 cases in fresh clean sessions and `tools/validate_runtime_run.py` validates the complete hashed run. Repository validation does not substitute for that runtime evidence.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 
