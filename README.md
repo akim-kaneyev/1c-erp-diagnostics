@@ -205,7 +205,7 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 **v0.3.7 Public Preview release candidate.** This hotfix corrects the exact clean-session `under-evidenced-cost` deviations observed in installed v0.3.6. It preserves the accepted capability-inventory, stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance is **BLOCKED** until installed v0.3.7 passes the four priority cases and then one complete hashed 16-case run.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for the v0.3.7 baseline is **BLOCKED** until installed v0.3.7 passes the four priority cases and one complete hashed 16-case run. The accounting/state changes on this branch are an unversioned candidate layered on that baseline: publication requires an explicitly approved synchronized version bump followed by a fresh complete 26-case clean-session run of that exact package.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

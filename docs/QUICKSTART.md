@@ -145,7 +145,7 @@ Expected core semantics:
 - claims about value presence in S-1, S-1→D-1 derivation and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`;
 - `causal_chain.complete = false` and `actions = []`.
 
-Passing these three priority tests confirms the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed. It does not equal complete runtime acceptance; all 16 cases are still required.
+Passing these three priority tests confirms the reproduced v0.3.2/v0.3.3/v0.3.4 defects are closed. It does not equal complete runtime acceptance; all 16 v0.3.6 cases are still required. The unversioned accounting/state candidate has a separate 26-case acceptance set and cannot reuse this result.
 
 ## Codex repository-local skill
 

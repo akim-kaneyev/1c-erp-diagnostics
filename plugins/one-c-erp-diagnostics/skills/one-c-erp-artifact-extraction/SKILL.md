@@ -17,3 +17,5 @@ Use for sanitized `.cf`, `.cfe` and `.epf` evidence.
 8. Link any code finding to the factual document/movement chain before treating it as causal.
 
 Do not rename unsupported formats to bypass validation. Do not execute extracted BSL. `.mxl` remains subject to the conservative export policy rather than this extractor.
+
+For an `.mxl`-derived tabular export, capture `rows_present`, row/column counts, redacted header/value previews and SHA-256 before accepting it as row evidence. Cell count alone cannot distinguish a property tree from business rows: confirm `--view-kind rows --view-sheet-index N` with the new visual-gate Evidence ID for that exact sheet. One visual-gate Evidence ID never confirms other workbook sheets. Schema/property metadata is `wrong_view/incomplete`; change the export instruction and repeat the visual gate rather than claiming row content. Credential-like or user-machine values are redacted and block acceptance.

@@ -95,6 +95,8 @@ Resume prior valid state. Inventory only capabilities actually exposed and class
 - A disappearing UI error or clean syntax/static/build is not proof that accounting is corrected.
 - Reviewer severity/confidence is a finding to test, not defect proof.
 - Final root-cause `УСТАНОВЛЕНО` requires complete causal chain, closed provenance closure, adversarial Gate 7 and Gate 10 closure.
+- Expense allocation, cost, month close, balances, postings and proportional algorithms require a deterministic sanitized raw-row invariant result before root-cause establishment or correction design.
+- A missing row, unknown inclusion, imbalance or observed-vs-calculated allocation mismatch blocks accounting conclusions; build/load/activate also requires independent semantic Gate 7.
 
 ## Gate 1 — Goal contract
 State concrete outcome, scope, verification evidence, exclusions and stop condition. Separate current task scope from linked incident scope. A bounded evidence-sufficiency assessment may close independently from the unresolved linked incident.
@@ -107,14 +109,18 @@ For derived evidence record `derived_from`, transformation, tool/version/ref, `r
 ## Gate 3 — Route the case
 Select one primary domain by observed symptom and secondary domains only with evidenced cross-domain link. Define independent validation before execution: `structural → static → metadata_runtime → functional → business_accounting`; lower levels cannot replace required higher levels.
 
+Include the accounting-invariants helper for every accounting/proportional case.
+
 ## Gate 4 — Primary diagnosis
 Separate facts, interpretations and hypotheses; compare good/bad or before/after; build chronology and earliest demonstrated divergence. Required chain:
 `document → movement → record/register → consuming mechanism → accounting/stock/access result → observed symptom`.
 
+Run complete raw-row arithmetic first: expected row IDs, explicit exclusions with Evidence IDs, amount/quantity totals, per-analytic reconciliation, exact shares and observed allocation plus residual.
+
 ## Gate 5 — Execution / sandbox decision
 Use executable validation only when it adds value. Use sanitized minimum data, no production `.dt` or plaintext secrets. Every relied-upon run records `run_id`, `case_id`, input Evidence IDs/hashes or stable identifiers, tool/version/ref, operation, timestamps when exposed, output hash/identifier, status and limitations.
 
-Before reuse, compare run identity with current inputs. Changed/mismatched input makes the result `stale` until rerun or deterministic equivalence is proven. If execution is required but unavailable: `blocked`; if unnecessary: `not_required`.
+Before reuse, compare run identity with current inputs. Changed/mismatched input makes the result `stale` until rerun or deterministic equivalence is proven. If execution is required but unavailable: `blocked`; if unnecessary: `not_required`. Do not build, load, activate or recommend an accounting correction before arithmetic PASS and semantic Gate 7.
 
 ## Gate 6 — Preliminary conclusion
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`. For each material claim record support, contradiction, falsifier and provenance closure `closed | open | broken` through:
@@ -122,13 +128,13 @@ Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВ�
 A list of references does not close an inferred transition. Gate 6 may pass after correctly concluding that the larger claim remains unproved. A directly observed evidence limitation may be established without promoting source content or root cause.
 
 ## Gate 7 — Independent/adversarial verification
-Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final root-cause `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
+Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. For an accounting correction, independently rerun before/after primary rows, consider counterevidence, prove predicate reachability and do not count one derived calculation twice. Downgrade on open/broken lineage or stale/mismatched run. Final root-cause `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
 
 ## Gate 8 — Action decision
 Choose smallest safe reversible action or request evidence. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. Missing evidence normally means `R0 + EVIDENCE_REQUIRED`, not `R3 + NO-GO`. R3 requires explicit approval, rollback and validation plan.
 
 ## Gate 9 — Post-change validation
-Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.
+Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Record `completeness_changed`, `allocation_proportion_changed`, `analytic_key_changed`, `cardinality_changed` and `no_material_change`, then verify movements, residual and report output. Changed proportions with valid completeness before/after require business justification and are not a completeness repair. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.
 
 ## Gate 10 — Final closure
 Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including a Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.

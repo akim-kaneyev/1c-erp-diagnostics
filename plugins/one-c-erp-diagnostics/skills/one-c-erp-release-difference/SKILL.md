@@ -13,3 +13,5 @@ description: Compare 1C platform/configuration releases and determine whether a 
 6. Record alternative causes such as NSI, extensions, rights, data state and posting chronology.
 
 A release difference is `УСТАНОВЛЕНО` as the cause only when the behavior is reproducible or the changed mechanism is connected to the user's exact record chain.
+
+Identical source across releases proves only source identity in the inspected scope. It does not prove that an unestablished defect persists. Similar vendor-card conditions do not prove the same technical cause. A clean cross-release test or official fixed status is counterevidence Gate 7 must consider, but without matching movements it is not a complete accounting protocol.

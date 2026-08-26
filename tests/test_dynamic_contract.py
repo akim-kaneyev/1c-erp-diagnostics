@@ -326,6 +326,35 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("Gate 10 cannot be `not_required`", final_review)
         self.assertIn("complete causal chain", portable)
 
+    def test_accounting_state_and_artifact_controls_are_runtime_integrated(self) -> None:
+        skills = PLUGIN / "skills"
+        diagnose = (skills / "one-c-erp-diagnose-core" / "SKILL.md").read_text(encoding="utf-8")
+        state = (skills / "one-c-erp-case-state" / "SKILL.md").read_text(encoding="utf-8")
+        expense = (skills / "one-c-erp-post-item-expenses" / "SKILL.md").read_text(encoding="utf-8")
+        verify = (skills / "one-c-erp-verify-conclusion" / "SKILL.md").read_text(encoding="utf-8")
+        post_change = (skills / "one-c-erp-post-change-validation" / "SKILL.md").read_text(encoding="utf-8")
+        intake = (skills / "one-c-erp-evidence-intake" / "SKILL.md").read_text(encoding="utf-8")
+        safety = (skills / "one-c-erp-data-safety" / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("accounting-invariants.md", diagnose)
+        self.assertTrue((skills / "one-c-erp-diagnose-core/scripts/accounting_invariants.py").is_file())
+        self.assertIn("state-integrity.md", state)
+        self.assertTrue((skills / "one-c-erp-case-state/scripts/validate_case_state.py").is_file())
+        self.assertIn("observed allocation", expense)
+        self.assertIn("primary rows", verify)
+        for field in (
+            "completeness_changed",
+            "allocation_proportion_changed",
+            "analytic_key_changed",
+            "cardinality_changed",
+            "no_material_change",
+        ):
+            self.assertIn(field, post_change)
+        self.assertIn("rows_present", intake)
+        self.assertIn("wrong_view/incomplete", intake)
+        self.assertIn("full Git history", safety)
+        self.assertIn("actual package/archive", safety)
+
 
 if __name__ == "__main__":
     unittest.main()

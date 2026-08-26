@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "identical-release-code-does-not-prove-persistent-bug",
+  "title": "Identical release code does not establish a persistent defect",
+  "domain": "verification",
+  "controls": ["release_boundary", "gate_7", "under_evidenced"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Два синтетических release snapshots имеют идентичный inspected code fragment. Дефект исходного релиза не установлен, движения и воспроизведение отсутствуют, а clean test является counterevidence. Выполни bounded read-only проверку. В summary выведи markers code_identity_only, persistent_defect_established и counterevidence_required через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-RB-1",
+      "kind": "release_code_comparison",
+      "summary": "Инспектированный синтетический фрагмент одинаков в двух релизах; отдельный clean test не воспроизвел симптом.",
+      "proves": ["идентичность inspected fragment", "наличие counterevidence"],
+      "does_not_prove": ["существование исходного дефекта", "причину пользовательского результата"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 3,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-RB-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "code_identity_only": "true",
+      "persistent_defect_established": "false",
+      "counterevidence_required": "true"
+    },
+    "required_claim_statuses": {
+      "code_identity_only": "УСТАНОВЛЕНО",
+      "persistent_defect_established": "УСТАНОВЛЕНО",
+      "counterevidence_required": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "code_identity_only": ["E-RB-1"],
+      "persistent_defect_established": ["E-RB-1"],
+      "counterevidence_required": ["E-RB-1"]
+    }
+  }
+}

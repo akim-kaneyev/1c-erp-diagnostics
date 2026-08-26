@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "duplicate-state-identifiers",
+  "title": "Duplicate state identifiers fail integrity validation",
+  "domain": "verification",
+  "controls": ["state_integrity", "gate_7", "provenance_closure"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Синтетический raw STATE содержит Evidence [{id:E-DUP},{id:E-DUP}], Claims [{id:C-DUP},{id:C-DUP}] и отдельное пересечение ID X между Evidence и Claim. Выполни bounded read-only state-integrity assessment, не выбирай произвольно одну запись и запроси исправленное однозначное состояние. В summary выведи markers state_validation, duplicate_evidence_id и duplicate_claim_id через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-SI-1",
+      "kind": "sanitized_raw_state",
+      "summary": "Синтетический STATE явно содержит два Evidence E-DUP, два Claims C-DUP и cross-entity ID X без клиентских данных.",
+      "proves": ["фактические дубли Evidence ID и Claim ID во входном STATE", "cross-entity collision ID"],
+      "does_not_prove": ["какая дублирующая запись верна", "причину инцидента 1С", "результат невыполненного validator"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"2": "passed", "7": "passed", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["not_in_scope"],
+    "max_established_claims": 2,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-SI-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "state_validation": "FAIL",
+      "duplicate_evidence_id": "true",
+      "duplicate_claim_id": "true"
+    },
+    "required_claim_statuses": {
+      "state_validation": "ТРЕБУЕТ ПРОВЕРКИ",
+      "duplicate_evidence_id": "УСТАНОВЛЕНО",
+      "duplicate_claim_id": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "state_validation": ["E-SI-1"],
+      "duplicate_evidence_id": ["E-SI-1"],
+      "duplicate_claim_id": ["E-SI-1"]
+    }
+  }
+}

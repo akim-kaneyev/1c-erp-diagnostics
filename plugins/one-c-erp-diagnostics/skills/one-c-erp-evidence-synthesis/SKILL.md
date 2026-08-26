@@ -37,4 +37,6 @@ Claim status is assessed per statement. A directly evidenced limitation such as 
 
 A preliminary root-cause `УСТАНОВЛЕНО` requires both a complete causal chain and `closed` provenance closure for every material causal link, but remains preliminary until Gate 7 passes.
 
+For accounting/proportional claims, synthesis also requires a PASS helper Evidence traced to primary rows. Preserve the five effect flags as fields of that Evidence rather than adding fields to strict `EVAL_RESULT_JSON`. One calculated total copied into multiple reports is one derived source, not independent corroboration.
+
 Deduplicate equivalent claims but never erase disagreement. Resolve conflicts by returning to original evidence and analytic keys, not by majority vote or specialist confidence.

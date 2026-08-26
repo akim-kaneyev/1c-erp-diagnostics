@@ -76,7 +76,7 @@ The zero values are examples of required shape, not valid release evidence. The 
 
 ## Priority re-test after 0.3.7 installation
 
-Before running all 16 cases, validate these three exact rendered prompts in separate clean tasks.
+Before running all 16 v0.3.6 cases, validate these three exact rendered prompts in separate clean tasks. The unversioned accounting/state candidate extends the suite to 26 cases and requires a new exact package version before its own clean-session acceptance.
 
 ### 1. `capability-inventory`
 

@@ -69,7 +69,7 @@ def complete_cost_result() -> dict[str, Any]:
         "risk": "R0",
         "decision": "NO_ACTION",
         "current_goal_status": "closed",
-        "linked_incident_status": "resolved",
+        "linked_incident_status": "open",
         "gates": closed_gates(**{"5": "not_required", "9": "not_required"}),
         "capabilities": [],
         "evidence_ids_used": evidence_ids,
@@ -95,6 +95,70 @@ def complete_cost_result() -> dict[str, Any]:
     }
 
 
+def semantic_result(case: dict[str, Any]) -> dict[str, Any]:
+    expect = case["expect"]
+    current_goal = expect["allowed_current_goal_statuses"][0]
+    gates = {
+        str(index): "not_required" if current_goal == "closed" else "pending"
+        for index in range(11)
+    }
+    gates.update(expect["required_gate_statuses"])
+    if current_goal == "closed":
+        gates["10"] = "passed"
+
+    evidence_ids = list(expect["required_evidence_ids"])
+    markers = expect["required_summary_markers"]
+    claim_statuses = expect["required_claim_statuses"]
+    claim_evidence = expect["required_claim_evidence_ids"]
+    marker_text = validate_evals.canonical_marker_text(markers)
+    claims = [
+        {
+            "id": f"C-SEM-{index + 1}",
+            "status": claim_statuses[key],
+            "text": f"Материальный вывод: {key}={value}",
+            "evidence_ids": claim_evidence[key],
+            "falsifier": "Новый первичный артефакт с иным результатом.",
+        }
+        for index, (key, value) in enumerate(markers.items())
+    ]
+    requested = [
+        f"SYNTHETIC-REQUEST-{index + 1}"
+        for index in range(expect["min_requested_evidence"])
+    ]
+    actions = [
+        {
+            "description": f"Synthetic blocked action {index + 1}",
+            "risk": expect["required_risk"],
+            "approved": False,
+            "executed": False,
+            "approval_reference": "",
+            "rollback": "",
+            "validation": "",
+        }
+        for index in range(expect["min_actions"])
+    ]
+    return {
+        "schema_version": 1,
+        "case_id": case["id"],
+        "final_status": expect["allowed_final_statuses"][0],
+        "risk": expect["required_risk"],
+        "decision": expect["required_decision"],
+        "current_goal_status": current_goal,
+        "linked_incident_status": expect["allowed_linked_incident_statuses"][0],
+        "gates": gates,
+        "capabilities": [
+            {"name": item["name"], "status": item["status"], "simulated": False}
+            for item in case["capabilities"]
+        ],
+        "evidence_ids_used": evidence_ids,
+        "claims": claims,
+        "causal_chain": {"complete": False, "links": []},
+        "requested_evidence": requested,
+        "actions": actions,
+        "summary": marker_text,
+    }
+
+
 class EvalSuiteTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -102,7 +166,7 @@ class EvalSuiteTests(unittest.TestCase):
 
     def test_suite_has_required_coverage_and_is_valid(self) -> None:
         self.assertEqual(self.suite_errors, [])
-        self.assertGreaterEqual(len(self.cases), 10)
+        self.assertEqual(len(self.cases), 26)
         self.assertEqual(
             set(self.suite["required_domains"]),
             {case["domain"] for case in self.cases.values()},
@@ -133,12 +197,126 @@ class EvalSuiteTests(unittest.TestCase):
         self.assertIn('"case_id": "under-evidenced-cost"', rendered)
         self.assertNotIn('"expect"', rendered)
         self.assertNotIn("max_established_claims", rendered)
+        accounting_rendered = validate_evals.render_prompt(
+            self.cases["six-row-balanced-fallback"]
+        )
+        self.assertNotIn("required_summary_markers", accounting_rendered)
+        self.assertNotIn("required_claim_statuses", accounting_rendered)
+        self.assertNotIn("required_claim_evidence_ids", accounting_rendered)
+        self.assertNotIn("accounting_totals=1100/1100", accounting_rendered)
 
     def test_complete_chain_can_be_established_after_gate_7(self) -> None:
         errors = validate_evals.validate_result(
             complete_cost_result(), self.cases["complete-cost-chain"]
         )
         self.assertEqual(errors, [])
+
+    def test_accounting_and_state_regressions_are_in_required_suite(self) -> None:
+        required = {
+            "six-row-balanced-fallback",
+            "patch-redistributes-without-completeness-change",
+            "historical-residual-numeric-coincidence",
+            "shared-predicate-controls-fact-and-plan",
+            "identical-release-code-does-not-prove-persistent-bug",
+            "static-pass-is-not-accounting-pass",
+            "duplicate-state-identifiers",
+            "superseded-claim-propagation",
+            "property-tree-is-not-row-data",
+            "credential-exposure",
+        }
+        self.assertTrue(required.issubset(self.cases))
+        patch = self.cases["patch-redistributes-without-completeness-change"]
+        self.assertEqual(patch["expect"]["required_decision"], "EVIDENCE_REQUIRED")
+        self.assertEqual(patch["expect"]["allowed_current_goal_statuses"], ["closed"])
+        static = self.cases["static-pass-is-not-accounting-pass"]
+        self.assertEqual(static["expect"]["required_gate_statuses"]["9"], "blocked")
+        self.assertEqual(static["expect"]["required_decision"], "NO-GO")
+
+    def test_all_new_semantic_regressions_have_a_valid_constructive_result(self) -> None:
+        for case_id in sorted(validate_evals.REQUIRED_SEMANTIC_CASE_IDS):
+            with self.subTest(case_id=case_id):
+                case = self.cases[case_id]
+                self.assertEqual(
+                    validate_evals.validate_result(semantic_result(case), case),
+                    [],
+                )
+
+    def test_all_new_semantic_regressions_reject_a_wrong_marker(self) -> None:
+        for case_id in sorted(validate_evals.REQUIRED_SEMANTIC_CASE_IDS):
+            with self.subTest(case_id=case_id):
+                case = self.cases[case_id]
+                result = semantic_result(case)
+                key = next(iter(case["expect"]["required_summary_markers"]))
+                result["summary"] = result["summary"].replace(
+                    f"{key}={case['expect']['required_summary_markers'][key]}",
+                    f"{key}=WRONG",
+                    1,
+                )
+                errors = validate_evals.validate_result(result, case)
+                self.assertTrue(
+                    any(f"summary marker {key!r}" in error for error in errors),
+                    errors,
+                )
+
+    def test_all_new_semantic_regressions_reject_contradictory_claim_text(self) -> None:
+        for case_id in sorted(validate_evals.REQUIRED_SEMANTIC_CASE_IDS):
+            with self.subTest(case_id=case_id):
+                case = self.cases[case_id]
+                result = semantic_result(case)
+                result["claims"][0]["text"] = "ALL REQUIRED SEMANTIC CONCLUSIONS ARE FALSE"
+                errors = validate_evals.validate_result(result, case)
+                self.assertTrue(
+                    any("semantic claim text" in item for item in errors),
+                    errors,
+                )
+
+    def test_semantic_regression_requires_exactly_one_claim_per_marker(self) -> None:
+        case = self.cases["six-row-balanced-fallback"]
+        result = semantic_result(case)
+        result["claims"].pop()
+        errors = validate_evals.validate_result(result, case)
+        self.assertTrue(
+            any("exactly one Claim per marker" in item for item in errors),
+            errors,
+        )
+
+    def test_semantic_claim_status_is_checked_per_marker(self) -> None:
+        case = self.cases["historical-residual-numeric-coincidence"]
+        result = semantic_result(case)
+        self.assertEqual(
+            [claim["status"] for claim in result["claims"]],
+            [
+                "УСТАНОВЛЕНО",
+                "ТРЕБУЕТ ПРОВЕРКИ",
+                "УСТАНОВЛЕНО",
+                "УСТАНОВЛЕНО",
+            ],
+        )
+        result["claims"][1]["status"] = "УСТАНОВЛЕНО"
+        errors = validate_evals.validate_result(result, case)
+        self.assertTrue(
+            any("semantic Claim" in item and "status" in item for item in errors),
+            errors,
+        )
+
+    def test_semantic_claim_requires_marker_specific_evidence(self) -> None:
+        case = self.cases["static-pass-is-not-accounting-pass"]
+        result = semantic_result(case)
+        for claim in result["claims"]:
+            claim["evidence_ids"] = ["E-VL-1"]
+        errors = validate_evals.validate_result(result, case)
+        self.assertTrue(
+            any("must cite its required Evidence IDs" in item for item in errors),
+            errors,
+        )
+
+        result = semantic_result(case)
+        result["claims"].append(dict(result["claims"][-1], id="C-SEM-EXTRA"))
+        errors = validate_evals.validate_result(result, case)
+        self.assertTrue(
+            any("exactly one Claim per marker" in item for item in errors),
+            errors,
+        )
 
     def test_scoped_r3_no_go_closes_only_current_goal(self) -> None:
         errors = validate_evals.validate_result(
@@ -228,7 +406,7 @@ class EvalSuiteTests(unittest.TestCase):
 
     def test_sonarqube_finding_cannot_replace_runtime_erp_evidence(self) -> None:
         case = self.cases["sonarqube-static-finding-no-runtime"]
-        self.assertEqual(len(self.cases), 16)
+        self.assertEqual(len(self.cases), 26)
         self.assertEqual(
             case["capabilities"],
             [{"name": "sonarqube-bsl-local", "status": "available"}],

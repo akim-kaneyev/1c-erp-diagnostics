@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "shared-predicate-controls-fact-and-plan",
+  "title": "Shared predicate blocks asymmetric field claim",
+  "domain": "verification",
+  "controls": ["predicate_reachability", "gate_7", "under_evidenced"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Синтетический code trace показывает, что один общий predicate одновременно управляет заполнением fact и plan. Автор ожидает после patch: fact остается, plan исчезает, но отдельной ветки или присваивания не показано. Проверь достижимость. В summary выведи markers shared_predicate, fact_stays_plan_zero_reachable и causal_chain_complete через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-PR-1",
+      "kind": "sanitized_code_trace",
+      "summary": "Один синтетический predicate охватывает оба присваивания fact и plan; отдельная ветка отсутствует в предоставленном trace.",
+      "proves": ["совместную достижимость двух присваиваний в данном trace"],
+      "does_not_prove": ["отсутствие иной ветки вне trace", "фактическое runtime-поведение"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 2,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-PR-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "shared_predicate": "true",
+      "fact_stays_plan_zero_reachable": "false",
+      "causal_chain_complete": "false"
+    },
+    "required_claim_statuses": {
+      "shared_predicate": "УСТАНОВЛЕНО",
+      "fact_stays_plan_zero_reachable": "ТРЕБУЕТ ПРОВЕРКИ",
+      "causal_chain_complete": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "shared_predicate": ["E-PR-1"],
+      "fact_stays_plan_zero_reachable": ["E-PR-1"],
+      "causal_chain_complete": ["E-PR-1"]
+    }
+  }
+}

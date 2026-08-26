@@ -44,12 +44,24 @@
 - `run_id`;
 - `case_id`;
 - `input_hashes` или стабильные идентификаторы входов;
+- release платформы/конфигурации, extension set и учетный period;
 - `tool` и `tool_version/ref`;
+- точная `operation`;
 - `started_at` и `completed_at`, когда доступны;
 - `output_hash` или стабильный output identifier;
 - ограничения/ошибки выполнения.
 
-Результат от другого `case_id`, от несовпадающих входов или от предыдущего запуска после изменения входных данных является stale evidence и не может подтверждать текущий вывод до повторного выполнения или доказанного эквивалентного соответствия.
+Результат от другого `case_id`, от несовпадающих входов, release/extensions/period или от предыдущего запуска после изменения входных данных является stale evidence и не может подтверждать текущий вывод до повторного выполнения или доказанного эквивалентного соответствия. Движение, временная таблица, отчет и post-change result образуют одну цепочку только при совместимой execution identity; имя файла, номер или одинаковая сумма недостаточны.
+
+## Accounting invariant Evidence
+
+Для распределения, себестоимости, закрытия, остатков, проводок и долевых алгоритмов машинный raw-row результат является отдельным derived Evidence. Он хранит input hash, expected row IDs, coverage, явные исключения с Evidence IDs, суммы/количества, per-analytic reconciliation, exact shares, observed allocation + residual и formula trace с row IDs.
+
+Before/after classification сохраняет пять флагов эффекта. Эти поля не расширяют закрытую top-level schema `EVAL_RESULT_JSON`; в strict result попадают только Evidence/Claim ссылки и допустимые поля skeleton.
+
+## Machine state integrity
+
+`STATE.json` обеспечивает глобальную уникальность Evidence/Run/Claim/Document IDs, ссылочную целостность, отдельные dependency/temporal графы и invalidation closure. Stale/superseded/withdrawn источник распространяется через run, derived Evidence, Claim, report/document и первый затронутый downstream Gate. Markdown-журнал не может переопределить машинный active index.
 
 ## Provenance closure
 

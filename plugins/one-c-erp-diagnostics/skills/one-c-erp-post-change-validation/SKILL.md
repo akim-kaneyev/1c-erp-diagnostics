@@ -23,4 +23,14 @@ If a required runtime or business validation cannot be performed, mark Gate 9 `b
 
 If the expected result is not reproduced, reopen the earliest affected gate and mark downstream gates stale. Record where the mismatch first became observable so the missed control can be converted into a regression case or checklist improvement.
 
+For accounting/proportional changes, independently rerun the deterministic raw-row helper and record exactly:
+
+- `completeness_changed`;
+- `allocation_proportion_changed`;
+- `analytic_key_changed`;
+- `cardinality_changed`;
+- `no_material_change`.
+
+Then separately verify movements, residual and report result. If completeness is valid before and after while proportions change, report that completeness was not repaired, proportions changed and normative/business justification remains required. Gate 9 is blocked without this evidence even when syntax, CFE, build or the UI message is clean.
+
 For analysis-only goals, explicitly mark this gate `not_required`.

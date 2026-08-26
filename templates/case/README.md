@@ -26,3 +26,6 @@
 
 ## Результат
 См. `result.md`.
+
+## Состояние
+`STATE.md` — журнал специалиста. `STATE.json` — обязательный machine-readable реестр ID, ссылок, execution identity и invalidation closure.

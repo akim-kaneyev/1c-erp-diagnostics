@@ -32,5 +32,9 @@ Audit before release or public submission:
 23. repository history and package contain no confidential case data or credentials;
 24. clean-session smoke tests cover capability inventory, installed/unavailable companions, under-evidenced cases, static-analysis non-causality, analysis-only work, scoped closure and `R3` blocking;
 25. public repository, release and Plugin Directory submission are not marked complete before their separate product-side checks pass.
+26. accounting/proportional paths require executable raw-row coverage, per-analytic reconciliation, observed allocation and independent before/after Gate 7;
+27. machine case state rejects duplicate/global IDs and propagates supersession/invalidation through Evidence, Runs, Claims, reports and downstream Gates;
+28. MXL/property-tree metadata cannot pass as row values without the required tabular profile;
+29. secret response scans current tree, full history and the actual archive without echoing values.
 
 Report each control as `PASS | FAIL | WARNING` with exact evidence and remediation. Any critical `FAIL` blocks merge, repository publication, tag/release creation and global Plugin Directory submission.

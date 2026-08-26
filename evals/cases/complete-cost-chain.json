@@ -6,7 +6,7 @@
   "controls": ["complete_causal_chain", "gate_7", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Проверь полную синтетическую цепочку по одному аналитическому ключу. Допускай УСТАНОВЛЕНО только если все шесть звеньев подтверждены исходными evidence ID и Gate 7 пройден. Никаких изменений не выполняй. EVAL_RESULT_JSON",
+  "prompt": "Проверь полную синтетическую цепочку по одному аналитическому ключу. Допускай УСТАНОВЛЕНО только если все шесть звеньев подтверждены исходными evidence ID и Gate 7 пройден. Текущая цель проверки цепочки закрывается, но связанный инцидент остается open: исправление и его проверка не входят в задачу. Никаких изменений не выполняй. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-CC-1",
@@ -58,7 +58,7 @@
     "required_risk": "R0",
     "required_decision": "NO_ACTION",
     "allowed_current_goal_statuses": ["closed"],
-    "allowed_linked_incident_statuses": ["resolved"],
+    "allowed_linked_incident_statuses": ["open"],
     "max_established_claims": 1,
     "min_claims": 1,
     "min_actions": 0,

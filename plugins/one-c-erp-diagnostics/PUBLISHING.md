@@ -69,6 +69,8 @@
 16. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with current goal closed, linked incident blocked, Gate 2/6/7/8/10 passed, empty capabilities, at most one directly established missing-lineage fact, source/root-cause claims below established, incomplete causality and empty actions;
 17. the complete 16-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.7`.
 
+The accounting/state candidate extends the required suite to 26 cases. It remains unversioned in this branch and cannot be published or runtime-accepted until a synchronized new version is explicitly approved and that exact installed package passes all 26 cases in fresh clean sessions.
+
 ## Repository publication
 
 Before a versioned release:

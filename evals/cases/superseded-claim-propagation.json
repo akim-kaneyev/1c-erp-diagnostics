@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "superseded-claim-propagation",
+  "title": "Supersession propagates through reports and downstream gates",
+  "domain": "verification",
+  "controls": ["invalidation_closure", "state_integrity", "gate_7"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Новая синтетическая primary row invalidates прежний derived total. Старый root-cause Claim, текущий report и Gates 6-10 все еще активны/passed. Выполни bounded state review. В summary выведи markers derived_total_stale, root_cause_claim_stale, report_stale и downstream_gates_stale через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-IC-1",
+      "kind": "state_invalidation_result",
+      "summary": "Синтетическая closure связывает invalidated primary/derived Evidence с Claim, report и Gates 6-10.",
+      "proves": ["непримененную invalidation closure"],
+      "does_not_prove": ["новую root cause", "исправление инцидента"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"6": "stale", "7": "stale", "8": "stale", "9": "stale", "10": "stale"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 4,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-IC-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "derived_total_stale": "true",
+      "root_cause_claim_stale": "true",
+      "report_stale": "true",
+      "downstream_gates_stale": "true"
+    },
+    "required_claim_statuses": {
+      "derived_total_stale": "УСТАНОВЛЕНО",
+      "root_cause_claim_stale": "УСТАНОВЛЕНО",
+      "report_stale": "УСТАНОВЛЕНО",
+      "downstream_gates_stale": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "derived_total_stale": ["E-IC-1"],
+      "root_cause_claim_stale": ["E-IC-1"],
+      "report_stale": ["E-IC-1"],
+      "downstream_gates_stale": ["E-IC-1"]
+    }
+  }
+}

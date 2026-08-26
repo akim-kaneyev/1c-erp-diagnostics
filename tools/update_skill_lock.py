@@ -19,6 +19,7 @@ EXPLICIT_FILES = (
     ".agents/skills/one-c-erp-diagnostics/SKILL.md",
     "skills/one-c-erp-diagnostics/SKILL.md",
     "templates/case/STATE.md",
+    "templates/case/STATE.json",
 )
 RECURSIVE_ROOTS = (
     "plugins/one-c-erp-diagnostics/skills",
@@ -27,6 +28,7 @@ RECURSIVE_ROOTS = (
 )
 IGNORED_NAMES = {".DS_Store", "Thumbs.db"}
 IGNORED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache"}
+CANONICAL_TEXT_EXTENSIONS = {".json", ".md", ".py", ".txt", ".yaml", ".yml"}
 
 
 def _inside_root(path: Path, root: Path) -> bool:
@@ -63,12 +65,15 @@ def discover_runtime_files(root: Path) -> list[Path]:
     return [found[key] for key in sorted(found)]
 
 
+def canonical_file_bytes(path: Path) -> bytes:
+    payload = path.read_bytes()
+    if path.suffix.lower() in CANONICAL_TEXT_EXTENSIONS:
+        payload = payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return payload
+
+
 def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return hashlib.sha256(canonical_file_bytes(path)).hexdigest()
 
 
 def build_lock(root: Path) -> dict:
@@ -76,11 +81,12 @@ def build_lock(root: Path) -> dict:
     files = []
     for path in discover_runtime_files(root):
         relative = path.relative_to(root).as_posix()
+        canonical_bytes = canonical_file_bytes(path)
         files.append(
             {
                 "path": relative,
-                "sha256": sha256_file(path),
-                "size_bytes": path.stat().st_size,
+                "sha256": hashlib.sha256(canonical_bytes).hexdigest(),
+                "size_bytes": len(canonical_bytes),
             }
         )
 
@@ -93,6 +99,7 @@ def build_lock(root: Path) -> dict:
     return {
         "schema_version": 1,
         "algorithm": "sha256",
+        "text_normalization": "CRLF and CR are normalized to LF for known text extensions",
         "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
         "file_count": len(files),
         "manifest_sha256": hashlib.sha256(canonical_files).hexdigest(),

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "property-tree-is-not-row-data",
+  "title": "Property tree metadata is not row evidence",
+  "domain": "verification",
+  "controls": ["artifact_view", "under_evidenced", "gate_7"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Синтетический artifact profile содержит schema/column metadata и заявленный row_count, но value preview отсутствует. Выполни bounded evidence-view assessment и запроси фактические rows. В summary выведи markers rows_present, view_status, gate_2_complete и repeat_same_export через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-AV-1",
+      "kind": "artifact_profile",
+      "summary": "Profile: property tree present, column metadata present, rows_present=false, value preview absent, hash recorded.",
+      "proves": ["неверный/неполный вид артефакта"],
+      "does_not_prove": ["значения строк", "суммы или аналитику"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"2": "blocked", "7": "not_required", "10": "blocked"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 4,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-AV-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "rows_present": "false",
+      "view_status": "wrong_view/incomplete",
+      "gate_2_complete": "false",
+      "repeat_same_export": "false"
+    },
+    "required_claim_statuses": {
+      "rows_present": "УСТАНОВЛЕНО",
+      "view_status": "УСТАНОВЛЕНО",
+      "gate_2_complete": "УСТАНОВЛЕНО",
+      "repeat_same_export": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "rows_present": ["E-AV-1"],
+      "view_status": ["E-AV-1"],
+      "gate_2_complete": ["E-AV-1"],
+      "repeat_same_export": ["E-AV-1"]
+    }
+  }
+}
