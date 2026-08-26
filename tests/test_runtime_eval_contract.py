@@ -92,6 +92,79 @@ def observed_v032_shape() -> dict[str, Any]:
     return result
 
 
+def observed_v035_stale_shape() -> dict[str, Any]:
+    """Reproduce the exact stale-result contract failures observed in v0.3.5."""
+    result = canonical_stale_result()
+    result["linked_incident_status"] = "not_in_scope"
+    result["gates"].update(
+        {
+            "1": "not_required",
+            "2": "not_required",
+            "3": "not_required",
+            "4": "not_required",
+            "5": "passed",
+            "6": "not_required",
+            "7": "not_required",
+            "8": "not_required",
+            "9": "not_required",
+            "10": "passed",
+        }
+    )
+    result["claims"] = [
+        {
+            "claim_id": "C-1",
+            "status": "УСТАНОВЛЕНО",
+            "statement": "Текущий вход имеет идентификатор INPUT-CURRENT.",
+            "evidence_ids": ["E-RUN-1"],
+        },
+        {
+            "claim_id": "C-2",
+            "status": "УСТАНОВЛЕНО",
+            "statement": "R-OLD получен для INPUT-OLD.",
+            "evidence_ids": ["E-RUN-2"],
+        },
+        {
+            "claim_id": "C-3",
+            "status": "УСТАНОВЛЕНО",
+            "statement": "R-OLD не доказывает INPUT-CURRENT.",
+            "evidence_ids": ["E-RUN-1", "E-RUN-2"],
+        },
+        {
+            "claim_id": "C-4",
+            "status": "ТРЕБУЕТ ПРОВЕРКИ",
+            "statement": "Текущий результат не установлен.",
+            "evidence_ids": ["E-RUN-1", "E-RUN-2"],
+        },
+    ]
+    result["causal_chain"] = {
+        "complete": False,
+        "links": [
+            {
+                "from": "INPUT-OLD",
+                "to": "RUN-OLD",
+                "relation": "analyzed_by",
+                "evidence_ids": ["E-RUN-2"],
+            }
+        ],
+    }
+    result["requested_evidence"] = [
+        {
+            "evidence_type": "current_execution_result",
+            "description": "Новый результат для INPUT-CURRENT.",
+        }
+    ]
+    result["actions"] = [
+        {
+            "action_id": "A-1",
+            "type": "evidence_control",
+            "description": "Не использовать R-OLD.",
+            "risk": "R0",
+            "status": "required",
+        }
+    ]
+    return result
+
+
 def canonical_provenance_result() -> dict[str, Any]:
     return {
         "schema_version": 1,
@@ -289,6 +362,30 @@ class RuntimeEvalContractTests(unittest.TestCase):
         self.assertIn("causal_chain.complete must be false", joined)
         self.assertIn("must be an object", joined)
 
+
+    def test_observed_v035_stale_shape_is_rejected(self) -> None:
+        errors = validate_evals.validate_result(
+            observed_v035_stale_shape(), self.stale_case
+        )
+        joined = "\n".join(errors)
+        self.assertIn("linked_incident_status 'not_in_scope' is forbidden", joined)
+        self.assertIn("Gate 5 must be 'stale', got 'passed'", joined)
+        self.assertIn("Gate 7 must be 'passed', got 'not_required'", joined)
+        self.assertIn("Gate 10 must be 'blocked', got 'passed'", joined)
+        self.assertIn("Gate 10 passed requires current_goal_status closed", joined)
+        self.assertIn("missing fields: falsifier, id, text", joined)
+        self.assertIn("unexpected fields: claim_id, statement", joined)
+        self.assertIn("established claims 3 exceed allowed maximum 0", joined)
+        self.assertIn("missing fields: stage", joined)
+        self.assertIn("unexpected fields: from, relation, to", joined)
+        self.assertIn("requested_evidence must be a text list", joined)
+        self.assertIn(
+            "missing fields: approval_reference, approved, executed, rollback, validation",
+            joined,
+        )
+        self.assertIn("unexpected fields: action_id, status, type", joined)
+
+
     def test_each_reproduced_semantic_misclassification_fails_independently(self) -> None:
         mutations = {
             "risk": "R3",
@@ -389,6 +486,11 @@ class RuntimeEvalContractTests(unittest.TestCase):
         self.assertIn('"causal_chain": {', rendered)
         self.assertIn('"actions": []', rendered)
         self.assertIn("верни capabilities: []", rendered)
+        self.assertIn("Gate 5=stale", rendered)
+        self.assertIn("Gate 7=passed", rendered)
+        self.assertIn("Gate 10=blocked", rendered)
+        self.assertIn("actions=[]", rendered)
+        self.assertIn("ровно одну строку", rendered)
         self.assertNotIn('"expect"', rendered)
 
     def test_rendered_capability_prompt_contains_inventory_only_contract(self) -> None:

@@ -75,6 +75,25 @@ For the synthetic `capability-inventory` case, require all of the following befo
 
 Reject any candidate that uses `УСТАНОВЛЕНО` merely because the inventory procedure completed. Procedure completion is represented by Gate 10/current-goal closure, not by diagnostic proof status.
 
+## Stale-execution acceptance review
+
+For `stale-execution-result`, reject the candidate JSON unless all conditions hold:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = EVIDENCE_REQUIRED`;
+- current goal and linked incident are both `blocked`;
+- Gates 0–4 `passed`, Gate 5 `stale`, Gates 6–8 `passed`, Gate 9 `not_required`,
+  Gate 10 `blocked`;
+- `capabilities = []`;
+- one material claim only, exactly `{id, status, text, evidence_ids, falsifier}`, with
+  status `ТРЕБУЕТ ПРОВЕРКИ` and both Evidence IDs;
+- no identity-summary `УСТАНОВЛЕНО` claims;
+- `causal_chain = {complete: false, links: []}`;
+- one requested-evidence string and `actions = []`.
+
+Reject `linked_incident_status = not_in_scope`, Gate 5 `passed`, Gate 7
+`not_required`, Gate 10 `passed`, arbitrary `{from,to,relation}` causal links,
+object-valued requested evidence or pseudo-actions describing evidence control.
+
 ## Required normal final output
 
 1. `Краткий вывод` — result for the current goal and proven cause or explicit uncertainty.

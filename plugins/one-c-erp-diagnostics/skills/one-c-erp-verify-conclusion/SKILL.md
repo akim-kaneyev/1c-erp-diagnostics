@@ -32,3 +32,11 @@ Likewise, absence of findings from another reviewer or tool is not proof of corr
 A claim may not remain `УСТАНОВЛЕНО` when any material chain has an unanchored transformation, unknown parent evidence, mismatched execution identity or stale output. A clean summary, report or analyzer finding cannot repair a broken lineage. Return to the earliest missing artifact/derivation/run record and reopen the affected gate.
 
 A final root cause may be `УСТАНОВЛЕНО` only after surviving this pass, with closed provenance for every material causal link and no material supplied evidence left unaccounted for in a way that could change the conclusion.
+
+## Strict stale-result adversarial rule
+
+For synthetic `stale-execution-result`, Gate 7 is `passed` when this review correctly
+rejects `R-OLD` as current evidence. The linked incident remains `blocked`, not
+`not_in_scope`. Do not create established claims that merely repeat `INPUT-CURRENT`,
+`INPUT-OLD`, `RUN-OLD` or `R-OLD`. Return one material `ТРЕБУЕТ ПРОВЕРКИ` claim, an
+incomplete empty six-stage 1C causal chain, and no action objects.

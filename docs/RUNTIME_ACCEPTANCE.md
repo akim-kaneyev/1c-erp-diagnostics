@@ -21,6 +21,8 @@ Version 0.3.3 made strict JSON conformance runtime behavior rather than formatti
 
 A semantically plausible response still fails when it invents internal reasoning/skills as capabilities, omits or changes a declared capability, replaces `simulated` with `evidence_id`, promotes capability rows into claims, closes a goal without Gate 10 passed, or returns `УСТАНОВЛЕНО` without Gate 7/Gate 10/complete causality.
 
+Version 0.3.6 fixes the subsequently reproduced stale-execution output: Gate 5 must be `stale`, Gate 7 `passed`, Gate 10 `blocked`, the linked incident remains blocked, and claim/link/request/action arrays must use the exact schema.
+
 Until this command passes, runtime acceptance is `blocked`:
 
 ```text
@@ -46,16 +48,16 @@ Calculate SHA-256 for each result file and create `run.json`:
 ```json
 {
   "schema_version": 1,
-  "run_id": "v0-3-5-clean-example",
+  "run_id": "v0-3-6-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.5",
+  "plugin_version": "0.3.6",
   "source_commit": "0000000000000000000000000000000000000000",
   "executed_at": "2026-08-26T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.5",
+    "installed_plugin_version": "0.3.6",
     "expectations_visible_to_runner": false
   },
   "results": [
@@ -70,7 +72,7 @@ Calculate SHA-256 for each result file and create `run.json`:
 
 The zero values are examples of required shape, not valid release evidence. The strict validator rejects incomplete suites, placeholder hashes, hash mismatches, wrong versions and non-clean runs.
 
-## Priority re-test after 0.3.5 installation
+## Priority re-test after 0.3.6 installation
 
 Before running all 16 cases, validate these three exact rendered prompts in separate clean tasks.
 

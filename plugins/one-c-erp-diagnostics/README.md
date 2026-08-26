@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.5
+# 1C ERP Diagnostics plugin — v0.3.6
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -62,4 +62,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for v0.3.5 remains blocked until the exact installed capability-inventory result and the complete hashed 16-case clean-session run pass their validators.
+Runtime acceptance for v0.3.6 remains blocked until the exact installed capability-inventory result and the complete hashed 16-case clean-session run pass their validators.

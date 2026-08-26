@@ -14,8 +14,8 @@
     },
     {
       "path": "SKILL.md",
-      "sha256": "6a9ff11cc575c31eaf756652e001ac6a91aa85d76635eaf1828e7fca5eb90060",
-      "size_bytes": 19119
+      "sha256": "572e1cad4027bdddd89024de16d4b401e13d7b306782ff95276b3adaf22f89c3",
+      "size_bytes": 20771
     },
     {
       "path": "checklists/accounting.md",
@@ -149,8 +149,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "ba068cd0ad17a04b61a4ea71d3f93347e9548a4eb5f7c37444f60a0348ce9490",
-      "size_bytes": 12437
+      "sha256": "7ef04b05086ebe49deab35eb551c1064407b5fe8566cf9e32bfd861d22e7358a",
+      "size_bytes": 13465
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-dynamic-plan/SKILL.md",
@@ -169,8 +169,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-final-review/SKILL.md",
-      "sha256": "bec3832be4bfd7b7e530ac89369c3211d0febff94ffa81fa8e5bbdf34628cffe",
-      "size_bytes": 7201
+      "sha256": "cf349fed1903f7edc0ffe469f930b0f2e6bc34909044feb81c774800cec69ef6",
+      "size_bytes": 8147
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-goal-contract/SKILL.md",
@@ -229,8 +229,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-sandbox-execution/SKILL.md",
-      "sha256": "acd4c65499b9141ec07f4ea5720c47d20405a659de85891274dcc33a902cb293",
-      "size_bytes": 1617
+      "sha256": "71f18582a5a07ab223d095f7e9b05102fd360c0dd37a62957a1a22fd958ac4e3",
+      "size_bytes": 2086
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-settlements/SKILL.md",
@@ -244,8 +244,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-verify-conclusion/SKILL.md",
-      "sha256": "96f4be85b24846a5f4394ee26139c76e2881379956880719816a192be778aa29",
-      "size_bytes": 2213
+      "sha256": "99639d6f032cdf9c69304dbb215cf9e8f7d45c65b572518eebca6cbeeaf05ff9",
+      "size_bytes": 2672
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-warehouse-series-assignments/SKILL.md",
@@ -254,8 +254,8 @@
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "4159379ec8b3acbbd0bae273fd10f30b16e06203de8168efa248f004ac8bc7ac",
-      "size_bytes": 10512
+      "sha256": "6924d56f6117564d1fdf120fafedb8f792ae1cb59f501dbb9a11c3cd4cd20d72",
+      "size_bytes": 11235
     },
     {
       "path": "templates/case/STATE.md",
@@ -263,7 +263,7 @@
       "size_bytes": 3801
     }
   ],
-  "manifest_sha256": "5f9025d0f3af2a41ffbe5db3f539307eb888a980707d8a85c431561a43d928ad",
+  "manifest_sha256": "ac681ca6dac79aa7bc515841b160bdbe4c72af6585a2045cb1c261676e83f4ea",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces"
 }

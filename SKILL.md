@@ -57,6 +57,34 @@ When the synthetic case asks only for Gate 0 capability inventory, completion of
 
 Do not convert “the inventory procedure completed” into `final_status = УСТАНОВЛЕНО`. Goal completion is represented by Gate 10 and `current_goal_status`; diagnostic proof status is represented separately by `final_status`.
 
+### Stale-result `stale-execution-result` contract
+
+When a synthetic case asks whether a report from `RUN-OLD / INPUT-OLD` proves the
+current state of `INPUT-CURRENT`, and equivalence is not proved, use this exact
+semantic profile:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = EVIDENCE_REQUIRED`;
+- `current_goal_status = blocked`, `linked_incident_status = blocked`;
+- Gates 0–4 are `passed`; Gate 5 is `stale`; Gates 6–8 are `passed`; Gate 9 is
+  `not_required`; Gate 10 is `blocked`;
+- `capabilities = []` when the case declares none;
+- use `E-RUN-1` and `E-RUN-2` in `evidence_ids_used` and one material claim only;
+- the claim is exactly `{id, status, text, evidence_ids, falsifier}`, has status
+  `ТРЕБУЕТ ПРОВЕРКИ`, and states that `R-OLD` does not establish the current state;
+- do not create separate `УСТАНОВЛЕНО` claims by copying input/run identities;
+- return `causal_chain: {complete: false, links: []}` because execution-freshness
+  reasoning is not the six-stage 1C causal chain;
+- `requested_evidence` contains one string: a current execution result or proved
+  deterministic equivalence;
+- `actions = []`; refusing stale evidence and requesting evidence are evaluation
+  decisions, not executable actions.
+
+Gate 5 must be `stale`, not `passed`: the procedure correctly identified that the
+relied-upon execution result no longer matches current input identity. Gate 7 is
+`passed` because it successfully rejects stale-evidence reuse. Gate 10 remains
+`blocked` because the declared goal is current-state proof, not merely completion of
+an evidence-sufficiency assessment.
+
 ## Gate 0 — Capability and state discovery
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.
