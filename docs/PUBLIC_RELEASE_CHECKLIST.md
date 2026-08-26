@@ -1,4 +1,4 @@
-# Public release checklist — v0.3.6
+# Public release checklist — v0.3.7
 
 ## Repository and plugin package
 
@@ -25,6 +25,9 @@
 - [x] Capability status rows are not diagnostic claims.
 - [x] Inventory-only acceptance requires `claims=[]`, Gate 0/10 passed and Gates 1–9 not required.
 - [x] `causal_chain.complete` remains restricted to all six canonical 1C causal stages.
+- [x] Visual Explanation supports only `diagram` and `sticky` after Gate 6 and Gate 7 have passed.
+- [x] Visual Explanation is presentation only: no capability, Evidence ID, claim support, causal edge or provenance closure.
+- [x] `EVAL_RESULT_JSON` excludes all Visual Explanation fields, prose, capabilities, claims and actions.
 - [x] Strict runtime acceptance requires a complete clean-session run, exact installed version and SHA-256 result evidence.
 - [x] Public package validation checks manifest, policies, case leakage, forbidden artifacts, credentials and assets.
 - [x] Skill governance and deterministic `SKILLS.lock.json` validation are mandatory.
@@ -33,8 +36,8 @@
 - [x] `.scannerwork/` and local runtime evidence are excluded from Git.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.6`.
-- [x] v0.3.6 release notes and self-audit exist without claiming pending runtime steps as complete.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.7`.
+- [x] v0.3.7 release notes and self-audit exist without claiming pending runtime steps as complete.
 
 ## Unified 1C ecosystem marketplace
 
@@ -46,7 +49,7 @@
 - [x] External plugins remain independently installed; no code copying or permission bypass.
 - [x] Internal marketplace ID remains `one-c-erp-diagnostics-marketplace`.
 - [x] Visible title remains `1C ERP Diagnostics Ecosystem`.
-- [x] Primary plugin/package version is `0.3.6`.
+- [x] Primary plugin/package version is `0.3.7`.
 
 ## Runtime findings and smoke tests
 
@@ -57,7 +60,7 @@
 - [x] Installed v0.3.4 `capability-inventory` preserved `R0`, `NO_ACTION`, the four supplied capability statuses and false causal-chain completeness.
 - [x] The same v0.3.4 result reproduced six official-contract failures: wrong final status, Gate 10, capability item fields, claim schema/count and cross-field proof consistency.
 - [x] v0.3.5 adds the exact inventory-only semantic profile and a regression fixture reproducing the v0.3.4 output.
-- [ ] Refresh/re-import the marketplace after merge and confirm installed version `0.3.5` when the surface exposes it.
+- [ ] Refresh/re-import the marketplace after merge and confirm installed version `0.3.7` when the surface exposes it.
 - [ ] Run the exact rendered `capability-inventory` prompt in a new clean session.
 - [ ] Confirm `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required.
 - [ ] Confirm capability rows preserve the supplied order and contain exactly `name`, `status`, `simulated=false`; `E-CAP-1` appears only in `evidence_ids_used`.
@@ -68,12 +71,15 @@
 - [ ] Repeat scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open`.
 - [ ] Confirm SonarQube missing auth/runtime remains honest (`confirmation_required`/`unavailable`) without simulated findings.
 - [ ] Run authorized sanitized local SonarQube smoke test with complete provenance and no token retention.
-- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.5 run.
+- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.7 run.
 
 - [x] Installed v0.3.5 `capability-inventory` passed the exact inventory-only contract.
 - [x] Installed v0.3.5 `stale-execution-result` preserved `R0` and `EVIDENCE_REQUIRED` but reproduced stale/scope/schema failures: Gate 5 passed, Gate 7 not required, Gate 10 passed, linked incident out of scope, malformed claims/links/request/actions.
 - [x] v0.3.6 adds the exact stale-execution profile and executable regression.
-- [ ] Refresh/install v0.3.6 and re-run capability inventory, stale execution and provenance closure in separate clean sessions.
+- [x] v0.3.7 adds Visual Explanation as a post-verification presentation sidecar without changing Gate/eval semantics.
+- [ ] Refresh/install v0.3.7 and re-run capability inventory, stale execution and provenance closure in separate clean sessions.
+- [ ] Run the normal `diagram` and `sticky` smoke examples and confirm every item retains reviewed Claim/Evidence IDs and statuses.
+- [ ] Add a Visual Explanation request to a strict prompt and confirm the result remains exactly the JSON skeleton.
 
 ## GitHub identity, security and presentation
 
@@ -86,14 +92,14 @@
 - [x] Private vulnerability reporting is enabled.
 - [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
 - [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm v0.3.6 protected PR CodeQL and required checks are green before merge.
+- [ ] Confirm v0.3.7 protected PR CodeQL and required checks are green before merge.
 
 ## Public repository and versioned release
 
 - [x] Public repository is live.
-- [ ] Open the v0.3.6 Pull Request from `hotfix/capability-inventory-contract-0.3.5`.
+- [ ] Open the v0.3.7 Pull Request from `feat/visual-explanation-layer`.
 - [ ] Pass Python 3.10/3.12 validation, skill governance/lock, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
-- [ ] Squash-merge v0.3.5 only through the protected `main` ruleset.
+- [ ] Squash-merge v0.3.7 only through the protected `main` ruleset.
 - [ ] Verify post-merge `main` validation and CodeQL.
 - [ ] If a versioned GitHub release is desired, create the tag/release only on the exact approved `main` commit.
 - [ ] Verify release metadata/tagged documentation and source archives anonymously before making a release claim.
@@ -107,4 +113,4 @@
 
 ## Stop condition
 
-Do **not** claim v0.3.5 runtime acceptance or publish a global listing while any required CI, CodeQL, publication-history or clean-session control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present.
+Do **not** claim v0.3.7 runtime acceptance or publish a global listing while any required CI, CodeQL, publication-history or clean-session control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present.

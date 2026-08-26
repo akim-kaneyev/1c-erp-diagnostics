@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.6
+# 1C ERP Diagnostics plugin — v0.3.7
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -13,6 +13,7 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - evidence coverage, artifact derivation lineage and provenance closure;
 - execution identity/stale-result controls for tool and sandbox evidence;
 - evidence synthesis, contradiction handling and adversarial verification;
+- optional `diagram`/`sticky` Visual Explanation over Gate 7-reviewed results;
 - strict `EVAL_RESULT_JSON` output with exact schema/risk/decision/Gate semantics;
 - deterministic synthetic capability snapshots and scoped current-goal/linked-incident closure;
 - inventory-only output semantics with exact `{name,status,simulated}` capability rows;
@@ -46,6 +47,10 @@ When a companion/tool result is used as executable evidence, Gate 5 records its 
 
 Derived evidence must preserve its source anchor and transformation. Gate 6/7 require closed provenance across every material causal transition before a root-cause `УСТАНОВЛЕНО` can become final. A directly evidenced limitation such as missing lineage may itself be established without proving source content or cause.
 
+Visual Explanation is an inline presentation sidecar for normal responses only. After Gate 6 and Gate 7 pass, `diagram` may project reviewed relationships/gaps and `sticky` may project compact result/evidence/uncertainty/falsifier cards. Both preserve existing Claim IDs, Evidence IDs and statuses, add no evidence or causality, and carry `Presentation only — not evidence`.
+
+The sidecar and its modes are not runtime capabilities, slash commands, packaged skills or image-generation dependencies. They do not enter Gate 0 and are omitted completely in `EVAL_RESULT_JSON` mode.
+
 ## Strict evaluation output
 
 When a prompt contains `EVAL_RESULT_JSON`, the plugin returns one JSON object only and must match the supplied skeleton exactly. Gate status records whether the Gate procedure completed, not whether the cause was proved. Read-only rejection of stale evidence is `R0 + EVIDENCE_REQUIRED`; `R3 + NO-GO` is reserved for an actual unsafe or unapproved write action.
@@ -62,4 +67,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for v0.3.6 remains blocked until the exact installed capability-inventory result and the complete hashed 16-case clean-session run pass their validators.
+Runtime acceptance for v0.3.7 remains blocked until the exact installed priority results and the complete hashed 16-case clean-session run pass their validators.

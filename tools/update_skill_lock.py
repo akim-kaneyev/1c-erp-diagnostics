@@ -104,6 +104,11 @@ def serialize_lock(data: dict) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
 
 
+def write_lock(path: Path, data: dict) -> None:
+    """Write the canonical manifest with stable LF endings on every platform."""
+    path.write_text(serialize_lock(data), encoding="utf-8", newline="\n")
+
+
 def load_lock(path: Path) -> dict:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
@@ -163,7 +168,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         return 0
     if args.write:
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(serialize_lock(data), encoding="utf-8")
+        write_lock(output, data)
         print(f"Wrote {output}")
         print(f"Locked runtime files: {data['file_count']}")
         print(f"Manifest SHA-256: {data['manifest_sha256']}")

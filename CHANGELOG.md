@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.7 — verified Visual Explanation
+
+- added optional normal-response `diagram` and `sticky` presentation modes after completed Gate 6 and passed Gate 7;
+- limited every rendered statement/edge to the reviewed Claim/Evidence ledger, with existing IDs/statuses and visible gaps for unproved transitions;
+- made the layer explicitly non-evidentiary: no capability, Evidence ID, claim support, causal edge, validation result or provenance closure;
+- disabled the layer unconditionally for `EVAL_RESULT_JSON` and added regressions rejecting visual fields and invented visual capabilities;
+- made deterministic skill-lock output use LF on every platform so Windows regeneration does not create unrelated lock churn;
+- added synthetic quick-start examples, architecture/evidence-model boundaries and normal/strict smoke checks;
+- retained all Gate 0–10 semantics, the strict eval schema and cases, 32 packaged skills, marketplace identity, companion pins, publication controls and Velis assets.
+
 ## 0.3.6 — exact stale-execution runtime contract
 
 - reproduced the installed v0.3.5 `stale-execution-result` failure after the capability-inventory hotfix passed;

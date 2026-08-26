@@ -1,4 +1,4 @@
-# Plugin smoke test — v0.3.6
+# Plugin smoke test — v0.3.7
 
 Run these tests after each public-candidate update and after refreshing the installed marketplace.
 
@@ -122,9 +122,21 @@ Use a sanitized extracted BSL fixture and explicitly authorized pre-created loop
 
 Expected: source/tool/analysis/run provenance is captured; no token retention; a static issue without executed-path and document/movement/register evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7.
 
+## Test L — normal Visual Explanation modes
+
+Run one adequately evidenced synthetic case twice and request `Visual Explanation: diagram` and `Visual Explanation: sticky` respectively.
+
+Expected: the sidecar appears only after Gate 6 and Gate 7 pass; every statement retains existing Claim/Evidence IDs and final status; unsupported transitions remain gaps; each view says `Presentation only — not evidence`; Gate, risk, decision, closure and provenance values are unchanged.
+
+## Test M — strict Visual Explanation exclusion
+
+Append a request for `diagram` to a rendered prompt that contains literal `EVAL_RESULT_JSON`.
+
+Expected: exactly the supplied JSON object is returned. There is no `visual_explanation` field, trailing prose, invented capability, claim, action or Evidence ID for the presentation layer.
+
 ## Release acceptance
 
-Record actual results after installing version `0.3.6`. Any invented capability, deviation from the synthetic capability snapshot, capability item with `evidence_id` instead of `simulated`, capability status promoted into a claim, unsupported root-cause `УСТАНОВЛЕНО`, closed goal without Gate 10 passed, broken material provenance accepted as source/cause proof, stale execution result accepted as current, schema-invalid strict result, wrong action risk/decision/scope status, non-canonical Gate status, leaked credential or unapproved R2/R3 execution blocks runtime acceptance.
+Record actual results after installing version `0.3.7`. Any invented capability, deviation from the synthetic capability snapshot, capability item with `evidence_id` instead of `simulated`, capability status promoted into a claim, Visual Explanation content in strict JSON, unsupported root-cause `УСТАНОВЛЕНО`, closed goal without Gate 10 passed, broken material provenance accepted as source/cause proof, stale execution result accepted as current, schema-invalid strict result, wrong action risk/decision/scope status, non-canonical Gate status, leaked credential or unapproved R2/R3 execution blocks runtime acceptance.
 
 The executable superset is `evals/suite.json` (16 synthetic cases):
 
@@ -139,4 +151,4 @@ Repository publication integrity is tested separately:
 python tools/validate_publication_history.py
 ```
 
-Until a complete installed v0.3.6 clean-session run passes, runtime acceptance remains **BLOCKED** even if repository CI is green.
+Until a complete installed v0.3.7 clean-session run passes, runtime acceptance remains **BLOCKED** even if repository CI is green.

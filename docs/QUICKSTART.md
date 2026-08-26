@@ -12,7 +12,7 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.6` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
+7. Confirm `1C ERP Diagnostics` reports `0.3.7` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
@@ -70,6 +70,50 @@ Expected: Gate 0 performs the factual loopback status/version and scanner-versio
 
 For a separately authorized sanitized local scan, expect `R1`, redacted command properties, source/tool/analysis provenance, complete issue pagination and no credential in files, logs or retained evidence. A finding without executed-path and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7.
 
+## Optional Visual Explanation examples
+
+These modes apply only to a normal narrative result after Gate 6 and Gate 7 have passed. They are plain-language presentation requests, not slash commands or runtime capabilities.
+
+### `diagram`
+
+```text
+$one-c-erp-diagnostics <case path>
+После Gate 7 добавь Visual Explanation в режиме diagram.
+```
+
+Minimal synthetic shape:
+
+```text
+E-DOC-1 → C-1 [УСТАНОВЛЕНО] → document → movement
+C-2 [ТРЕБУЕТ ПРОВЕРКИ; E-GAP-1]: movement ⋯ gap ⋯ record/register
+C-3 [ТРЕБУЕТ ПРОВЕРКИ; E-GAP-2]: record/register ⋯ gap ⋯ consuming mechanism
+
+Presentation only — not evidence
+```
+
+Expected: only existing Claim/Evidence IDs and final statuses are shown. The unproved transition remains a gap; the diagram does not invent an edge or a 1C object.
+
+### `sticky`
+
+```text
+$one-c-erp-diagnostics <case path>
+После Gate 7 добавь Visual Explanation в режиме sticky.
+```
+
+Minimal synthetic shape:
+
+```text
+[RESULT] C-1 · ВЕРОЯТНО
+[EVIDENCE] E-1, E-2
+[GAP] C-2 · ТРЕБУЕТ ПРОВЕРКИ · E-2 · falsifier: reviewed E-3
+
+Presentation only — not evidence
+```
+
+Expected: cards preserve the reviewed ledger rather than creating a new summary claim. If Gate 6/7 prerequisites are absent, the sidecar is omitted without changing any Gate status.
+
+When a prompt contains literal `EVAL_RESULT_JSON`, both modes are ignored unconditionally and the response remains exactly the supplied JSON skeleton with no visual field or trailing prose.
+
 ## Priority strict-runtime tests
 
 Render the canonical prompts from a repository checkout. Do not manually shorten or rewrite them; the rendered capability block, strict instructions and skeleton are part of the acceptance evidence.
@@ -80,7 +124,7 @@ Render the canonical prompts from a repository checkout. Do not manually shorten
 python tools/validate_evals.py --render capability-inventory
 ```
 
-Run the rendered prompt in a new clean chat with exactly v0.3.6 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
+Run the rendered prompt in a new clean chat with exactly v0.3.7 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
 
 ```text
 python tools/validate_evals.py --results capability-inventory.result.json
@@ -107,7 +151,7 @@ The inventory procedure can close successfully without producing a proved 1C con
 python tools/validate_evals.py --render stale-execution-result
 ```
 
-Run the rendered prompt in another new clean chat with exactly v0.3.6 installed. Save and validate it:
+Run the rendered prompt in another new clean chat with exactly v0.3.7 installed. Save and validate it:
 
 ```text
 python tools/validate_evals.py --results stale-execution-result.result.json

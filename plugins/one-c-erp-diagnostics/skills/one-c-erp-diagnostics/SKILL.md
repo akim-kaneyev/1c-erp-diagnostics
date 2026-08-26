@@ -26,6 +26,7 @@ When the request contains the literal token `EVAL_RESULT_JSON`, machine-readable
 11. If no in-scope action exists, `actions` must be `[]`. If present, each item must be exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
 12. Cross-field invariants are mandatory: a closed current goal requires Gate 10 `passed`; Gate 10 `passed` requires a closed goal; `final_status = УСТАНОВЛЕНО` requires Gate 7 `passed`, Gate 10 `passed` and `causal_chain.complete = true`.
 13. Remove every placeholder and validate the finished object against the supplied skeleton before sending.
+14. Omit Visual Explanation completely. `diagram` and `sticky` are normal-response presentation modes only; they are not JSON fields, capabilities, evidence, claims or actions.
 
 ### Inventory-only `capability-inventory` contract
 
@@ -107,6 +108,16 @@ Closure is `closed | open | broken`. Preliminary root-cause `УСТАНОВЛЕ�
 ### Gate 7 — challenge
 Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. Reviewer severity/confidence is a testable finding, not proof. Final root-cause `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7. Gate 7 passes when it correctly rejects an unsupported current-state claim.
 
+### Optional Visual Explanation — present verified results
+For normal narrative output only, an explicitly requested Visual Explanation may project the passed Gate 6 ledger after Gate 7 has passed. This presentation sidecar is not a Gate, runtime capability, packaged skill, Evidence item, claim source, validation step or proof and cannot change any Gate 0–10, claim, risk, decision, causal-chain or provenance value.
+
+Supported modes are exactly `diagram` and `sticky`; no third mode is allowed. Prerequisite: Gate 6 is passed and Gate 7 is passed.
+
+- `diagram` renders only reviewed Claim/Evidence relationships or canonical causal stages, carries Claim IDs, Evidence IDs and final statuses, and shows unsupported transitions as gaps;
+- `sticky` renders compact reviewed-result, decisive-evidence and uncertainty/falsifier cards with the same IDs and statuses.
+
+Do not add facts, 1C objects, causal edges or Evidence IDs during rendering. If Gate 6/Gate 7 is incomplete or eligible reviewed content is absent, omit the view and report the prerequisite in prose. The modes are plain-language requests, not slash commands or host capabilities; no image-generation tool is required. Label the result `Presentation only — not evidence`. Disable the layer unconditionally for `EVAL_RESULT_JSON`.
+
 ### Gate 8 — decide action
 Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action or request evidence. Do not transform missing evidence into `R3 + NO-GO`; a read-only evidence gap is normally `R0 + EVIDENCE_REQUIRED`.
 
@@ -114,7 +125,7 @@ Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest
 Apply `one-c-erp-post-change-validation` on identical analytics. Required ladder: structural → static → metadata/runtime → functional → business/accounting. Lower levels cannot substitute for required higher levels. Analysis-only goals may mark `not_required`.
 
 ### Gate 10 — close
-Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status, active graph, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` in that state. Escaped findings feed earliest missed control/regression eval.
+Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status, active graph, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` in that state. Escaped findings feed earliest missed control/regression eval. Append an eligible requested Visual Explanation only after this normal result; it is never required for closure.
 
 Gate statuses are `pending | passed | blocked | failed | stale | not_required`. New/changed evidence reopens from earliest affected gate.
 
@@ -131,6 +142,7 @@ Gate statuses are `pending | passed | blocked | failed | stale | not_required`. 
 - Clean syntax/static/build cannot prove runtime, functional or business/accounting correctness.
 - Self-reported producer success is not independent validation.
 - Final root-cause `УСТАНОВЛЕНО` requires closed provenance, Gate 7, Gate 10 and a complete causal chain.
+- Visual Explanation never enters capability inventory, evidence/provenance, Gate status or `EVAL_RESULT_JSON`, and every rendered statement/edge must already exist in the Gate 7-reviewed ledger.
 
 ## Companion boundary
 

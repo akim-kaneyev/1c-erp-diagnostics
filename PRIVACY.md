@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.6 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.7 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -27,6 +27,8 @@ Execution identity and strict `EVAL_RESULT_JSON` output must not contain plainte
 Synthetic eval capability snapshots are deterministic test inputs. Version 0.3.5 requires the result to reproduce only the capability names/statuses declared by the synthetic case. Strict capability rows contain only `name`, `status` and `simulated=false`; snapshot Evidence IDs remain in the top-level evidence ledger rather than being duplicated into each capability row. Internal reasoning steps, packaged skills and reviewer/synthesis roles are not collected or represented as user capabilities.
 
 Version 0.3.6 keeps stale-execution results in the evidence layer only: run/input/report identities remain identifiers, not secrets, capability rows or executable action records.
+
+Version 0.3.7 adds only an inline Visual Explanation presentation of already reviewed Claim/Evidence IDs. The `diagram` and `sticky` modes do not collect, transmit or persist additional case data, do not receive Evidence IDs and do not add a hosted renderer or image-generation dependency.
 
 ## Companion plugins and connected tools
 

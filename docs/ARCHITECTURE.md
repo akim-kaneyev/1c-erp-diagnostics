@@ -30,12 +30,13 @@ The marketplace is an installation/discovery bundle. It does not merge code, gra
 11. **Execution identity controller** — binds executable evidence to `run_id`, case identity, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs become stale.
 12. **Synthesis** — preserves supporting/contradicting evidence and requires provenance closure for material claims.
 13. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence and verifies provenance closure plus run freshness.
-14. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
-15. **Validation ladder / post-change validator** — requires the highest validation level demanded by the claim: structural → static → metadata/runtime → functional → business/accounting.
-16. **Evaluation and release gate** — validates synthetic domain/control coverage, exact machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
-17. **Synthetic capability-snapshot controller** — requires eval results to reproduce exactly the capabilities declared by the case; internal reasoning, skills and roles cannot be emitted as runtime capabilities.
-18. **Publication integrity gate** — compares the Git archive with tracked HEAD, requires full history in CI and scans history for prohibited case/database/credential artifacts, plaintext credential assignments and user-machine absolute paths.
-19. **Regression feedback loop** — escaped defects, contradictions and material omissions are traced to the earliest missed control and converted into an eval/checklist improvement when reproducible.
+14. **Visual Explanation projector** — optionally renders the Gate 7-reviewed Gate 6 ledger as `diagram` or `sticky` presentation without feeding anything back into evidence, claims or Gate state.
+15. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
+16. **Validation ladder / post-change validator** — requires the highest validation level demanded by the claim: structural → static → metadata/runtime → functional → business/accounting.
+17. **Evaluation and release gate** — validates synthetic domain/control coverage, exact machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
+18. **Synthetic capability-snapshot controller** — requires eval results to reproduce exactly the capabilities declared by the case; internal reasoning, skills and roles cannot be emitted as runtime capabilities.
+19. **Publication integrity gate** — compares the Git archive with tracked HEAD, requires full history in CI and scans history for prohibited case/database/credential artifacts, plaintext credential assignments and user-machine absolute paths.
+20. **Regression feedback loop** — escaped defects, contradictions and material omissions are traced to the earliest missed control and converted into an eval/checklist improvement when reproducible.
 
 ## Model/provider neutrality
 
@@ -46,6 +47,8 @@ Where host differences require translation, normalize them into capability statu
 ## Capability boundary
 
 A capability is a host-visible external/plugin/tool surface. Packaged skills, specialist roles, synthesis, review and ordinary model reasoning are orchestration internals, not capabilities.
+
+Visual Explanation and its `diagram`/`sticky` modes are presentation concepts inside the orchestrator. They require no image-generation tool and never appear in Gate 0 inventory or a synthetic capability snapshot.
 
 For normal cases Gate 0 discovers the current host state. For synthetic evals the case capability snapshot is authoritative and deterministic:
 
@@ -115,6 +118,19 @@ Tool output, code findings and official documentation have provenance but differ
 A reviewer label such as `critical` or a clean static-analysis/build result is also not case truth. Review findings must be reproduced or linked to evidence; lower validation levels cannot replace runtime or business/accounting validation when those levels are required. A derived artifact without a closed source lineage, or a result from a stale execution identity, is likewise insufficient.
 
 Gate status and claim status are independent. Gate 6/7 may pass by correctly establishing insufficiency or rejecting a hypothesis. A claim can be established only to the exact extent directly supported by its Evidence IDs.
+
+## Visual Explanation seam
+
+Visual Explanation has one narrow interface: requested `mode` plus the passed Gate 6 claim/evidence ledger and the passed Gate 7 review result. It returns an inline Markdown presentation only. There is no external renderer, new Gate, write surface or feedback path into diagnosis.
+
+The interface supports exactly two modes:
+
+- `diagram` projects reviewed claim/evidence relationships or the canonical causal stages. Every node carries its existing Claim ID/Evidence ID and final status. An open, broken or unproved transition is shown as a gap, never promoted into an edge.
+- `sticky` projects compact cards for the reviewed result, decisive evidence and remaining uncertainty/falsifier. Every factual card retains existing Claim IDs, Evidence IDs and final status.
+
+The projector cannot create or strengthen a claim, Evidence item, causal link, proof or provenance closure. Its output receives no Evidence ID and cannot support another claim. A changed source ledger invalidates the presentation; regenerate it only after the affected Gate 6/7 work is repeated.
+
+The sidecar runs only for an explicitly requested normal narrative response after Gate 6 and Gate 7 pass. If either prerequisite is absent, the presentation is omitted without blocking or reopening a Gate. Literal `EVAL_RESULT_JSON` disables it unconditionally because the supplied strict skeleton is the entire allowed output.
 
 ## Publication integrity
 

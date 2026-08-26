@@ -84,7 +84,8 @@ class SkillGovernanceTests(unittest.TestCase):
             second = LOCK.build_lock(root)
             self.assertEqual(first, second)
             lock_path = root / "SKILLS.lock.json"
-            lock_path.write_text(LOCK.serialize_lock(first), encoding="utf-8")
+            LOCK.write_lock(lock_path, first)
+            self.assertNotIn(b"\r\n", lock_path.read_bytes())
             self.assertEqual(LOCK.check_lock(root, lock_path), [])
             write(root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-demo/SKILL.md", skill_text("one-c-erp-demo", "changed"))
             errors = LOCK.check_lock(root, lock_path)

@@ -39,6 +39,10 @@ AUTHORITATIVE_TOKENS = (
     "pending | passed | blocked | failed | stale | not_required",
     "R0",
     "R3",
+    "Visual Explanation",
+    "`diagram`",
+    "`sticky`",
+    "Presentation only — not evidence",
 )
 REPOSITORY_SHIM = Path(".agents/skills/one-c-erp-diagnostics/SKILL.md")
 REPOSITORY_SHIM_TOKENS = (

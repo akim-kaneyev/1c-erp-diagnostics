@@ -19,6 +19,8 @@ For every candidate capability record:
 
 A capability is a host-visible external/plugin/tool surface. Internal reasoning steps, packaged skills, synthesis/review roles, or names invented to describe what the model can do are not capabilities and must not be emitted in a capability map.
 
+Visual Explanation and its `diagram`/`sticky` modes are internal presentation concepts, not runtime capabilities. Never inventory them at Gate 0 or emit them in a synthetic capability snapshot. They require no image-generation capability and are governed only as optional normal-response presentation after Gate 6/7.
+
 ## Strict synthetic inventory output
 
 In `EVAL_RESULT_JSON` cases, the synthetic case capability snapshot is authoritative. Report exactly the declared capability names/statuses in their supplied order and no additional inferred entries.

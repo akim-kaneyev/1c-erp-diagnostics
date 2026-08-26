@@ -123,6 +123,12 @@ class EvalSuiteTests(unittest.TestCase):
         )
         self.assertFalse(result_schema["additionalProperties"])
         self.assertEqual(set(result_schema["required"]), validate_evals.RESULT_KEYS)
+        self.assertNotIn("visual_explanation", result_schema["properties"])
+        self.assertNotIn("visual_explanation", validate_evals.RESULT_KEYS)
+        self.assertNotIn(
+            "visual_explanation",
+            validate_evals.result_skeleton("under-evidenced-cost"),
+        )
         self.assertFalse(run_schema["additionalProperties"])
         self.assertEqual(set(run_schema["required"]), validate_runtime_run.RUN_KEYS)
 

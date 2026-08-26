@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.6"
+PLUGIN_VERSION = "0.3.7"
 
 
 def load_artifact_module():
@@ -293,6 +293,69 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("{name, status, simulated}", capability)
         self.assertIn("Gate 10 cannot be `not_required`", final_review)
         self.assertIn("complete causal chain", portable)
+
+    def test_visual_explanation_is_a_post_verification_presentation_sidecar(self) -> None:
+        root_skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        packaged = (
+            PLUGIN / "skills" / "one-c-erp-diagnostics" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        portable = (
+            ROOT / "skills" / "one-c-erp-diagnostics" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        final_review = (
+            PLUGIN / "skills" / "one-c-erp-final-review" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        capability = (
+            PLUGIN / "skills" / "one-c-erp-capability-discovery" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        architecture = (ROOT / "docs" / "ARCHITECTURE.md").read_text(
+            encoding="utf-8"
+        )
+        evidence_model = (ROOT / "docs" / "evidence-model.md").read_text(
+            encoding="utf-8"
+        )
+
+        for surface in (root_skill, packaged, portable, final_review):
+            for token in (
+                "Visual Explanation",
+                "`diagram`",
+                "`sticky`",
+                "Gate 6",
+                "Gate 7",
+                "Presentation only — not evidence",
+                "EVAL_RESULT_JSON",
+            ):
+                self.assertIn(token, surface)
+            self.assertIn(
+                "Supported modes are exactly `diagram` and `sticky`; no third mode is allowed.",
+                surface,
+            )
+            self.assertIn(
+                "Prerequisite: Gate 6 is passed and Gate 7 is passed.",
+                surface,
+            )
+
+        for surface in (root_skill, packaged, portable):
+            self.assertIn("runtime capability", surface)
+            self.assertIn("Evidence ID", surface)
+            self.assertIn("provenance closure", surface)
+
+        self.assertIn("not runtime capabilities", capability)
+        self.assertIn("never appear in Gate 0", architecture)
+        self.assertIn("receives no Evidence ID", architecture)
+        self.assertIn("не получает Evidence ID", evidence_model)
+
+        quickstart = (ROOT / "docs" / "QUICKSTART.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("C-2 [ТРЕБУЕТ ПРОВЕРКИ; E-GAP-1]", quickstart)
+        self.assertIn("C-3 [ТРЕБУЕТ ПРОВЕРКИ; E-GAP-2]", quickstart)
+        self.assertNotIn("record/register → consuming mechanism", quickstart)
+        self.assertNotIn("[NEXT]", quickstart)
+        self.assertEqual(
+            len(list((PLUGIN / "skills").glob("*/SKILL.md"))),
+            32,
+        )
 
 
 if __name__ == "__main__":

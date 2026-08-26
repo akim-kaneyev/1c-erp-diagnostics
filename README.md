@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.6" src="https://img.shields.io/badge/version-0.3.6-0D1B2A.svg" />
+  <img alt="Version 0.3.7" src="https://img.shields.io/badge/version-0.3.7-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -102,6 +102,17 @@ Priority:
 For derived evidence, the project additionally requires artifact lineage: parent Evidence IDs, transformation, tool/version/ref, execution `run_id` when applicable and output identifier/hash. A material root-cause claim is final only when the trace `source artifact → evidence → premise → causal link → conclusion` is closed.
 
 An executable report is not reusable merely because it looks current. Gate 5 records the case, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs are `stale` until rerun or proven equivalent.
+
+## Optional Visual Explanation
+
+For a normal narrative result, the user may request a presentation-only projection only after Gate 6 and Gate 7 have passed:
+
+- `diagram` — the reviewed claim/evidence or causal-chain view, with unsupported transitions left as visible gaps;
+- `sticky` — compact reviewed result, evidence and uncertainty/falsifier cards.
+
+Every visual statement retains existing Claim IDs, Evidence IDs and final statuses. The view creates no facts or causal links, receives no Evidence ID, cannot support provenance closure and is labelled `Presentation only — not evidence`.
+
+Visual Explanation is not a Gate, runtime capability, slash-command interface or image-generation dependency. It never changes Gate 0–10 semantics and is disabled completely when `EVAL_RESULT_JSON` is present. Minimal synthetic examples are in [`docs/QUICKSTART.md`](docs/QUICKSTART.md); the presentation seam is defined in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#visual-explanation-seam).
 
 ## Strict machine-readable evaluation
 
@@ -201,9 +212,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.6 Public Preview release candidate.** This hotfix corrects the exact clean-session capability-inventory deviations observed in installed v0.3.4. It preserves earlier stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.7 Public Preview release candidate.** This release adds the optional post-Gate-7 Visual Explanation sidecar with `diagram` and `sticky` modes while preserving the Gate 0–10 workflow, strict eval schema, earlier stale-execution/provenance controls, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance for `0.3.5` remain separate evidence until completed. Runtime acceptance is **BLOCKED** until the refreshed installed version passes the canonical `capability-inventory` case, the two earlier priority cases and then the full 16-case run.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance for `0.3.7` remain separate evidence until completed. Runtime acceptance is **BLOCKED** until the refreshed installed version passes the canonical `capability-inventory` case, the two earlier priority cases and then the full 16-case run.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

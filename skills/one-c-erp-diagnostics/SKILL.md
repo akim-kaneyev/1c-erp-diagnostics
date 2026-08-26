@@ -29,6 +29,7 @@ When the prompt contains `EVAL_RESULT_JSON`:
 - set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; logical freshness/provenance reasoning is not that causal chain;
 - use `actions: []` when no action exists; otherwise use exact action objects;
 - enforce: a closed current goal requires Gate 10 passed, and `final_status = УСТАНОВЛЕНО` requires Gate 7 passed, Gate 10 passed and a complete causal chain;
+- omit Visual Explanation completely: `diagram` and `sticky` are normal-response presentation modes, not JSON fields, capabilities, evidence, claims or actions;
 - remove placeholders and validate the object against the skeleton before sending.
 
 ### Inventory-only `capability-inventory` contract
@@ -106,6 +107,13 @@ A list of references does not close an inferred transition. Gate 6 may pass afte
 ## Gate 7 — Independent/adversarial verification
 Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final root-cause `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
 
+## Optional Visual Explanation — normal response only
+Supported modes are exactly `diagram` and `sticky`; no third mode is allowed. Prerequisite: Gate 6 is passed and Gate 7 is passed.
+
+After Gate 6 and Gate 7 have passed, an explicitly requested Visual Explanation may project only the reviewed claim/evidence ledger. `diagram` shows reviewed Claim/Evidence relationships or canonical causal stages and marks unsupported transitions as gaps. `sticky` shows compact result, evidence and uncertainty/falsifier cards. Preserve Claim IDs, Evidence IDs and final statuses; add no fact, object, edge or Evidence ID. Label the view `Presentation only — not evidence`.
+
+This sidecar is not a Gate, runtime capability, packaged skill, Evidence item, claim source, validation step or proof. It does not change Gate 0–10, risk, decision, causal completeness or provenance closure; the mode names are plain-language requests rather than slash commands and require no image-generation tool. Omit it when Gate 6/7 prerequisites are incomplete or reviewed source content is absent. Disable it unconditionally when `EVAL_RESULT_JSON` is present.
+
 ## Gate 8 — Action decision
 Choose smallest safe reversible action or request evidence. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. Missing evidence normally means `R0 + EVIDENCE_REQUIRED`, not `R3 + NO-GO`. R3 requires explicit approval, rollback and validation plan.
 
@@ -113,7 +121,7 @@ Choose smallest safe reversible action or request evidence. `R0` read-only; `R1`
 Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.
 
 ## Gate 10 — Final closure
-Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including a Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.
+Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including a Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate. Append an eligible requested Visual Explanation only after the reviewed normal result; never make it a closure condition.
 
 ## Resume behavior
 Read prior state first and continue from earliest incomplete/stale gate. Do not restart valid passed work unless new evidence invalidates it.

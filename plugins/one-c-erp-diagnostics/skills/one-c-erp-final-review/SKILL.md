@@ -58,6 +58,7 @@ When the request contains literal `EVAL_RESULT_JSON`, verify the candidate outpu
 12. `not_in_scope` requires an explicit exclusion; a completed evidence-sufficiency assessment may close the current goal while leaving the linked incident blocked;
 13. `final_status = УСТАНОВЛЕНО` requires Gate 7 `passed`, Gate 10 `passed`, `current_goal_status = closed` and `causal_chain.complete = true`;
 14. remove all placeholder values and validate the object against the supplied skeleton before sending.
+15. reject Visual Explanation, `diagram`, `sticky` or any presentation-only key/prose outside the supplied JSON skeleton.
 
 ## Inventory-only acceptance review
 
@@ -103,6 +104,16 @@ object-valued requested evidence or pseudo-actions describing evidence control.
 5. Remaining blind spots and falsifiers.
 6. `Current goal status: closed | blocked | open`.
 7. `Linked incident status: resolved | open | blocked | not_in_scope`.
+
+## Optional Visual Explanation review
+
+Supported modes are exactly `diagram` and `sticky`; no third mode is allowed. Prerequisite: Gate 6 is passed and Gate 7 is passed.
+
+Append Visual Explanation only when the user requested `diagram` or `sticky`, Gate 6 passed, Gate 7 passed and the normal final result has already been reviewed. Confirm that every visual statement and edge is a projection of Gate 7-reviewed Claim IDs, Evidence IDs, final statuses or canonical causal-chain links. Unsupported transitions must remain visible gaps.
+
+Reject the visual if it adds a fact, 1C object, causal relationship, Evidence ID, confidence claim or closure implication. It must be labelled `Presentation only — not evidence` and must not affect Gate status, claim status, risk, decision, causal completeness, provenance closure, current-goal closure or linked-incident closure.
+
+`diagram` and `sticky` are plain-language presentation modes, not slash commands, packaged skills or runtime capabilities, and require no image-generation tool. If the prerequisites are absent, omit the view and state the missing prerequisite in the normal narrative. When `EVAL_RESULT_JSON` is present, omit this section unconditionally.
 
 Examples:
 

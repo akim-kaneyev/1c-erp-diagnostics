@@ -41,6 +41,7 @@ When the request contains literal `EVAL_RESULT_JSON`, the normal narrative respo
 11. If no actual/proposed in-scope action exists, `actions` must be `[]`. If present, each action is exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
 12. Enforce cross-field invariants before sending: `current_goal_status = closed` requires Gate 10 `passed`; Gate 10 `passed` requires a closed current goal; `final_status = УСТАНОВЛЕНО` requires Gate 7 `passed`, Gate 10 `passed`, a closed goal and `causal_chain.complete = true`.
 13. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
+14. Omit Visual Explanation completely. `diagram` and `sticky` are normal-response presentation modes, not JSON fields, capabilities, evidence, claims or actions; never add them to the supplied skeleton or append explanatory prose.
 
 ### Inventory-only `capability-inventory` contract
 
@@ -165,6 +166,21 @@ A label such as `critical`, `high`, `blocking` or a confident agent verdict is n
 
 Final root-cause `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity. Gate 7 is `passed` when it correctly rejects an unsupported conclusion or stale-evidence reuse.
 
+## Optional Visual Explanation — normal-response presentation only
+
+Visual Explanation is an optional presentation-only projection over the passed Gate 6 synthesis and passed Gate 7 review. It is not a Gate, runtime capability, packaged skill, Evidence item, claim source, validation step or proof, and it never changes Gate 0–10 status, claim status, risk, decision, causal completeness or provenance closure.
+
+Supported modes are exactly `diagram` and `sticky`; no third mode is allowed. Prerequisite: Gate 6 is passed and Gate 7 is passed.
+
+- `diagram` — show only Gate 7-reviewed claim/evidence relationships or canonical causal-chain stages, with Claim IDs, Evidence IDs and final claim statuses; mark an unproved transition as a gap rather than drawing a new causal link;
+- `sticky` — show compact cards for the reviewed result, decisive evidence and remaining uncertainty/falsifier, preserving Claim IDs, Evidence IDs and final statuses.
+
+The eligible source set is limited to claims and evidence already present in the Gate 6 ledger and re-checked at Gate 7. Do not introduce a new fact, object, relationship, confidence label or Evidence ID while rendering. If Gate 6 or Gate 7 is incomplete, or no reviewed claim/evidence can support the requested view, omit the visualization and state the missing prerequisite in the normal narrative.
+
+The modes are plain-language output requests, not slash commands and not host capabilities. They require no image-generation tool. A rendered diagram or sticky view is reproducible presentation and must carry a clear `Presentation only — not evidence` label.
+
+When literal `EVAL_RESULT_JSON` is present, this layer is disabled unconditionally and the strict JSON contract takes precedence.
+
 ## Gate 8 — Risk-controlled action decision
 
 Classify action: `R0` read-only; `R1` derived local artifact/report; `R2` reversible test-environment change; `R3` production/accounting/access/closed periods/broad reposting.
@@ -190,6 +206,7 @@ Return:
 4. Compact Gate 0–10 status, active graph and capability provenance.
 5. **Current goal status** — `closed | blocked | open`.
 6. **Linked incident status** — `resolved | open | blocked | not_in_scope`.
+7. When explicitly requested and eligible, append one `diagram` or `sticky` Visual Explanation after the reviewed normal result; never make it a closure requirement.
 
 A completed evidence-sufficiency/provenance assessment may close with Gate 10 `passed` and `EVIDENCE_REQUIRED`, while the linked incident remains `blocked`. If the declared goal is to establish the cause/current state itself, missing evidence blocks the current goal and Gate 10.
 
@@ -216,5 +233,7 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No production-changing action without the applicable risk gate.
 - No decorated/noncanonical Gate statuses.
 - No `EVAL_RESULT_JSON` object that violates the supplied skeleton or synthetic capability snapshot.
+- No Visual Explanation emitted in `EVAL_RESULT_JSON` mode or represented as a capability, Evidence item, claim, action or Gate.
+- No diagram/sticky statement or edge that is absent from the Gate 7-reviewed claim/evidence ledger.
 - No incident closure claim when only a narrower goal is complete.
 - No restart from zero when valid state exists.

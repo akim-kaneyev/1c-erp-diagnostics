@@ -442,6 +442,29 @@ class RuntimeEvalContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_visual_explanation_is_rejected_from_strict_result_and_capabilities(self) -> None:
+        result = canonical_stale_result()
+        result["visual_explanation"] = {"mode": "diagram"}
+        errors = validate_evals.validate_result(result, self.stale_case)
+        self.assertTrue(
+            any("unexpected fields: visual_explanation" in error for error in errors),
+            errors,
+        )
+
+        result = canonical_stale_result()
+        result["capabilities"] = [
+            {
+                "name": "visual-explanation",
+                "status": "available",
+                "simulated": False,
+            }
+        ]
+        errors = validate_evals.validate_result(result, self.stale_case)
+        self.assertTrue(
+            any("absent from the synthetic case snapshot" in error for error in errors),
+            errors,
+        )
+
     def test_canonical_capability_inventory_result_passes_validator(self) -> None:
         self.assertEqual(
             validate_evals.validate_result(
