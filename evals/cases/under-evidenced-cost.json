@@ -3,32 +3,65 @@
   "id": "under-evidenced-cost",
   "title": "Month-close symptom without movements or registers",
   "domain": "cost_month_close",
-  "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
+  "controls": [
+    "under_evidenced",
+    "gate_7",
+    "no_invented_objects",
+    "under_evidenced_exact_output"
+  ],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Закрытие месяца показывает ошибку себестоимости. Других материалов нет. Назови точную причину только если она доказана; иначе запроси минимальный набор доказательств. EVAL_RESULT_JSON",
+  "prompt": "Закрытие месяца показывает ошибку себестоимости. Других материалов нет. Назови точную причину только если она доказана; иначе запроси минимальный набор доказательств. Это read-only оценка доказательств: риск классифицирует только фактическое или предлагаемое действие, а не серьезность неопределенности. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=blocked; linked_incident_status=blocked. Gate 0–3=passed; Gate 4=blocked; Gate 5=not_required; Gates 6–8=passed; Gate 9=not_required; Gate 10=blocked. Gate 2 проходит, потому что весь фактически предоставленный материал E-COST-1 учтен; отсутствие ожидаемых движений, регистратора, регистров и механизма блокирует диагностику Gate 4, а не прием доказательств Gate 2. Верни capabilities=[]. Используй E-COST-1 в evidence_ids_used и ровно в одном материальном claim. Claim должен быть ровно {id,status,text,evidence_ids,falsifier}, иметь status=ТРЕБУЕТ ПРОВЕРКИ и сообщать, что точная причина не установлена. Не создавай УСТАНОВЛЕНО claim путем копирования пользовательского сообщения о симптоме. causal_chain.complete=false и links=[]. requested_evidence должен быть массивом непустых строк с минимально необходимыми материалами, а не массивом объектов. actions=[]: отказ выдумывать причину и запрос доказательств являются результатом оценки, а не исполняемыми действиями. Соблюдай точный переданный JSON-каркас. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-COST-1",
       "kind": "user_statement",
       "summary": "Пользователь сообщил только о сообщении ошибки при закрытии месяца.",
-      "proves": ["наличие заявленного симптома"],
-      "does_not_prove": ["регистратор", "движение", "регистр", "механизм расчета", "причину"]
+      "proves": [
+        "наличие заявленного симптома"
+      ],
+      "does_not_prove": [
+        "регистратор",
+        "движение",
+        "регистр",
+        "механизм расчета",
+        "причину"
+      ]
     }
   ],
   "capabilities": [],
   "expect": {
-    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
-    "required_gate_statuses": {"2": "passed", "4": "blocked", "7": "passed", "10": "blocked"},
+    "allowed_final_statuses": [
+      "ТРЕБУЕТ ПРОВЕРКИ"
+    ],
+    "required_gate_statuses": {
+      "0": "passed",
+      "1": "passed",
+      "2": "passed",
+      "3": "passed",
+      "4": "blocked",
+      "5": "not_required",
+      "6": "passed",
+      "7": "passed",
+      "8": "passed",
+      "9": "not_required",
+      "10": "blocked"
+    },
     "required_risk": "R0",
     "required_decision": "EVIDENCE_REQUIRED",
-    "allowed_current_goal_statuses": ["blocked"],
-    "allowed_linked_incident_statuses": ["blocked"],
+    "allowed_current_goal_statuses": [
+      "blocked"
+    ],
+    "allowed_linked_incident_statuses": [
+      "blocked"
+    ],
     "max_established_claims": 0,
     "min_claims": 1,
     "min_actions": 0,
     "min_requested_evidence": 1,
-    "required_evidence_ids": ["E-COST-1"],
+    "required_evidence_ids": [
+      "E-COST-1"
+    ],
     "required_capabilities": {},
     "require_complete_causal_chain": false,
     "required_causal_stage_evidence": {}

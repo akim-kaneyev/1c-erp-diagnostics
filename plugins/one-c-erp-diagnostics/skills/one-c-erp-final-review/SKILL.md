@@ -94,6 +94,26 @@ Reject `linked_incident_status = not_in_scope`, Gate 5 `passed`, Gate 7
 `not_required`, Gate 10 `passed`, arbitrary `{from,to,relation}` causal links,
 object-valued requested evidence or pseudo-actions describing evidence control.
 
+## Under-evidenced cost acceptance review
+
+For `under-evidenced-cost`, reject the candidate JSON unless all conditions hold:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = EVIDENCE_REQUIRED`;
+- current goal and linked incident are both `blocked`;
+- Gates 0–3 `passed`, Gate 4 `blocked`, Gate 5 `not_required`, Gates 6–8 `passed`,
+  Gate 9 `not_required`, Gate 10 `blocked`;
+- Gate 2 is `passed`, not `blocked`, because `E-COST-1` is accounted for;
+- `capabilities = []`;
+- exactly one material claim uses `{id, status, text, evidence_ids, falsifier}`, has
+  status `ТРЕБУЕТ ПРОВЕРКИ` and cites `E-COST-1`;
+- there are zero `УСТАНОВЛЕНО` claims;
+- `causal_chain = {complete: false, links: []}`;
+- requested evidence contains strings only and `actions = []`.
+
+Reject Gate 4 `not_required`, Gate 10 `passed`, copied symptom claims, `claim` in place
+of `id`/`text`, object-valued requested evidence, or pseudo-actions that merely say
+not to invent a cause or to request evidence.
+
 ## Required normal final output
 
 1. `Краткий вывод` — result for the current goal and proven cause or explicit uncertainty.

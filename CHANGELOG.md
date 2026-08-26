@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.7 — exact under-evidenced cost contract
+
+- reproduced the installed v0.3.6 `under-evidenced-cost` failure after the first three priority cases passed;
+- require Gate 2 `passed` once the supplied symptom statement is accounted for, while missing registrar/movement/register/mechanism evidence blocks Gate 4 and the exact-cause goal;
+- require Gate 7 `passed`, Gate 10 `blocked`, and both current goal and linked incident `blocked`;
+- require one exact non-established claim, string-only requested evidence, an empty incomplete 1C causal chain and `actions=[]`;
+- prohibit copied symptom `УСТАНОВЛЕНО` claims, `claim`/missing-falsifier objects, object-valued evidence requests and pseudo-actions;
+- added the exact v0.3.6 runtime response as an executable rejected regression and made the rendered case prompt deterministic;
+- retained the v0.3.6 stale-result fix, 16-case suite, 32 packaged skills, marketplace identity, companion pins, publication-history controls and Velis assets.
+
 ## 0.3.6 — exact stale-execution runtime contract
 
 - reproduced the installed v0.3.5 `stale-execution-result` failure after the capability-inventory hotfix passed;

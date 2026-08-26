@@ -23,6 +23,8 @@ Every source or attachment supplied for the current case must receive an Evidenc
 
 Gate 2 cannot pass while supplied evidence is unaccounted for. Do not silently omit an attachment because another source looks sufficient.
 
+Once every supplied item is accounted for and its limitations are recorded, Gate 2 passes even when additional expected evidence is missing. Expected-but-missing movements, registrar, register records or mechanism evidence block the affected diagnostic Gate, normally Gate 4, rather than retroactively blocking evidence intake. For `under-evidenced-cost`, accounting for `E-COST-1` therefore means Gate 2 `passed` and Gate 4 `blocked`.
+
 Record the inspection method as part of provenance. For visually rich or structured inputs, use a modality-appropriate method: inspect relevant PDF pages/screenshots, enumerate relevant XLSX sheets/ranges, preserve extracted CF/CFE/EPF structure, and for `.mxl` use only a verified export/inspection path supported by the current host.
 
 Keep two gaps separate:
