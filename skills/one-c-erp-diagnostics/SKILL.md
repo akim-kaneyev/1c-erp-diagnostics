@@ -24,11 +24,25 @@ When the prompt contains `EVAL_RESULT_JSON`:
 - classify action risk, not evidentiary severity: read-only analysis/refusal to reuse stale evidence is `R0`; use `R3` only for an in-scope production/accounting/access/closed-period/external write;
 - use `EVIDENCE_REQUIRED` for missing current evidence/rerun/equivalence; reserve `NO-GO` for an unsafe/prohibited/unapproved in-scope action;
 - use `linked_incident_status = not_in_scope` only when the incident was explicitly excluded; a completed evidence-sufficiency assessment may close the current goal while the linked incident remains `blocked` or `open`;
-- report only the exact synthetic capability snapshot; internal reasoning steps, skills and invented tool names are not capabilities, and an empty snapshot requires `capabilities: []`;
-- make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries; assess claims independently so an observed missing-lineage fact may be `УСТАНОВЛЕНО` while source content/cause remains `ТРЕБУЕТ ПРОВЕРКИ`;
+- report only the exact synthetic capability snapshot; every capability item is exactly `{name, status, simulated}`, `simulated` is false, and `evidence_id` is forbidden; internal reasoning steps, skills and invented tool names are not capabilities, and an empty snapshot requires `capabilities: []`;
+- make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries or capability rows; assess claims independently so an observed missing-lineage fact may be `УСТАНОВЛЕНО` while source content/cause remains `ТРЕБУЕТ ПРОВЕРКИ`;
 - set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; logical freshness/provenance reasoning is not that causal chain;
 - use `actions: []` when no action exists; otherwise use exact action objects;
+- enforce: a closed current goal requires Gate 10 passed, and `final_status = УСТАНОВЛЕНО` requires Gate 7 passed, Gate 10 passed and a complete causal chain;
 - remove placeholders and validate the object against the skeleton before sending.
+
+### Inventory-only `capability-inventory` contract
+
+For a synthetic request that performs only Gate 0 inventory:
+
+- use `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = NO_ACTION`;
+- use `current_goal_status = closed` and `linked_incident_status = not_in_scope`;
+- set Gate 0 and Gate 10 to `passed`, and Gates 1–9 to `not_required`;
+- preserve the supplied capability order and emit exactly `{name, status, simulated: false}`;
+- place the snapshot Evidence ID only in `evidence_ids_used`;
+- return `claims: []`, an incomplete empty causal chain, no requested evidence and no actions.
+
+Do not treat successful inventory completion as a proved 1C/root-cause conclusion. Gate 10/current-goal closure records procedure completion; `final_status` records diagnostic proof status.
 
 ## Gate 0 — Capability and state discovery
 
@@ -38,6 +52,7 @@ Resume prior valid state. Inventory only capabilities actually exposed and class
 
 - Never invent 1C metadata objects, registers, fields, roles, documents or settings.
 - Never invent capabilities from internal reasoning steps, packaged skills or role names.
+- Never put `evidence_id` inside a strict capability item or turn capability rows into claims.
 - Prefer document movements; exact register records; postings/drill-down; reports; code/queries; screenshots; official 1C documentation; theory.
 - General knowledge may generate a hypothesis, never prove the case alone.
 - Every material supplied source/attachment must be accounted for.
@@ -45,7 +60,7 @@ Resume prior valid state. Inventory only capabilities actually exposed and class
 - Every relied-upon executable result must belong to the current case and current material input identities; stale/mismatched output is not current evidence.
 - A disappearing UI error or clean syntax/static/build is not proof that accounting is corrected.
 - Reviewer severity/confidence is a finding to test, not defect proof.
-- Final root-cause `УСТАНОВЛЕНО` requires complete causal chain, closed provenance closure and adversarial Gate 7.
+- Final root-cause `УСТАНОВЛЕНО` requires complete causal chain, closed provenance closure, adversarial Gate 7 and Gate 10 closure.
 
 ## Gate 1 — Goal contract
 State concrete outcome, scope, verification evidence, exclusions and stop condition. Separate current task scope from linked incident scope. A bounded evidence-sufficiency assessment may close independently from the unresolved linked incident.
@@ -82,7 +97,7 @@ Choose smallest safe reversible action or request evidence. `R0` read-only; `R1`
 Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.
 
 ## Gate 10 — Final closure
-Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.
+Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including a Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.
 
 ## Resume behavior
 Read prior state first and continue from earliest incomplete/stale gate. Do not restart valid passed work unless new evidence invalidates it.
