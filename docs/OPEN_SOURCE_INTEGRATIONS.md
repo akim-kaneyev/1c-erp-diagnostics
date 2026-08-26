@@ -1,8 +1,8 @@
 # Reviewed open-source integrations
 
-Review date: 2026-08-21.
+Review date: 2026-08-26.
 
-This project uses open-source components only through an explicit intake process. Discovery catalogs such as OpenYellow and `Untru/1c-mcp` are not treated as security, quality or compatibility certification.
+This project uses open-source components only through an explicit intake process. Discovery catalogs such as OpenYellow, `Untru/1c-mcp`, the Infostart technology map and `Oxotka/StackTechnologies1C` are not treated as security, quality or compatibility certification.
 
 ## OpenAI define-goal
 
@@ -96,6 +96,23 @@ The catalog is used to identify candidates by scenario. It is not bundled wholes
 2. **Static BSL validation** — maintain the adopted local SonarQube adapter and evaluate BSL Language Server/manual fallbacks with deterministic reports.
 3. **Isolated test/build loops** — evaluate `v8-runner` and `mcp-onec-test-runner` only in disposable test contours.
 4. **Live information-base access** — prohibited by default for the public plugin; requires a separate threat model, authentication design, minimal tool surface, audit logging and explicit `R3` approval.
+
+## Infostart and StackTechnologies1C discovery map
+
+Reviewed sources:
+
+- Infostart article `https://infostart.ru/1c/articles/2772307/`, `Современный инструментарий 1Сника`, published `2026-08-25`;
+- `https://github.com/Oxotka/StackTechnologies1C` at commit `82a7b4c16f0dab0264ddd664b741019ce60aba81`, MIT.
+
+Use: technology discovery and candidate classification only. These sources identify areas such as EDT, Git, BSL analysis, tests, containers, integration, monitoring and prototyping. They are not bundled, do not prove runtime availability and do not authorize tool execution. Every concrete candidate still passes the adoption rule below.
+
+## RampStack skill-governance methodology
+
+Source: `https://github.com/rampstackco/claude-skills` at commit `0479242522549dfdb389bb9b7807ad4d6016ffb7`.
+
+License: MIT.
+
+Use: methodology reference for uniform skill structure, separation of deep references, deterministic lock files and CI linting. The project implements its own 1C-specific governance in `docs/SKILL_AUTHORING_STANDARD.md`, `tools/validate_skills.py` and `tools/update_skill_lock.py`. RampStack's external skills, private lint inputs, marketing/web catalog and plugin manifests are not copied or added to the marketplace.
 
 ## Adoption rule
 
