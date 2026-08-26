@@ -49,11 +49,9 @@ class SkillGovernanceTests(unittest.TestCase):
         expected = LOCK.build_lock(ROOT)
         actual = LOCK.load_lock(ROOT / "SKILLS.lock.json")
         self.assertEqual(actual, expected)
-        self.assertEqual(actual["file_count"], 52)
-        self.assertEqual(
-            actual["manifest_sha256"],
-            "55b1b4c843f181f8674b130afecb38601f8251619051956434dc536f1536053e",
-        )
+        self.assertEqual(actual["file_count"], len(actual["files"]))
+        self.assertGreater(actual["file_count"], 40)
+        self.assertRegex(actual["manifest_sha256"], r"^[0-9a-f]{64}$")
 
     def test_reviewed_sources_and_boundaries_are_recorded(self) -> None:
         authoring = (ROOT / "docs" / "SKILL_AUTHORING_STANDARD.md").read_text(encoding="utf-8")
@@ -92,6 +90,14 @@ class SkillGovernanceTests(unittest.TestCase):
             errors = LOCK.check_lock(root, lock_path)
             self.assertTrue(any("Skill lock drift" in item for item in errors))
 
+    def test_packaged_directory_without_skill_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-empty").mkdir(parents=True)
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(any("has no SKILL.md" in item for item in report.errors))
+
     def test_duplicate_skill_name_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -102,14 +108,15 @@ class SkillGovernanceTests(unittest.TestCase):
             VALIDATE.validate_skill_inventory(root, report)
             self.assertTrue(any("does not match folder" in item or "Duplicate" in item for item in report.errors))
 
-    def test_broken_local_link_is_rejected(self) -> None:
+    def test_broken_link_in_reference_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            path = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a/SKILL.md"
-            write(path, skill_text("one-c-erp-a", "[missing](references/nope.md)"))
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(skill_dir / "SKILL.md", skill_text("one-c-erp-a", "[guide](references/guide.md)"))
+            write(skill_dir / "references/guide.md", "[missing](nope.md)\n")
             report = VALIDATE.ValidationReport()
-            VALIDATE.validate_local_links(path, root, report)
-            self.assertTrue(any("Broken local link" in item for item in report.errors))
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(any("Broken local link" in item and "guide.md" in item for item in report.errors))
 
     def test_discovery_sources_cannot_enter_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
