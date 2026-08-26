@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.4" src="https://img.shields.io/badge/version-0.3.4-0D1B2A.svg" />
+  <img alt="Version 0.3.5" src="https://img.shields.io/badge/version-0.3.5-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -109,16 +109,23 @@ When a synthetic acceptance prompt contains `EVAL_RESULT_JSON`, the plugin must 
 
 Version 0.3.3 fixed the first strict-output defect found in the stale-execution smoke test: wrong risk/decision semantics, malformed claim/link/action objects and false six-stage causal-chain completeness.
 
-Version 0.3.4 closes the next reproduced boundary found in the provenance-closure smoke test:
+Version 0.3.4 fixed the provenance-closure boundary:
 
-- the synthetic case capability snapshot is authoritative;
+- synthetic capability snapshots are authoritative;
 - internal reasoning steps, packaged skills and reviewer/synthesis roles cannot be invented as runtime capabilities;
-- an empty synthetic capability snapshot requires `capabilities: []`;
-- a completed evidence-sufficiency assessment may close its current goal while the unresolved source/root-cause incident remains `blocked`;
-- `not_in_scope` remains valid only after an explicit scope exclusion;
-- a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` without promoting source content or root cause.
+- a completed evidence-sufficiency assessment may close its narrow goal while the unresolved incident remains blocked;
+- a directly evidenced missing-lineage fact may be established without promoting source content or root cause.
 
-The strict mode distinguishes the status of a Gate procedure from the proof status of a claim: Gate 6 or Gate 7 can pass because they correctly reject an unsupported conclusion. Scope closure is evaluated separately for the declared current goal and linked incident.
+Version 0.3.5 fixes the clean-session capability inventory contract:
+
+- successful inventory completion is not a proved 1C/root-cause conclusion, so `final_status=ТРЕБУЕТ ПРОВЕРКИ`;
+- a closed Gate-0-only goal requires Gate 10 `passed`, while Gates 1–9 are `not_required`;
+- every strict capability item is exactly `{name,status,simulated}` with `simulated=false`;
+- `evidence_id` is forbidden inside capability rows; snapshot evidence stays in `evidence_ids_used`;
+- capability statuses are inventory rows, not claims, so the canonical result uses `claims=[]`;
+- `УСТАНОВЛЕНО` is rejected unless Gate 7 and Gate 10 pass and the six-stage causal chain is complete.
+
+The strict mode separates three concepts that must not be collapsed: capability inventory, bounded procedure closure and diagnostic proof status.
 
 ## Additional capabilities
 
@@ -192,9 +199,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.4 Public Preview release candidate.** This hotfix aligns the provenance-closure acceptance case with scoped-goal semantics, preserves directly established evidence limitations, and makes the synthetic capability snapshot deterministic and validator-enforced. It preserves the v0.3.3 strict JSON contract, artifact provenance closure, execution identity, full-history publication validation, verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.5 Public Preview release candidate.** This hotfix corrects the exact clean-session capability-inventory deviations observed in installed v0.3.4. It preserves earlier stale-execution and provenance-closure controls, artifact provenance, execution identity, deterministic skill locking, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, merge and exact-version clean-session acceptance for `0.3.4` remain separate evidence until completed. The repository must not claim runtime acceptance before the updated installed plugin passes both canonical priority cases and then the full 16-case run.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance for `0.3.5` remain separate evidence until completed. Runtime acceptance is **BLOCKED** until the refreshed installed version passes the canonical `capability-inventory` case, the two earlier priority cases and then the full 16-case run.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 
