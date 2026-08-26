@@ -7,6 +7,11 @@ This directory contains synthetic, data-free regression cases for the evidence-f
 - Keep every tracked case synthetic and mark it with `"synthetic": true`.
 - Do not place customer, company or production 1C data in this directory.
 - Render prompts without exposing the `expect` block to the model.
+- Do not manually shorten or rewrite a rendered prompt; the strict output instructions, capability block and skeleton are acceptance inputs.
+- Treat each case `capabilities` array as an exact synthetic snapshot: results must contain the same names/statuses and no extras; an empty snapshot means `capabilities: []`.
+- Internal reasoning steps, packaged skills and synthesis/review roles are not capabilities.
+- Keep current-goal closure separate from linked-incident status. A bounded evidence-sufficiency assessment may close while the linked source/root-cause incident remains blocked/open.
+- Assign claim status per statement. A directly evidenced limitation may be established without promoting source content or root cause.
 - Store actual clean-session outputs under `evals/runs/`; that directory is ignored by Git.
 - Treat a structurally valid suite and a passed runtime run as different claims.
 

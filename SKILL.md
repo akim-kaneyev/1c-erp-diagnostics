@@ -34,11 +34,12 @@ When the request contains literal `EVAL_RESULT_JSON`, the normal narrative respo
    - `NO-GO` — an actual in-scope action is unsafe, prohibited, unapproved or missing mandatory controls;
    - `NO_ACTION` — the declared goal is complete without action or additional evidence;
    - `GO` — a specifically scoped action is authorized by the applicable risk gate.
-7. `linked_incident_status = not_in_scope` only when the prompt explicitly excludes the underlying incident. Missing or stale evidence means `blocked` or `open`, not `not_in_scope`.
-8. `claims` contains material conclusions, not copied Evidence summaries. Each item is exactly `{id, status, text, evidence_ids, falsifier}`. Do not use `claim` instead of `id`/`text`; do not omit `falsifier`; do not create trivial `УСТАНОВЛЕНО` claims merely by restating input identities.
-9. `causal_chain.complete = true` only when all six canonical 1C causal stages are evidenced in order: `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`. A complete logical argument about provenance or stale evidence is not a complete 1C causal chain. Each link is exactly `{stage, evidence_ids}`. Otherwise use `complete: false` and an empty or schema-valid links list.
-10. If no actual/proposed in-scope action exists, `actions` must be `[]`. If present, each action is exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
-11. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
+7. `linked_incident_status = not_in_scope` only when the prompt explicitly excludes the underlying incident. Missing, stale or provenance-incomplete evidence means `blocked` or `open`, not `not_in_scope`. `EVIDENCE_REQUIRED` does not by itself force `current_goal_status = blocked`: a bounded evidence-sufficiency/provenance assessment may close after correctly determining that more evidence is required, while the linked incident remains blocked/open.
+8. `capabilities` contains only the capability snapshot explicitly supplied by the synthetic case. Internal reasoning steps, packaged skills, synthesis/review roles and invented tool names are not capabilities. If the case declares none, return `capabilities: []`.
+9. `claims` contains material conclusions, not copied Evidence summaries. Each item is exactly `{id, status, text, evidence_ids, falsifier}`. Do not use `claim` instead of `id`/`text`; do not omit `falsifier`; do not create trivial `УСТАНОВЛЕНО` claims merely by restating input identities. Assess claims independently: a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` while source content and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`.
+10. `causal_chain.complete = true` only when all six canonical 1C causal stages are evidenced in order: `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`. A complete logical argument about provenance or stale evidence is not a complete 1C causal chain. Each link is exactly `{stage, evidence_ids}`. Otherwise use `complete: false` and an empty or schema-valid links list.
+11. If no actual/proposed in-scope action exists, `actions` must be `[]`. If present, each action is exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
+12. Remove every placeholder, verify all required fields and validate the final object against the supplied skeleton before sending.
 
 ## Gate 0 — Capability and state discovery
 
@@ -50,11 +51,15 @@ When the request contains literal `EVAL_RESULT_JSON`, the normal narrative respo
 6. Record version/ref when exposed, permissions, write-risk, provenance and exact purpose. Model/provider identity is provenance only.
 7. Continue from the earliest `pending`, `blocked`, `failed` or `stale` gate.
 
+A capability is a host-visible external/plugin/tool surface. Internal reasoning operations, packaged skills and review/synthesis roles are not capabilities. In a synthetic eval, the case-supplied capability snapshot is authoritative; report exactly those entries and use an empty array when none are declared.
+
 Marketplace presence does not prove runtime availability. A failed public-plugin/dependency resolver lookup does not prove that a selected skills-first custom-marketplace plugin is uninstalled; report only what that resolver actually established. Missing required capability becomes documented fallback or `blocked`, never simulated output. A Gate 0 inventory can pass even when optional capabilities are unavailable, provided their status and consequences are recorded honestly.
 
 ## Gate 1 — Goal contract
 
 Define concrete outcome, scope, completion evidence, exclusions and stop condition. Separate the **current goal/task scope** from the **linked incident scope** whenever the underlying 1C incident is broader. Do not describe the incident itself as closed merely because a narrower assessment is complete.
+
+A bounded evidence-sufficiency or provenance assessment may be completed even when the source content/root cause cannot be established. In that situation the current goal may close while the linked incident remains `blocked` or `open`.
 
 ## Gate 2 — Evidence intake
 
@@ -62,9 +67,9 @@ Inventory all files, screenshots, reports, movements, register records, postings
 
 Every supplied source/attachment receives an Evidence ID and disposition: `examined`, `unreadable`, `duplicate`, `irrelevant_with_reason` or `blocked`. Gate 2 cannot pass while supplied evidence is unaccounted for. Keep supplied-but-unexamined evidence separate from expected-but-missing evidence.
 
-For every derived artifact produced by extraction, filtering, normalization, joining, comparison, parser/export or similar transformation, record its parent Evidence ID(s), transformation, tool/version/ref, execution `run_id` when applicable, and output hash/identifier. A material derived result with no traceable parent/derivation is provenance-incomplete and cannot independently support final `УСТАНОВЛЕНО`.
+For every derived artifact produced by extraction, filtering, normalization, joining, comparison, parser/export or similar transformation, record its parent Evidence ID(s), transformation, tool/version/ref, execution `run_id` when applicable, and output hash/identifier. A material derived result with no traceable parent/derivation is provenance-incomplete and cannot independently support final root-cause `УСТАНОВЛЕНО`.
 
-A final `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could falsify the conclusion, or when a material derivation chain is broken. Gate 2 may still pass when every supplied item is accounted for and the missing primary source is explicitly recorded as expected-but-missing evidence.
+A final root-cause `УСТАНОВЛЕНО` is forbidden when material supplied evidence remains unreadable/blocked and could falsify the conclusion, or when a material derivation chain is broken. Gate 2 may still pass when every supplied item is accounted for and the missing primary source is explicitly recorded as expected-but-missing evidence.
 
 ## Gate 3 — Dynamic execution graph
 
@@ -102,7 +107,9 @@ For every material claim record provenance closure `closed | open | broken` and 
 
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
 
-A list of evidence IDs is not sufficient if a transition is merely inferred. Preliminary `УСТАНОВЛЕНО` requires a complete causal chain and closed provenance for every material causal link. Gate 6 may pass when synthesis correctly concludes that the cause/current state remains `ТРЕБУЕТ ПРОВЕРКИ`.
+A list of evidence IDs is not sufficient if a transition is merely inferred. Preliminary root-cause `УСТАНОВЛЕНО` requires a complete causal chain and closed provenance for every material causal link. Gate 6 may pass when synthesis correctly concludes that the cause/current state remains `ТРЕБУЕТ ПРОВЕРКИ`.
+
+Assess each claim separately. A directly evidenced limitation—such as the absence of declared parent/transformation/run/output identity for a supplied derived artifact—may be `УСТАНОВЛЕНО` while source content, source-to-derived relationship and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`.
 
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`.
 
@@ -112,7 +119,7 @@ A distinct reviewer re-reads original evidence, not only synthesis. It challenge
 
 A label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof. Convert each finding into a testable claim and reproduce/evidence-link it. Absence of findings is not proof either.
 
-Final `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity. Gate 7 is `passed` when it correctly rejects an unsupported conclusion or stale-evidence reuse.
+Final root-cause `УСТАНОВЛЕНО` is forbidden if Gate 7 is unavailable/fails, if material provenance is open/broken, or if relied-upon executable evidence has mismatched/stale execution identity. Gate 7 is `passed` when it correctly rejects an unsupported conclusion or stale-evidence reuse.
 
 ## Gate 8 — Risk-controlled action decision
 
@@ -140,11 +147,14 @@ Return:
 5. **Current goal status** — `closed | blocked | open`.
 6. **Linked incident status** — `resolved | open | blocked | not_in_scope`.
 
+A completed evidence-sufficiency/provenance assessment may close with Gate 10 `passed` and `EVIDENCE_REQUIRED`, while the linked incident remains `blocked`. If the declared goal is to establish the cause/current state itself, missing evidence blocks the current goal and Gate 10.
+
 Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence or changed input identity invalidates downstream gates from the earliest affected point.
 
 ## Non-negotiable controls
 
 - No invented 1C objects.
+- No invented capabilities from internal reasoning operations, packaged skills or role names.
 - No hidden use or simulated output of unavailable companions.
 - No external plugin output treated as truth without evidence linkage.
 - No supplied material evidence silently omitted.
@@ -153,9 +163,9 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No reviewer severity/confidence label treated as defect without reproduction/evidence linkage.
 - No lower-level validation promoted into proof of a required higher-level result.
 - No producer self-report treated as independent validation.
-- No final `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
+- No final root-cause `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
 - No production-changing action without the applicable risk gate.
 - No decorated/noncanonical Gate statuses.
-- No `EVAL_RESULT_JSON` object that violates the supplied skeleton.
+- No `EVAL_RESULT_JSON` object that violates the supplied skeleton or synthetic capability snapshot.
 - No incident closure claim when only a narrower goal is complete.
 - No restart from zero when valid state exists.

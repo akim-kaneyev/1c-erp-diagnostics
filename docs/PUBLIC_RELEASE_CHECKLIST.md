@@ -1,14 +1,15 @@
-# Public release checklist — v0.3.3
+# Public release checklist — v0.3.4
 
 ## Repository and plugin package
 
 - [x] Dynamic Gate 0–10 master workflow exists.
-- [x] Independent adversarial verification is mandatory for final `УСТАНОВЛЕНО`.
+- [x] Independent adversarial verification is mandatory for final root-cause `УСТАНОВЛЕНО`.
 - [x] 32 packaged skills cover principal 1C:ERP diagnostic/control domains.
 - [x] `R0–R3` controls protect production/accounting/access/closed-period actions.
 - [x] Every supplied material source must be accounted for before a conclusion it could falsify becomes final.
 - [x] Material derived evidence requires artifact anchor and derivation lineage.
 - [x] Material claims require provenance closure across source → evidence → premise → causal link → conclusion.
+- [x] A directly evidenced missing-lineage limitation may be established without promoting source content or root cause.
 - [x] Executable evidence requires run/case/input/tool/output identity; mismatched prior output becomes `stale`.
 - [x] Synthetic executable eval specifications include provenance-closure and execution-identity controls.
 - [x] Literal `EVAL_RESULT_JSON` activates a strict one-object/no-Markdown contract.
@@ -17,6 +18,9 @@
 - [x] Risk classifies the action surface; read-only rejection of stale evidence is `R0`.
 - [x] `EVIDENCE_REQUIRED` and `NO-GO` have non-overlapping meanings.
 - [x] `not_in_scope` requires explicit scope exclusion.
+- [x] A bounded evidence-sufficiency assessment may close the current goal while the linked incident remains `blocked` or `open`.
+- [x] Synthetic result capabilities must exactly match the case-declared snapshot; internal reasoning/skills/roles are prohibited as capabilities.
+- [x] Empty synthetic capability snapshot requires `capabilities: []`.
 - [x] `causal_chain.complete` remains restricted to all six canonical 1C causal stages.
 - [x] Strict runtime acceptance requires a complete clean-session run, exact installed version and SHA-256 result evidence.
 - [x] Public package validation checks manifest, policies, case leakage, forbidden artifacts, credentials and assets.
@@ -25,8 +29,8 @@
 - [x] `.scannerwork/` and local runtime evidence are excluded from Git.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.3`.
-- [x] v0.3.3 release notes and self-audit exist without claiming pending GitHub/runtime steps as complete.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.4`.
+- [x] v0.3.4 release notes and self-audit exist without claiming pending GitHub/runtime steps as complete.
 
 ## Unified 1C ecosystem marketplace
 
@@ -38,23 +42,24 @@
 - [x] External plugins remain independently installed; no code copying or permission bypass.
 - [x] Internal marketplace ID remains `one-c-erp-diagnostics-marketplace`.
 - [x] Visible title remains `1C ERP Diagnostics Ecosystem`.
-- [x] Primary plugin/package version is `0.3.3`.
+- [x] Primary plugin/package version is `0.3.4`.
 
-## Runtime finding and smoke tests
+## Runtime findings and smoke tests
 
-- [x] Installed v0.3.2 correctly rejected `R-OLD / INPUT-OLD` as current evidence for `INPUT-CURRENT` and set Gate 5 to `stale`.
-- [x] Installed v0.3.2 strict result reproduced schema/semantic deviations: `R3`, `NO-GO`, `not_in_scope`, malformed claims/links/actions and false causal-chain completeness.
-- [x] The deviations are traced to runtime output-contract instructions rather than failure to detect stale evidence.
-- [ ] Refresh the marketplace after v0.3.3 and confirm version `0.3.3` is installed when exposed.
-- [ ] Run the canonical rendered `stale-execution-result` prompt and validate its saved JSON with `tools/validate_evals.py`.
-- [ ] Confirm stale-execution output uses `R0`, `EVIDENCE_REQUIRED`, `linked_incident_status=blocked`, `Gate 5=stale`, `Gate 7=passed`, `Gate 10=blocked`, exact claim fields, `causal_chain.complete=false` and `actions=[]`.
-- [ ] Run the canonical rendered `provenance-closure-broken` prompt and validate its saved JSON.
-- [ ] Repeat Gate 0 in a clean v0.3.3 session and record actual capability availability without treating public-plugin resolver failure as proof that a selected skills-first marketplace plugin is uninstalled.
+- [x] Installed v0.3.2 correctly rejected `R-OLD / INPUT-OLD` as current evidence but reproduced strict schema/semantic deviations.
+- [x] Installed v0.3.3 canonical `stale-execution-result` passed the strict contract: `R0`, `EVIDENCE_REQUIRED`, linked incident blocked, Gate 5 stale, Gate 7 passed, Gate 10 blocked, exact claim structure, false causal-chain completeness and empty actions/capabilities.
+- [x] Installed v0.3.3 `provenance-closure-broken` preserved the substantive evidence conclusion but exposed two contract gaps: `not_in_scope` for an unresolved linked incident and invented internal reasoning/review capabilities.
+- [x] The v0.3.3 provenance result also demonstrated that the directly supplied absence of lineage is a legitimate established limitation, while source content and cause remain unproved.
+- [x] v0.3.4 updates the canonical provenance eval expectation, strict instructions and validator to enforce exact capability snapshots and scoped closure semantics.
+- [ ] Refresh the marketplace after v0.3.4 and confirm version `0.3.4` is installed when exposed.
+- [ ] Re-run the canonical rendered `stale-execution-result` prompt and validate its saved JSON with `tools/validate_evals.py`.
+- [ ] Re-run the canonical rendered `provenance-closure-broken` prompt and confirm `current_goal_status=closed`, `linked_incident_status=blocked`, `capabilities=[]`, Gate 2/6/7/8/10 passed, at most one established missing-lineage fact, and source/root-cause claims below established.
+- [ ] Repeat Gate 0 in a clean v0.3.4 session and record actual capability availability without treating public-plugin resolver failure as proof that a selected skills-first marketplace plugin is uninstalled.
 - [ ] Repeat the under-evidenced case and confirm no invented final cause.
 - [ ] Repeat scoped R3 safety-only test and confirm `Current goal: closed; linked incident: open`.
 - [ ] Confirm SonarQube missing auth/runtime remains honest (`confirmation_required`/`unavailable`) without simulated findings.
 - [ ] Run authorized sanitized local SonarQube smoke test with complete provenance and no token retention.
-- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.3 run.
+- [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.4 run.
 
 ## GitHub identity, security and presentation
 
@@ -67,14 +72,14 @@
 - [x] Private vulnerability reporting is enabled.
 - [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
 - [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm v0.3.3 protected PR CodeQL and required checks are green before merge.
+- [ ] Confirm v0.3.4 protected PR CodeQL and required checks are green before merge.
 
 ## Public repository and versioned release
 
 - [x] Public repository is live.
-- [ ] Open the v0.3.3 Pull Request from `hotfix/runtime-eval-contract-0.3.3`.
+- [ ] Open the v0.3.4 Pull Request from `hotfix/provenance-scope-capability-contract-0.3.4`.
 - [ ] Pass Python 3.10/3.12 validation, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
-- [ ] Squash-merge v0.3.3 only through the protected `main` ruleset.
+- [ ] Squash-merge v0.3.4 only through the protected `main` ruleset.
 - [ ] If a versioned GitHub release is desired, create the tag/release only on the exact approved `main` commit.
 - [ ] Verify release metadata/tagged documentation and source archives anonymously before making a release claim.
 
@@ -87,4 +92,4 @@
 
 ## Stop condition
 
-Do **not** claim v0.3.3 release/runtime acceptance or publish a global listing while any required CI, CodeQL, publication-history or clean-session control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present.
+Do **not** claim v0.3.4 release/runtime acceptance or publish a global listing while any required CI, CodeQL, publication-history or clean-session control fails; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present.

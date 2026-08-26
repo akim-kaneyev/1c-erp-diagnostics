@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.3" src="https://img.shields.io/badge/version-0.3.3-0D1B2A.svg" />
+  <img alt="Version 0.3.4" src="https://img.shields.io/badge/version-0.3.4-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -22,7 +22,7 @@ Complex 1C:ERP incidents are often diagnosed from the last visible symptom. This
 
 `document → movement → register/record → consuming mechanism → accounting/stock/access result → symptom`
 
-A plausible explanation is not a final cause. Final `УСТАНОВЛЕНО` requires the dedicated Gate 7 adversarial review and closed provenance for every material causal link.
+A plausible explanation is not a final cause. Final root-cause `УСТАНОВЛЕНО` requires the dedicated Gate 7 adversarial review and closed provenance for every material causal link.
 
 ## Optional companion ecosystem: one marketplace, separate verified plugins
 
@@ -71,7 +71,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | 7 | Adversarially challenge the conclusion, lineage and execution freshness |
 | 8 | Select the smallest safe action under `R0–R3` controls |
 | 9 | Validate identical analytics before/after |
-| 10 | Close only when all required gates pass |
+| 10 | Close only the declared goal when all required gates pass |
 
 ## Diagnostic domains
 
@@ -99,23 +99,26 @@ Priority:
 7. current official documentation;
 8. general theory only as a source of hypotheses.
 
-For derived evidence, the project additionally requires artifact lineage: parent Evidence IDs, transformation, tool/version/ref, execution `run_id` when applicable and output identifier/hash. A material claim is final only when the trace `source artifact → evidence → premise → causal link → conclusion` is closed.
+For derived evidence, the project additionally requires artifact lineage: parent Evidence IDs, transformation, tool/version/ref, execution `run_id` when applicable and output identifier/hash. A material root-cause claim is final only when the trace `source artifact → evidence → premise → causal link → conclusion` is closed.
 
 An executable report is not reusable merely because it looks current. Gate 5 records the case, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs are `stale` until rerun or proven equivalent.
 
 ## Strict machine-readable evaluation
 
-When a synthetic acceptance prompt contains `EVAL_RESULT_JSON`, the plugin must return exactly one JSON object matching the supplied skeleton. Version 0.3.3 explicitly prevents the runtime mistakes observed during the first 0.3.2 smoke test:
+When a synthetic acceptance prompt contains `EVAL_RESULT_JSON`, the plugin must return exactly one JSON object matching the supplied skeleton.
 
-- upper-case, combined or custom Gate statuses instead of canonical lower-case values;
-- classifying evidentiary uncertainty as `R3`;
-- returning `NO-GO` where the correct decision is `EVIDENCE_REQUIRED`;
-- using `not_in_scope` merely because current evidence is missing;
-- renaming required claim fields or omitting falsifiers;
-- marking a logical stale-evidence argument as a complete six-stage 1C causal chain;
-- returning string arrays where the schema requires structured claim/link/action objects.
+Version 0.3.3 fixed the first strict-output defect found in the stale-execution smoke test: wrong risk/decision semantics, malformed claim/link/action objects and false six-stage causal-chain completeness.
 
-The strict mode distinguishes the status of a Gate procedure from the proof status of a claim: Gate 6 or Gate 7 can pass because they correctly reject an unsupported conclusion, while Gate 10 remains blocked.
+Version 0.3.4 closes the next reproduced boundary found in the provenance-closure smoke test:
+
+- the synthetic case capability snapshot is authoritative;
+- internal reasoning steps, packaged skills and reviewer/synthesis roles cannot be invented as runtime capabilities;
+- an empty synthetic capability snapshot requires `capabilities: []`;
+- a completed evidence-sufficiency assessment may close its current goal while the unresolved source/root-cause incident remains `blocked`;
+- `not_in_scope` remains valid only after an explicit scope exclusion;
+- a directly evidenced missing-lineage fact may be `УСТАНОВЛЕНО` without promoting source content or root cause.
+
+The strict mode distinguishes the status of a Gate procedure from the proof status of a claim: Gate 6 or Gate 7 can pass because they correctly reject an unsupported conclusion. Scope closure is evaluated separately for the declared current goal and linked incident.
 
 ## Additional capabilities
 
@@ -189,11 +192,11 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.3 Public Preview release candidate.** This hotfix strengthens strict `EVAL_RESULT_JSON` conformance after the 0.3.2 clean-chat smoke test correctly rejected stale evidence semantically but violated the machine-readable risk, decision, Gate, claim, causal-chain and action contracts. It preserves artifact provenance closure, execution identity, full-history publication validation, the verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.4 Public Preview release candidate.** This hotfix aligns the provenance-closure acceptance case with scoped-goal semantics, preserves directly established evidence limitations, and makes the synthetic capability snapshot deterministic and validator-enforced. It preserves the v0.3.3 strict JSON contract, artifact provenance closure, execution identity, full-history publication validation, verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
 
-Protected Pull Request CI, merge and exact-version clean-session acceptance for `0.3.3` remain separate evidence until completed. The repository must not claim runtime acceptance before the updated installed plugin passes the canonical rendered stale-execution and provenance-closure cases.
+Protected Pull Request CI, merge and exact-version clean-session acceptance for `0.3.4` remain separate evidence until completed. The repository must not claim runtime acceptance before the updated installed plugin passes both canonical priority cases and then the full 16-case run.
 
-Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state.
+Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 
 The repository marketplace and the global ChatGPT Plugin Directory remain separate distribution channels. Refresh an existing marketplace installation after each version change; global listing publication requires the supported OpenAI-side publish flow.
 

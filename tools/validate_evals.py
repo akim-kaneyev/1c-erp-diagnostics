@@ -540,6 +540,39 @@ def validate_result(
             add(errors, item_location, f"invalid status {status!r}")
         if item.get("simulated") is not False:
             add(errors, item_location, "simulated must be false")
+
+    declared_capabilities = {
+        str(item["name"]): str(item["status"])
+        for item in case.get("capabilities", [])
+        if isinstance(item, dict)
+        and nonempty_text(item.get("name"))
+        and item.get("status") in CAPABILITY_STATUSES
+    }
+    unexpected_capabilities = sorted(set(by_capability) - set(declared_capabilities))
+    if unexpected_capabilities:
+        add(
+            errors,
+            location,
+            "result reports capabilities absent from the synthetic case snapshot: "
+            + ", ".join(unexpected_capabilities),
+        )
+    missing_declared_capabilities = sorted(set(declared_capabilities) - set(by_capability))
+    if missing_declared_capabilities:
+        add(
+            errors,
+            location,
+            "result omits capabilities declared by the synthetic case snapshot: "
+            + ", ".join(missing_declared_capabilities),
+        )
+    for name, declared_status in declared_capabilities.items():
+        actual = by_capability.get(name)
+        if actual is not None and actual.get("status") != declared_status:
+            add(
+                errors,
+                location,
+                f"capability {name} must match synthetic snapshot status {declared_status!r}",
+            )
+
     for name, required_status in expect["required_capabilities"].items():
         actual = by_capability.get(name)
         if actual is None:
@@ -754,6 +787,14 @@ def render_prompt(case: dict[str, Any]) -> str:
     capability_lines = [
         f"- {item['name']}: {item['status']}" for item in case.get("capabilities", [])
     ]
+    if capability_lines:
+        capability_block = "\n".join(capability_lines)
+    else:
+        capability_block = (
+            "- Для этого синтетического кейса дополнительные capabilities не заданы. "
+            "Не объявляй внутренние шаги рассуждения, packaged skills, роли synthesis/review "
+            "или воображаемые инструменты capabilities; верни capabilities: []."
+        )
     skeleton = json.dumps(result_skeleton(case["id"]), ensure_ascii=False, indent=2)
     return (
         "@one-c-erp-diagnostics\n\n"
@@ -762,7 +803,7 @@ def render_prompt(case: dict[str, Any]) -> str:
         "Исходные доказательства:\n"
         + ("\n".join(evidence_lines) if evidence_lines else "- Доказательства не предоставлены.")
         + "\n\nФактически заданные возможности:\n"
-        + ("\n".join(capability_lines) if capability_lines else "- Не заданы; выполни Gate 0.")
+        + capability_block
         + "\n\nВерни только один JSON-объект без Markdown. Используй этот каркас; "
         "заполни все Gate 0–10 каноническими статусами, не копируй значения-заглушки:\n\n"
         + skeleton

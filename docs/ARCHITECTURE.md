@@ -18,28 +18,53 @@ The marketplace is an installation/discovery bundle. It does not merge code, gra
 ## Runtime layers
 
 1. **Gate controller** — enforces Gate 0–10 and resumable state.
-2. **Capability registry** — discovers what the current host actually exposes, including canonical companion names and model/provider provenance where exposed.
-3. **Evidence graph** — assigns stable evidence and claim IDs.
-4. **Evidence coverage controller** — accounts for every supplied source/attachment and prevents silent omission of material inputs.
-5. **Derivation/provenance controller** — traces each material derived artifact to source Evidence IDs, transformation, tool/version/ref, execution identity and output hash/identifier.
-6. **Dynamic planner** — builds a bounded dependency graph with exact skills/capabilities, validation levels and fallbacks.
-7. **Domain specialists** — cost, expenses, settlements, VAT, warehouse, production, access, code and release analysis.
-8. **Companion coordinator** — delegates bounded tasks to Unica or 1C Skills only when available and justified.
-9. **Execution adapters** — Python/PowerShell, OpenSandbox, artifact tools and optional local SonarQube BSL analysis when executable validation adds value.
-10. **Execution identity controller** — binds executable evidence to `run_id`, case identity, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs become stale.
-11. **Synthesis** — preserves supporting/contradicting evidence and requires provenance closure for material claims.
-12. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence and verifies provenance closure plus run freshness.
-13. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
-14. **Validation ladder / post-change validator** — requires the highest validation level demanded by the claim: structural → static → metadata/runtime → functional → business/accounting.
-15. **Evaluation and release gate** — validates synthetic domain/control coverage, machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
-16. **Publication integrity gate** — compares the Git archive with tracked HEAD, requires full history in CI and scans history for prohibited case/database/credential artifacts, plaintext credential assignments and user-machine absolute paths.
-17. **Regression feedback loop** — escaped defects, contradictions and material omissions are traced to the earliest missed control and converted into an eval/checklist improvement when reproducible.
+2. **Capability registry** — discovers host-visible external/plugin/tool surfaces and records canonical companion names plus model/provider provenance where exposed.
+3. **Scope controller** — separates the declared current goal from the linked accounting/operational/technical incident and closes them independently.
+4. **Evidence graph** — assigns stable evidence and claim IDs.
+5. **Evidence coverage controller** — accounts for every supplied source/attachment and prevents silent omission of material inputs.
+6. **Derivation/provenance controller** — traces each material derived artifact to source Evidence IDs, transformation, tool/version/ref, execution identity and output hash/identifier.
+7. **Dynamic planner** — builds a bounded dependency graph with exact skills/capabilities, validation levels and fallbacks.
+8. **Domain specialists** — cost, expenses, settlements, VAT, warehouse, production, access, code and release analysis.
+9. **Companion coordinator** — delegates bounded tasks to Unica or 1C Skills only when available and justified.
+10. **Execution adapters** — Python/PowerShell, OpenSandbox, artifact tools and optional local SonarQube BSL analysis when executable validation adds value.
+11. **Execution identity controller** — binds executable evidence to `run_id`, case identity, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs become stale.
+12. **Synthesis** — preserves supporting/contradicting evidence and requires provenance closure for material claims.
+13. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence and verifies provenance closure plus run freshness.
+14. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
+15. **Validation ladder / post-change validator** — requires the highest validation level demanded by the claim: structural → static → metadata/runtime → functional → business/accounting.
+16. **Evaluation and release gate** — validates synthetic domain/control coverage, exact machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
+17. **Synthetic capability-snapshot controller** — requires eval results to reproduce exactly the capabilities declared by the case; internal reasoning, skills and roles cannot be emitted as runtime capabilities.
+18. **Publication integrity gate** — compares the Git archive with tracked HEAD, requires full history in CI and scans history for prohibited case/database/credential artifacts, plaintext credential assignments and user-machine absolute paths.
+19. **Regression feedback loop** — escaped defects, contradictions and material omissions are traced to the earliest missed control and converted into an eval/checklist improvement when reproducible.
 
 ## Model/provider neutrality
 
 The orchestrator contract is provider-neutral. A different model may expose different context limits, tool-use behavior or reasoning quality, but it enters through the same capability/evidence contract. The harness must not weaken Gate requirements because a model is more confident, newer, or from a preferred provider.
 
 Where host differences require translation, normalize them into capability status, input/output provenance and risk rather than embedding provider-specific correctness assumptions into domain logic.
+
+## Capability boundary
+
+A capability is a host-visible external/plugin/tool surface. Packaged skills, specialist roles, synthesis, review and ordinary model reasoning are orchestration internals, not capabilities.
+
+For normal cases Gate 0 discovers the current host state. For synthetic evals the case capability snapshot is authoritative and deterministic:
+
+- every declared capability must be returned with the declared status;
+- no undeclared capability may be added;
+- an empty snapshot requires `capabilities: []`.
+
+This prevents a model from creating convincing but nonexistent runtime surfaces such as “read-only synthesis capability” or “adversarial review tool”.
+
+## Scope closure
+
+The current goal and linked incident are separate state variables.
+
+- A request to assess evidence sufficiency, compare two exports or evaluate action safety can complete even when the underlying 1C incident remains unresolved.
+- `EVIDENCE_REQUIRED` may therefore coexist with `current_goal_status=closed` when the bounded goal was only to determine whether evidence is sufficient.
+- The linked incident remains `blocked` or `open` when source content/root cause is still unresolved.
+- `not_in_scope` requires an explicit exclusion; missing evidence does not make an incident out of scope.
+
+This avoids both false closure of the whole incident and false blocking of a completed narrow assessment.
 
 ## Evidence derivation and provenance closure
 
@@ -49,7 +74,9 @@ A material derivation records parent Evidence IDs, transformation, tool/version/
 
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
 
-A set of individually valid references is insufficient when the transition between them is not demonstrated. Material closure is `closed`, `open` or `broken`; `open`/`broken` prevents final `УСТАНОВЛЕНО` for the dependent claim.
+A set of individually valid references is insufficient when the transition between them is not demonstrated. Material closure is `closed`, `open` or `broken`; `open`/`broken` prevents final root-cause `УСТАНОВЛЕНО` for the dependent claim.
+
+Claim status is assigned per statement. The directly observed absence of lineage metadata may be established while the source value, source-to-derived relationship and root cause remain unproved. An established limitation cannot be promoted into an established cause, and an unproved cause does not erase an observed limitation.
 
 ## Execution identity and stale evidence
 
@@ -87,6 +114,8 @@ Tool output, code findings and official documentation have provenance but differ
 
 A reviewer label such as `critical` or a clean static-analysis/build result is also not case truth. Review findings must be reproduced or linked to evidence; lower validation levels cannot replace runtime or business/accounting validation when those levels are required. A derived artifact without a closed source lineage, or a result from a stale execution identity, is likewise insufficient.
 
+Gate status and claim status are independent. Gate 6/7 may pass by correctly establishing insufficiency or rejecting a hypothesis. A claim can be established only to the exact extent directly supported by its Evidence IDs.
+
 ## Publication integrity
 
 Current-tree cleanliness is necessary but not sufficient for a public diagnostics repository. Deleting a confidential artifact from the current tree does not remove it from Git history. CI therefore uses a full checkout and a separate publication validator that:
@@ -102,9 +131,12 @@ This complements GitHub secret scanning/push protection; it does not replace pro
 
 - missing optional capability → documented fallback;
 - missing required capability → dependent node/Gate `blocked`;
+- internal reasoning/skill/role emitted as a synthetic capability → strict eval failure;
+- declared synthetic capability omitted or status changed → strict eval failure;
 - supplied material evidence not reliably inspected → Gate 2 blocked for affected conclusions;
-- material derived evidence has no parent/transformation anchor → provenance `broken`, dependent conclusion blocked;
+- material derived evidence has no parent/transformation anchor → provenance `broken`, dependent source/cause conclusion blocked;
 - executable result no longer matches current case/input identity → evidence/Gate `stale` until rerun/equivalence proof;
+- narrow evidence-sufficiency goal completed but linked incident unresolved → current goal closed, linked incident blocked/open;
 - contradicting tool results → preserve both, compare inputs/versions/run identity/scope, never vote by majority;
 - unapproved `R3` action → stop before execution;
 - required higher-level validation unavailable → block rather than promote a lower-level check;

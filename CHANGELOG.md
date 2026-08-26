@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.4 — provenance scope and deterministic capability snapshots
+
+- made synthetic `EVAL_RESULT_JSON` capability output match the exact case-declared snapshot;
+- prohibited internal reasoning steps, packaged skills, synthesis/review roles and invented tool names from being emitted as capabilities;
+- require `capabilities: []` when a synthetic case declares no capabilities and reject unexpected, omitted or status-mismatched entries in `tools/validate_evals.py`;
+- clarified that a bounded evidence-sufficiency/provenance assessment may close its current goal while the linked source/root-cause incident remains `blocked` or `open`;
+- retained `not_in_scope` only for explicit scope exclusions;
+- allowed a directly evidenced missing-lineage limitation to be `УСТАНОВЛЕНО` without promoting source content, derivation relationship or root cause;
+- aligned the canonical `provenance-closure-broken` case to current-goal closed, linked incident blocked, Gate 2/6/7/8/10 passed, exact empty capability snapshot and at most one established limitation claim;
+- added regressions for the exact v0.3.3 provenance smoke-test output and for invented capabilities in an empty snapshot;
+- retained the v0.3.3 stale-execution strict contract, 16-case suite, 32 packaged skills, stable marketplace identity and immutable companion pins.
+
 ## 0.3.3 — strict runtime evaluation output
 
 - added mandatory strict `EVAL_RESULT_JSON` mode to the authoritative, packaged and portable orchestrators;

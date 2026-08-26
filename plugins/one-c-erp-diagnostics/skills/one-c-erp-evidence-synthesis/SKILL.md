@@ -33,6 +33,8 @@ The required closure is:
 
 A list of evidence IDs is not sufficient if the transition between them is inferred but not demonstrated. Mark closure `open` when a required link still needs evidence and `broken` when a relied-upon derived result has no recoverable parent/transformation identity.
 
-A preliminary `УСТАНОВЛЕНО` requires both a complete causal chain and `closed` provenance closure for every material causal link, but remains preliminary until Gate 7 passes.
+Claim status is assessed per statement. A directly evidenced limitation such as “the supplied derived artifact has no declared parent/transformation/run/output identity” may be `УСТАНОВЛЕНО`, while the source value, source-to-derived relationship and business/root-cause conclusion remain `ТРЕБУЕТ ПРОВЕРКИ`. Do not downgrade an observed evidence limitation merely because the larger causal conclusion is unproved, and do not promote the larger conclusion from the established limitation.
+
+A preliminary root-cause `УСТАНОВЛЕНО` requires both a complete causal chain and `closed` provenance closure for every material causal link, but remains preliminary until Gate 7 passes.
 
 Deduplicate equivalent claims but never erase disagreement. Resolve conflicts by returning to original evidence and analytic keys, not by majority vote or specialist confidence.

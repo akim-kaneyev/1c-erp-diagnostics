@@ -23,19 +23,21 @@ When the prompt contains `EVAL_RESULT_JSON`:
 - treat Gate status as status of the Gate procedure, not proof status: a Gate may pass after correctly rejecting a hypothesis or establishing insufficiency;
 - classify action risk, not evidentiary severity: read-only analysis/refusal to reuse stale evidence is `R0`; use `R3` only for an in-scope production/accounting/access/closed-period/external write;
 - use `EVIDENCE_REQUIRED` for missing current evidence/rerun/equivalence; reserve `NO-GO` for an unsafe/prohibited/unapproved in-scope action;
-- use `linked_incident_status = not_in_scope` only when the incident was explicitly excluded;
-- make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries;
+- use `linked_incident_status = not_in_scope` only when the incident was explicitly excluded; a completed evidence-sufficiency assessment may close the current goal while the linked incident remains `blocked` or `open`;
+- report only the exact synthetic capability snapshot; internal reasoning steps, skills and invented tool names are not capabilities, and an empty snapshot requires `capabilities: []`;
+- make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries; assess claims independently so an observed missing-lineage fact may be `УСТАНОВЛЕНО` while source content/cause remains `ТРЕБУЕТ ПРОВЕРКИ`;
 - set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; logical freshness/provenance reasoning is not that causal chain;
 - use `actions: []` when no action exists; otherwise use exact action objects;
 - remove placeholders and validate the object against the skeleton before sending.
 
 ## Gate 0 — Capability and state discovery
 
-Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only.
+Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only. In synthetic evals, the case-supplied capability snapshot is authoritative; do not invent capabilities from analysis roles or packaged skills.
 
 ## Non-negotiable evidence rules
 
 - Never invent 1C metadata objects, registers, fields, roles, documents or settings.
+- Never invent capabilities from internal reasoning steps, packaged skills or role names.
 - Prefer document movements; exact register records; postings/drill-down; reports; code/queries; screenshots; official 1C documentation; theory.
 - General knowledge may generate a hypothesis, never prove the case alone.
 - Every material supplied source/attachment must be accounted for.
@@ -43,10 +45,10 @@ Resume prior valid state. Inventory only capabilities actually exposed and class
 - Every relied-upon executable result must belong to the current case and current material input identities; stale/mismatched output is not current evidence.
 - A disappearing UI error or clean syntax/static/build is not proof that accounting is corrected.
 - Reviewer severity/confidence is a finding to test, not defect proof.
-- Final `УСТАНОВЛЕНО` requires complete causal chain, closed provenance closure and adversarial Gate 7.
+- Final root-cause `УСТАНОВЛЕНО` requires complete causal chain, closed provenance closure and adversarial Gate 7.
 
 ## Gate 1 — Goal contract
-State concrete outcome, scope, verification evidence, exclusions and stop condition. Separate current task scope from linked incident scope.
+State concrete outcome, scope, verification evidence, exclusions and stop condition. Separate current task scope from linked incident scope. A bounded evidence-sufficiency assessment may close independently from the unresolved linked incident.
 
 ## Gate 2 — Evidence intake
 Inventory supplied files/screenshots/text; record what each proves, limitations, missing evidence and blind spots. Prefer immutable identifiers/hashes. Give every source/attachment an Evidence ID and disposition `examined | unreadable | duplicate | irrelevant_with_reason | blocked`. Gate 2 cannot pass while evidence is unaccounted for.
@@ -68,10 +70,10 @@ Before reuse, compare run identity with current inputs. Changed/mismatched input
 ## Gate 6 — Preliminary conclusion
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`. For each material claim record support, contradiction, falsifier and provenance closure `closed | open | broken` through:
 `source artifact → inspected/derived evidence → claim premise → causal link → conclusion`.
-A list of references does not close an inferred transition. Gate 6 may pass after correctly concluding that the claim remains unproved.
+A list of references does not close an inferred transition. Gate 6 may pass after correctly concluding that the larger claim remains unproved. A directly observed evidence limitation may be established without promoting source content or root cause.
 
 ## Gate 7 — Independent/adversarial verification
-Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
+Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. Downgrade on open/broken lineage or stale/mismatched run. Final root-cause `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
 
 ## Gate 8 — Action decision
 Choose smallest safe reversible action or request evidence. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. Missing evidence normally means `R0 + EVIDENCE_REQUIRED`, not `R3 + NO-GO`. R3 requires explicit approval, rollback and validation plan.
@@ -80,7 +82,7 @@ Choose smallest safe reversible action or request evidence. `R0` read-only; `R1`
 Apply required structural/syntax, static, metadata/runtime, functional and business/accounting levels. Compare identical analytics before/after. Required unavailable higher-level validation blocks the gate. Feed escaped reproducible defects into earliest missed control/eval.
 
 ## Gate 10 — Final closure
-Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.
+Return `Краткий вывод`, `Основание`, `Что делать дальше`, compact Gate 0–10 statuses, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Allowed gate statuses: `pending | passed | blocked | failed | stale | not_required`. New evidence/input identity reopens from earliest affected gate.
 
 ## Resume behavior
 Read prior state first and continue from earliest incomplete/stale gate. Do not restart valid passed work unless new evidence invalidates it.

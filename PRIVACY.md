@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.3 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.4 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -23,6 +23,8 @@ Before sharing a file, review hidden spreadsheet sheets, document properties, em
 The plugin may record evidence identifiers/hashes, parent/derived relationships, transformation/tool versions, run identifiers, timestamps and output hashes in case state when those details are needed for reproducibility. These records are diagnostic metadata, not a reason to persist confidential source content. Case state and runtime evidence should remain local/ignored unless explicitly sanitized for publication.
 
 Execution identity and strict `EVAL_RESULT_JSON` output must not contain plaintext secrets. Authentication material remains outside evidence/state/result records even when a tool invocation is recorded.
+
+Synthetic eval capability snapshots are deterministic test inputs. Version 0.3.4 requires the result to reproduce only the capability names/statuses declared by the synthetic case; internal reasoning steps, packaged skills and reviewer/synthesis roles are not collected or represented as user capabilities.
 
 ## Companion plugins and connected tools
 
