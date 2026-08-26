@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.6 — exact stale-execution runtime contract
+
+- reproduced the installed v0.3.5 `stale-execution-result` failure after the capability-inventory hotfix passed;
+- require Gate 5 `stale`, Gate 7 `passed`, Gate 10 `blocked`, and both current goal and linked incident `blocked` when an old run/input report cannot prove the current input;
+- require one schema-valid non-established claim, an empty six-stage 1C causal chain, one string requested-evidence item and no pseudo-actions;
+- prohibit identity-summary `УСТАНОВЛЕНО` claims, `{from,to,relation}` causal links, object-valued requested evidence and ad-hoc action fields;
+- added the exact v0.3.5 runtime response as an executable rejected regression and made the rendered prompt deterministic across all Gate statuses;
+- retained the v0.3.5 inventory-only fix, 16-case suite, 32 packaged skills, marketplace identity, companion pins, publication-history controls and Velis assets.
+
 ## 0.3.5 — capability inventory strict output
 
 - added an explicit inventory-only `capability-inventory` profile: `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required;

@@ -44,6 +44,22 @@ For a synthetic request that performs only Gate 0 inventory:
 
 Do not treat successful inventory completion as a proved 1C/root-cause conclusion. Gate 10/current-goal closure records procedure completion; `final_status` records diagnostic proof status.
 
+### Exact stale-execution profile
+
+For `stale-execution-result`, where `R-OLD` belongs to `RUN-OLD / INPUT-OLD` and
+`INPUT-CURRENT` is not proved equivalent:
+
+- use `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`;
+- keep both current goal and linked incident `blocked`;
+- set Gates 0–4 `passed`, Gate 5 `stale`, Gates 6–8 `passed`, Gate 9
+  `not_required`, Gate 10 `blocked`;
+- return no capabilities, one schema-valid non-established claim, an incomplete
+  empty 1C causal chain, one requested-evidence string and no actions.
+
+A stale report is not a passed Gate 5. Rejecting it is a passed Gate 7. The linked
+incident is not out of scope, and Gate 10 cannot pass while current-state evidence is
+absent.
+
 ## Gate 0 — Capability and state discovery
 
 Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only. In synthetic evals, the case-supplied capability snapshot is authoritative; do not invent capabilities from analysis roles or packaged skills.

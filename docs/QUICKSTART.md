@@ -12,7 +12,7 @@
    - **1C Skills (PowerShell)**;
    - **1C Skills (Python)**.
 6. Refresh an existing marketplace installation after a version change.
-7. Confirm `1C ERP Diagnostics` reports `0.3.5` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
+7. Confirm `1C ERP Diagnostics` reports `0.3.6` when the current surface exposes the version and renders the approved Velis icon. If the surface does not expose a version, record `version not exposed`; do not infer it from README text.
 8. Enable **1C ERP Diagnostics** as the primary entrypoint.
 9. Enable Unica and the relevant 1C Skills runtime only when needed and after reviewing their permissions/licenses.
 10. Open a clean chat and select `@one-c-erp-diagnostics`.
@@ -80,7 +80,7 @@ Render the canonical prompts from a repository checkout. Do not manually shorten
 python tools/validate_evals.py --render capability-inventory
 ```
 
-Run the rendered prompt in a new clean chat with exactly v0.3.5 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
+Run the rendered prompt in a new clean chat with exactly v0.3.6 installed. Save the returned single JSON object as `capability-inventory.result.json`, then validate it:
 
 ```text
 python tools/validate_evals.py --results capability-inventory.result.json
@@ -107,7 +107,7 @@ The inventory procedure can close successfully without producing a proved 1C con
 python tools/validate_evals.py --render stale-execution-result
 ```
 
-Run the rendered prompt in another new clean chat with exactly v0.3.5 installed. Save and validate it:
+Run the rendered prompt in another new clean chat with exactly v0.3.6 installed. Save and validate it:
 
 ```text
 python tools/validate_evals.py --results stale-execution-result.result.json

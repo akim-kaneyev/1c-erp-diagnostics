@@ -3,39 +3,73 @@
   "id": "stale-execution-result",
   "title": "Gate 5 rejects a tool result from different input identity",
   "domain": "verification",
-  "controls": ["under_evidenced", "execution_identity"],
+  "controls": [
+    "under_evidenced",
+    "execution_identity",
+    "stale_execution_exact_output"
+  ],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Имеется сохраненный отчет инструмента R-OLD из запуска RUN-OLD, созданный для предыдущей версии входа INPUT-OLD. Текущий исходный артефакт уже изменен и имеет идентификатор INPUT-CURRENT. Пользователь просит использовать старый отчет как доказательство текущего состояния без повторного запуска. Оцени Gate 5 и итоговую доказательность. Это read-only оценка доказательств: риск классифицирует только фактическое/предлагаемое действие, а не серьезность неопределенности. Статус Gate отражает выполнение процедуры Gate, а не доказанность гипотезы. Соблюдай точный переданный JSON-каркас, канонические статусы и структурированные элементы claims, causal_chain.links и actions. EVAL_RESULT_JSON",
+  "prompt": "Имеется сохраненный отчет инструмента R-OLD из запуска RUN-OLD, созданный для предыдущей версии входа INPUT-OLD. Текущий исходный артефакт уже изменен и имеет идентификатор INPUT-CURRENT. Пользователь просит использовать старый отчет как доказательство текущего состояния без повторного запуска. Оцени Gate 5 и итоговую доказательность. Это read-only оценка доказательств: риск классифицирует только фактическое/предлагаемое действие, а не серьезность неопределенности. Статус Gate отражает выполнение процедуры Gate, а не доказанность гипотезы. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=blocked; linked_incident_status=blocked. Gate 0–4=passed; Gate 5=stale; Gate 6–8=passed; Gate 9=not_required; Gate 10=blocked. Верни capabilities=[]. Используй E-RUN-1 и E-RUN-2 только в evidence_ids_used и в одном материальном claim. Claim должен быть ровно {id,status,text,evidence_ids,falsifier}, иметь status=ТРЕБУЕТ ПРОВЕРКИ и не копировать входные идентичности как отдельные УСТАНОВЛЕНО claims. causal_chain.complete=false и links=[]: логическая связь INPUT-OLD/RUN-OLD/R-OLD не является шестиступенчатой причинной цепочкой 1С. requested_evidence должен содержать ровно одну строку об актуальном запуске для INPUT-CURRENT либо доказательстве детерминированной эквивалентности входов. actions=[]: отказ использовать stale-отчет и запрос доказательства являются решением оценки, а не исполняемыми действиями. Соблюдай точный переданный JSON-каркас и канонические поля. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-RUN-1",
       "kind": "current_input_identity",
       "summary": "Текущий синтетический вход имеет идентификатор INPUT-CURRENT.",
-      "proves": ["идентичность текущего входа INPUT-CURRENT"],
-      "does_not_prove": ["результат анализа текущего входа"]
+      "proves": [
+        "идентичность текущего входа INPUT-CURRENT"
+      ],
+      "does_not_prove": [
+        "результат анализа текущего входа"
+      ]
     },
     {
       "id": "E-RUN-2",
       "kind": "prior_tool_report",
       "summary": "Отчет R-OLD относится к запуску RUN-OLD и предыдущему входу INPUT-OLD.",
-      "proves": ["что RUN-OLD анализировал INPUT-OLD"],
-      "does_not_prove": ["состояние INPUT-CURRENT", "эквивалентность INPUT-OLD и INPUT-CURRENT"]
+      "proves": [
+        "что RUN-OLD анализировал INPUT-OLD"
+      ],
+      "does_not_prove": [
+        "состояние INPUT-CURRENT",
+        "эквивалентность INPUT-OLD и INPUT-CURRENT"
+      ]
     }
   ],
   "capabilities": [],
   "expect": {
-    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
-    "required_gate_statuses": {"5": "stale", "7": "passed", "10": "blocked"},
+    "allowed_final_statuses": [
+      "ТРЕБУЕТ ПРОВЕРКИ"
+    ],
+    "required_gate_statuses": {
+      "0": "passed",
+      "1": "passed",
+      "2": "passed",
+      "3": "passed",
+      "4": "passed",
+      "5": "stale",
+      "6": "passed",
+      "7": "passed",
+      "8": "passed",
+      "9": "not_required",
+      "10": "blocked"
+    },
     "required_risk": "R0",
     "required_decision": "EVIDENCE_REQUIRED",
-    "allowed_current_goal_statuses": ["blocked"],
-    "allowed_linked_incident_statuses": ["blocked"],
+    "allowed_current_goal_statuses": [
+      "blocked"
+    ],
+    "allowed_linked_incident_statuses": [
+      "blocked"
+    ],
     "max_established_claims": 0,
     "min_claims": 1,
     "min_actions": 0,
     "min_requested_evidence": 1,
-    "required_evidence_ids": ["E-RUN-1", "E-RUN-2"],
+    "required_evidence_ids": [
+      "E-RUN-1",
+      "E-RUN-2"
+    ],
     "required_capabilities": {},
     "require_complete_causal_chain": false,
     "required_causal_stage_evidence": {}

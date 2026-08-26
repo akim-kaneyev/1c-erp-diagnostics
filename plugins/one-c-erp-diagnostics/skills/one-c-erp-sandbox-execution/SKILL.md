@@ -29,3 +29,11 @@ Every executable result later used as evidence must be tied to the exact run tha
 Before reusing an earlier result, compare its case and input identities with the current state. A result from another case, different input hash, older artifact generation or execution performed before a material input change is `stale`. Do not silently reuse it: rerun the operation or prove deterministic equivalence. Mark downstream evidence/claims and Gate 5 `stale`/`blocked` as appropriate until refreshed.
 
 If no executable validation is needed, mark `not_required`. If it is required for the claimed result and unavailable, mark `blocked`.
+
+## Strict stale-result evaluation rule
+
+In synthetic `stale-execution-result`, a report tied to a different material input is
+not merely a finding that the Gate completed: Gate 5 itself is `stale`. Do not change
+it to `passed` because the mismatch was successfully noticed. The current-state claim
+remains blocked until rerun or deterministic equivalence is proved. The read-only
+assessment has `R0`, requires no action object, and uses one requested-evidence string.

@@ -555,7 +555,7 @@ and exact-version v{NEW} runtime evidence remain pending**.
 | 3 | Old run/input result is stale for current input | PASS | Gate 5 exact profile is `stale`, not `passed`. |
 | 4 | Adversarial stale rejection is explicit | PASS | Gate 7 must pass after rejecting reuse. |
 | 5 | Current-state goal cannot close without current evidence | PASS | Gate 10 and both scopes remain blocked. |
-| 6 | Claim schema/status is exact | PASS | One non-established `{id,status,text,evidence_ids,falsifier}` claim. |
+| 6 | Claim schema/status is exact | PASS | One non-established `{{id,status,text,evidence_ids,falsifier}}` claim. |
 | 7 | Logical run graph is not 1C causal chain | PASS | `complete=false`, links empty. |
 | 8 | Evidence request and actions are exact | PASS | One string request; no pseudo-actions. |
 | 9 | Exact v{OLD} runtime regression exists | PASS | Reproduced response is rejected by executable tests. |

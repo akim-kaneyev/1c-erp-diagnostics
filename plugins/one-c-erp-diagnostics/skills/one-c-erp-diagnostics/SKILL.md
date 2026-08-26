@@ -42,6 +42,26 @@ For the synthetic Gate-0-only capability inventory, use the following exact sema
 
 Inventory completion is represented by Gate 10/current-goal closure. It must never be converted into a proved 1C/root-cause `final_status`.
 
+### Exact `stale-execution-result` profile
+
+For the synthetic mismatch `RUN-OLD / INPUT-OLD` versus `INPUT-CURRENT`, with no
+proved equivalence and no rerun:
+
+- `final_status = ТРЕБУЕТ ПРОВЕРКИ`, `risk = R0`, `decision = EVIDENCE_REQUIRED`;
+- `current_goal_status = blocked`, `linked_incident_status = blocked`;
+- Gates 0–4 `passed`, Gate 5 `stale`, Gates 6–8 `passed`, Gate 9 `not_required`,
+  Gate 10 `blocked`;
+- `capabilities = []`;
+- exactly one material claim using `{id, status, text, evidence_ids, falsifier}` and
+  status `ТРЕБУЕТ ПРОВЕРКИ`; do not restate identities as established claims;
+- `causal_chain = {complete: false, links: []}`;
+- `requested_evidence` is one string for a current run or proved equivalence;
+- `actions = []`.
+
+Do not use `not_in_scope`, do not report Gate 5 as `passed`, and do not turn the
+logical run/input/report graph into causal-chain link objects. Gate 7 passes by
+rejecting stale reuse; Gate 10 is blocked because the current state remains unproved.
+
 ## Verified marketplace registry
 
 Check these canonical companions by exact name during Gate 0:

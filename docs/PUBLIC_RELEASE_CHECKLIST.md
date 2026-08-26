@@ -1,4 +1,4 @@
-# Public release checklist — v0.3.5
+# Public release checklist — v0.3.6
 
 ## Repository and plugin package
 
@@ -33,8 +33,8 @@
 - [x] `.scannerwork/` and local runtime evidence are excluded from Git.
 - [x] GitHub Actions validates Python 3.10 and 3.12.
 - [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.5`.
-- [x] v0.3.5 release notes and self-audit exist without claiming pending runtime steps as complete.
+- [x] Plugin manifest and `pyproject.toml` declare `0.3.6`.
+- [x] v0.3.6 release notes and self-audit exist without claiming pending runtime steps as complete.
 
 ## Unified 1C ecosystem marketplace
 
@@ -46,7 +46,7 @@
 - [x] External plugins remain independently installed; no code copying or permission bypass.
 - [x] Internal marketplace ID remains `one-c-erp-diagnostics-marketplace`.
 - [x] Visible title remains `1C ERP Diagnostics Ecosystem`.
-- [x] Primary plugin/package version is `0.3.5`.
+- [x] Primary plugin/package version is `0.3.6`.
 
 ## Runtime findings and smoke tests
 
@@ -70,6 +70,11 @@
 - [ ] Run authorized sanitized local SonarQube smoke test with complete provenance and no token retention.
 - [ ] Record every executable eval result and pass `tools/validate_runtime_run.py` for one complete clean v0.3.5 run.
 
+- [x] Installed v0.3.5 `capability-inventory` passed the exact inventory-only contract.
+- [x] Installed v0.3.5 `stale-execution-result` preserved `R0` and `EVIDENCE_REQUIRED` but reproduced stale/scope/schema failures: Gate 5 passed, Gate 7 not required, Gate 10 passed, linked incident out of scope, malformed claims/links/request/actions.
+- [x] v0.3.6 adds the exact stale-execution profile and executable regression.
+- [ ] Refresh/install v0.3.6 and re-run capability inventory, stale execution and provenance closure in separate clean sessions.
+
 ## GitHub identity, security and presentation
 
 - [x] Final username: `akim-kaneyev`.
@@ -81,12 +86,12 @@
 - [x] Private vulnerability reporting is enabled.
 - [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
 - [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm v0.3.5 protected PR CodeQL and required checks are green before merge.
+- [ ] Confirm v0.3.6 protected PR CodeQL and required checks are green before merge.
 
 ## Public repository and versioned release
 
 - [x] Public repository is live.
-- [ ] Open the v0.3.5 Pull Request from `hotfix/capability-inventory-contract-0.3.5`.
+- [ ] Open the v0.3.6 Pull Request from `hotfix/capability-inventory-contract-0.3.5`.
 - [ ] Pass Python 3.10/3.12 validation, skill governance/lock, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
 - [ ] Squash-merge v0.3.5 only through the protected `main` ruleset.
 - [ ] Verify post-merge `main` validation and CodeQL.
