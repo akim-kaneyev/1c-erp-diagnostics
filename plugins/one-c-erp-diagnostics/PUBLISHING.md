@@ -6,7 +6,7 @@
 - author/homepage/repository/license/interface/policy URLs are valid;
 - `composerIcon`, `logo` and `logoDark` exist and pass PNG CRC validation;
 - at least 32 packaged skills are present, including local static-analysis and dynamic-control skills;
-- public-package, publication-history and ecosystem-marketplace validators pass;
+- public-package, skill-governance/lock, publication-history and ecosystem-marketplace validators pass;
 - regression tests pass on Python 3.10 and 3.12;
 - CodeQL results are present for the release Pull Request;
 - no secrets, real case data, production databases or unsupported dependency claims exist;
@@ -26,11 +26,16 @@
 - the supplied skeleton is preserved exactly: no extra/missing/renamed fields or wrong data types;
 - Gate statuses use only `pending | passed | blocked | failed | stale | not_required` in lower case;
 - Gate-procedure completion is not confused with claim proof status;
-- read-only evidence assessment/refusal is `R0`; evidentiary uncertainty cannot by itself become `R3`;
-- missing current evidence/rerun/equivalence is `EVIDENCE_REQUIRED`; `NO-GO` is reserved for an unsafe/prohibited/unapproved in-scope action;
+- a closed current goal requires Gate 10 `passed`; Gate 10 cannot be `not_required` for a closed goal;
+- `final_status=УСТАНОВЛЕНО` requires Gate 7 passed, Gate 10 passed, closed goal and complete six-stage causality;
+- read-only evidence assessment or capability inventory is `R0`; evidentiary uncertainty cannot by itself become `R3`;
+- missing current evidence/rerun/equivalence is `EVIDENCE_REQUIRED`; a complete inventory without action is `NO_ACTION`; `NO-GO` is reserved for an unsafe/prohibited/unapproved in-scope action;
 - `not_in_scope` requires explicit scope exclusion;
 - a completed evidence-sufficiency assessment may close the current goal while leaving the linked incident `blocked` or `open`;
 - synthetic results reproduce exactly the case-declared capability snapshot; internal reasoning/skills/roles are not capabilities, and an empty snapshot requires `capabilities: []`;
+- every strict capability item is exactly `{name, status, simulated}` with `simulated=false`;
+- `evidence_id` and other extra fields are prohibited in strict capability rows; capability evidence remains in `evidence_ids_used`;
+- capability status rows are not diagnostic claims;
 - claim items are exactly `{id, status, text, evidence_ids, falsifier}`;
 - causal links are exactly `{stage, evidence_ids}` and `complete=true` requires all six canonical 1C stages in order;
 - actions are empty when absent and otherwise use exact structured action objects.
@@ -47,20 +52,22 @@
 ## Clean-session smoke tests
 
 1. marketplace refresh/re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.3.4` and the approved Velis icon render in GitHub and the plugin selector, or runtime explicitly reports `version not exposed` if version metadata is unavailable;
-3. Gate 0 reports actual companion availability without treating public-plugin resolver failure as proof that the selected skills-first custom-marketplace plugin is uninstalled;
-4. an installed companion call records canonical identity, inputs, operation, run identity, output and limitations;
-5. an under-evidenced case cannot end as final root-cause `УСТАНОВЛЕНО`;
-6. an unavailable companion request becomes fallback/`blocked`, not simulated;
-7. Gate 7 challenges original evidence, causal chain and provenance closure;
-8. analysis-only work is `R0` and may mark Gate 9 `not_required`;
-9. a scoped `R3` safety-only test returns `NO-GO`, `Current goal: closed; linked incident: open` and no decorated Gate statuses;
-10. Gate 0 reports `sonarqube-bsl-local` from actual loopback/server/scanner/BSL/auth state rather than marketplace presence;
-11. an available sanitized local scan records `R1`, source/tool/analysis/run provenance and complete paginated evidence without retaining a token;
-12. a static finding without runtime and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7;
-13. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, `linked_incident_status=blocked`, `Gate 5=stale`, `Gate 7=passed`, `Gate 10=blocked`, `capabilities=[]`, schema-valid claims, `causal_chain.complete=false` and `actions=[]`;
-14. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with `current_goal_status=closed`, `linked_incident_status=blocked`, `Gate 2/6/7/8/10=passed`, `capabilities=[]`, at most one directly established missing-lineage fact, source/root-cause claims below established, `causal_chain.complete=false` and `actions=[]`;
-15. the complete 16-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.4`.
+2. 1C ERP Diagnostics `0.3.5` and the approved Velis icon render in GitHub and the plugin selector, or runtime explicitly reports `version not exposed` if version metadata is unavailable;
+3. the exact rendered `capability-inventory` result passes `tools/validate_evals.py` with `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required;
+4. capability-inventory preserves the supplied row order, emits exactly `{name,status,simulated:false}`, uses `E-CAP-1` only in `evidence_ids_used`, and returns empty claims/causal links/requested evidence/actions;
+5. Gate 0 reports actual companion availability outside synthetic snapshots without treating public-plugin resolver failure as proof that the selected skills-first custom-marketplace plugin is uninstalled;
+6. an installed companion call records canonical identity, inputs, operation, run identity, output and limitations;
+7. an under-evidenced case cannot end as final root-cause `УСТАНОВЛЕНО`;
+8. an unavailable companion request becomes fallback/`blocked`, not simulated;
+9. Gate 7 challenges original evidence, causal chain and provenance closure;
+10. analysis-only work is `R0` and may mark Gate 9 `not_required`;
+11. a scoped `R3` safety-only test returns `NO-GO`, `Current goal: closed; linked incident: open` and no decorated Gate statuses;
+12. Gate 0 reports `sonarqube-bsl-local` from actual loopback/server/scanner/BSL/auth state rather than marketplace presence;
+13. an available sanitized local scan records `R1`, source/tool/analysis/run provenance and complete paginated evidence without retaining a token;
+14. a static finding without runtime and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7;
+15. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, linked incident blocked, Gate 5 stale, Gate 7 passed, Gate 10 blocked, empty capabilities, exact claims, incomplete causality and empty actions;
+16. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with current goal closed, linked incident blocked, Gate 2/6/7/8/10 passed, empty capabilities, at most one directly established missing-lineage fact, source/root-cause claims below established, incomplete causality and empty actions;
+17. the complete 16-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.5`.
 
 ## Repository publication
 
@@ -70,7 +77,7 @@ Before a versioned release:
 2. run `python tools/validate_publication_history.py` and require PASS;
 3. confirm `git archive HEAD` contains exactly the tracked release files;
 4. fail if full history contains prohibited case/database/backup/private-key/environment paths, detected plaintext credential assignments or user-machine absolute paths;
-5. confirm Python 3.10/3.12 CI, CodeQL and self-audit are green on the release Pull Request;
+5. confirm Python 3.10/3.12 CI, deterministic skill lock, CodeQL and self-audit are green on the release Pull Request;
 6. merge only through the protected `main` ruleset;
 7. confirm repository description, topics, policies and brand assets are current;
 8. verify private vulnerability reporting, dependency monitoring, secret scanning and push protection remain enabled;
@@ -84,4 +91,4 @@ Public GitHub visibility does not itself create a global listing. After the repo
 
 ## Release gate
 
-Run `one-c-erp-plugin-audit`. Any critical `FAIL`, failed publication-history check, failed required CI/CodeQL check, or failed exact-version runtime acceptance claim blocks the corresponding release/publication statement.
+Run `one-c-erp-plugin-audit`. Any critical `FAIL`, failed publication-history/skill-lock check, failed required CI/CodeQL check, or failed exact-version runtime acceptance claim blocks the corresponding release/publication statement. Repository CI success must never be described as runtime acceptance.
