@@ -6,6 +6,7 @@ on:
       - hotfix/stale-execution-runtime-contract-0.3.6
     paths:
       - tools/apply_v036_hotfix.py
+      - tools/fix_v036_applicator.py
       - .github/workflows/apply-v036-hotfix.yml
 
 permissions:
@@ -21,6 +22,8 @@ jobs:
           ref: hotfix/stale-execution-runtime-contract-0.3.6
           fetch-depth: 0
           persist-credentials: true
+      - name: Repair temporary applicator
+        run: python tools/fix_v036_applicator.py
       - name: Apply asserted hotfix edits
         run: python tools/apply_v036_hotfix.py
       - name: Refresh deterministic skill lock
