@@ -2,7 +2,7 @@
 
 ## Scope and escaped finding
 
-The audit covers the v0.3.9 local candidate derived from public tag v0.3.8. The escaped defect was a package-boundary mismatch: the repository contained and tested `templates/case/STATE.json`, while the installed plugin did not contain it. The owning skill used an unlinked code path, so local-link governance did not detect the absence.
+The audit covers the v0.3.9 local candidate derived from public tag v0.3.8. The escaped defect was a package-boundary mismatch: the repository contained and tested `templates/case/STATE.json`, while the installed plugin did not contain it. The owning skill used an unlinked code path, so local-link governance did not detect the absence. Final pre-PR review found the same escaped shape for the repository-root artifact extraction adapter; the candidate now bundles both resources and rejects unlinked packaged runtime paths.
 
 No known critical control remains failed in the local candidate. External CI/CodeQL, merge/publication and exact installed-v0.3.9 runtime acceptance remain separate warnings and blockers for their corresponding claims.
 
@@ -39,7 +39,7 @@ No known critical control remains failed in the local candidate. External CI/Cod
 | 27 | PASS | State validator and tests enforce global ID uniqueness and invalidation closure. | None. |
 | 28 | PASS | Artifact profile and evals keep property-tree metadata separate from primary rows. | None. |
 | 29 | PASS | Security validators scan current tree, reachable history and actual archive with redacted output. | None. |
-| 30 | PASS | `one-c-erp-case-state/assets/STATE.json`, validated links, public-release requirement and equality regression close the installable package boundary. | Preserve this control for every future packaged resource. |
+| 30 | PASS | The bundled state template and artifact adapter, validated links, unlinked-path rejection, public-release requirements and equality regressions close the known installable-package escapes. | Preserve this control for every future packaged resource. |
 
 ## Local revalidation after PyYAML repair
 
@@ -49,11 +49,11 @@ The previously missing environment dependency was repaired only in the Codex bun
 |---|---|
 | Runtime before repair | Python `3.12.13`; pip `26.2.1`; `import yaml` failed with `ModuleNotFoundError`. |
 | Dependency repair | `PyYAML 6.0.3` was installed through that exact interpreter with `python -m pip`; the subsequent import succeeded from the same runtime. |
-| System skill validator | `skill-creator/scripts/quick_validate.py plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state` returned `Skill is valid!`, exit `0`. |
-| Project validators | compileall, public release, skill governance, deterministic lock, publication history, ecosystem marketplace and eval-suite validators returned exit `0`; `pip check` reported no broken requirements. Skill governance retained `256` advisory `missing_heading` warnings. |
-| Regression tests | The unrestricted rerun completed `145` tests in `11.064s`: `OK`, exit `0`. The earlier sandboxed attempt produced only temporary-directory permission errors and is classified as an environment failure, not a candidate test failure. |
-| Package-resource closure | A `git archive HEAD` of the installable plugin contained `one-c-erp-case-state/assets/STATE.json`; the packaged and canonical templates resolve to the same committed blob `bfc44bbdd8421c1f9cb96fe0894d57471cb6e08a`. Normalized checkout content is equal; raw working-tree SHA differences are line-ending conversion only. |
-| Git state before this evidence-only update | Branch `codex/package-resource-closure-v0.3.9`, HEAD `c26868e9092cc2779c3bb3998931af7d048e0e55`; worktree/index clean; candidate and worktree `git diff --check` passed. |
+| System skill validator | `skill-creator/scripts/quick_validate.py` returned `Skill is valid!`, exit `0`, for both `one-c-erp-case-state` and `one-c-erp-artifact-extraction`. |
+| Project validators | compileall, public release, skill governance, deterministic lock, publication history, ecosystem marketplace and eval-suite validators returned exit `0`; `pip check` reported no broken requirements. Skill governance retained `256` advisory `missing_heading` warnings. The lock covers `59` files with manifest SHA-256 `e199713c1f7151b5bf79737dd38e2298ce11c04cf6caab6d1396d903fcf4bfaa`. |
+| Regression tests | The unrestricted final rerun completed `147` tests in `8.981s`: `OK`, exit `0`. The earlier sandboxed attempt produced only temporary-directory permission errors and is classified as an environment failure, not a candidate test failure. |
+| Package-resource closure | A `git archive HEAD` of the installable plugin contains both bundled resources. The canonical and packaged state templates share Git blob `bfc44bbdd8421c1f9cb96fe0894d57471cb6e08a`; the canonical and packaged artifact adapters share Git blob `b9d1efcd2e3618c0c3cd9ed69080b592e3395f90`. |
+| Code commit before this evidence-only update | Branch `codex/package-resource-closure-v0.3.9`, HEAD `868556ef7e7548eb8b187fc81a16b737c4639bdd`; worktree/index clean; candidate and worktree `git diff --check` passed. |
 
 ## Decision
 
