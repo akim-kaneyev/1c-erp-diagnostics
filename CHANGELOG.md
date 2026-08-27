@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.9 — installed-package resource closure
+
+- bundled the empty `STATE.json` template inside `one-c-erp-case-state` instead of relying on a repository-root file absent from installations;
+- converted the template reference into a validated local link and required all packaged resources to resolve inside the installable plugin boundary;
+- added a regression that requires the packaged template to exist and match the canonical repository template;
+- extended the self-audit and publishing controls with package-resource closure;
+- preserved the v0.3.8 accounting/state behavior and 26-case suite; exact v0.3.9 runtime acceptance remains a separate post-install check.
+
 ## 0.3.8 — deterministic accounting and state integrity
 
 - added exact fact/plan, share, distribution, residual, row-coverage and observed-allocation controls without float arithmetic;

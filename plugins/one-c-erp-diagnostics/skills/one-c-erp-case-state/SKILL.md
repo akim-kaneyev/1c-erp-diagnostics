@@ -7,7 +7,7 @@ description: Maintain resumable Gate 1-10 state for a 1C:ERP investigation acros
 
 Track: goal contract; overall status; primary/secondary domain; Gate 1-10 status; evidence set; established facts; active hypotheses with confirm/falsify conditions; conclusions under verification; changes applied; blind spots.
 
-Persist the ID-bearing integrity surface in `templates/case/STATE.json` and validate it with [the state-integrity contract](references/state-integrity.md) before resume and Gate 10. `STATE.md` is the human journal, not a substitute for the machine state.
+Initialize the ID-bearing integrity surface from the [bundled machine-state template](assets/STATE.json), persist the working copy in the case workspace, and validate it with [the state-integrity contract](references/state-integrity.md) before resume and Gate 10. `STATE.md` is the human journal, not a substitute for the machine state.
 
 Gate statuses: `pending | passed | blocked | failed | stale | not_required`.
 

@@ -25,7 +25,7 @@ Version 0.3.6 fixes the subsequently reproduced stale-execution output: Gate 5 m
 
 Version 0.3.7 fixes the next clean-session failure in `under-evidenced-cost`: Gate 2 passes after all supplied evidence is accounted for, Gate 4 and Gate 10 remain blocked, Gate 7 passes by rejecting an unsupported cause, and claim/request/action collections use the exact schema.
 
-Version 0.3.8 adds 10 accounting/state/security cases and requires one complete 26-case clean-session run of the exact installed package. Arithmetic helper tests and repository CI are supporting evidence, not runtime acceptance.
+Version 0.3.8 added 10 accounting/state/security cases and passed a complete hashed 26-case run after public installation. Version 0.3.9 changes the installed package by bundling the case-state template, so it requires a new complete 26-case clean-session run. The prior run is historical evidence, not acceptance of v0.3.9.
 
 Until this command passes, runtime acceptance is `blocked`:
 
@@ -52,16 +52,16 @@ Calculate SHA-256 for each result file and create `run.json`:
 ```json
 {
   "schema_version": 1,
-  "run_id": "v0-3-8-clean-example",
+  "run_id": "v0-3-9-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.8",
+  "plugin_version": "0.3.9",
   "source_commit": "0000000000000000000000000000000000000000",
   "executed_at": "2026-08-26T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.8",
+    "installed_plugin_version": "0.3.9",
     "expectations_visible_to_runner": false
   },
   "results": [
@@ -76,9 +76,9 @@ Calculate SHA-256 for each result file and create `run.json`:
 
 The zero values are examples of required shape, not valid release evidence. The strict validator rejects incomplete suites, placeholder hashes, hash mismatches, wrong versions and non-clean runs.
 
-## Priority re-test after 0.3.8 installation
+## Priority re-test after 0.3.9 installation
 
-Before running all 26 v0.3.8 cases, validate these four exact rendered prompts in separate clean tasks. Passing them is an early failure check only; it cannot replace the complete run.
+Before running all 26 v0.3.9 cases, validate these four exact rendered prompts in separate clean tasks. Passing them is an early failure check only; it cannot replace the complete run.
 
 ### 1. `capability-inventory`
 

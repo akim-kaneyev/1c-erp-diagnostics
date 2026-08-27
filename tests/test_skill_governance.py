@@ -135,6 +135,56 @@ class SkillGovernanceTests(unittest.TestCase):
             VALIDATE.validate_skill_inventory(root, report)
             self.assertTrue(any("Broken local link" in item and "guide.md" in item for item in report.errors))
 
+    def test_packaged_link_cannot_escape_installable_plugin_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(root / "templates/case/STATE.json", "{}\n")
+            write(
+                skill_dir / "SKILL.md",
+                skill_text(
+                    "one-c-erp-a",
+                    "[repository-only template](../../../../templates/case/STATE.json)",
+                ),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("escapes installable plugin boundary" in item for item in report.errors)
+            )
+
+    def test_packaged_runtime_path_must_be_a_markdown_link(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(
+                skill_dir / "SKILL.md",
+                skill_text("one-c-erp-a", "Use `tools/repository_only.py` at runtime."),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("must be a Markdown link" in item for item in report.errors)
+            )
+
+    def test_packaged_fenced_command_path_must_resolve_inside_skill(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(root / "tools/repository_only.py", "print('not packaged')\n")
+            write(
+                skill_dir / "SKILL.md",
+                skill_text(
+                    "one-c-erp-a",
+                    "```shell\npython tools/repository_only.py\n```",
+                ),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("Broken packaged command path" in item for item in report.errors)
+            )
+
     def test_discovery_sources_cannot_enter_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

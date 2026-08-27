@@ -1,6 +1,6 @@
 # Machine-readable case state
 
-Use `templates/case/STATE.json` as the persisted integrity surface. `STATE.md` remains the human investigation journal; material IDs and statuses in it must agree with the JSON state.
+Create the persisted integrity surface from the [template bundled with this skill](../assets/STATE.json). Save the working copy in the case workspace. `STATE.md` remains the human investigation journal; material IDs and statuses in it must agree with the JSON state.
 
 Validate before resuming a case and before Gate 10:
 

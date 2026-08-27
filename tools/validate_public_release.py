@@ -26,6 +26,7 @@ REQUIRED_FILES = [
     ROOT / "SKILL.md",
     ROOT / "SKILLS.lock.json",
     ROOT / "templates" / "case" / "STATE.md",
+    PLUGIN_DIR / "skills" / "one-c-erp-case-state" / "assets" / "STATE.json",
     ROOT / "docs" / "ARCHITECTURE.md",
     ROOT / "docs" / "OPEN_SOURCE_INTEGRATIONS.md",
     ROOT / "docs" / "RUNTIME_ACCEPTANCE.md",
@@ -45,6 +46,7 @@ REQUIRED_FILES = [
     ROOT / "tools" / "validate_skills.py",
     ROOT / "tools" / "update_skill_lock.py",
     ROOT / "tools" / "unpack_1c_artifact.py",
+    PLUGIN_DIR / "skills" / "one-c-erp-artifact-extraction" / "scripts" / "unpack_1c_artifact.py",
     MANIFEST,
     MARKETPLACE,
 ]
