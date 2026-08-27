@@ -53,7 +53,7 @@ The previously missing environment dependency was repaired only in the Codex bun
 | Project validators | compileall, public release, skill governance, deterministic lock, publication history, ecosystem marketplace and eval-suite validators returned exit `0`; `pip check` reported no broken requirements. Skill governance retained `256` advisory `missing_heading` warnings. The lock covers `59` files with manifest SHA-256 `e199713c1f7151b5bf79737dd38e2298ce11c04cf6caab6d1396d903fcf4bfaa`. |
 | Regression tests | The unrestricted final rerun completed `148` tests in `8.983s`: `OK`, exit `0`. The earlier sandboxed attempt produced only temporary-directory permission errors and is classified as an environment failure, not a candidate test failure. |
 | Package-resource closure | A `git archive HEAD` of the installable plugin contains both bundled resources. The canonical and packaged state templates share Git blob `bfc44bbdd8421c1f9cb96fe0894d57471cb6e08a`; the canonical and packaged artifact adapters share Git blob `b9d1efcd2e3618c0c3cd9ed69080b592e3395f90`. |
-| Code commit before this evidence-only update | Branch `codex/package-resource-closure-v0.3.9`, HEAD `868556ef7e7548eb8b187fc81a16b737c4639bdd`; worktree/index clean; candidate and worktree `git diff --check` passed. |
+| Final local candidate before GitHub review | Branch `codex/package-resource-closure-v0.3.9`; worktree/index clean; candidate and worktree `git diff --check` passed. Commit identities use the repository's public GitHub noreply address. |
 
 ## Decision
 
