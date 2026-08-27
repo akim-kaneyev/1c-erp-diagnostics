@@ -54,6 +54,10 @@ LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 INLINE_RUNTIME_PATH_RE = re.compile(
     r"`((?:(?:\.\.?/)+)?(?:assets|references|scripts|tools|templates)/[^`\s]+)`"
 )
+FENCED_CODE_RE = re.compile(r"```[^\n]*\n(.*?)```", re.DOTALL)
+RUNTIME_PATH_TOKEN_RE = re.compile(
+    r"(?<![\w.-])((?:(?:\.\.?/)+)?(?:assets|references|scripts|tools|templates)/[A-Za-z0-9_./-]+)"
+)
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
 
@@ -148,6 +152,8 @@ def validate_packaged_runtime_paths(
     path: Path,
     root: Path,
     report: ValidationReport,
+    *,
+    skill_dir: Path,
 ) -> None:
     text = path.read_text(encoding="utf-8")
     for raw_target in INLINE_RUNTIME_PATH_RE.findall(text):
@@ -155,6 +161,22 @@ def validate_packaged_runtime_paths(
             "Packaged runtime resource path must be a Markdown link: "
             f"{path.relative_to(root)} -> {raw_target}"
         )
+    for fenced_code in FENCED_CODE_RE.findall(text):
+        for raw_target in RUNTIME_PATH_TOKEN_RE.findall(fenced_code):
+            candidate = (skill_dir / raw_target).resolve()
+            try:
+                candidate.relative_to((root / INSTALLABLE_PLUGIN).resolve())
+            except ValueError:
+                report.fail(
+                    "Packaged command path escapes installable plugin boundary: "
+                    f"{path.relative_to(root)} -> {raw_target}"
+                )
+                continue
+            if not candidate.exists():
+                report.fail(
+                    "Broken packaged command path: "
+                    f"{path.relative_to(root)} -> {raw_target}"
+                )
 
 
 def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
@@ -215,7 +237,12 @@ def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
         # Validate the owning SKILL.md and every Markdown reference shipped
         # beside it, so moving depth into references cannot bypass link checks.
         for markdown in sorted(skill_dir.rglob("*.md")):
-            validate_packaged_runtime_paths(markdown, root, report)
+            validate_packaged_runtime_paths(
+                markdown,
+                root,
+                report,
+                skill_dir=skill_dir,
+            )
             validate_local_links(
                 markdown,
                 root,

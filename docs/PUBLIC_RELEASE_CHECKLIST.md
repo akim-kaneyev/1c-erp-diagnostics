@@ -11,7 +11,7 @@
 - [x] Public-release validation explicitly requires the packaged template.
 - [x] The deterministic skill lock covers the packaged asset.
 - [x] The artifact extraction adapter is bundled with its owning Skill and equals the canonical repository tool.
-- [x] Packaged runtime paths must be Markdown links, so repository-root dependencies cannot bypass boundary validation.
+- [x] Descriptive packaged runtime paths must be Markdown links; fenced-command paths must resolve from the owning Skill inside the plugin boundary.
 - [x] The self-audit and authoring standard forbid repository-root resources from satisfying installed-package dependencies.
 - [x] Plugin manifest, `pyproject.toml`, active documentation and validator expectations declare `0.3.9`.
 - [x] v0.3.9 release notes and self-audit exist without claiming pending external checks as complete.

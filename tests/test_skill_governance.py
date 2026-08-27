@@ -167,6 +167,24 @@ class SkillGovernanceTests(unittest.TestCase):
                 any("must be a Markdown link" in item for item in report.errors)
             )
 
+    def test_packaged_fenced_command_path_must_resolve_inside_skill(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(root / "tools/repository_only.py", "print('not packaged')\n")
+            write(
+                skill_dir / "SKILL.md",
+                skill_text(
+                    "one-c-erp-a",
+                    "```shell\npython tools/repository_only.py\n```",
+                ),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("Broken packaged command path" in item for item in report.errors)
+            )
+
     def test_discovery_sources_cannot_enter_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -29,7 +29,7 @@ Requirements:
 - name is unique and starts with `one-c-erp-`;
 - `description` states the concrete task and trigger context;
 - local Markdown links resolve inside the repository;
-- runtime resource paths in packaged Markdown use local Markdown links, so validation can enforce the installable boundary;
+- descriptive runtime resource paths in packaged Markdown use local Markdown links; executable fenced-command paths resolve from the owning Skill directory and remain inside the installable plugin boundary;
 - every runtime resource resolves inside the installable plugin directory; a repository-root template, script or reference cannot satisfy a packaged-skill dependency;
 - the skill does not declare an unavailable app, plugin, MCP server or write permission as present;
 - external discovery catalogs never become marketplace entries without the separate intake process;
