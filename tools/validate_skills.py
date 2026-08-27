@@ -51,6 +51,9 @@ REPOSITORY_SHIM_TOKENS = (
     "blocked",
 )
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+INLINE_RUNTIME_PATH_RE = re.compile(
+    r"`((?:(?:\.\.?/)+)?(?:assets|references|scripts|tools|templates)/[^`\s]+)`"
+)
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
 
@@ -141,6 +144,19 @@ def validate_local_links(
             report.fail(f"Broken local link: {path.relative_to(root)} -> {raw_target}")
 
 
+def validate_packaged_runtime_paths(
+    path: Path,
+    root: Path,
+    report: ValidationReport,
+) -> None:
+    text = path.read_text(encoding="utf-8")
+    for raw_target in INLINE_RUNTIME_PATH_RE.findall(text):
+        report.fail(
+            "Packaged runtime resource path must be a Markdown link: "
+            f"{path.relative_to(root)} -> {raw_target}"
+        )
+
+
 def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
     directory = root / PACKAGED_SKILLS
     if not directory.is_dir():
@@ -199,6 +215,7 @@ def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
         # Validate the owning SKILL.md and every Markdown reference shipped
         # beside it, so moving depth into references cannot bypass link checks.
         for markdown in sorted(skill_dir.rglob("*.md")):
+            validate_packaged_runtime_paths(markdown, root, report)
             validate_local_links(
                 markdown,
                 root,

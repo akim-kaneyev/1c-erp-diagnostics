@@ -1,6 +1,6 @@
 {
   "algorithm": "sha256",
-  "file_count": 58,
+  "file_count": 59,
   "files": [
     {
       "path": ".agents/skills/one-c-erp-diagnostics/SKILL.md",
@@ -104,8 +104,13 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-artifact-extraction/SKILL.md",
-      "sha256": "87c97c03e229201f33f740ba23189331c3e9cfe2fe722f51704e9eec241026e7",
-      "size_bytes": 1894
+      "sha256": "32a6d4c121e97bbcfb37d2887315539cc4469726772fa0a08356442cbfb9065e",
+      "size_bytes": 1928
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-artifact-extraction/scripts/unpack_1c_artifact.py",
+      "sha256": "1f1e3a74c78ea4f7b26c120023140790630564605778eac6690752b4240027bc",
+      "size_bytes": 3932
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-capability-discovery/SKILL.md",
@@ -293,7 +298,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "00ee8567d337b93ffe4e39ff518ce100fcbd5c4ef1f2f6e70275a25d3b5a55f3",
+  "manifest_sha256": "e199713c1f7151b5bf79737dd38e2298ce11c04cf6caab6d1396d903fcf4bfaa",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

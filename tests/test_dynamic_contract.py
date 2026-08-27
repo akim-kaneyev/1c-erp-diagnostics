@@ -12,7 +12,13 @@ PLUGIN_VERSION = "0.3.9"
 
 
 def load_artifact_module():
-    path = ROOT / "tools" / "unpack_1c_artifact.py"
+    path = (
+        PLUGIN
+        / "skills"
+        / "one-c-erp-artifact-extraction"
+        / "scripts"
+        / "unpack_1c_artifact.py"
+    )
     spec = importlib.util.spec_from_file_location("unpack_1c_artifact", path)
     if spec is None or spec.loader is None:
         raise RuntimeError("Cannot load artifact extraction module")
@@ -125,6 +131,21 @@ class DynamicContractTests(unittest.TestCase):
             (output / "existing.txt").write_text("occupied", encoding="utf-8")
             with self.assertRaises(ValueError):
                 module.validate_paths(supported, output, False)
+
+    def test_artifact_adapter_is_packaged_and_matches_repository_tool(self) -> None:
+        canonical = ROOT / "tools" / "unpack_1c_artifact.py"
+        packaged = (
+            PLUGIN
+            / "skills"
+            / "one-c-erp-artifact-extraction"
+            / "scripts"
+            / "unpack_1c_artifact.py"
+        )
+        self.assertTrue(packaged.is_file())
+        self.assertEqual(
+            packaged.read_text(encoding="utf-8"),
+            canonical.read_text(encoding="utf-8"),
+        )
 
     def test_secret_assignment_detection_covers_quoted_and_unquoted_values(self) -> None:
         module = load_public_release_module()

@@ -46,6 +46,7 @@ REQUIRED_FILES = [
     ROOT / "tools" / "validate_skills.py",
     ROOT / "tools" / "update_skill_lock.py",
     ROOT / "tools" / "unpack_1c_artifact.py",
+    PLUGIN_DIR / "skills" / "one-c-erp-artifact-extraction" / "scripts" / "unpack_1c_artifact.py",
     MANIFEST,
     MARKETPLACE,
 ]

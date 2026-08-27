@@ -10,6 +10,8 @@
 - [x] A regression requires the packaged template to exist and equal the canonical repository template.
 - [x] Public-release validation explicitly requires the packaged template.
 - [x] The deterministic skill lock covers the packaged asset.
+- [x] The artifact extraction adapter is bundled with its owning Skill and equals the canonical repository tool.
+- [x] Packaged runtime paths must be Markdown links, so repository-root dependencies cannot bypass boundary validation.
 - [x] The self-audit and authoring standard forbid repository-root resources from satisfying installed-package dependencies.
 - [x] Plugin manifest, `pyproject.toml`, active documentation and validator expectations declare `0.3.9`.
 - [x] v0.3.9 release notes and self-audit exist without claiming pending external checks as complete.
@@ -23,7 +25,7 @@
 - [x] Pass ecosystem marketplace validation.
 - [x] Pass the 26-case eval specification validator.
 - [ ] Pass all unit/regression tests on Python 3.10 and 3.12.
-- [ ] Run the system skill `quick_validate.py` in an environment with PyYAML available.
+- [x] Run the system skill `quick_validate.py` in an environment with PyYAML available.
 - [ ] Confirm required protected Pull Request checks and CodeQL are green.
 
 ## Runtime acceptance

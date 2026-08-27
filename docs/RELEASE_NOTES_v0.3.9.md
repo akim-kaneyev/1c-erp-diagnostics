@@ -4,12 +4,16 @@
 
 Version 0.3.9 fixes a distribution defect discovered after v0.3.8: `one-c-erp-case-state` referred to the repository-root `templates/case/STATE.json`, but that file was outside the installable plugin directory. Repository tests passed because they read the checkout root; an installed plugin could not access the template it documented.
 
+Final pre-PR review found the same escaped dependency shape in `one-c-erp-artifact-extraction`: an inline path referred to the repository-root extraction adapter. The candidate now packages that adapter with the owning Skill and rejects unlinked packaged runtime paths.
+
 ## Changes
 
 - bundled the empty machine-state template at `plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state/assets/STATE.json`;
 - linked the bundled asset from the owning `SKILL.md` and state-integrity reference;
 - required the packaged template in public-release validation;
 - added a regression that compares the packaged asset with the canonical repository template;
+- bundled the artifact extraction adapter with its owning Skill and linked that packaged copy;
+- added regressions that reject unlinked runtime paths and compare the packaged adapter with its canonical repository tool;
 - added package-resource closure to the skill-authoring, publishing and self-audit contracts;
 - retained the v0.3.8 accounting/state behavior, strict `EVAL_RESULT_JSON` contract, 26-case suite, four-plugin marketplace and approved Velis assets.
 

@@ -9,7 +9,7 @@ Use for sanitized `.cf`, `.cfe` and `.epf` evidence.
 
 1. Record filename, size and SHA-256.
 2. Confirm the artifact is sanitized and contains no credentials/customer data.
-3. Use the pinned optional `v8unpack` adapter through `tools/unpack_1c_artifact.py`.
+3. Use the pinned optional `v8unpack` adapter through the [bundled extraction adapter](scripts/unpack_1c_artifact.py).
 4. Extract into a new empty directory; never build/repack in the diagnostic workflow.
 5. Preserve `_extraction_manifest.json`.
 6. Inventory confirmed metadata, BSL and JSON files.

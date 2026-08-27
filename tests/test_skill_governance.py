@@ -153,6 +153,20 @@ class SkillGovernanceTests(unittest.TestCase):
                 any("escapes installable plugin boundary" in item for item in report.errors)
             )
 
+    def test_packaged_runtime_path_must_be_a_markdown_link(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(
+                skill_dir / "SKILL.md",
+                skill_text("one-c-erp-a", "Use `tools/repository_only.py` at runtime."),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("must be a Markdown link" in item for item in report.errors)
+            )
+
     def test_discovery_sources_cannot_enter_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
