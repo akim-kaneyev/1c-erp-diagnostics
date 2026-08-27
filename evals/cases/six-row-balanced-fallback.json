@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "six-row-balanced-fallback",
+  "title": "Complete six-row allocation remains balanced",
+  "domain": "post_item_expenses",
+  "controls": ["accounting_invariants", "gate_7", "no_invented_objects"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Выполни bounded read-only проверку арифметики шести синтетических строк. Manifest содержит PLAN-A 0/100, PLAN-B 0/900, FALLBACK-A 100/100, FALLBACK-B 0/0, FACT-A 100/0, FACT-B 900/0; observed allocation входа 110 равен A=20, B=90, residual=0. Не диагностируй 1С-инцидент. Требуй полный row coverage и независимый Gate 7. В summary выведи вычисленные markers accounting_totals, sum_share, allocation и completeness_missing в формате key=value через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-AI-1",
+      "kind": "sanitized_raw_rows",
+      "summary": "Полный синтетический manifest из шести устойчивых row ID и observed allocation 20/90 для входа 110.",
+      "proves": ["состав шести строк", "арифметический вход и observed allocation"],
+      "does_not_prove": ["объекты метаданных 1С", "причину реального инцидента"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "9": "not_required", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "NO_ACTION",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["not_in_scope"],
+    "max_established_claims": 4,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 0,
+    "required_evidence_ids": ["E-AI-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "accounting_totals": "1100/1100",
+      "sum_share": "1",
+      "allocation": "A:20,B:90",
+      "completeness_missing": "false"
+    },
+    "required_claim_statuses": {
+      "accounting_totals": "УСТАНОВЛЕНО",
+      "sum_share": "УСТАНОВЛЕНО",
+      "allocation": "УСТАНОВЛЕНО",
+      "completeness_missing": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "accounting_totals": ["E-AI-1"],
+      "sum_share": ["E-AI-1"],
+      "allocation": ["E-AI-1"],
+      "completeness_missing": ["E-AI-1"]
+    }
+  }
+}

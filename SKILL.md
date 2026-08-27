@@ -147,6 +147,8 @@ Choose one primary domain and no more than two justified secondary domains. Buil
 
 Validation levels: `structural → static → metadata_runtime → functional → business_accounting`. Define independent validation before execution. A lower level cannot substitute for a required higher level. Normally use no more than four active specialist nodes without explicit dependency justification.
 
+For expense allocation, cost, month close, balances, postings or any proportional algorithm, the graph must include the executable accounting-invariants module from `one-c-erp-diagnose-core`. Its sanitized raw-row manifest, observed allocation and deterministic result are required inputs to Gate 4 and independent Gate 7.
+
 ## Gate 4 — Specialist analysis
 
 Each specialist separates facts, interpretations, hypotheses and missing evidence. Core causal chain:
@@ -156,6 +158,8 @@ Each specialist separates facts, interpretations, hypotheses and missing evidenc
 The earliest proven divergence matters more than the last visible symptom. Code/tool findings remain hypotheses until linked to the factual case chain.
 
 For every external companion output record canonical identity, assigned operation, evidence inputs, version/ref, execution identity when applicable, output location/hash, limitations and whether another method reproduced the material result.
+
+For an accounting/proportional case, run the deterministic helper over complete raw rows before a root-cause claim or correction design. It must PASS expected row coverage, explicit inclusion/exclusion evidence, amount and quantity totals, per-analytic reconciliation, exact shares, observed allocation plus residual, and formula trace. A missing row, unknown inclusion, arithmetic imbalance or observed-vs-calculated mismatch keeps the cause `ТРЕБУЕТ ПРОВЕРКИ`.
 
 If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the linked incident separately `open`/`blocked`. Do not use decorated statuses such as `passed*`.
 
@@ -169,6 +173,8 @@ Before reusing an earlier result, compare its case/input identities with current
 
 Use SonarQube only after factual Gate 0 preflight; keep credentials in child-process environment only. If required execution is unavailable, mark the gate `blocked`; never simulate it.
 
+Do not build, load, activate or recommend a correction while the applicable accounting-invariants result is not `PASS` or while semantic Gate 7 has not independently accepted the analytic meaning. Compilation/CFE/static success does not satisfy this precondition.
+
 ## Gate 6 — Evidence synthesis
 
 Merge specialist outputs by source, evidence and claim ID. Preserve support, contradictions, capability provenance and falsifiers. Resolve contradictions by evidence, not majority vote.
@@ -181,11 +187,15 @@ A list of evidence IDs is not sufficient if a transition is merely inferred. Pre
 
 Assess each claim separately. A directly evidenced limitation—such as the absence of declared parent/transformation/run/output identity for a supplied derived artifact—may be `УСТАНОВЛЕНО` while source content, source-to-derived relationship and root cause remain `ТРЕБУЕТ ПРОВЕРКИ`.
 
+For before/after accounting evidence preserve the helper's five effect flags separately from the strict eval result schema: `completeness_changed`, `allocation_proportion_changed`, `analytic_key_changed`, `cardinality_changed`, `no_material_change`. If completeness remains valid but proportions change, state that completeness was not corrected, proportions changed and a normative/business basis is still required.
+
 Use only `УСТАНОВЛЕНО`, `ВЕРОЯТНО`, `ТРЕБУЕТ ПРОВЕРКИ`.
 
 ## Gate 7 — Adversarial verification
 
 A distinct reviewer re-reads original evidence, not only synthesis. It challenges every causal link, checks identical analytics, searches for earlier divergence, tests alternatives, identifies invented objects and records a falsifier. It confirms evidence coverage, provenance closure and execution freshness for every relied-upon tool result.
+
+For a proposed accounting correction, the reviewer receives the primary rows and independently reruns both baseline and changed datasets. It checks at least one alternative explanation and counterevidence, verifies from code that each claimed fact/plan field is reachable under its predicate, and rejects reuse of one derived calculation as multiple independent confirmations.
 
 A label such as `critical`, `high`, `blocking` or a confident agent verdict is not proof. Convert each finding into a testable claim and reproduce/evidence-link it. Absence of findings is not proof either.
 
@@ -204,6 +214,8 @@ R3 requires explicit approval, tested rollback, affected scope and post-change v
 Use required ladder: structural/syntax → static → metadata/runtime → functional → business/accounting. Passing syntax/static/build does not prove runtime or accounting correctness. If required runtime/business validation cannot be executed, Gate 9 is `blocked`.
 
 Compare identical analytics before/after: movements, records, quantities, amounts, balances, postings/subaccounts, month-close result, duplicates, side effects or access matrix. A disappearing UI error is insufficient proof. Analysis-only work may mark Gate 9 `not_required`.
+
+Accounting Gate 9 records the five effect flags and separately verifies movements, residual and report result. `ΣДоля = 1` both before and after with changed analytic proportions is redistribution, not proof that completeness was repaired; it cannot receive `GO` from static/build evidence alone.
 
 If a defect/omission survives an earlier control, record where it escaped and strengthen the earliest applicable gate/checklist/regression eval.
 
@@ -238,6 +250,7 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No lower-level validation promoted into proof of a required higher-level result.
 - No producer self-report treated as independent validation.
 - No final root-cause `УСТАНОВЛЕНО` with open/broken provenance closure or without Gate 7.
+- No accounting/proportional root cause, fix design, build/load/activate or `GO` without a PASS raw-row invariant result and independent semantic Gate 7.
 - No `final_status = УСТАНОВЛЕНО` when Gate 7/Gate 10 is not `passed` or the causal chain is incomplete.
 - No production-changing action without the applicable risk gate.
 - No decorated/noncanonical Gate statuses.

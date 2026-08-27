@@ -61,7 +61,7 @@ A reference must be linked from its owning `SKILL.md`, remain inside the reposit
 
 ## Deterministic lock
 
-`SKILLS.lock.json` records SHA-256, size and path for runtime instruction surfaces, packaged skill contents, playbooks, checklists and the case-state template.
+`SKILLS.lock.json` records SHA-256, canonical size and path for runtime instruction surfaces, packaged skill contents, playbooks, checklists and both case-state templates. Known text files normalize `CRLF`/`CR` to `LF` before hashing so an equivalent Windows checkout does not create false drift; binary files remain byte-exact.
 
 Commands:
 

@@ -21,6 +21,14 @@ For each material conclusion:
 11. verify every relied-upon executable/tool result belongs to the current case and current material input identities rather than a stale run;
 12. downgrade status when evidence is insufficient.
 
+For accounting/proportional claims additionally:
+
+13. receive primary rows, not only the author's summary, and independently rerun baseline and changed datasets;
+14. compare the helper result and observed allocation for every analytic key;
+15. test at least one alternative explanation and material counterevidence;
+16. inspect code predicates and prove that each claimed fact/plan field is reachable under the asserted branch;
+17. reject one derived calculation presented through multiple reports as independent confirmation.
+
 ## Review finding rule
 
 A review label such as `critical`, `high`, `blocking`, or an agent's confident defect verdict is not itself evidence that a defect exists. Convert every material review finding into a testable claim and independently reproduce it or link it to original case evidence before treating it as established.

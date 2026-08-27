@@ -65,12 +65,49 @@ class ToolRegressionTests(unittest.TestCase):
             self.run_tool("xlsx_profile.py", str(left), cwd=work)
             profile = json.loads((work / "left.xlsx.profile.json").read_text(encoding="utf-8"))
             self.assertEqual(profile["sheets"][0]["title"], "Data")
+            self.assertFalse(profile["rows_present"])
+            self.assertEqual(profile["view_status"], "unverified/incomplete")
+            self.assertEqual(profile["sheets"][0]["row_count"], 1)
+            self.assertEqual(profile["sheets"][0]["column_count"], 2)
+            self.assertEqual(profile["sheets"][0]["header_preview"], ["Item", 10])
+            self.assertEqual(profile["sheets"][0]["value_preview"], [])
+            self.assertRegex(profile["sha256"], r"^[0-9a-f]{64}$")
 
             self.run_tool("compare_xlsx.py", str(left), str(right), cwd=work)
             diff = json.loads((work / "left__vs__right.diff.json").read_text(encoding="utf-8"))
             self.assertEqual(diff["sheets"]["Data"][0]["cell"], "B1")
             self.assertEqual(diff["sheets"]["Data"][0]["left"], 10)
             self.assertEqual(diff["sheets"]["Data"][0]["right"], 20)
+
+    def test_xlsx_property_tree_requires_explicit_visual_classification(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            artifact = work / "property-tree.xlsx"
+            wb = Workbook()
+            ws = wb.active
+            ws.append(["Property", "Name"])
+            ws.append(["Type", "String"])
+            wb.save(artifact)
+
+            self.run_tool(
+                "xlsx_profile.py",
+                str(artifact),
+                "--view-kind",
+                "property_tree",
+                "--view-evidence-id",
+                "E-VIEW-1",
+                "--view-sheet-index",
+                "1",
+                cwd=work,
+            )
+            profile = json.loads(
+                (work / "property-tree.xlsx.profile.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(profile["candidate_tabular_rows_present"])
+            self.assertFalse(profile["rows_present"])
+            self.assertEqual(profile["view_status"], "wrong_view/incomplete")
+            self.assertEqual(profile["view_evidence_id"], "E-VIEW-1")
+            self.assertEqual(profile["view_sheet_index"], 1)
 
     def test_pdf_extract_handles_blank_page(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

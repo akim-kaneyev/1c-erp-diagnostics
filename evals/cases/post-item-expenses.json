@@ -6,7 +6,7 @@
   "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Определи статус гипотезы о базе распределения постатейного расхода. Не объявляй настройку причиной без связи настройка → запись → база → результат. EVAL_RESULT_JSON",
+  "prompt": "Определи статус гипотезы о базе распределения постатейного расхода. Это bounded evidence-sufficiency assessment: после корректного EVIDENCE_REQUIRED текущая цель closed и Gate 10 passed, а связанный инцидент остается blocked. Не объявляй настройку причиной без связи настройка → запись → база → результат. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-EXP-1",
@@ -26,10 +26,10 @@
   "capabilities": [],
   "expect": {
     "allowed_final_statuses": ["ВЕРОЯТНО", "ТРЕБУЕТ ПРОВЕРКИ"],
-    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "blocked"},
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "passed"},
     "required_risk": "R0",
     "required_decision": "EVIDENCE_REQUIRED",
-    "allowed_current_goal_statuses": ["blocked"],
+    "allowed_current_goal_statuses": ["closed"],
     "allowed_linked_incident_statuses": ["blocked"],
     "max_established_claims": 0,
     "min_claims": 1,

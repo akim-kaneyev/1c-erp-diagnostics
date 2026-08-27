@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.7"
+VERSION = "0.3.8"
 
 
 class PublicPreviewDocumentationTests(unittest.TestCase):

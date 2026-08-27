@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.7
+# 1C ERP Diagnostics plugin — v0.3.8
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -12,12 +12,15 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - capability discovery and bounded dynamic planning;
 - evidence coverage, artifact derivation lineage and provenance closure;
 - execution identity/stale-result controls for tool and sandbox evidence;
+- deterministic raw-row accounting invariants, observed allocation reconciliation and before/after effect classification;
+- machine-readable case-state uniqueness, reference and invalidation-closure validation;
 - evidence synthesis, contradiction handling and adversarial verification;
 - strict `EVAL_RESULT_JSON` output with exact schema/risk/decision/Gate semantics;
 - deterministic synthetic capability snapshots and scoped current-goal/linked-incident closure;
 - inventory-only output semantics with exact `{name,status,simulated}` capability rows;
 - `R0–R3` action-risk controls and same-analytics validation;
 - artifact/open-source intake rules;
+- property-tree versus row-data controls and credential-incident tree/history/archive scanning;
 - deterministic Python helpers and publication-integrity validation;
 - optional `sonarqube-bsl-local` discovery, safe scan and evidence-provenance contract;
 - approved Velis mascot assets for the composer, plugin card and dark surfaces.
@@ -62,4 +65,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for v0.3.7 remains blocked until the exact installed capability-inventory result and the complete hashed 16-case clean-session run pass their validators.
+Runtime acceptance for v0.3.8 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. Repository validation, CodeQL and publication-history checks remain separate evidence.

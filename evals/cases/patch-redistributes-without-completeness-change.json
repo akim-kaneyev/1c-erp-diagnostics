@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "id": "patch-redistributes-without-completeness-change",
+  "title": "Patch redistributes without repairing completeness",
+  "domain": "post_item_expenses",
+  "controls": ["accounting_invariants", "effect_classification", "gate_7"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Оцени read-only синтетический before/after. Before содержит PLAN-A 0/100, PLAN-B 0/900, FALLBACK-A 100/100, FALLBACK-B 0/0, FACT-A 100/0, FACT-B 900/0 и observed A=20/B=90. After отличается только FALLBACK-A 0/0 и observed A=11/B=99. В summary выведи вычисленные markers before_totals, after_totals, before_allocation, after_allocation, пять effect flags и business_basis_required в формате key=value через точку с запятой. Не разрешай изменение без нормативного/бизнес-основания. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-AI-2",
+      "kind": "sanitized_before_after_rows",
+      "summary": "Синтетические before/after manifests с полным row coverage и observed allocations 20/90 и 11/99.",
+      "proves": ["баланс обоих наборов", "изменение пропорции при сохранении полноты"],
+      "does_not_prove": ["бизнес-корректность новой пропорции", "исправление реального инцидента"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "8": "passed", "9": "not_required", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["open"],
+    "max_established_claims": 10,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-AI-2"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "before_totals": "1100/1100",
+      "after_totals": "1000/1000",
+      "before_allocation": "A:20,B:90",
+      "after_allocation": "A:11,B:99",
+      "completeness_changed": "false",
+      "allocation_proportion_changed": "true",
+      "analytic_key_changed": "false",
+      "cardinality_changed": "false",
+      "no_material_change": "false",
+      "business_basis_required": "true"
+    },
+    "required_claim_statuses": {
+      "before_totals": "УСТАНОВЛЕНО",
+      "after_totals": "УСТАНОВЛЕНО",
+      "before_allocation": "УСТАНОВЛЕНО",
+      "after_allocation": "УСТАНОВЛЕНО",
+      "completeness_changed": "УСТАНОВЛЕНО",
+      "allocation_proportion_changed": "УСТАНОВЛЕНО",
+      "analytic_key_changed": "УСТАНОВЛЕНО",
+      "cardinality_changed": "УСТАНОВЛЕНО",
+      "no_material_change": "УСТАНОВЛЕНО",
+      "business_basis_required": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "before_totals": ["E-AI-2"],
+      "after_totals": ["E-AI-2"],
+      "before_allocation": ["E-AI-2"],
+      "after_allocation": ["E-AI-2"],
+      "completeness_changed": ["E-AI-2"],
+      "allocation_proportion_changed": ["E-AI-2"],
+      "analytic_key_changed": ["E-AI-2"],
+      "cardinality_changed": ["E-AI-2"],
+      "no_material_change": ["E-AI-2"],
+      "business_basis_required": ["E-AI-2"]
+    }
+  }
+}

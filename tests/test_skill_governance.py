@@ -90,6 +90,23 @@ class SkillGovernanceTests(unittest.TestCase):
             errors = LOCK.check_lock(root, lock_path)
             self.assertTrue(any("Skill lock drift" in item for item in errors))
 
+    def test_lock_is_independent_of_text_checkout_line_endings(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-demo/SKILL.md"
+            write(root / "SKILL.md", "root\nline\n")
+            write(root / "AGENTS.md", "agents\nline\n")
+            write(skill, skill_text("one-c-erp-demo", "line one\nline two"))
+            for path in (root / "SKILL.md", root / "AGENTS.md", skill):
+                path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
+            lf_lock = LOCK.build_lock(root)
+
+            for path in (root / "SKILL.md", root / "AGENTS.md", skill):
+                path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+            crlf_lock = LOCK.build_lock(root)
+
+            self.assertEqual(lf_lock, crlf_lock)
+
     def test_packaged_directory_without_skill_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

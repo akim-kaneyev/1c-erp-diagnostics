@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "historical-residual-numeric-coincidence",
+  "title": "Equal amount across runs is not causality",
+  "domain": "verification",
+  "controls": ["numeric_coincidence", "execution_identity", "gate_7"],
+  "synthetic": true,
+  "allowed_metadata_objects": [],
+  "prompt": "Историческое движение RUN-OLD и текущая временная таблица RUN-NEW содержат одинаковое синтетическое число, но имеют разные input hash и нет доказанной эквивалентности; альтернативная арифметика допускает 10+10=20. Проведи bounded read-only оценку. В summary выведи markers shared_execution_identity, numeric_coincidence_is_causal, alternative_explanation и causal_chain_complete через точку с запятой. EVAL_RESULT_JSON",
+  "evidence": [
+    {
+      "id": "E-NC-1",
+      "kind": "execution_identity_comparison",
+      "summary": "Два синтетических результата имеют одинаковое числовое значение, но разные run/input identities.",
+      "proves": ["числовое совпадение", "несовместимость execution identity"],
+      "does_not_prove": ["общую причинную цепочку", "эквивалентность входов"]
+    }
+  ],
+  "capabilities": [],
+  "expect": {
+    "allowed_final_statuses": ["ТРЕБУЕТ ПРОВЕРКИ"],
+    "required_gate_statuses": {"4": "passed", "7": "passed", "10": "passed"},
+    "required_risk": "R0",
+    "required_decision": "EVIDENCE_REQUIRED",
+    "allowed_current_goal_statuses": ["closed"],
+    "allowed_linked_incident_statuses": ["blocked"],
+    "max_established_claims": 3,
+    "min_claims": 1,
+    "min_actions": 0,
+    "min_requested_evidence": 1,
+    "required_evidence_ids": ["E-NC-1"],
+    "required_capabilities": {},
+    "require_complete_causal_chain": false,
+    "required_causal_stage_evidence": {},
+    "required_summary_markers": {
+      "shared_execution_identity": "false",
+      "numeric_coincidence_is_causal": "false",
+      "alternative_explanation": "10+10=20",
+      "causal_chain_complete": "false"
+    },
+    "required_claim_statuses": {
+      "shared_execution_identity": "УСТАНОВЛЕНО",
+      "numeric_coincidence_is_causal": "ТРЕБУЕТ ПРОВЕРКИ",
+      "alternative_explanation": "УСТАНОВЛЕНО",
+      "causal_chain_complete": "УСТАНОВЛЕНО"
+    },
+    "required_claim_evidence_ids": {
+      "shared_execution_identity": ["E-NC-1"],
+      "numeric_coincidence_is_causal": ["E-NC-1"],
+      "alternative_explanation": ["E-NC-1"],
+      "causal_chain_complete": ["E-NC-1"]
+    }
+  }
+}

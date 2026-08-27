@@ -56,7 +56,7 @@ jobs:
           PY
 
       - name: Compile Python tools
-        run: python -m compileall -q tools tests
+        run: python -m compileall -q tools tests plugins/one-c-erp-diagnostics/skills
 
       - name: Validate plugin and public package
         run: python tools/validate_public_release.py

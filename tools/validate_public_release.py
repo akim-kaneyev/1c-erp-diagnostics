@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 import struct
@@ -69,14 +70,67 @@ FORBIDDEN_SUFFIXES = {
     ".pem",
     ".pfx",
     ".p12",
+    ".ppk",
     ".jks",
     ".keystore",
     ".kdbx",
+    ".xlsx",
+    ".xlsm",
+    ".xltx",
+    ".xltm",
+    ".xls",
+    ".docx",
+    ".docm",
+    ".doc",
+    ".pptx",
+    ".pptm",
+    ".ppt",
+    ".zip",
 }
+FORBIDDEN_CONTAINER_SIGNATURES = (
+    b"PK\x03\x04",
+    b"PK\x05\x06",
+    b"PK\x07\x08",
+    b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1",  # OLE/CFBF, including encrypted Office packages.
+)
 SECRET_ASSIGNMENT = re.compile(
-    r"(?i)(?:\b(password|passwd|api[_-]?key|access[_-]?token|client[_-]?secret|"
-    r"private[_-]?key|sonar[_-]?token)\b|sonar\.(?:token|login))\s*[:=]\s*"
-    r"(?:[\"'][^\"'\r\n]{8,}[\"']|[A-Za-z0-9_./+=:-]{16,})"
+    r"(?i)(?:\\?[\"']?(?:password|passwd|api[_.-]?key|access[_.-]?token|refresh[_.-]?token|"
+    r"client[_.-]?secret|private[_.-]?key|sonar[_.-]?token|"
+    r"aws[_.-]?secret[_.-]?access[_.-]?key)\\?[\"']?|"
+    r"sonar\.(?:token|login))\s*[:=]"
+)
+BEARER_AUTHORIZATION = re.compile(
+    r"(?i)\\?[\"']?authorization\\?[\"']?\s*[:=]\s*\\?[\"']?\s*bearer\s+\S{8,}"
+)
+JSON_UNICODE_ESCAPE = re.compile(r"\\+[uU]([0-9A-Fa-f]{4})")
+ESCAPED_QUOTE = re.compile(r"\\+([\"'])")
+ABSOLUTE_MACHINE_PATH = re.compile(
+    r"(?:file:/+(?:[A-Za-z]:[\\/]+Users[\\/]+[^\\/\s]+|"
+    r"(?:Users|home)/[^/\s]+)|"
+    r"(?<![A-Za-z0-9._:/-])[A-Za-z]:[\\/]+Users[\\/]+[^\\/\s]+|"
+    r"(?<![A-Za-z0-9._:/-])/(?:Users|home)/[^/\s]+)",
+    re.IGNORECASE,
+)
+PRIVATE_KEY_MARKERS = (
+    "BEGIN " + "PRIVATE KEY",
+    "BEGIN " + "RSA PRIVATE KEY",
+    "BEGIN " + "EC PRIVATE KEY",
+    "BEGIN " + "OPENSSH PRIVATE KEY",
+    "BEGIN " + "ENCRYPTED PRIVATE KEY",
+)
+PRIVATE_KEY_HEADER = re.compile(
+    r"-----BEGIN [^-\r\n]{0,80}" + "PRIVATE KEY" + r"(?: BLOCK)?-----",
+    re.IGNORECASE,
+)
+PUTTY_PRIVATE_KEY_HEADER = re.compile(
+    r"^\s*PuTTY-User-Key-File-[23]\s*:", re.IGNORECASE | re.MULTILINE
+)
+SSH2_PRIVATE_KEY_HEADER = re.compile(
+    r"-{4,}\s*BEGIN\s+SSH2(?:\s+ENCRYPTED)?\s+PRIVATE\s+KEY\s*-{4,}",
+    re.IGNORECASE,
+)
+PYTHON_CACHE_NAME = re.compile(
+    r"^(?P<stem>.+)\.(?:cpython|pypy)-\d+(?:\.[^.]+)?\.py[co]$"
 )
 SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:[-+][0-9A-Za-z.-]+)?$")
 HTTPS_URL = re.compile(r"^https://[^\s]+$")
@@ -85,6 +139,86 @@ PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 def fail(errors: list[str], message: str) -> None:
     errors.append(message)
+
+
+def normalize_security_text(value: str) -> tuple[str, bool]:
+    """Decode bounded JSON escaping; unresolved deep nesting fails closed."""
+    normalized = value
+    for _ in range(8):
+        updated = JSON_UNICODE_ESCAPE.sub(
+            lambda match: chr(int(match.group(1), 16)),
+            normalized,
+        )
+        updated = ESCAPED_QUOTE.sub(lambda match: match.group(1), updated)
+        if updated == normalized:
+            break
+        normalized = updated
+    unresolved = JSON_UNICODE_ESCAPE.search(normalized) is not None
+    return normalized, unresolved
+
+
+def text_findings(value: str) -> tuple[bool, bool]:
+    normalized, unresolved_escape = normalize_security_text(value)
+    upper = normalized.upper()
+    has_secret = (
+        unresolved_escape
+        or SECRET_ASSIGNMENT.search(normalized) is not None
+        or BEARER_AUTHORIZATION.search(normalized) is not None
+        or PRIVATE_KEY_HEADER.search(normalized) is not None
+        or PUTTY_PRIVATE_KEY_HEADER.search(normalized) is not None
+        or SSH2_PRIVATE_KEY_HEADER.search(normalized) is not None
+        or any(marker in upper for marker in PRIVATE_KEY_MARKERS)
+    )
+    has_machine_path = (
+        ABSOLUTE_MACHINE_PATH.search(value) is not None
+        or ABSOLUTE_MACHINE_PATH.search(normalized) is not None
+    )
+    return has_secret, has_machine_path
+
+
+def safe_path_label(value: str) -> str:
+    has_secret, has_machine_path = text_findings(value)
+    return "[REDACTED_PATH]" if has_secret or has_machine_path else value
+
+
+def is_root_case_path(path: str) -> bool:
+    parts = [part for part in path.replace("\\", "/").split("/") if part]
+    return (
+        len(parts) >= 2
+        and parts[0].casefold() == "cases"
+        and parts[-1].casefold() != ".gitkeep"
+    )
+
+
+def is_forbidden_container(payload: bytes) -> bool:
+    return any(signature in payload for signature in FORBIDDEN_CONTAINER_SIGNATURES)
+
+
+def is_verified_generated_python_cache(path: Path) -> bool:
+    if path.parent.name != "__pycache__":
+        return False
+    match = PYTHON_CACHE_NAME.fullmatch(path.name)
+    if match is None:
+        return False
+    source = path.parent.parent / f"{match.group('stem')}.py"
+    if not source.is_file():
+        return False
+    try:
+        header = path.read_bytes()[: len(importlib.util.MAGIC_NUMBER)]
+    except OSError:
+        return False
+    return header == importlib.util.MAGIC_NUMBER
+
+
+def content_findings(payload: bytes) -> tuple[bool, bool]:
+    has_secret = False
+    has_machine_path = False
+    for encoding in ("utf-8", "utf-16-le", "utf-16-be", "utf-32-le", "utf-32-be"):
+        text = payload.decode(encoding, errors="ignore")
+        found_secret, found_path = text_findings(text)
+        has_secret = has_secret or found_secret
+        has_machine_path = has_machine_path or found_path
+    return has_secret, has_machine_path
 
 
 def load_json(path: Path, errors: list[str]) -> dict:
@@ -295,30 +429,48 @@ def main() -> int:
 
     case_files = [
         path
-        for path in (ROOT / "cases").rglob("*")
-        if path.is_file() and path.name != ".gitkeep"
+        for path in ROOT.rglob("*")
+        if path.is_file()
+        and ".git" not in path.parts
+        and is_root_case_path(str(path.relative_to(ROOT)))
     ]
     if case_files:
         fail(
             errors,
             "Public candidate contains case files: "
-            + ", ".join(str(path.relative_to(ROOT)) for path in case_files),
+            + ", ".join(
+                safe_path_label(str(path.relative_to(ROOT))) for path in case_files
+            ),
         )
 
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
+        if is_verified_generated_python_cache(path):
+            continue
+        relative_path = str(path.relative_to(ROOT))
+        safe_relative_path = safe_path_label(relative_path)
+        path_secret, path_machine = text_findings(relative_path)
+        if path_secret:
+            fail(errors, f"Credential-like tracked path: {safe_relative_path}")
+        if path_machine:
+            fail(errors, f"User-machine tracked path: {safe_relative_path}")
         if path.suffix.lower() in FORBIDDEN_SUFFIXES:
-            fail(errors, f"Forbidden artifact tracked: {path.relative_to(ROOT)}")
+            fail(errors, f"Forbidden artifact tracked: {safe_relative_path}")
         lower_name = path.name.lower()
         if lower_name == ".env" or lower_name.startswith(".env."):
-            fail(errors, f"Forbidden environment file tracked: {path.relative_to(ROOT)}")
+            fail(errors, f"Forbidden environment file tracked: {safe_relative_path}")
         try:
-            text = path.read_text(encoding="utf-8")
-        except (UnicodeDecodeError, OSError):
+            payload = path.read_bytes()
+        except OSError:
             continue
-        if SECRET_ASSIGNMENT.search(text):
-            fail(errors, f"Possible plaintext credential assignment: {path.relative_to(ROOT)}")
+        if is_forbidden_container(payload):
+            fail(errors, f"Nested ZIP/Office container is forbidden: {safe_relative_path}")
+        has_secret, has_machine_path = content_findings(payload)
+        if has_secret:
+            fail(errors, f"Possible plaintext credential assignment: {safe_relative_path}")
+        if has_machine_path:
+            fail(errors, f"Absolute user-machine path: {safe_relative_path}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8") if (ROOT / "README.md").exists() else ""
     for required_text in (

@@ -103,8 +103,12 @@ Apply `one-c-erp-evidence-intake`, `one-c-erp-data-safety`, and when relevant `o
 ### Gate 3 — plan
 Apply `one-c-erp-route-case` and `one-c-erp-dynamic-plan`. Select one primary domain and at most two justified secondary domains. Assign exact skills/capabilities/fallbacks and define required independent validation level/evidence before execution.
 
+Expense allocation, cost, month close, balances, postings and proportional algorithms require the executable accounting-invariants module in `one-c-erp-diagnose-core`, with sanitized raw rows, expected row IDs and observed allocation.
+
 ### Gate 4 — investigate
 Run selected domain skills plus `one-c-erp-diagnose-core`. Specialists may run in parallel only for independent read-only questions. Every output contains claim IDs, evidence references, analytic keys, assumptions, falsifiers and provenance. External executable output also carries execution identity.
+
+Before any accounting root-cause conclusion or correction design, the deterministic helper must PASS complete row coverage, explicit exclusions with Evidence IDs, totals, per-analytic reconciliation, exact shares and observed distribution plus residual. Missing rows, unknown inclusion, imbalance or observed mismatch keep the conclusion `ТРЕБУЕТ ПРОВЕРКИ`.
 
 If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep linked incident `open`/`blocked`. Never use `passed*` or another decorated status.
 
@@ -115,6 +119,8 @@ Every executable result used as evidence records unique `run_id`, current `case_
 
 Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. SonarQube remains a host execution adapter, not a marketplace companion or causal authority. Use it only after factual preflight. Never use a companion solely because installed.
 
+Build/load/activate and correction recommendations are prohibited until the arithmetic result passes and semantic Gate 7 independently validates analytic meaning. Static/CFE/build success is not that validation.
+
 ### Gate 6 — synthesize
 Apply `one-c-erp-evidence-synthesis`. Preserve support, contradictions, limitations and provenance. For each material claim require provenance closure:
 
@@ -122,14 +128,16 @@ Apply `one-c-erp-evidence-synthesis`. Preserve support, contradictions, limitati
 
 Closure is `closed | open | broken`. Preliminary root-cause `УСТАНОВЛЕНО` requires complete causal chain and closed material provenance. Gate 6 may pass when synthesis correctly concludes `ТРЕБУЕТ ПРОВЕРКИ`. A directly observed evidence limitation may be established without promoting the source value or cause.
 
+Keep accounting effect classification in the helper Evidence, not as extra top-level strict eval fields: completeness, allocation proportion, analytic key, cardinality and no-material-change. Valid completeness before and after with changed proportions requires normative/business justification.
+
 ### Gate 7 — challenge
-Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. Reviewer severity/confidence is a testable finding, not proof. Final root-cause `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7. Gate 7 passes when it correctly rejects an unsupported current-state claim.
+Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. For an accounting correction, rerun baseline and changed primary rows independently, test an alternative and counterevidence, verify predicate reachability for each claimed fact/plan field and reject duplicate use of one derived calculation. Reviewer severity/confidence is a testable finding, not proof. Final root-cause `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7. Gate 7 passes when it correctly rejects an unsupported current-state claim.
 
 ### Gate 8 — decide action
 Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action or request evidence. Do not transform missing evidence into `R3 + NO-GO`; a read-only evidence gap is normally `R0 + EVIDENCE_REQUIRED`.
 
 ### Gate 9 — validate
-Apply `one-c-erp-post-change-validation` on identical analytics. Required ladder: structural → static → metadata/runtime → functional → business/accounting. Lower levels cannot substitute for required higher levels. Analysis-only goals may mark `not_required`.
+Apply `one-c-erp-post-change-validation` on identical analytics. Required ladder: structural → static → metadata/runtime → functional → business/accounting. Lower levels cannot substitute for required higher levels. Record completeness/proportion/analytic-key/cardinality/no-material-change separately and verify movements, residual and report output. Unit share before and after with changed proportions is redistribution, not a completeness repair. Analysis-only goals may mark `not_required`.
 
 ### Gate 10 — close
 Apply `one-c-erp-final-review`. Return `Краткий вывод`, `Основание`, `Что делать дальше`, Gate 0–10 status, active graph, capability provenance, current-goal and linked-incident statuses. A completed evidence-sufficiency assessment may close while the linked incident remains blocked. Any closed current goal, including Gate-0-only inventory, requires Gate 10 `passed`; Gate 10 cannot be `not_required` in that state. Escaped findings feed earliest missed control/regression eval.
@@ -149,6 +157,7 @@ Gate statuses are `pending | passed | blocked | failed | stale | not_required`. 
 - Clean syntax/static/build cannot prove runtime, functional or business/accounting correctness.
 - Self-reported producer success is not independent validation.
 - Final root-cause `УСТАНОВЛЕНО` requires closed provenance, Gate 7, Gate 10 and a complete causal chain.
+- Accounting/proportional conclusions and actions require a PASS raw-row invariant result; build/load/activate remains blocked until semantic Gate 7 also passes.
 
 ## Companion boundary
 

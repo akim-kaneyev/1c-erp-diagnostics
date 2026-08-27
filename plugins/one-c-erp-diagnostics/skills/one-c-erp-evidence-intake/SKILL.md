@@ -48,4 +48,8 @@ Do not treat a derived table/report as proof of what the original file contained
 
 Do not infer hidden 1C fields or objects from visual similarity. For `.mxl`, do not pretend to have a universal parser; prefer a verified export to XLSX/XML/HTML/TXT plus PDF for visual control when needed.
 
+Before accepting a tabular export, record `rows_present`, `row_count`, `column_count`, redacted header preview, redacted value preview and artifact hash. Do not infer row semantics from two non-empty lines: a new visual-gate Evidence ID must explicitly confirm row view. A property tree/schema is `wrong_view/incomplete`; Gate 2 cannot pass for data-content claims. Credential-like or absolute user-machine preview values are redacted and block acceptance. Do not repeat the same export path unless the instruction changes and a new visual gate confirms the correct view.
+
+Movement snapshot, temporary-table snapshot, report and post-change result may form one chain only when their execution identities are compatible: `case_id`, current run/input Evidence and hashes, release, extension set, period and timestamps. Filename, order number or equal amount is insufficient. Persist mismatches in machine state and propagate dependent evidence/claims/Gates to `stale`.
+
 List the smallest missing evidence set required to advance a blocked conclusion.

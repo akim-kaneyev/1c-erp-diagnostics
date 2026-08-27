@@ -13,6 +13,8 @@ Required method:
 3. Compare problem/control on identical analytics.
 4. Separate source movements from close-generated movements.
 5. Prove which calculation consumes the disputed record.
-6. Validate final balances/postings, not only the close UI message.
+6. Before causal or fix conclusions, run the deterministic accounting helper over the complete sanitized raw-row manifest and observed allocation; reconcile amount/quantity and every analytic.
+7. For a proposed correction, require an independent before/after rerun and five effect flags before build/load/activate.
+8. Validate final balances/postings, not only the close UI message.
 
-Stop with `ТРЕБУЕТ ПРОВЕРКИ` if the amount is not drilled to registrar, key movements are missing, consuming mechanism is unproven, or validation only shows disappearance of an error message.
+Stop with `ТРЕБУЕТ ПРОВЕРКИ` if the amount is not drilled to registrar, key movements are missing, row coverage/arithmetic fails, consuming mechanism is unproven, or validation only shows disappearance of an error message.

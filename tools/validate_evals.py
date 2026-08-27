@@ -82,6 +82,24 @@ EXPECT_KEYS = {
     "require_complete_causal_chain",
     "required_causal_stage_evidence",
 }
+EXPECT_OPTIONAL_KEYS = {
+    "required_summary_markers",
+    "required_claim_statuses",
+    "required_claim_evidence_ids",
+}
+REQUIRED_SEMANTIC_CASE_IDS = {
+    "six-row-balanced-fallback",
+    "patch-redistributes-without-completeness-change",
+    "historical-residual-numeric-coincidence",
+    "shared-predicate-controls-fact-and-plan",
+    "identical-release-code-does-not-prove-persistent-bug",
+    "static-pass-is-not-accounting-pass",
+    "duplicate-state-identifiers",
+    "superseded-claim-propagation",
+    "property-tree-is-not-row-data",
+    "credential-exposure",
+}
+SUMMARY_MARKER = re.compile(r"(?<![A-Za-z0-9_])([a-z][a-z0-9_]*)=([^\s;]+)")
 RESULT_KEYS = {
     "schema_version",
     "case_id",
@@ -118,6 +136,10 @@ def add(errors: list[str], location: str, message: str) -> None:
     errors.append(f"{location}: {message}")
 
 
+def canonical_marker_text(markers: dict[str, Any]) -> str:
+    return "; ".join(f"{key}={value}" for key, value in markers.items())
+
+
 def configure_utf8_output() -> None:
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
@@ -134,6 +156,22 @@ def check_exact_keys(
     actual = set(value)
     missing = sorted(expected - actual)
     unexpected = sorted(actual - expected)
+    if missing:
+        add(errors, location, "missing fields: " + ", ".join(missing))
+    if unexpected:
+        add(errors, location, "unexpected fields: " + ", ".join(unexpected))
+
+
+def check_keys_with_optional(
+    value: dict[str, Any],
+    required: set[str],
+    optional: set[str],
+    errors: list[str],
+    location: str,
+) -> None:
+    actual = set(value)
+    missing = sorted(required - actual)
+    unexpected = sorted(actual - required - optional)
     if missing:
         add(errors, location, "missing fields: " + ", ".join(missing))
     if unexpected:
@@ -257,7 +295,13 @@ def validate_case(case: dict[str, Any], path: Path, errors: list[str]) -> None:
     if not isinstance(expect, dict):
         add(errors, location, "expect must be an object")
         return
-    check_exact_keys(expect, EXPECT_KEYS, errors, f"{location}.expect")
+    check_keys_with_optional(
+        expect,
+        EXPECT_KEYS,
+        EXPECT_OPTIONAL_KEYS,
+        errors,
+        f"{location}.expect",
+    )
 
     allowed_final = expect.get("allowed_final_statuses")
     if (
@@ -347,6 +391,75 @@ def validate_case(case: dict[str, Any], path: Path, errors: list[str]) -> None:
                     location,
                     f"expect causal stage {stage!r} references unknown evidence: "
                     + ", ".join(unknown),
+                )
+
+    required_markers = expect.get("required_summary_markers")
+    required_claim_statuses = expect.get("required_claim_statuses")
+    required_claim_evidence_ids = expect.get("required_claim_evidence_ids")
+    if required_markers is None:
+        if isinstance(case_id, str) and case_id in REQUIRED_SEMANTIC_CASE_IDS:
+            add(errors, location, "expect.required_summary_markers is required for this semantic regression")
+    elif not isinstance(required_markers, dict) or not required_markers:
+        add(errors, location, "expect.required_summary_markers must be a non-empty object")
+    else:
+        for key, value in required_markers.items():
+            if not isinstance(key, str) or re.fullmatch(r"[a-z][a-z0-9_]*", key) is None:
+                add(errors, location, "summary marker keys must be lower snake_case")
+            if not nonempty_text(value) or re.search(r"[\s;]", str(value)):
+                add(errors, location, f"summary marker {key!r} must have a non-empty token value")
+    if required_claim_statuses is None:
+        if isinstance(case_id, str) and case_id in REQUIRED_SEMANTIC_CASE_IDS:
+            add(errors, location, "expect.required_claim_statuses is required for this semantic regression")
+    elif not isinstance(required_claim_statuses, dict) or not required_claim_statuses:
+        add(errors, location, "expect.required_claim_statuses must be a non-empty object")
+    else:
+        if isinstance(required_markers, dict) and list(required_claim_statuses) != list(required_markers):
+            add(
+                errors,
+                location,
+                "required_claim_statuses must contain the marker keys in the same order",
+            )
+        for key, status in required_claim_statuses.items():
+            if status not in FINAL_STATUSES:
+                add(errors, location, f"required Claim status for {key!r} is invalid")
+        expected_established = sum(
+            status == "УСТАНОВЛЕНО" for status in required_claim_statuses.values()
+        )
+        if expect.get("max_established_claims") != expected_established:
+            add(
+                errors,
+                location,
+                "max_established_claims must equal the number of required established marker Claims",
+            )
+    if required_claim_evidence_ids is None:
+        if isinstance(case_id, str) and case_id in REQUIRED_SEMANTIC_CASE_IDS:
+            add(errors, location, "expect.required_claim_evidence_ids is required for this semantic regression")
+    elif not isinstance(required_claim_evidence_ids, dict) or not required_claim_evidence_ids:
+        add(errors, location, "expect.required_claim_evidence_ids must be a non-empty object")
+    else:
+        if isinstance(required_markers, dict) and list(required_claim_evidence_ids) != list(required_markers):
+            add(
+                errors,
+                location,
+                "required_claim_evidence_ids must contain the marker keys in the same order",
+            )
+        known_evidence_ids = {
+            str(item.get("id"))
+            for item in evidence
+            if isinstance(item, dict) and nonempty_text(item.get("id"))
+        }
+        for key, ids in required_claim_evidence_ids.items():
+            if not text_list(ids) or not ids:
+                add(errors, location, f"required Claim evidence for {key!r} must be a non-empty text list")
+                continue
+            if len(ids) != len(set(ids)):
+                add(errors, location, f"required Claim evidence for {key!r} must be unique")
+            unknown = sorted(set(ids) - known_evidence_ids)
+            if unknown:
+                add(
+                    errors,
+                    location,
+                    f"required Claim evidence for {key!r} is unknown: " + ", ".join(unknown),
                 )
 
 
@@ -732,8 +845,72 @@ def validate_result(
         if gates.get("10") != "passed" or current_goal != "closed":
             add(errors, location, "УСТАНОВЛЕНО requires closed goal and Gate 10 passed")
 
-    if not nonempty_text(result.get("summary")):
+    summary = result.get("summary")
+    if not nonempty_text(summary):
         add(errors, location, "summary must be non-empty text")
+    else:
+        parsed_markers: dict[str, str] = {}
+        conflicting_markers: set[str] = set()
+        for key, value in SUMMARY_MARKER.findall(str(summary)):
+            previous = parsed_markers.get(key)
+            if previous is not None and previous != value:
+                conflicting_markers.add(key)
+            parsed_markers[key] = value
+        for key in sorted(conflicting_markers):
+            add(errors, location, f"summary marker {key!r} has conflicting values")
+        required_markers = expect.get("required_summary_markers", {})
+        if isinstance(required_markers, dict):
+            for key, expected_value in required_markers.items():
+                if parsed_markers.get(key) != expected_value:
+                    add(
+                        errors,
+                        location,
+                        f"summary marker {key!r} must be {expected_value!r}",
+                    )
+            if case.get("id") in REQUIRED_SEMANTIC_CASE_IDS:
+                canonical_assertions = canonical_marker_text(required_markers)
+                if str(summary).strip() != canonical_assertions:
+                    add(
+                        errors,
+                        location,
+                        "semantic summary must contain only the canonical marker assertions",
+                    )
+                marker_items = list(required_markers.items())
+                required_claim_statuses = expect.get("required_claim_statuses", {})
+                required_claim_evidence_ids = expect.get("required_claim_evidence_ids", {})
+                if len(claims) != len(marker_items):
+                    add(
+                        errors,
+                        f"{location}.claims",
+                        "semantic result must contain exactly one Claim per marker",
+                    )
+                for index, (key, expected_value) in enumerate(marker_items):
+                    if index >= len(claims):
+                        break
+                    claim = claims[index]
+                    if not isinstance(claim, dict):
+                        continue
+                    expected_text = f"Материальный вывод: {key}={expected_value}"
+                    if str(claim.get("text", "")).strip() != expected_text:
+                        add(
+                            errors,
+                            f"{location}.claims[{index}].text",
+                            "semantic claim text must equal its single marker assertion",
+                        )
+                    expected_status = required_claim_statuses.get(key)
+                    if claim.get("status") != expected_status:
+                        add(
+                            errors,
+                            f"{location}.claims[{index}].status",
+                            f"semantic Claim for {key!r} must have status {expected_status!r}",
+                        )
+                    expected_evidence_ids = required_claim_evidence_ids.get(key)
+                    if claim.get("evidence_ids") != expected_evidence_ids:
+                        add(
+                            errors,
+                            f"{location}.claims[{index}].evidence_ids",
+                            f"semantic Claim for {key!r} must cite its required Evidence IDs",
+                        )
 
     allowed_objects = set(case.get("allowed_metadata_objects", []))
     mentioned_objects = {
@@ -796,10 +973,25 @@ def render_prompt(case: dict[str, Any]) -> str:
             "или воображаемые инструменты capabilities; верни capabilities: []."
         )
     skeleton = json.dumps(result_skeleton(case["id"]), ensure_ascii=False, indent=2)
+    required_markers = case.get("expect", {}).get("required_summary_markers", {})
+    semantic_contract = ""
+    if case.get("id") in REQUIRED_SEMANTIC_CASE_IDS and isinstance(required_markers, dict):
+        marker_names = ", ".join(required_markers)
+        semantic_contract = (
+            "\n\nДля machine-check вычисли markers: "
+            + marker_names
+            + ". Поле summary должно содержать полный набор key=value в этом порядке "
+            "через '; ' без пояснений. Создай ровно один Claim на каждый marker в том же "
+            "порядке; текст каждого Claim должен быть ровно `Материальный вывод: key=value`, "
+            "а status, evidence_ids и falsifier должны относиться к этому отдельному выводу; "
+            "ожидаемые значения не заданы и должны быть получены из входа."
+        )
     return (
         "@one-c-erp-diagnostics\n\n"
         f"Синтетический регрессионный кейс `{case['id']}`. Реальные данные отсутствуют.\n\n"
-        f"{case['prompt']}\n\n"
+        f"{case['prompt']}"
+        + semantic_contract
+        + "\n\n"
         "Исходные доказательства:\n"
         + ("\n".join(evidence_lines) if evidence_lines else "- Доказательства не предоставлены.")
         + "\n\nФактически заданные возможности:\n"

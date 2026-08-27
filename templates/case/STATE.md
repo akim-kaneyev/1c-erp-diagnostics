@@ -1,5 +1,7 @@
 # Case state
 
+The machine integrity source is `STATE.json`. Validate it with the packaged `one-c-erp-case-state/scripts/validate_case_state.py` before resume and Gate 10. This Markdown file is the human journal and must not contradict active machine IDs/statuses.
+
 ## Identity
 
 - Case ID:
@@ -36,8 +38,8 @@ Allowed dispositions: `examined | unreadable | duplicate | irrelevant_with_reaso
 
 ## Evidence ledger and derivation lineage
 
-| Evidence ID | Source | Hash/identifier | Derived from | Transformation/tool/version | Run ID | Output hash | What it proves | Limitations |
-|---|---|---|---|---|---|---|---|---|
+| Evidence ID | Lifecycle | Source | Hash/identifier | Derived from | Superseded by / invalidates | Transformation/tool/version | Run ID | Output hash | What it proves | Limitations |
+|---|---|---|---|---|---|---|---|---|---|---|
 
 For source evidence, `Derived from`, transformation and Run ID may be empty. For derived evidence they are required when materially relevant. A derived result with no traceable parent artifact cannot by itself establish a final cause.
 
@@ -45,10 +47,10 @@ For source evidence, `Derived from`, transformation and Run ID may be empty. For
 
 Use for executable Gate 5 evidence and any external tool output relied upon later.
 
-| Run ID | Case ID | Tool/version/ref | Input evidence + hashes | Started/completed | Output identifier/hash | Status | Limitations |
-|---|---|---|---|---|---|---|---|
+| Run ID | Case ID | Release / extensions / period | Tool/version/ref | Operation | Input evidence + hashes | Started/completed | Output identifier/hash | Status | Limitations |
+|---|---|---|---|---|---|---|---|---|---|
 
-If current inputs no longer match an execution record, mark dependent evidence/claims `stale` and reopen from the earliest affected gate.
+If case/input hashes/release/extensions/period no longer match the active execution identity, mark dependent runs, evidence, claims, reports and downstream Gates `stale`. Filename, order number or equal amount does not prove equivalence.
 
 ## Routing and graph
 
@@ -83,6 +85,8 @@ Validation levels: `structural | static | metadata_runtime | functional | busine
 
 Allowed gate status: `pending | passed | blocked | failed | stale | not_required`.
 
+Gate statuses must agree with the machine invalidation closure. From the earliest affected required Gate, downstream required Gates are `stale`; genuinely `not_required` Gates remain so.
+
 Do not use decorated values such as `passed*`. When a gate is outside the current goal, use `not_required` and record any unresolved linked incident separately.
 
 ## Claim ledger
@@ -91,6 +95,8 @@ Do not use decorated values such as `passed*`. When a gate is outside the curren
 |---|---|---|---|---|---|---|
 
 For a material `УСТАНОВЛЕНО` claim, `Provenance closure` must trace every material premise/causal link back to original evidence or a documented derivation chain. `open` or `broken` closure blocks final establishment.
+
+Evidence, Run, Claim and Document/report IDs are globally unique. Record `superseded_by` and `invalidates_ids` in `STATE.json`; a superseded/withdrawn claim or report cannot remain active/current. Historical documents belong only in historical references.
 
 ## Actions and rollback
 
