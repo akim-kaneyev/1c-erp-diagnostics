@@ -1,94 +1,58 @@
-# Public release checklist — v0.3.8 accounting and state integrity candidate
+# Public release checklist — v0.3.9 installed-package resource closure candidate
 
 ## Repository and plugin package
 
-- [x] Dynamic Gate 0–10 master workflow exists.
-- [x] Independent adversarial verification is mandatory for final root-cause `УСТАНОВЛЕНО`.
-- [x] 32 packaged skills cover principal 1C:ERP diagnostic/control domains.
-- [x] `R0–R3` controls protect production/accounting/access/closed-period actions.
-- [x] Every supplied material source must be accounted for before a conclusion it could falsify becomes final.
-- [x] Gate 2 distinguishes supplied-but-unexamined evidence from expected-but-missing evidence.
-- [x] Missing expected evidence blocks the affected diagnostic Gate rather than a completed evidence-intake procedure.
-- [x] Material derived evidence requires artifact anchor and derivation lineage.
-- [x] Executable evidence requires current run/case/input/tool/output identity.
-- [x] Literal `EVAL_RESULT_JSON` activates a strict one-object/no-Markdown contract.
-- [x] Strict mode requires exact skeleton fields and structured capability/claim/link/action items.
-- [x] Gate-procedure status is separated from claim proof status.
-- [x] A closed current goal requires Gate 10 `passed`.
-- [x] `УСТАНОВЛЕНО` requires Gate 7, Gate 10, a closed goal and complete six-stage causality.
-- [x] Synthetic capability output exactly matches the case-declared snapshot.
-- [x] Inventory-only, stale-execution, provenance-closure and under-evidenced profiles are explicit.
-- [x] `under-evidenced-cost` requires Gate 2 passed, Gate 4 blocked, Gate 7 passed and Gate 10 blocked.
-- [x] Under-evidenced symptom statements cannot become copied `УСТАНОВЛЕНО` claims.
-- [x] Evidence requests are string arrays; absence of an executable action requires `actions=[]`.
-- [x] Public package, skill governance, deterministic lock and full-history publication checks are mandatory.
-- [x] The accounting helper verifies exact fact/plan equality, share sum, deterministic distribution, row coverage and observed allocation without float arithmetic.
-- [x] Baseline/proposed results classify completeness, proportion, reachability, accounting-state and history effects independently.
-- [x] Accounting arithmetic cannot replace independent semantic Gate 7 or establish a 1C root cause by itself.
-- [x] Case state enforces exact entity schemas, unique cross-entity identifiers, current run/input/tool/output identity and downstream invalidation closure.
-- [x] MXL/XLSX property or drawing trees remain metadata until an explicitly bound sheet/cell view supplies primary row evidence.
-- [x] Public-tree, archive and Git-history scans reject credentials, machine paths, forbidden containers, unsafe links and forbidden path aliases.
-- [x] The validated synthetic suite contains 26 cases, including the 10 accounting/state/security regressions in this candidate.
-- [x] GitHub Actions validates Python 3.10 and 3.12.
-- [x] Approved Velis assets and independent-project trademark boundary remain unchanged.
-- [x] Plugin manifest and `pyproject.toml` declare `0.3.8`.
-- [x] v0.3.8 release notes and self-audit exist without claiming pending runtime steps as complete.
-- [x] The synchronized v0.3.8 version bump was explicitly approved and applied on the release Pull Request.
+- [x] Dynamic Gate 0–10, Gate 7, Gate 9, Gate 10 and `R0–R3` contracts remain present.
+- [x] The package contains 32 reviewed skills and the four-plugin marketplace identity is unchanged.
+- [x] Accounting, state, artifact-view and credential controls from v0.3.8 remain in the 26-case suite.
+- [x] The case-state template is bundled at `plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state/assets/STATE.json`.
+- [x] The packaged template is linked from the owning skill and reference, so normal local-link validation covers it.
+- [x] A regression requires the packaged template to exist and equal the canonical repository template.
+- [x] Public-release validation explicitly requires the packaged template.
+- [x] The deterministic skill lock covers the packaged asset.
+- [x] The self-audit and authoring standard forbid repository-root resources from satisfying installed-package dependencies.
+- [x] Plugin manifest, `pyproject.toml`, active documentation and validator expectations declare `0.3.9`.
+- [x] v0.3.9 release notes and self-audit exist without claiming pending external checks as complete.
+- [x] Confirm the final branch diff contains no unrelated files or local runtime evidence.
 
-## Unified 1C ecosystem marketplace
+## Repository validation
 
-- [x] Primary `one-c-erp-diagnostics` plugin remains local.
-- [x] Marketplace ID remains `one-c-erp-diagnostics-marketplace`.
-- [x] Marketplace contains exactly four independently installed entries.
-- [x] Unica remains pinned to `aefc880f9bab606a5c55ed11af563b740054a549` (`v0.12.0`).
-- [x] 1C Skills PowerShell remains pinned to `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
-- [x] 1C Skills Python remains pinned to `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
-- [x] Third-party sources, licenses, permissions and update boundaries remain documented.
+- [x] Pass public-package validation.
+- [x] Pass skill governance and deterministic lock validation.
+- [x] Pass full-history publication validation.
+- [x] Pass ecosystem marketplace validation.
+- [x] Pass the 26-case eval specification validator.
+- [ ] Pass all unit/regression tests on Python 3.10 and 3.12.
+- [ ] Run the system skill `quick_validate.py` in an environment with PyYAML available.
+- [ ] Confirm required protected Pull Request checks and CodeQL are green.
 
-## Runtime findings and required re-test
+## Runtime acceptance
 
-- [x] Installed v0.3.6 `capability-inventory` passed.
-- [x] Installed v0.3.6 `stale-execution-result` passed.
-- [x] Installed v0.3.6 `provenance-closure-broken` passed.
-- [x] Installed v0.3.6 `under-evidenced-cost` preserved `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`, blocked scopes, empty capabilities and incomplete causality.
-- [x] The same result reproduced official-contract failures in Gate 2/4/10, claim schema/status, requested-evidence type and action schema.
-- [x] v0.3.7 adds the exact under-evidenced semantic profile and rejected regression fixture.
-- [ ] Refresh/re-import the marketplace and confirm installed version `0.3.8` when exposed.
-- [ ] Re-run `capability-inventory` in a clean session.
-- [ ] Re-run `stale-execution-result` in a separate clean session.
-- [ ] Re-run `provenance-closure-broken` in a separate clean session.
-- [ ] Re-run `under-evidenced-cost` and validate the saved result.
-- [ ] Complete and hash all 26 clean-session results.
-- [ ] Pass `tools/validate_runtime_run.py` for exact installed v0.3.8.
-- [ ] Run and hash all 26 cases in fresh clean sessions for the exact installed v0.3.8 package.
-- [ ] Run the canonical six-row baseline and patched accounting inputs against the exact packaged helper and record helper/input/result hashes.
-- [ ] Keep accounting/state runtime acceptance blocked until the 26-case run and `tools/validate_runtime_run.py` both pass.
+- [x] Historical v0.3.8 public-install run passed all 26 cases with a valid hash manifest for merge commit `826aae46ed278e42c182c1be3e3c93cc2a53766c`.
+- [ ] Refresh/re-import the marketplace and confirm exact installed version `0.3.9` when exposed.
+- [ ] Confirm the bundled `one-c-erp-case-state/assets/STATE.json` is readable from the installed package.
+- [ ] Execute every case from `evals/suite.json` in separate clean sessions against exact installed v0.3.9.
+- [ ] Pass `tools/validate_runtime_run.py` for the complete v0.3.9 hash manifest.
+- [ ] Re-run the canonical accounting helper baseline/patch comparison and record current helper/input/result hashes.
+
+The v0.3.8 runtime run does not accept v0.3.9 because the installed package contents changed.
 
 ## GitHub identity, security and presentation
 
 - [x] Repository visibility is Public.
-- [x] README, logo, license and policy/support files are reachable publicly.
-- [x] Pull Request, linear-history and conversation-resolution controls are configured.
+- [x] README, license, policies, support files and approved Velis assets are present.
 - [x] Private vulnerability reporting is enabled.
-- [x] Dependency graph, Dependabot alerts/security updates, secret scanning and push protection are enabled.
-- [x] CodeQL default setup has previously completed successfully for GitHub Actions and Python.
-- [ ] Confirm the v0.3.8 protected PR CodeQL and required checks are green before merge.
+- [x] Dependency graph, secret scanning and push protection were confirmed for the prior release.
+- [ ] Reconfirm protected-branch rules, security settings and public URLs before publication.
 
-## Public repository and versioned release
+## Publication
 
-- [x] Public repository is live.
-- [x] Draft Pull Request #25 is open from `codex/accounting-invariants` with the approved version scope.
-- [ ] Pass Python 3.10/3.12 validation, skill governance/lock, publication-history validation, CodeQL, up-to-date-branch and resolved-conversation requirements.
-- [ ] Squash-merge the synchronized new version only through the protected `main` ruleset.
-- [ ] Verify post-merge `main` validation and CodeQL.
-
-## Global ChatGPT Plugin Directory
-
-- [ ] Use the supported ChatGPT/workspace import or publish flow.
-- [ ] Review listing metadata, skills, policies and companion requirements.
-- [ ] Publish only after supported platform review/configuration is complete.
-- [ ] Repeat clean-session acceptance on the installed public listing.
+- [ ] Open a focused protected Pull Request from the approved branch.
+- [ ] Merge only after every required repository and CodeQL check passes.
+- [ ] Create tag/release only after merged `main` is revalidated.
+- [ ] Publish or update the Plugin Directory only through the supported product flow.
+- [ ] Repeat exact-version clean-session acceptance after installation from the public distribution surface.
 
 ## Stop condition
 
-Do **not** publish or claim runtime acceptance for v0.3.8 while CI, CodeQL, publication-history or the complete 26-case clean-session runtime controls remain incomplete; if marketplace refresh/re-import fails; or if credentials, real customer/company case data, production database artifacts, personal commit email or unsafe private history are present. Repository CI, CodeQL and publication-history PASS do not substitute for exact-version runtime evidence.
+Do **not** merge, tag, release or claim v0.3.9 runtime acceptance while any critical package/resource check fails, required CI/CodeQL is incomplete, the exact installed version is not confirmed, or the complete v0.3.9 clean-session run is absent. Repository validation and historical v0.3.8 evidence do not substitute for exact-version runtime evidence.

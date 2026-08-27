@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.8"
+PLUGIN_VERSION = "0.3.9"
 
 
 def load_artifact_module():
@@ -354,6 +354,26 @@ class DynamicContractTests(unittest.TestCase):
         self.assertIn("wrong_view/incomplete", intake)
         self.assertIn("full Git history", safety)
         self.assertIn("actual package/archive", safety)
+
+    def test_case_state_template_is_packaged_and_matches_repository_template(self) -> None:
+        packaged = (
+            PLUGIN
+            / "skills"
+            / "one-c-erp-case-state"
+            / "assets"
+            / "STATE.json"
+        )
+        canonical = ROOT / "templates" / "case" / "STATE.json"
+        state_skill = (
+            PLUGIN / "skills" / "one-c-erp-case-state" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertTrue(packaged.is_file())
+        self.assertEqual(
+            json.loads(packaged.read_text(encoding="utf-8")),
+            json.loads(canonical.read_text(encoding="utf-8")),
+        )
+        self.assertIn("[bundled machine-state template](assets/STATE.json)", state_skill)
 
 
 if __name__ == "__main__":

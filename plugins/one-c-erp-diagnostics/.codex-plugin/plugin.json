@@ -1,6 +1,6 @@
 {
   "name": "one-c-erp-diagnostics",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Dynamic evidence-first orchestration and a verified companion ecosystem for 1C:ERP diagnostics, code analysis and controlled remediation.",
   "author": {
     "name": "Akim Kaneev",

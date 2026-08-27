@@ -36,5 +36,6 @@ Audit before release or public submission:
 27. machine case state rejects duplicate/global IDs and propagates supersession/invalidation through Evidence, Runs, Claims, reports and downstream Gates;
 28. MXL/property-tree metadata cannot pass as row values without the required tabular profile;
 29. secret response scans current tree, full history and the actual archive without echoing values.
+30. every local resource referenced by a packaged skill resolves inside the installable plugin boundary; repository-root fixtures cannot substitute for package contents.
 
 Report each control as `PASS | FAIL | WARNING` with exact evidence and remediation. Any critical `FAIL` blocks merge, repository publication, tag/release creation and global Plugin Directory submission.

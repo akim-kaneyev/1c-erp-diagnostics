@@ -29,6 +29,7 @@ Requirements:
 - name is unique and starts with `one-c-erp-`;
 - `description` states the concrete task and trigger context;
 - local Markdown links resolve inside the repository;
+- every runtime resource resolves inside the installable plugin directory; a repository-root template, script or reference cannot satisfy a packaged-skill dependency;
 - the skill does not declare an unavailable app, plugin, MCP server or write permission as present;
 - external discovery catalogs never become marketplace entries without the separate intake process;
 - final 1C causality remains governed by the evidence chain and Gate 7.
@@ -46,7 +47,7 @@ New or materially revised skills should use this order when applicable:
 7. `## Output format`;
 8. `## Reference files`.
 
-Existing skills are migrated gradually. Missing recommended sections are advisory warnings until a dedicated runtime-behavior release explicitly makes them mandatory. Structural errors, duplicate names, broken local links, namespace violations and lock drift fail CI immediately.
+Existing skills are migrated gradually. Missing recommended sections are advisory warnings until a dedicated runtime-behavior release explicitly makes them mandatory. Structural errors, duplicate names, broken local links, package-boundary resource escapes, namespace violations and lock drift fail CI immediately.
 
 ## Reference files
 

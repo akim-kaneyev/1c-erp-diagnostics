@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.8
+# 1C ERP Diagnostics plugin — v0.3.9
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -14,6 +14,7 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - execution identity/stale-result controls for tool and sandbox evidence;
 - deterministic raw-row accounting invariants, observed allocation reconciliation and before/after effect classification;
 - machine-readable case-state uniqueness, reference and invalidation-closure validation;
+- a bundled machine-state template whose package path and canonical content are release-tested;
 - evidence synthesis, contradiction handling and adversarial verification;
 - strict `EVAL_RESULT_JSON` output with exact schema/risk/decision/Gate semantics;
 - deterministic synthetic capability snapshots and scoped current-goal/linked-incident closure;
@@ -65,4 +66,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for v0.3.8 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. Repository validation, CodeQL and publication-history checks remain separate evidence.
+Runtime acceptance for v0.3.9 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. The v0.3.8 runtime result is historical evidence and does not accept the changed package.

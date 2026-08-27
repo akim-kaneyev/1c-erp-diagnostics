@@ -1,4 +1,4 @@
-# Plugin smoke test — v0.3.8
+# Plugin smoke test — v0.3.9
 
 Run these tests after each public-candidate update and after refreshing the installed marketplace.
 
@@ -124,7 +124,7 @@ Expected: source/tool/analysis/run provenance is captured; no token retention; a
 
 ## Release acceptance
 
-Record actual results after installing version `0.3.8`. Any invented capability, deviation from the synthetic capability snapshot, capability item with `evidence_id` instead of `simulated`, capability status promoted into a claim, unsupported root-cause `УСТАНОВЛЕНО`, closed goal without Gate 10 passed, broken material provenance accepted as source/cause proof, stale execution result accepted as current, schema-invalid strict result, wrong action risk/decision/scope status, non-canonical Gate status, leaked credential or unapproved R2/R3 execution blocks runtime acceptance.
+Record actual results after installing version `0.3.9`. Any invented capability, deviation from the synthetic capability snapshot, capability item with `evidence_id` instead of `simulated`, capability status promoted into a claim, unsupported root-cause `УСТАНОВЛЕНО`, closed goal without Gate 10 passed, broken material provenance accepted as source/cause proof, stale execution result accepted as current, schema-invalid strict result, wrong action risk/decision/scope status, non-canonical Gate status, leaked credential or unapproved R2/R3 execution blocks runtime acceptance.
 
 The executable superset is `evals/suite.json` (26 synthetic cases):
 
@@ -139,4 +139,4 @@ Repository publication integrity is tested separately:
 python tools/validate_publication_history.py
 ```
 
-Until a complete installed v0.3.8 26-case clean-session run passes, runtime acceptance remains **BLOCKED** even if repository CI is green.
+Until a complete installed v0.3.9 26-case clean-session run passes, runtime acceptance remains **BLOCKED** even if repository CI is green.

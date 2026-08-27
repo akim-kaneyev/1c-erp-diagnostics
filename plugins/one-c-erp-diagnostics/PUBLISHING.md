@@ -6,6 +6,7 @@
 - author/homepage/repository/license/interface/policy URLs are valid;
 - `composerIcon`, `logo` and `logoDark` exist and pass PNG CRC validation;
 - at least 32 packaged skills are present, including local static-analysis and dynamic-control skills;
+- every packaged skill resource is present inside the installable plugin boundary and all local links resolve there;
 - public-package, skill-governance/lock, publication-history and ecosystem-marketplace validators pass;
 - regression tests pass on Python 3.10 and 3.12;
 - CodeQL results are present for the release Pull Request;
@@ -52,7 +53,7 @@
 ## Clean-session smoke tests
 
 1. marketplace refresh/re-import shows all four plugins;
-2. 1C ERP Diagnostics `0.3.8` and the approved Velis icon render in GitHub and the plugin selector, or runtime explicitly reports `version not exposed` if version metadata is unavailable;
+2. 1C ERP Diagnostics `0.3.9` and the approved Velis icon render in GitHub and the plugin selector, or runtime explicitly reports `version not exposed` if version metadata is unavailable;
 3. the exact rendered `capability-inventory` result passes `tools/validate_evals.py` with `final_status=ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `NO_ACTION`, current goal closed, linked incident not in scope, Gate 0/10 passed and Gates 1–9 not required;
 4. capability-inventory preserves the supplied row order, emits exactly `{name,status,simulated:false}`, uses `E-CAP-1` only in `evidence_ids_used`, and returns empty claims/causal links/requested evidence/actions;
 5. Gate 0 reports actual companion availability outside synthetic snapshots without treating public-plugin resolver failure as proof that the selected skills-first custom-marketplace plugin is uninstalled;
@@ -67,10 +68,10 @@
 14. a static finding without runtime and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7;
 15. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, linked incident blocked, Gate 5 stale, Gate 7 passed, Gate 10 blocked, empty capabilities, exact claims, incomplete causality and empty actions;
 16. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with current goal closed, linked incident blocked, Gate 2/6/7/8/10 passed, empty capabilities, at most one directly established missing-lineage fact, source/root-cause claims below established, incomplete causality and empty actions;
-17. the complete 26-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.8`;
+17. the complete 26-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.9`;
 18. the canonical six-row baseline and fallback-zero comparison are rerun against the exact packaged helper with recorded helper/input/result hashes.
 
-Version 0.3.8 contains the accounting/state controls and the 26-case suite. It cannot be described as runtime-accepted or published as an accepted release until that exact installed package passes all 26 cases in fresh clean sessions.
+Version 0.3.9 contains the v0.3.8 accounting/state controls, the 26-case suite and package-resource closure. It cannot be described as runtime-accepted or published as an accepted release until that exact installed package passes all 26 cases in fresh clean sessions.
 
 ## Repository publication
 

@@ -135,6 +135,24 @@ class SkillGovernanceTests(unittest.TestCase):
             VALIDATE.validate_skill_inventory(root, report)
             self.assertTrue(any("Broken local link" in item and "guide.md" in item for item in report.errors))
 
+    def test_packaged_link_cannot_escape_installable_plugin_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_dir = root / "plugins/one-c-erp-diagnostics/skills/one-c-erp-a"
+            write(root / "templates/case/STATE.json", "{}\n")
+            write(
+                skill_dir / "SKILL.md",
+                skill_text(
+                    "one-c-erp-a",
+                    "[repository-only template](../../../../templates/case/STATE.json)",
+                ),
+            )
+            report = VALIDATE.ValidationReport()
+            VALIDATE.validate_skill_inventory(root, report)
+            self.assertTrue(
+                any("escapes installable plugin boundary" in item for item in report.errors)
+            )
+
     def test_discovery_sources_cannot_enter_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
