@@ -41,6 +41,20 @@ No known critical control remains failed in the local candidate. External CI/Cod
 | 29 | PASS | Security validators scan current tree, reachable history and actual archive with redacted output. | None. |
 | 30 | PASS | `one-c-erp-case-state/assets/STATE.json`, validated links, public-release requirement and equality regression close the installable package boundary. | Preserve this control for every future packaged resource. |
 
+## Local revalidation after PyYAML repair
+
+The previously missing environment dependency was repaired only in the Codex bundled runtime `%USERPROFILE%\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe`.
+
+| Check | Factual result |
+|---|---|
+| Runtime before repair | Python `3.12.13`; pip `26.2.1`; `import yaml` failed with `ModuleNotFoundError`. |
+| Dependency repair | `PyYAML 6.0.3` was installed through that exact interpreter with `python -m pip`; the subsequent import succeeded from the same runtime. |
+| System skill validator | `skill-creator/scripts/quick_validate.py plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state` returned `Skill is valid!`, exit `0`. |
+| Project validators | compileall, public release, skill governance, deterministic lock, publication history, ecosystem marketplace and eval-suite validators returned exit `0`; `pip check` reported no broken requirements. Skill governance retained `256` advisory `missing_heading` warnings. |
+| Regression tests | The unrestricted rerun completed `145` tests in `11.064s`: `OK`, exit `0`. The earlier sandboxed attempt produced only temporary-directory permission errors and is classified as an environment failure, not a candidate test failure. |
+| Package-resource closure | A `git archive HEAD` of the installable plugin contained `one-c-erp-case-state/assets/STATE.json`; the packaged and canonical templates resolve to the same committed blob `bfc44bbdd8421c1f9cb96fe0894d57471cb6e08a`. Normalized checkout content is equal; raw working-tree SHA differences are line-ending conversion only. |
+| Git state before this evidence-only update | Branch `codex/package-resource-closure-v0.3.9`, HEAD `c26868e9092cc2779c3bb3998931af7d048e0e55`; worktree/index clean; candidate and worktree `git diff --check` passed. |
+
 ## Decision
 
 Repository candidate: **PASS with two external warnings**. Merge/publication/runtime-acceptance decision: **BLOCKED** until the focused Pull Request checks and exact installed-v0.3.9 clean-session run exist.
