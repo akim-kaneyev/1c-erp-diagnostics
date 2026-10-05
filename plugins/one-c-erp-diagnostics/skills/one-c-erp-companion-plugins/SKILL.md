@@ -1,6 +1,6 @@
 ---
 name: one-c-erp-companion-plugins
-description: Safely coordinate the verified 1C companion ecosystem—Unica and 1C Skills—plus host-managed document, repository, UI and sandbox capabilities without fabricating availability or dependencies.
+description: Safely coordinate the verified 1C companion ecosystem—Unica, 1C Skills and optional Jev—plus host-managed document, repository, UI and sandbox capabilities without fabricating availability or dependencies.
 ---
 
 # Verified companion coordination
@@ -11,9 +11,10 @@ Use only after Gate 0 confirms actual installation, permissions and runtime avai
 
 The ecosystem marketplace exposes these independently maintained plugins:
 
-- `unica` — Unica `0.12.0`, source `IngvarConsulting/unica-marketplace`, immutable ref `aefc880f9bab606a5c55ed11af563b740054a549` (release tag `v0.12.0`).
+- `unica` — Unica `0.12.3`, source `IngvarConsulting/unica-marketplace`, immutable ref `c02e38d44a7dc238310172b9d790487f81aa4fb4` (release tag `v0.12.3`).
 - `1c-skills` — 1C Skills PowerShell, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
 - `1c-skills-py` — 1C Skills Python, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
+- `jev-browser-use` — Jev browser action planner `0.1.0`, source `wy-coliney/jev-browser-use`, immutable ref `cf7e76607d4ec70592b24becadd0296dcda8177a`.
 
 They are offered from one marketplace but remain separate plugins with their own licenses, permissions, updates and confirmation rules. Never claim that their implementation is embedded in `one-c-erp-diagnostics`.
 
@@ -22,6 +23,7 @@ They are offered from one marketplace but remain separate plugins with their own
 - **Unica (`unica`)** — metadata/BSL navigation, development workflows, controlled build/test operations and implementation review. A code finding is not an accounting root cause until linked to the exact document/movement/register chain.
 - **1C Skills PowerShell (`1c-skills`)** — Windows-first XML/configurator/web-client tooling, MXL/СКД/form/report operations and controlled 1C automation. Default to read-only inspection; any base-changing operation is `R3` unless proven otherwise.
 - **1C Skills Python (`1c-skills-py`)** — cross-platform XML/configuration artifact parsing, deterministic comparison and controlled automation.
+- **Jev (`jev-browser-use`)** — optional navigation/click/toggle/scroll planning for an authorized CUA-controlled browser. It does not type, interpret 1C semantics or verify its own result. Treat it as `confirmation_required` until the external provider, page-data transfer, origin allowlist and runtime are explicitly accepted. Do not use it for the deterministic Infoblog index search.
 - **PDF / Spreadsheets / Documents** — artifact extraction and structured comparison.
 - **GitHub / Drive** — retrieval only when the user has identified the source and has access.
 - **Computer Use** — observation or explicitly approved UI interaction; production-changing operations require the applicable risk gate.
@@ -57,6 +59,6 @@ When companion outputs disagree:
 
 ## Boundary
 
-External plugins and host adapters are invoked, not copied. Their runtime availability is host-managed. The marketplace entry makes the three canonical companion plugins discoverable from one source; it does not include SonarQube or bypass installation, permissions, authentication or action confirmation.
+External plugins and host adapters are invoked, not copied. Their runtime availability is host-managed. The marketplace entry makes the four canonical companion plugins discoverable from one source; it does not include SonarQube or bypass installation, permissions, authentication, external-provider disclosure or action confirmation.
 
 A missing companion triggers a documented fallback or `blocked`, never a simulated result.

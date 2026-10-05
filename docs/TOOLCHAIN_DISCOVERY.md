@@ -69,12 +69,14 @@ A candidate becomes a runtime adapter or marketplace companion only after:
 
 ## Current integration decision
 
-The reviewed sources add governance and discovery, not new runtime breadth:
+The reviewed sources establish the following bounded runtime additions without turning the project into a generic catalog:
 
-- marketplace composition remains exactly `one-c-erp-diagnostics`, `unica`, `1c-skills`, `1c-skills-py`;
+- marketplace composition is exactly `one-c-erp-diagnostics`, `unica`, `1c-skills`, `1c-skills-py`, `jev-browser-use`;
+- Jev is an optional immutable-pinned mechanical browser companion with explicit CUA/provider/data-transfer constraints, not a semantic verifier;
+- Infoblog search is a packaged fixed-origin metadata bridge, not a marketplace plugin, official source or article corpus;
 - no RampStack marketing/web skill is packaged;
 - no StackTechnologies1C content or image is vendored;
-- no new MCP server, backend, credential or production write is introduced;
+- no new MCP server, developer backend or production write is introduced; Jev provider credentials remain external to this repository;
 - existing Gate 0, evidence, provenance, execution-identity and `R0–R3` controls remain authoritative.
 
 This boundary prevents routing ambiguity while allowing the project to learn from broader engineering practice.

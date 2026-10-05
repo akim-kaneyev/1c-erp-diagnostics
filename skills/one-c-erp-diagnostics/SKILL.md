@@ -80,7 +80,7 @@ complete.
 
 ## Gate 0 — Capability and state discovery
 
-Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`; marketplace presence does not prove installation. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only. In synthetic evals, the case-supplied capability snapshot is authoritative; do not invent capabilities from analysis roles or packaged skills.
+Resume prior valid state. Inventory only capabilities actually exposed and classify each `available`, `confirmation_required`, `unavailable` or `prohibited`. Canonical companions are `unica`, `1c-skills`, `1c-skills-py`, `jev-browser-use`; marketplace presence does not prove installation. Keep Jev `confirmation_required` until CUA/runtime availability, the external provider/data destination, permitted origin and consent are established. Discover `sonarqube-bsl-local` separately through factual loopback/scanner preflight when local execution exists. Model/provider identity is provenance only. In synthetic evals, the case-supplied capability snapshot is authoritative; do not invent capabilities from analysis roles or packaged skills.
 
 ## Non-negotiable evidence rules
 
@@ -117,8 +117,10 @@ Separate facts, interpretations and hypotheses; compare good/bad or before/after
 
 Run complete raw-row arithmetic first: expected row IDs, explicit exclusions with Evidence IDs, amount/quantity totals, per-analytic reconciliation, exact shares and observed allocation plus residual.
 
+Use `one-c-erp-incident-search` only for generic metadata leads from the fixed Infoblog index. The query stays local, explicit offline cache is stale, and results never establish current official behavior or the case cause by themselves.
+
 ## Gate 5 — Execution / sandbox decision
-Use executable validation only when it adds value. Use sanitized minimum data, no production `.dt` or plaintext secrets. Every relied-upon run records `run_id`, `case_id`, input Evidence IDs/hashes or stable identifiers, tool/version/ref, operation, timestamps when exposed, output hash/identifier, status and limitations.
+Use executable validation only when it adds value. Use sanitized minimum data, no production `.dt` or plaintext secrets. Jev is optional mechanical browser action planning, not a semantic verifier; do not use it to bypass fixed-origin search controls or supply text. Every relied-upon run records `run_id`, `case_id`, input Evidence IDs/hashes or stable identifiers, tool/version/ref, operation, timestamps when exposed, output hash/identifier, status and limitations.
 
 Before reuse, compare run identity with current inputs. Changed/mismatched input makes the result `stale` until rerun or deterministic equivalence is proven. If execution is required but unavailable: `blocked`; if unnecessary: `not_required`. Do not build, load, activate or recommend an accounting correction before arithmetic PASS and semantic Gate 7.
 

@@ -1,6 +1,6 @@
 ---
 name: one-c-erp-diagnostics
-description: Single dynamic entrypoint for evidence-first Gate 0-10 orchestration across 1C:ERP data, code, releases, a verified Unica/1C Skills ecosystem and controlled actions.
+description: Single dynamic entrypoint for evidence-first Gate 0-10 orchestration across 1C:ERP data, code, releases, a verified Unica/1C Skills/Jev ecosystem and controlled actions.
 ---
 
 # Master orchestrator
@@ -86,8 +86,9 @@ Check these canonical companions by exact name during Gate 0:
 - `unica` — Unica developer workflows;
 - `1c-skills` — 1C Skills PowerShell;
 - `1c-skills-py` — 1C Skills Python.
+- `jev-browser-use` — optional mechanical browser action planning.
 
-Marketplace presence does not prove installation or runtime availability.
+Marketplace presence does not prove installation or runtime availability. Jev remains `confirmation_required` until its CUA runtime, external model provider, page-data transfer, origin allowlist and user consent are established.
 
 ## Runtime sequence
 
@@ -113,11 +114,11 @@ Before any accounting root-cause conclusion or correction design, the determinis
 If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep linked incident `open`/`blocked`. Never use `passed*` or another decorated status.
 
 ### Gate 5 — execute when justified
-Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution`, `one-c-erp-local-static-analysis` when SonarQube is justified, and `one-c-erp-risk-control`.
+Apply `one-c-erp-companion-plugins`, `one-c-erp-sandbox-execution`, `one-c-erp-local-static-analysis` when SonarQube is justified, and `one-c-erp-risk-control`. Apply `one-c-erp-incident-search` only for generic metadata leads from the fixed Infoblog index; never treat a title/link as current official or case-causal evidence.
 
 Every executable result used as evidence records unique `run_id`, current `case_id`, input evidence identities/hashes, tool/version/ref, operation without secrets, timestamps when exposed, output identifier/hash, status and limitations. Reject or reopen stale results when case/input identity changed unless deterministic equivalence is proven. In a strict eval, report the Gate itself as `stale` when the requested current conclusion depends on such mismatched execution evidence.
 
-Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. SonarQube remains a host execution adapter, not a marketplace companion or causal authority. Use it only after factual preflight. Never use a companion solely because installed.
+Prefer supported Python/PowerShell/Unica adapters according to confirmed prerequisites. SonarQube remains a host execution adapter, not a marketplace companion or causal authority. Jev is limited to reviewed mechanical browser actions and requires independent post-action verification; do not use it for deterministic index search or text input. Never use a companion solely because installed.
 
 Build/load/activate and correction recommendations are prohibited until the arithmetic result passes and semantic Gate 7 independently validates analytic meaning. Static/CFE/build success is not that validation.
 
@@ -161,4 +162,4 @@ Gate statuses are `pending | passed | blocked | failed | stale | not_required`. 
 
 ## Companion boundary
 
-Unica, 1C Skills, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use, OpenSandbox and local SonarQube are optional runtime capabilities. External implementations are invoked, not copied. Missing required capability becomes fallback or `blocked` only after documented discovery.
+Unica, 1C Skills, Jev, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use, OpenSandbox and local SonarQube are optional runtime capabilities. External implementations are invoked, not copied. Missing required capability becomes fallback or `blocked` only after documented discovery.

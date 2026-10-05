@@ -2,9 +2,9 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.9 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.10 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
-The marketplace also references independently maintained companion plugins such as Unica and 1C Skills. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
+The marketplace also references independently maintained companion plugins such as Unica, 1C Skills and Jev. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
 ## Data handling
 
@@ -34,11 +34,15 @@ Version 0.3.8 adds bounded fail-closed scanning of spreadsheet/ZIP metadata, pac
 
 Version 0.3.9 bundles only the synthetic empty case-state template required by the skill. It adds no customer data, service, telemetry or external transmission path.
 
+Version 0.3.10 adds an explicit public-index request to Infoblog. The bridge sends a fixed HTTPS GET for `data/search.json`; the user's query is evaluated locally and is not included in the request URL or headers. An optional cache is created only at a user-selected path and records source validators, timestamps and a payload hash. Offline cache results are marked stale and are not silently substituted after a network error.
+
 ## Companion plugins and connected tools
 
 Installing the ecosystem marketplace does not silently install or enable every companion. Each plugin remains independently installed and permissioned. Gate 0 records what is actually available in the current session; marketplace presence is not treated as runtime availability.
 
-When Unica, 1C Skills, GitHub, Google Drive, Computer Use or another connected capability is used, its own permissions and provider policies apply. The project cannot override host confirmations or source-system access controls.
+When Unica, 1C Skills, Jev, GitHub, Google Drive, Computer Use or another connected capability is used, its own permissions and provider policies apply. The project cannot override host confirmations or source-system access controls.
+
+Jev uses a separately configured model provider to plan browser actions. Depending on that configuration, the goal, accessibility snapshot of the current page and action history may be sent to the external provider. Do not install or invoke Jev until that destination, its retention terms, the permitted origin and the absence of unnecessary case data are acceptable. Jev is optional and is not used by the deterministic Infoblog bridge.
 
 ## SonarQube
 

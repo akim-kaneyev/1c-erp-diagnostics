@@ -13,3 +13,7 @@ The project visual identity is original mascot artwork featuring a white dog, di
 The project-specific skill-governance implementation was informed by general patterns reviewed in `rampstackco/claude-skills` at commit `0479242522549dfdb389bb9b7807ad4d6016ffb7` (MIT, Copyright (c) 2026 RampStack Co.). The external skill catalog, private lint inputs and implementation are not vendored.
 
 The 1C toolchain candidate map references `Oxotka/StackTechnologies1C` at commit `82a7b4c16f0dab0264ddd664b741019ce60aba81` (MIT, Copyright (c) 2025 Aripov Nikita) and the Infostart article `Современный инструментарий 1Сника`. Their article text, images and repository content are not copied into this project.
+
+The optional marketplace companion `wy-coliney/jev-browser-use` is referenced at commit `cf7e76607d4ec70592b24becadd0296dcda8177a` under its MIT license. Its source is not copied into this project.
+
+The Infoblog public search index is queried only for metadata and links. Article bodies and site assets are not copied or relicensed.

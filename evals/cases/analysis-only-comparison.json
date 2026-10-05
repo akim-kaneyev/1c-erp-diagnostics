@@ -6,7 +6,7 @@
   "controls": ["analysis_only", "scoped_closure", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Сравни два синтетических экспорта по K-06 и зафиксируй только наблюдаемое различие. Изменений и диагностики первопричины нет в области задачи. EVAL_RESULT_JSON",
+  "prompt": "Сравни два синтетических экспорта по K-06 и зафиксируй только одно наблюдаемое различие: значение left_export, значение right_export и разницу. Это bounded read-only comparison; изменений и диагностики первопричины нет в области задачи. Закрой текущую цель как closed, linked incident оставь not_in_scope, выполни Gates 4 и 8, а Gate 10 заверши passed; Gate 9 — not_required. Общий final status оставь ТРЕБУЕТ ПРОВЕРКИ, потому что установлен только наблюдаемый факт и causal chain неполна. Верни capabilities: [], ровно один Claim со статусом УСТАНОВЛЕНО и Evidence E-CMP-1/E-CMP-2, без root-cause утверждения, без actions и без requested evidence. Для этого кейса разрешён ровно один установленный Claim: max_established_claims = 1. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-CMP-1",
@@ -31,7 +31,7 @@
     "required_decision": "NO_ACTION",
     "allowed_current_goal_statuses": ["closed"],
     "allowed_linked_incident_statuses": ["not_in_scope"],
-    "max_established_claims": 0,
+    "max_established_claims": 1,
     "min_claims": 1,
     "min_actions": 0,
     "min_requested_evidence": 0,

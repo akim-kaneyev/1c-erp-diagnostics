@@ -115,7 +115,7 @@ not merely to complete a bounded evidence-sufficiency assessment.
 
 1. Read `AGENTS.md`, `docs/ECOSYSTEM_MARKETPLACE.md` and existing `STATE.md`.
 2. Inventory only capabilities actually exposed in the current host/session.
-3. Check the canonical marketplace companions by exact identity: `unica`, `1c-skills`, `1c-skills-py`.
+3. Check the canonical marketplace companions by exact identity: `unica`, `1c-skills`, `1c-skills-py`, `jev-browser-use`.
 4. Inventory relevant host capabilities such as PDF, Spreadsheets, Documents, GitHub, Drive, Computer Use, OpenSandbox and optional `sonarqube-bsl-local`. For SonarQube, do not classify from named-tool inventory: when local execution and loopback HTTP exist, apply `one-c-erp-local-static-analysis` and run its read-only server/scanner preflight.
 5. Classify each capability as `available`, `confirmation_required`, `unavailable` or `prohibited`.
 6. Record version/ref when exposed, permissions, write-risk, provenance and exact purpose. Model/provider identity is provenance only.
@@ -124,6 +124,8 @@ not merely to complete a bounded evidence-sufficiency assessment.
 A capability is a host-visible external/plugin/tool surface. Internal reasoning operations, packaged skills and review/synthesis roles are not capabilities. In a synthetic eval, the case-supplied capability snapshot is authoritative; report exactly those entries and use an empty array when none are declared.
 
 Marketplace presence does not prove runtime availability. A failed public-plugin/dependency resolver lookup does not prove that a selected skills-first custom-marketplace plugin is uninstalled; report only what that resolver actually established. Missing required capability becomes documented fallback or `blocked`, never simulated output. A Gate 0 inventory can pass even when optional capabilities are unavailable, provided their status and consequences are recorded honestly.
+
+`jev-browser-use` is optional. Keep it `confirmation_required` until Node.js/CUA availability, the configured external model provider, page-data transfer, origin allowlist and user consent are established. It may propose only its reviewed mechanical browser actions; Codex still supplies text, semantic interpretation and post-action verification.
 
 ## Gate 1 — Goal contract
 
@@ -157,6 +159,8 @@ Each specialist separates facts, interpretations, hypotheses and missing evidenc
 
 The earliest proven divergence matters more than the last visible symptom. Code/tool findings remain hypotheses until linked to the factual case chain.
 
+When a public practical incident may add a useful hypothesis, apply `one-c-erp-incident-search` with generic terms. Its fixed-origin Infoblog index results are metadata-only untrusted leads. The query stays local, explicit offline cache is stale, and no result establishes current site content, an official mechanism or the case cause by itself.
+
 For every external companion output record canonical identity, assigned operation, evidence inputs, version/ref, execution identity when applicable, output location/hash, limitations and whether another method reproduced the material result.
 
 For an accounting/proportional case, run the deterministic helper over complete raw rows before a root-cause claim or correction design. It must PASS expected row coverage, explicit inclusion/exclusion evidence, amount and quantity totals, per-analytic reconciliation, exact shares, observed allocation plus residual, and formula trace. A missing row, unknown inclusion, arithmetic imbalance or observed-vs-calculated mismatch keeps the cause `ТРЕБУЕТ ПРОВЕРКИ`.
@@ -165,7 +169,7 @@ If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the
 
 ## Gate 5 — Executable validation and sandbox decision
 
-Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs.
+Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime, optional Jev, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs. Do not use Jev to bypass fixed-origin search controls or as independent verification of a browser action.
 
 Every executable result relied on later must have an execution identity: unique `run_id`, current `case_id`, input Evidence IDs and hashes/stable identifiers, tool/runtime version/ref, operation without secrets, timestamps when exposed, output hash/identifier, status and limitations.
 

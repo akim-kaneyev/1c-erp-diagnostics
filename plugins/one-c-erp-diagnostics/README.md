@@ -1,4 +1,4 @@
-# 1C ERP Diagnostics plugin — v0.3.9
+# 1C ERP Diagnostics plugin — v0.3.10
 
 A single dynamic entrypoint for ChatGPT and Codex:
 
@@ -8,7 +8,7 @@ A single dynamic entrypoint for ChatGPT and Codex:
 ## What is bundled in the primary plugin
 
 - Gate 0–10 master orchestration;
-- 32 packaged 1C:ERP and control skills;
+- 33 packaged 1C:ERP and control skills;
 - capability discovery and bounded dynamic planning;
 - evidence coverage, artifact derivation lineage and provenance closure;
 - execution identity/stale-result controls for tool and sandbox evidence;
@@ -24,23 +24,25 @@ A single dynamic entrypoint for ChatGPT and Codex:
 - property-tree versus row-data controls and credential-incident tree/history/archive scanning;
 - deterministic Python helpers and publication-integrity validation;
 - optional `sonarqube-bsl-local` discovery, safe scan and evidence-provenance contract;
+- fixed-origin Infoblog metadata search with provenance and explicit stale-cache state;
 - approved Velis mascot assets for the composer, plugin card and dark surfaces.
 
 The artwork is an original white-dog mascot identity with one Velis collar medallion and does not reproduce the corporate 1C graphic logo. Product references are descriptive; the project is independent from 1C Company and OpenAI.
 
 ## What is exposed by the ecosystem marketplace
 
-The repository marketplace also references three independently maintained companions:
+The repository marketplace also references four independently maintained companions:
 
-- `unica` — Unica `0.12.0` from `IngvarConsulting/unica-marketplace@v0.12.0`;
+- `unica` — Unica `0.12.3` from `IngvarConsulting/unica-marketplace@v0.12.3`;
 - `1c-skills` — PowerShell runtime pinned to immutable ref `8cb7868145281d8e353831512cc1ffa72f1b5c89`;
 - `1c-skills-py` — Python runtime pinned to immutable ref `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
+- `jev-browser-use` — optional browser action planner `0.1.0` pinned to immutable ref `cf7e76607d4ec70592b24becadd0296dcda8177a`.
 
 They remain separate plugins. They are not silently installed, copied, relicensed or granted permissions by `one-c-erp-diagnostics`.
 
 ## Runtime coordination
 
-Gate 0 records whether Unica, 1C Skills, document tools, GitHub/Drive, Computer Use, OpenSandbox and local SonarQube are actually available and permitted. Missing capabilities become fallback or `blocked`, never simulated. A public global-plugin/dependency resolver miss is not by itself proof that the currently selected skills-first custom-marketplace plugin is absent.
+Gate 0 records whether Unica, 1C Skills, Jev, document tools, GitHub/Drive, Computer Use, OpenSandbox and local SonarQube are actually available and permitted. Jev additionally requires explicit external-provider/data-transfer review and post-action verification. Missing capabilities become fallback or `blocked`, never simulated. A public global-plugin/dependency resolver miss is not by itself proof that the currently selected skills-first custom-marketplace plugin is absent.
 
 In synthetic `EVAL_RESULT_JSON` cases, the case capability snapshot is authoritative. Internal reasoning steps, packaged skills and reviewer/synthesis roles are not host capabilities. If the synthetic case declares none, the result must contain `capabilities: []`.
 
@@ -66,4 +68,4 @@ Do not include production `.dt`, plaintext credentials, full confidential databa
 
 The release process separately checks the current public tree, full Git history and archive identity; removing a sensitive file from HEAD alone is not treated as sufficient cleanup.
 
-Runtime acceptance for v0.3.9 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. The v0.3.8 runtime result is historical evidence and does not accept the changed package.
+Runtime acceptance for v0.3.10 remains blocked until the exact installed package completes all 26 cases in fresh clean sessions and the complete hashed run passes `tools/validate_runtime_run.py`. The v0.3.8 runtime result is historical evidence and does not accept the changed package.

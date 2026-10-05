@@ -13,15 +13,21 @@ MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 MANIFEST = ROOT / "plugins" / "one-c-erp-diagnostics" / ".codex-plugin" / "plugin.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.3.9"
-EXPECTED_ORDER = ["one-c-erp-diagnostics", "unica", "1c-skills", "1c-skills-py"]
+EXPECTED_VERSION = "0.3.10"
+EXPECTED_ORDER = [
+    "one-c-erp-diagnostics",
+    "unica",
+    "1c-skills",
+    "1c-skills-py",
+    "jev-browser-use",
+]
 EXPECTED_SOURCES = {
     "one-c-erp-diagnostics": {"source": "local", "path": "./plugins/one-c-erp-diagnostics"},
     "unica": {
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "sha": "aefc880f9bab606a5c55ed11af563b740054a549",
+        "sha": "c02e38d44a7dc238310172b9d790487f81aa4fb4",
     },
     "1c-skills": {
         "source": "url",
@@ -32,6 +38,11 @@ EXPECTED_SOURCES = {
         "source": "url",
         "url": "https://github.com/Nikolay-Shirokov/cc-1c-skills.git",
         "sha": "c1f79f5ac9f31c620b8508f75464f8c42c559ae4",
+    },
+    "jev-browser-use": {
+        "source": "url",
+        "url": "https://github.com/wy-coliney/jev-browser-use.git",
+        "sha": "cf7e76607d4ec70592b24becadd0296dcda8177a",
     },
 }
 REQUIRED_FILES = [
@@ -97,7 +108,7 @@ def main() -> int:
         if policy.get("authentication") != "ON_INSTALL":
             errors.append(f"{name} must declare ON_INSTALL authentication timing")
 
-    for name in ("unica", "1c-skills", "1c-skills-py"):
+    for name in ("unica", "1c-skills", "1c-skills-py", "jev-browser-use"):
         source = by_name.get(name, {}).get("source") or {}
         sha = source.get("sha", "")
         if not SHA40.fullmatch(sha):

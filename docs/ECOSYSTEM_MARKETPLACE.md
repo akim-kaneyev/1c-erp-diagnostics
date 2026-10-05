@@ -9,9 +9,10 @@ The marketplace contains:
 | Plugin | Role | Source/SHA | License |
 |---|---|---|---|
 | `one-c-erp-diagnostics` | Evidence-first Gate 0–10 orchestration for 1C:ERP incidents | this repository, local package | MIT |
-| `unica` | 1C developer workflows, BSL/metadata investigation and controlled build/test capabilities | `IngvarConsulting/unica-marketplace`, SHA `aefc880f9bab606a5c55ed11af563b740054a549` (release tag `v0.12.0`), path `plugins/unica` | LGPL-3.0-or-later |
+| `unica` | 1C developer workflows, BSL/metadata investigation and controlled build/test capabilities | `IngvarConsulting/unica-marketplace`, SHA `c02e38d44a7dc238310172b9d790487f81aa4fb4` (release tag `v0.12.3`), path `plugins/unica` | LGPL-3.0-or-later |
 | `1c-skills` | Windows-first PowerShell tooling for 1C artifacts, configurator and web-client workflows | `Nikolay-Shirokov/cc-1c-skills`, SHA `8cb7868145281d8e353831512cc1ffa72f1b5c89` | MIT |
 | `1c-skills-py` | Cross-platform Python tooling for 1C artifacts and automation | `Nikolay-Shirokov/cc-1c-skills`, SHA `c1f79f5ac9f31c620b8508f75464f8c42c559ae4` | MIT |
+| `jev-browser-use` | Optional mechanical browser navigation/click/scroll planning through Codex CUA; no typing or independent semantic verification | `wy-coliney/jev-browser-use`, SHA `cf7e76607d4ec70592b24becadd0296dcda8177a`, manifest version `0.1.0` | MIT |
 
 ## Stable marketplace identity
 
@@ -53,7 +54,9 @@ Git ref: main
 Selective paths: empty
 ```
 
-The marketplace should show four independently installable plugins. Install `1C ERP Diagnostics` as the primary entrypoint. Install Unica and one or both 1C Skills runtimes only when their capabilities are required and their permissions are acceptable.
+The marketplace should show five independently installable plugins. Install `1C ERP Diagnostics` as the primary entrypoint. Install Unica, one or both 1C Skills runtimes, and Jev only when their capabilities are required and their permissions and data destinations are acceptable.
+
+Jev is not required by the deterministic Infoblog bridge. It requires Node.js 22+, a Codex CUA browser capability, explicit provider configuration and a Jev-compatible external model endpoint. Its goal, current accessibility snapshot and action history may be sent to that configured provider. Gate 0 must therefore report it as `confirmation_required` until installation, runtime, provider, origin allowlist and user consent are established.
 
 ## Host-adapter boundary
 
@@ -76,7 +79,7 @@ The orchestrator may delegate a bounded task, but the final causal conclusion re
 
 ## Provenance rationale
 
-The marketplace uses the official `sha` selector for every external plugin commit. The installer checks out the requested SHA and verifies that `HEAD` matches it. The human-readable Unica release tag `v0.12.0` was resolved to SHA `aefc880f9bab606a5c55ed11af563b740054a549` before inclusion. The 1C Skills SHAs are generated Codex plugin commits produced from upstream source commit `113dc9e9280b33b7aa3e4691eb8915cdaddea65b`.
+The marketplace uses the official `sha` selector for every external plugin commit. The installer checks out the requested SHA and verifies that `HEAD` matches it. The human-readable Unica release tag `v0.12.3` was resolved to canonical marketplace commit `c02e38d44a7dc238310172b9d790487f81aa4fb4` before inclusion. The 1C Skills SHAs are generated Codex plugin commits produced from upstream source commit `113dc9e9280b33b7aa3e4691eb8915cdaddea65b`. Jev has no reviewed release tag, so its reviewed repository state is pinned directly to commit `cf7e76607d4ec70592b24becadd0296dcda8177a`.
 
 Immutable SHAs prevent a reviewed marketplace package from changing silently when an upstream branch or tag target changes. They do not replace installation-time review, license review or runtime permission controls.
 
@@ -100,9 +103,11 @@ The primary plugin's semantic version must change whenever packaged skills, mani
 The marketplace does not:
 
 - copy or relicense Unica or 1C Skills;
+- copy or relicense Jev;
 - bundle, install or configure SonarQube, SonarScanner or the BSL analyzer;
 - silently install or enable companions;
 - guarantee that every ChatGPT surface exposes cross-plugin invocation;
+- treat Jev output as proof that an action succeeded or that page content is true;
 - grant access to production 1C data;
 - make external plugin output proof of an accounting cause;
 - authorize writes, closed-period changes, mass reposting or access-right changes.

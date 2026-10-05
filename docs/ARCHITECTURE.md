@@ -10,8 +10,8 @@ The project is intentionally a **harness around a model**, not a model-specific 
 
 The repository has two distinct layers:
 
-1. **Ecosystem marketplace** — exposes `one-c-erp-diagnostics`, `unica`, `1c-skills` and `1c-skills-py` from reviewed sources/refs.
-2. **Primary orchestrator plugin** — provides the user-facing Gate 0–10 workflow and 32 packaged skills.
+1. **Ecosystem marketplace** — exposes `one-c-erp-diagnostics`, `unica`, `1c-skills`, `1c-skills-py` and optional `jev-browser-use` from reviewed sources/refs.
+2. **Primary orchestrator plugin** — provides the user-facing Gate 0–10 workflow and 33 packaged skills.
 
 The marketplace is an installation/discovery bundle. It does not merge code, grant permissions or create hidden dependencies. Each plugin remains separately installed and governed by its own license, permissions and update channel.
 
@@ -25,8 +25,8 @@ The marketplace is an installation/discovery bundle. It does not merge code, gra
 6. **Derivation/provenance controller** — traces each material derived artifact to source Evidence IDs, transformation, tool/version/ref, execution identity and output hash/identifier.
 7. **Dynamic planner** — builds a bounded dependency graph with exact skills/capabilities, validation levels and fallbacks.
 8. **Domain specialists** — cost, expenses, settlements, VAT, warehouse, production, access, code and release analysis.
-9. **Companion coordinator** — delegates bounded tasks to Unica or 1C Skills only when available and justified.
-10. **Execution adapters** — Python/PowerShell, OpenSandbox, artifact tools and optional local SonarQube BSL analysis when executable validation adds value.
+9. **Companion coordinator** — delegates bounded tasks to Unica, 1C Skills or optional Jev only when available, permitted and justified; Jev remains mechanical browser action planning with independent verification.
+10. **Execution adapters** — Python/PowerShell, the fixed-origin Infoblog metadata bridge, OpenSandbox, artifact tools and optional local SonarQube BSL analysis when executable validation adds value.
 11. **Execution identity controller** — binds executable evidence to `run_id`, case identity, material input identities/hashes, tool/runtime version and output identity; mismatched prior runs become stale.
 12. **Synthesis** — preserves supporting/contradicting evidence and requires provenance closure for material claims.
 13. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence and verifies provenance closure plus run freshness.

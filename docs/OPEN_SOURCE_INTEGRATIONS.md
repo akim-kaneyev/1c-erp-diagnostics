@@ -1,6 +1,6 @@
 # Reviewed open-source integrations
 
-Review date: 2026-08-26.
+Review date: 2026-10-05.
 
 This project uses open-source components only through an explicit intake process. Discovery catalogs such as OpenYellow, `Untru/1c-mcp`, the Infostart technology map and `Oxotka/StackTechnologies1C` are not treated as security, quality or compatibility certification.
 
@@ -57,17 +57,19 @@ Risk and proof boundary: reading an identified report is `R0`; a sanitized loopb
 
 Canonical marketplace source: `https://github.com/IngvarConsulting/unica-marketplace.git`
 
-Reviewed release tag: `v0.12.0`.
+Reviewed release tag: `v0.12.3`.
 
-Immutable marketplace ref: `aefc880f9bab606a5c55ed11af563b740054a549`.
+Immutable marketplace ref: `c02e38d44a7dc238310172b9d790487f81aa4fb4`.
 
 Plugin path: `plugins/unica`.
 
-Manifest version: `0.12.0`.
+Manifest version: `0.12.3`.
 
 License: LGPL-3.0-or-later.
 
 Use: optional 1C developer workflows, metadata/BSL investigation and controlled build/test operations. Unica remains an independently installed plugin; this project does not copy or relicense it.
+
+Compatibility review: releases 0.12.1–0.12.3 restore the typed execution surface, correct runtime/Windows behavior and reduce cold-install overhead. The marketplace path and independent-installation boundary remain unchanged. Repository tests validate the new immutable source pin; actual host installation and clean-session capability execution remain external acceptance checks.
 
 ## 1C Skills
 
@@ -82,9 +84,33 @@ Reviewed immutable generated refs:
 
 Use: optional 1C artifact/configurator/web-client tooling. The PowerShell variant is Windows-first; the Python variant is cross-platform. Both remain independently installed plugins and retain their own permissions and release lifecycle.
 
+## Jev browser use
+
+Canonical source: `https://github.com/wy-coliney/jev-browser-use.git`
+
+Reviewed immutable commit: `cf7e76607d4ec70592b24becadd0296dcda8177a`.
+
+Manifest version: `0.1.0`.
+
+License: MIT.
+
+Use: optional mechanical browser action planning for authorized, repetitive UI navigation. The reviewed skill restricts Jev to navigation, click/toggle/scroll and safe key actions; Codex remains responsible for goal selection, text input, semantic reasoning and visual verification. It requires Node.js 22+, a Codex CUA browser capability and a separately configured external model provider. Page accessibility data, the goal and action history may leave the host for that provider. It is never required for the fixed-origin Infoblog metadata bridge, and its output does not prove success or 1C causality.
+
+The upstream repository has no reviewed release tag. The exact commit pin, explicit installation, origin allowlist, provider consent and post-action verification are mandatory controls. The upstream 20-test suite passed locally without making a paid provider call; live provider/browser compatibility still requires host-side confirmation.
+
+## Infoblog public incident index
+
+Source site: `https://infoblog.mywebguide.ru/`.
+
+Observed fixed index: `https://infoblog.mywebguide.ru/data/search.json`.
+
+Use: metadata-only discovery of practical incident leads. The site frontend loads a compact public JSON index and performs an all-words title search in the browser. The packaged bridge reproduces that search locally, so the query is not sent to the site. It records URL, retrieval time, ETag, Last-Modified and SHA-256; it rejects redirects, oversized/non-JSON/malformed responses and silent stale fallback.
+
+The public index is not treated as a supported API, an official 1C source or a licensed content corpus. Article bodies are not vendored. Titles and links are non-authoritative leads that must be checked against the selected page, official sources and primary case evidence. An explicit offline cache is marked `stale_unverified`.
+
 ## Unified marketplace
 
-`.agents/plugins/marketplace.json` exposes `one-c-erp-diagnostics`, Unica and both 1C Skills variants from one source. This is a discovery/installation bundle, not code vendoring and not a permission bypass. All external entries use immutable commit refs. See `docs/ECOSYSTEM_MARKETPLACE.md`.
+`.agents/plugins/marketplace.json` exposes `one-c-erp-diagnostics`, Unica, both 1C Skills variants and optional Jev from one source. This is a discovery/installation bundle, not code vendoring and not a permission bypass. All external entries use immutable commit refs. See `docs/ECOSYSTEM_MARKETPLACE.md`.
 
 ## 1C ecosystem discovery catalog
 

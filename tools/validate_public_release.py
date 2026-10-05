@@ -46,7 +46,9 @@ REQUIRED_FILES = [
     ROOT / "tools" / "validate_skills.py",
     ROOT / "tools" / "update_skill_lock.py",
     ROOT / "tools" / "unpack_1c_artifact.py",
+    ROOT / "tools" / "search_infoblog.py",
     PLUGIN_DIR / "skills" / "one-c-erp-artifact-extraction" / "scripts" / "unpack_1c_artifact.py",
+    PLUGIN_DIR / "skills" / "one-c-erp-incident-search" / "scripts" / "search_infoblog.py",
     MANIFEST,
     MARKETPLACE,
 ]
@@ -61,6 +63,7 @@ REQUIRED_DYNAMIC_SKILLS = {
     "one-c-erp-release-difference",
     "one-c-erp-open-source-intake",
     "one-c-erp-local-static-analysis",
+    "one-c-erp-incident-search",
 }
 
 FORBIDDEN_SUFFIXES = {
@@ -423,8 +426,8 @@ def main() -> int:
 
     skill_paths = sorted((PLUGIN_DIR / "skills").glob("*/SKILL.md"))
     skill_names = {name for path in skill_paths if (name := validate_skill(path, errors))}
-    if len(skill_paths) < 32:
-        fail(errors, f"Expected at least 32 packaged skills, found {len(skill_paths)}")
+    if len(skill_paths) < 33:
+        fail(errors, f"Expected at least 33 packaged skills, found {len(skill_paths)}")
     missing_dynamic = sorted(REQUIRED_DYNAMIC_SKILLS - skill_names)
     if missing_dynamic:
         fail(errors, "Missing dynamic skills: " + ", ".join(missing_dynamic))

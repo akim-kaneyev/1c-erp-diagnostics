@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This standard keeps all `1C ERP Diagnostics` skills consistent without turning the plugin into a generic catalog. It governs structure, routing, references, synchronization and self-checking. It does not import third-party skills or change the four-plugin marketplace.
+This standard keeps all `1C ERP Diagnostics` skills consistent without turning the plugin into a generic catalog. It governs structure, routing, references, synchronization and self-checking. It does not import third-party skill implementations; the five-plugin marketplace remains an explicit, independently permissioned integration surface.
 
 ## Authority and runtime surfaces
 

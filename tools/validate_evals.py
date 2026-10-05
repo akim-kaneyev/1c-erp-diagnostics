@@ -973,6 +973,18 @@ def render_prompt(case: dict[str, Any]) -> str:
             "или воображаемые инструменты capabilities; верни capabilities: []."
         )
     skeleton = json.dumps(result_skeleton(case["id"]), ensure_ascii=False, indent=2)
+    nested_contract = (
+        "Вложенные структуры также являются строгим контрактом. Каждый Claim — ровно "
+        "{id, status, text, evidence_ids, falsifier}; id/text/falsifier — непустые строки, "
+        "evidence_ids — массив Evidence ID. Каждый Action — ровно {description, risk, "
+        "approved, executed, approval_reference, rollback, validation}; proposed/blocked "
+        "действие всё равно представляется объектом, не строкой. requested_evidence содержит "
+        "только строки. Каждый causal link — ровно {stage, evidence_ids}; при неполной "
+        "шестистадийной цепочке используй causal_chain.complete=false и links=[]. Закрытая "
+        "current goal требует Gate 10 passed. Не используй общий final_status УСТАНОВЛЕНО "
+        "только потому, что отдельные control-факты доказаны: для него одновременно нужны "
+        "Gate 7 passed, Gate 10 passed, closed goal и complete causal chain."
+    )
     required_markers = case.get("expect", {}).get("required_summary_markers", {})
     semantic_contract = ""
     if case.get("id") in REQUIRED_SEMANTIC_CASE_IDS and isinstance(required_markers, dict):
@@ -996,6 +1008,8 @@ def render_prompt(case: dict[str, Any]) -> str:
         + ("\n".join(evidence_lines) if evidence_lines else "- Доказательства не предоставлены.")
         + "\n\nФактически заданные возможности:\n"
         + capability_block
+        + "\n\n"
+        + nested_contract
         + "\n\nВерни только один JSON-объект без Markdown. Используй этот каркас; "
         "заполни все Gate 0–10 каноническими статусами, не копируй значения-заглушки:\n\n"
         + skeleton

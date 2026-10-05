@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.10 — incident discovery and companion provenance
+
+- added a fixed-origin, metadata-only Infoblog title-search bridge that keeps the query local, validates schema/content/origin/size, records payload provenance and marks explicit offline cache as stale;
+- added `one-c-erp-incident-search` and regression coverage for local query isolation, malformed indexes, cache tampering, conditional revalidation and stale-cache status;
+- updated Unica from reviewed marketplace release `v0.12.0` to `v0.12.3` at immutable commit `c02e38d44a7dc238310172b9d790487f81aa4fb4`;
+- added optional `jev-browser-use` `0.1.0` at immutable commit `cf7e76607d4ec70592b24becadd0296dcda8177a` without vendoring, with explicit CUA/provider/data-transfer and verification boundaries;
+- expanded the marketplace to five independently installed plugins and the primary plugin to 33 packaged skills;
+- retained the 26-case strict evaluation suite and made exact v0.3.10 clean-session runtime acceptance a separate blocked release gate.
+
 ## 0.3.9 — installed-package resource closure
 
 - bundled the empty `STATE.json` template inside `one-c-erp-case-state` instead of relying on a repository-root file absent from installations;

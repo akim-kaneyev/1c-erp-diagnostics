@@ -8,10 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-PLUGIN_VERSION = "0.3.9"
-UNICA_COMMIT = "aefc880f9bab606a5c55ed11af563b740054a549"
+PLUGIN_VERSION = "0.3.10"
+UNICA_COMMIT = "c02e38d44a7dc238310172b9d790487f81aa4fb4"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
+JEV_COMMIT = "cf7e76607d4ec70592b24becadd0296dcda8177a"
 
 
 class EcosystemMarketplaceTests(unittest.TestCase):
@@ -29,9 +30,15 @@ class EcosystemMarketplaceTests(unittest.TestCase):
         )
         self.assertEqual(
             [item["name"] for item in self.marketplace["plugins"]],
-            ["one-c-erp-diagnostics", "unica", "1c-skills", "1c-skills-py"],
+            [
+                "one-c-erp-diagnostics",
+                "unica",
+                "1c-skills",
+                "1c-skills-py",
+                "jev-browser-use",
+            ],
         )
-        self.assertEqual(len(self.plugins), 4)
+        self.assertEqual(len(self.plugins), 5)
 
     def test_primary_plugin_is_local(self) -> None:
         source = self.plugins["one-c-erp-diagnostics"]["source"]
@@ -71,6 +78,17 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             self.assertNotIn("ref", source)
             self.assertRegex(sha, r"^[0-9a-f]{40}$")
 
+    def test_jev_browser_use_is_optional_and_pinned_to_reviewed_commit(self) -> None:
+        source = self.plugins["jev-browser-use"]["source"]
+        self.assertEqual(
+            source,
+            {
+                "source": "url",
+                "url": "https://github.com/wy-coliney/jev-browser-use.git",
+                "sha": JEV_COMMIT,
+            },
+        )
+
     def test_every_plugin_requires_explicit_installation(self) -> None:
         for item in self.marketplace["plugins"]:
             policy = item["policy"]
@@ -101,7 +119,7 @@ class EcosystemMarketplaceTests(unittest.TestCase):
             / "SKILL.md"
         ).read_text(encoding="utf-8")
 
-        for token in (UNICA_COMMIT, POWERSHELL_COMMIT, PYTHON_COMMIT):
+        for token in (UNICA_COMMIT, POWERSHELL_COMMIT, PYTHON_COMMIT, JEV_COMMIT):
             self.assertIn(token, ecosystem)
             self.assertIn(token, integrations)
             self.assertIn(token, release_notes)
@@ -109,8 +127,8 @@ class EcosystemMarketplaceTests(unittest.TestCase):
 
         self.assertIn(PLUGIN_VERSION, audit)
         self.assertIn(MARKETPLACE_ID, ecosystem)
-        self.assertIn("v0.12.0", ecosystem)
-        self.assertIn("v0.12.0", integrations)
+        self.assertIn("v0.12.3", ecosystem)
+        self.assertIn("v0.12.3", integrations)
         self.assertIn("third-party", terms.lower())
         self.assertIn("permissions", ecosystem.lower())
 
