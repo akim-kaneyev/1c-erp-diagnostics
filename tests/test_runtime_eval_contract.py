@@ -439,6 +439,7 @@ class RuntimeEvalContractTests(unittest.TestCase):
         cls.under_evidenced_case = cls.cases["under-evidenced-cost"]
         cls.provenance_case = cls.cases["provenance-closure-broken"]
         cls.capability_case = cls.cases["capability-inventory"]
+        cls.settlements_case = cls.cases["settlements-chronology"]
 
     def test_canonical_stale_result_passes_validator(self) -> None:
         self.assertEqual(self.suite_errors, [])
@@ -631,6 +632,20 @@ class RuntimeEvalContractTests(unittest.TestCase):
         ):
             self.assertIn(token, rendered)
         self.assertNotIn('"expect"', rendered)
+
+    def test_rendered_settlements_prompt_keeps_causal_goal_blocked(self) -> None:
+        rendered = validate_evals.render_prompt(self.settlements_case)
+        for token in (
+            "локализация первой видимой разницы — промежуточный результат",
+            "current_goal_status=blocked",
+            "Gate 4=passed",
+            "Gate 7=passed",
+            "Gate 10=blocked",
+            "Не создавай claims со status=УСТАНОВЛЕНО",
+        ):
+            self.assertIn(token, rendered)
+        self.assertNotIn('"expect"', rendered)
+        self.assertNotIn("max_established_claims", rendered)
 
     def test_rendered_capability_prompt_contains_inventory_only_contract(self) -> None:
         rendered = validate_evals.render_prompt(self.capability_case)

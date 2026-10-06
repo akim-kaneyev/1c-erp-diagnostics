@@ -15,6 +15,7 @@ Version 0.3.10 adds a bounded incident-discovery path without treating public we
 - Added optional Jev browser use `0.1.0` at commit `cf7e76607d4ec70592b24becadd0296dcda8177a`. Jev remains a separate MIT-licensed plugin; it requires Node.js 22+, Codex CUA and an explicitly accepted external model provider/data destination.
 - Limited Jev to reviewed mechanical browser actions. It does not type, establish 1C semantics or verify its own result, and it is not used by the deterministic Infoblog bridge.
 - Expanded the stable marketplace from four to five entries and the primary plugin from 32 to 33 packaged skills.
+- Clarified the rendered `settlements-chronology` contract after clean-session runtime checks exposed an ambiguous current-goal boundary: locating the first visible difference remains intermediate while the consuming mechanism is unproved, so the read-only case stays `R0 + EVIDENCE_REQUIRED`, Gate 7 passes by rejecting causality, Gate 10 remains blocked and claims remain below `УСТАНОВЛЕНО`.
 - Preserved the strict `EVAL_RESULT_JSON` suite, approved Velis assets and existing Gate 0–10 controls.
 
 Unchanged immutable companions:
