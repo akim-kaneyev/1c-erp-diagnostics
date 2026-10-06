@@ -16,6 +16,7 @@ Version 0.3.10 adds a bounded incident-discovery path without treating public we
 - Limited Jev to reviewed mechanical browser actions. It does not type, establish 1C semantics or verify its own result, and it is not used by the deterministic Infoblog bridge.
 - Expanded the stable marketplace from four to five entries and the primary plugin from 32 to 33 packaged skills.
 - Clarified the rendered `settlements-chronology` contract after clean-session runtime checks exposed an ambiguous current-goal boundary: locating the first visible difference remains intermediate while the consuming mechanism is unproved, so the read-only case stays `R0 + EVIDENCE_REQUIRED`, Gate 7 passes by rejecting causality, Gate 10 remains blocked and claims remain below `УСТАНОВЛЕНО`.
+- Clarified the equivalent `warehouse-first-divergence` boundary after the resumed clean-session run reproduced the same ambiguity: the visible series difference is established only as an intermediate localization, while the causal goal and linked incident stay blocked until a consuming mechanism is evidenced.
 - Preserved the strict `EVAL_RESULT_JSON` suite, approved Velis assets and existing Gate 0–10 controls.
 
 Unchanged immutable companions:

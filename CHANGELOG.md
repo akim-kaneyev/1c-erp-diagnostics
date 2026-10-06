@@ -8,6 +8,7 @@
 - added optional `jev-browser-use` `0.1.0` at immutable commit `cf7e76607d4ec70592b24becadd0296dcda8177a` without vendoring, with explicit CUA/provider/data-transfer and verification boundaries;
 - expanded the marketplace to five independently installed plugins and the primary plugin to 33 packaged skills;
 - made the `settlements-chronology` runtime prompt deterministic after clean-session models closed the bounded localization step and promoted observation-only claims despite the unresolved causal goal; the case now states the `R0 + EVIDENCE_REQUIRED`, Gate 7/Gate 10 and non-established-claim boundary without exposing its hidden `expect` block;
+- made the `warehouse-first-divergence` runtime prompt deterministic after the same clean-session ambiguity appeared in the warehouse domain; locating the series difference remains intermediate until the consuming mechanism proves its effect on the final balance;
 - retained the 26-case strict evaluation suite and made exact v0.3.10 clean-session runtime acceptance a separate blocked release gate.
 
 ## 0.3.9 — installed-package resource closure
