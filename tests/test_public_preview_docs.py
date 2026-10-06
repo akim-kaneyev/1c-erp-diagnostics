@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.9"
+VERSION = "0.3.10"
 
 
 class PublicPreviewDocumentationTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class PublicPreviewDocumentationTests(unittest.TestCase):
     def test_privacy_scope_matches_current_ecosystem(self) -> None:
         privacy = (ROOT / "PRIVACY.md").read_text(encoding="utf-8")
         self.assertIn(f"v{VERSION}", privacy)
-        self.assertIn("Unica and 1C Skills", privacy)
+        self.assertIn("Unica, 1C Skills and Jev", privacy)
         self.assertIn("push protection", privacy)
         self.assertNotIn("v0.1.x", privacy)
 

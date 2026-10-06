@@ -30,7 +30,9 @@ The public plugin is designed to be analysis-first. Production, accounting, acce
 
 ## Third-party components
 
-The ecosystem marketplace may reference independently maintained plugins and tools, including Unica and 1C Skills. They retain their own licenses, terms, privacy policies, permissions and support channels. Their inclusion in the marketplace does not imply ownership, endorsement or warranty by this project.
+The ecosystem marketplace may reference independently maintained plugins and tools, including Unica, 1C Skills and Jev. They retain their own licenses, terms, privacy policies, permissions and support channels. Their inclusion in the marketplace does not imply ownership, endorsement or warranty by this project. Jev may send browser-page context to a separately configured model provider and therefore requires an explicit destination/privacy review before use.
+
+The Infoblog bridge reads a public metadata index from a fixed origin and searches it locally. It is not an official 1C source or a supported site API, and returned links do not establish the cause of an incident. Users remain responsible for complying with source-site terms and for avoiding confidential search terms.
 
 ## Availability and changes
 

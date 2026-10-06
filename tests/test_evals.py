@@ -204,6 +204,17 @@ class EvalSuiteTests(unittest.TestCase):
         self.assertNotIn("required_claim_statuses", accounting_rendered)
         self.assertNotIn("required_claim_evidence_ids", accounting_rendered)
         self.assertNotIn("accounting_totals=1100/1100", accounting_rendered)
+        self.assertIn("{id, status, text, evidence_ids, falsifier}", rendered)
+        self.assertIn(
+            "{description, risk, approved, executed, approval_reference, rollback, validation}",
+            rendered,
+        )
+        self.assertIn("requested_evidence содержит только строки", rendered)
+        analysis_rendered = validate_evals.render_prompt(
+            self.cases["analysis-only-comparison"]
+        )
+        self.assertIn("ровно один Claim", analysis_rendered)
+        self.assertIn("max_established_claims = 1", analysis_rendered)
 
     def test_complete_chain_can_be_established_after_gate_7(self) -> None:
         errors = validate_evals.validate_result(

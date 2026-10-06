@@ -187,8 +187,8 @@ def validate_skill_inventory(root: Path, report: ValidationReport) -> None:
 
     skill_dirs = sorted(path for path in directory.iterdir() if path.is_dir())
     report.skill_count = len(skill_dirs)
-    if len(skill_dirs) < 32:
-        report.fail(f"Expected at least 32 packaged skills, found {len(skill_dirs)}")
+    if len(skill_dirs) < 33:
+        report.fail(f"Expected at least 33 packaged skills, found {len(skill_dirs)}")
 
     names: dict[str, Path] = {}
     for skill_dir in skill_dirs:

@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.9" src="https://img.shields.io/badge/version-0.3.9-0D1B2A.svg" />
+  <img alt="Version 0.3.10" src="https://img.shields.io/badge/version-0.3.10-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -26,14 +26,15 @@ A plausible explanation is not a final cause. Final root-cause `УСТАНОВЛ
 
 ## Optional companion ecosystem: one marketplace, separate verified plugins
 
-Adding this repository as a marketplace source exposes four independently maintained plugins in one place:
+Adding this repository as a marketplace source exposes five independently maintained plugins in one place:
 
 | Plugin | Primary role |
 |---|---|
 | **1C ERP Diagnostics** | Gate 0–10 orchestration, evidence synthesis and controlled remediation |
-| **Unica 0.12.0** | 1C development, metadata/BSL investigation and controlled build/test workflows |
+| **Unica 0.12.3** | 1C development, metadata/BSL investigation and controlled build/test workflows |
 | **1C Skills (PowerShell)** | Windows-first 1C artifact/configurator/web-client tooling |
 | **1C Skills (Python)** | Cross-platform 1C artifact parsing and controlled automation |
+| **Jev browser use 0.1.0** | Optional mechanical browser navigation through Codex CUA and an explicitly configured external model provider |
 
 External plugins are referenced from verified upstream sources and immutable SHAs. They are not copied, silently installed or granted permissions by this repository. Each retains its own license, permissions, updates and confirmation requirements.
 
@@ -50,7 +51,7 @@ The user selects **1C ERP Diagnostics** once. The orchestrator then:
 5. creates a bounded dependency graph of specialist analyses;
 6. runs independent read-only specialists in parallel when safe;
 7. records evidence, claims, contradictions, tool provenance and execution identity;
-8. invokes Unica, 1C Skills or another companion only when installed and justified;
+8. invokes Unica, 1C Skills, Jev or another companion only when installed, permitted and justified;
 9. classifies every proposed action by risk level `R0–R3`;
 10. challenges the preliminary conclusion before any final cause;
 11. validates the same analytics before and after a change.
@@ -135,6 +136,8 @@ Version 0.3.8 adds deterministic accounting and case-state controls: exact fact/
 
 Version 0.3.9 closes the installed-package resource gap found after v0.3.8: the machine-state template is bundled inside `one-c-erp-case-state`, linked from the skill, locked with the runtime surfaces and checked against the repository canonical template. Package-boundary closure is now an explicit release and self-audit control.
 
+Version 0.3.10 adds a fixed-origin, metadata-only Infoblog incident-search bridge with provenance and explicit stale-cache status, updates Unica to 0.12.3, and adds Jev 0.1.0 as an optional immutable-pinned browser companion. Queries stay local; external results remain non-authoritative leads.
+
 ## Additional capabilities
 
 - PDF, Spreadsheets and Documents for evidence extraction;
@@ -143,6 +146,8 @@ Version 0.3.9 closes the installed-package resource gap found after v0.3.8: the 
 - OpenSandbox for isolated executable validation;
 - pinned `v8unpack` for non-executing extraction of sanitized CF/CFE/EPF;
 - optional `sonarqube-bsl-local` analysis after extraction, with BSL Language Server/manual review as fallback.
+- metadata-only Infoblog title search with fixed origin, payload hash and explicit freshness;
+- optional Jev action planning for authorized browser navigation, subject to external-provider consent and independent verification.
 
 Gate 0 records whether every capability is `available`, `confirmation_required`, `unavailable` or `prohibited`. Missing capabilities become a documented fallback or `blocked`, never a simulated result.
 
@@ -207,9 +212,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.9 Public Preview release candidate.** This maintenance release makes the case-state template available from the installed plugin itself and adds package-resource closure checks. It preserves the v0.3.8 accounting/state controls, 26-case synthetic suite, verified four-plugin marketplace, 32 packaged skills and approved Velis assets.
+**v0.3.10 Public Preview release candidate.** This release adds the guarded Infoblog metadata bridge, updates Unica to 0.12.3 and exposes optional immutable-pinned Jev browser action planning. It preserves the 26-case synthetic suite and approved Velis assets, expands the marketplace to five plugins and packages 33 reviewed skills.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for v0.3.9 is **BLOCKED** until the exact installed package passes all 26 cases in fresh clean sessions and `tools/validate_runtime_run.py` validates the complete hashed run. The validated v0.3.8 run does not transfer to a changed package.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for v0.3.10 is **BLOCKED** until the exact installed package passes all 26 cases in fresh clean sessions and `tools/validate_runtime_run.py` validates the complete hashed run. The validated v0.3.8 run does not transfer to a changed package.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

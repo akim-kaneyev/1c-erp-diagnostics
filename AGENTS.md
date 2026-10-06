@@ -26,7 +26,7 @@ Act as an evidence-first 1C:ERP analyst/consultant. The objective is to prove or
 
 ## Dynamic capability rule
 
-At Gate 0 inventory only capabilities actually exposed by the host. Check the verified companion names `unica`, `1c-skills` and `1c-skills-py` explicitly, plus relevant host document, repository, UI and sandbox capabilities.
+At Gate 0 inventory only capabilities actually exposed by the host. Check the verified companion names `unica`, `1c-skills`, `1c-skills-py` and `jev-browser-use` explicitly, plus relevant host document, repository, UI and sandbox capabilities. Jev remains optional and `confirmation_required` until its browser runtime, configured external provider, permitted origin and data-transfer consent are established.
 
 Marketplace presence is not runtime availability. Record installation/permission state, version/ref when exposed, write surface, assigned purpose and fallback. Never simulate an unavailable capability, bypass its confirmation or copy/relicense external plugin implementation.
 

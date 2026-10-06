@@ -22,7 +22,7 @@
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "sha": "aefc880f9bab606a5c55ed11af563b740054a549"
+        "sha": "c02e38d44a7dc238310172b9d790487f81aa4fb4"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -55,6 +55,19 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Development"
+    },
+    {
+      "name": "jev-browser-use",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/wy-coliney/jev-browser-use.git",
+        "sha": "cf7e76607d4ec70592b24becadd0296dcda8177a"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }
