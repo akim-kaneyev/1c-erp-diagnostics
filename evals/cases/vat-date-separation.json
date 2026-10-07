@@ -6,7 +6,7 @@
   "controls": ["analysis_only", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Сопоставь три даты синтетического НДС-кейса. Цель — только фактическое сравнение; причину отклонения и изменение учета не устанавливай. EVAL_RESULT_JSON",
+  "prompt": "Сопоставь три даты синтетического НДС-кейса. Цель — только bounded фактическое сравнение; причину отклонения и изменение учета не устанавливай. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=NO_ACTION; current_goal_status=closed; linked_incident_status=not_in_scope; Gate 4=passed, Gate 8=passed, Gate 9=not_required и Gate 10=passed. Не создавай claims со status=УСТАНОВЛЕНО: объедини три видимые даты E-VAT-1/E-VAT-2/E-VAT-3 и ограничение вывода о правильности учета минимум в один claim со status=ТРЕБУЕТ ПРОВЕРКИ. Верни capabilities=[], causal_chain.complete=false с links=[], requested_evidence=[] и actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-VAT-1",
