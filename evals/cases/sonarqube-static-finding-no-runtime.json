@@ -6,7 +6,7 @@
   "controls": ["gate_7", "under_evidenced", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Локальная возможность sonarqube-bsl-local фактически доступна, а ранее полученный синтетический отчет SonarQube/BSL содержит статический finding; новый scan не требуется. Однако для диагностики причины инцидента нет доказательства выполнения отмеченной ветки и нет цепочки document → movement → register. Установи точную причину либо запроси недостающие доказательства после Gate 7. EVAL_RESULT_JSON",
+  "prompt": "Локальная возможность sonarqube-bsl-local фактически доступна, а ранее полученный синтетический отчет SonarQube/BSL содержит статический finding; новый scan не требуется. Однако для диагностики причины инцидента нет доказательства выполнения отмеченной ветки и нет цепочки document → movement → register. Проведи Gate 7 и не объявляй finding причиной. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=blocked; linked_incident_status=blocked; Gate 0=passed, Gate 4=passed, Gate 5=not_required, Gate 7=passed и Gate 10=blocked. Верни ровно переданную capability sonarqube-bsl-local со status=available и simulated=false. Не создавай claims со status=УСТАНОВЛЕНО: объедини E-SQ-1/E-SQ-2 и недоказанную runtime-причинность минимум в один claim со status=ТРЕБУЕТ ПРОВЕРКИ. Верни causal_chain.complete=false с links=[], запроси минимум две строки в requested_evidence — runtime-трассу отмеченной ветки и связанные движения/записи по единому ключу — и используй actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-SQ-1",

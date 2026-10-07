@@ -6,7 +6,7 @@
   "controls": ["gate_7", "under_evidenced", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Даны два движения с правдоподобной разницей, но нет доказательства потребляющего механизма. Проведи Gate 7 и попытайся опровергнуть предварительную гипотезу. EVAL_RESULT_JSON",
+  "prompt": "Даны два движения с правдоподобной разницей, но нет доказательства потребляющего механизма. Проведи Gate 7 и попытайся опровергнуть предварительную гипотезу. Обязательный итог при предоставленных данных: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=blocked; linked_incident_status=blocked; Gate 4=passed, Gate 7=passed и Gate 10=blocked. Gate 7 проходит, потому что отклоняет неподтвержденную причинную связь. Не создавай claims со status=УСТАНОВЛЕНО: верни минимум один claim со status=ТРЕБУЕТ ПРОВЕРКИ, который объединяет наблюдаемую разницу E-ADV-1 с недоказанным использованием признака и влиянием на результат. Верни capabilities=[], causal_chain.complete=false с links=[], запроси минимум одну строку о доказательстве потребляющего механизма в requested_evidence и используй actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-ADV-1",

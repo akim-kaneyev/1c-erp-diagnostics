@@ -198,6 +198,18 @@ def text_list(value: Any) -> bool:
     return isinstance(value, list) and all(nonempty_text(item) for item in value)
 
 
+def exposes_zero_established_claim_boundary(prompt: str) -> bool:
+    """Return whether a zero-established limit is visible to the runtime runner."""
+    normalized = prompt.casefold()
+    if "claims=[]" in normalized:
+        return True
+    prohibitions = (
+        r"не\s+создавай.{0,80}(?:status\s*=\s*)?установлено",
+        r"не\s+копир\w*.{0,120}установлено\s+claims?",
+    )
+    return any(re.search(pattern, normalized) for pattern in prohibitions)
+
+
 def iter_text(value: Any):
     if isinstance(value, str):
         yield value
@@ -348,6 +360,14 @@ def validate_case(case: dict[str, Any], path: Path, errors: list[str]) -> None:
         value = expect.get(field)
         if not isinstance(value, int) or isinstance(value, bool) or value < 0:
             add(errors, location, f"expect.{field} must be a non-negative integer")
+    if expect.get("max_established_claims") == 0 and not exposes_zero_established_claim_boundary(
+        str(case.get("prompt", ""))
+    ):
+        add(
+            errors,
+            location,
+            "prompt must expose the zero-established-claim boundary to the runtime runner",
+        )
     required_evidence = expect.get("required_evidence_ids")
     if not text_list(required_evidence):
         add(errors, location, "expect.required_evidence_ids must be a text list")

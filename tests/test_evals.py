@@ -216,6 +216,17 @@ class EvalSuiteTests(unittest.TestCase):
         self.assertIn("ровно один Claim", analysis_rendered)
         self.assertIn("max_established_claims = 1", analysis_rendered)
 
+    def test_zero_established_limit_is_visible_to_runtime_runner(self) -> None:
+        for case_id, case in sorted(self.cases.items()):
+            if case["expect"]["max_established_claims"] != 0:
+                continue
+            with self.subTest(case_id=case_id):
+                self.assertTrue(
+                    validate_evals.exposes_zero_established_claim_boundary(
+                        validate_evals.render_prompt(case)
+                    )
+                )
+
     def test_complete_chain_can_be_established_after_gate_7(self) -> None:
         errors = validate_evals.validate_result(
             complete_cost_result(), self.cases["complete-cost-chain"]

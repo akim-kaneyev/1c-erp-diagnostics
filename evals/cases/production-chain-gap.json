@@ -6,7 +6,7 @@
   "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Проверь синтетическую производственную цепочку K-05. Выход продукции виден, но связь потребления материалов не предоставлена. Не достраивай ее типовым поведением 1С. EVAL_RESULT_JSON",
+  "prompt": "Проверь синтетическую производственную цепочку K-05. Выход продукции виден, но связь потребления материалов не предоставлена. Не достраивай ее типовым поведением 1С. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=blocked; linked_incident_status=blocked; Gate 4=blocked, Gate 7=passed и Gate 10=blocked. Gate 7 проходит, потому что отклоняет неподтвержденную причинную связь. Не создавай claims со status=УСТАНОВЛЕНО: объедини подтвержденные входные факты E-PRD-1/E-PRD-2 и недоказанную связь потребления минимум в один claim со status=ТРЕБУЕТ ПРОВЕРКИ. Верни capabilities=[], causal_chain.complete=false с links=[], запроси доказательство связи потребления материалов строками в requested_evidence и используй actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-PRD-1",
