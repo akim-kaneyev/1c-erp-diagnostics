@@ -441,6 +441,7 @@ class RuntimeEvalContractTests(unittest.TestCase):
         cls.capability_case = cls.cases["capability-inventory"]
         cls.settlements_case = cls.cases["settlements-chronology"]
         cls.warehouse_case = cls.cases["warehouse-first-divergence"]
+        cls.post_item_case = cls.cases["post-item-expenses"]
 
     def test_canonical_stale_result_passes_validator(self) -> None:
         self.assertEqual(self.suite_errors, [])
@@ -656,6 +657,21 @@ class RuntimeEvalContractTests(unittest.TestCase):
             "Gate 4=passed",
             "Gate 7=passed",
             "Gate 10=blocked",
+            "Не создавай claims со status=УСТАНОВЛЕНО",
+        ):
+            self.assertIn(token, rendered)
+        self.assertNotIn('"expect"', rendered)
+        self.assertNotIn("max_established_claims", rendered)
+
+    def test_rendered_post_item_prompt_keeps_input_facts_below_established(self) -> None:
+        rendered = validate_evals.render_prompt(self.post_item_case)
+        for token in (
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ",
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gate 4=passed",
+            "Gate 7=passed",
+            "Gate 10=passed",
             "Не создавай claims со status=УСТАНОВЛЕНО",
         ):
             self.assertIn(token, rendered)

@@ -6,7 +6,7 @@
   "controls": ["under_evidenced", "gate_7", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Определи статус гипотезы о базе распределения постатейного расхода. Это bounded evidence-sufficiency assessment: после корректного EVIDENCE_REQUIRED текущая цель closed и Gate 10 passed, а связанный инцидент остается blocked. Не объявляй настройку причиной без связи настройка → запись → база → результат. EVAL_RESULT_JSON",
+  "prompt": "Определи статус гипотезы о базе распределения постатейного расхода. Это bounded evidence-sufficiency assessment: после корректного EVIDENCE_REQUIRED текущая цель closed и Gate 10 passed, а связанный инцидент остается blocked. Не объявляй настройку причиной без связи настройка → запись → база → результат. При отсутствии этой связи используй final_status=ТРЕБУЕТ ПРОВЕРКИ, risk=R0, decision=EVIDENCE_REQUIRED, current_goal_status=closed и linked_incident_status=blocked; Gate 4=passed, Gate 7=passed и Gate 10=passed. Gate 7 проходит, потому что отклоняет неподтвержденную причинную связь, а Gate 10 закрывает только текущую оценку достаточности доказательств. Не создавай claims со status=УСТАНОВЛЕНО: объедини подтвержденные входные факты о SET-01 и B-01 с недоказанной причинностью минимум в один claim со status=ТРЕБУЕТ ПРОВЕРКИ. Верни capabilities=[], causal_chain.complete=false с links=[], запроси недостающую связь строками в requested_evidence и используй actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-EXP-1",
