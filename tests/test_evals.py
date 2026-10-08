@@ -227,6 +227,17 @@ class EvalSuiteTests(unittest.TestCase):
                     )
                 )
 
+    def test_semantic_marker_value_encoding_is_visible_to_runtime_runner(self) -> None:
+        for case_id in sorted(validate_evals.REQUIRED_SEMANTIC_CASE_IDS):
+            with self.subTest(case_id=case_id):
+                rendered = validate_evals.render_prompt(self.cases[case_id])
+                self.assertIn("boolean marker values", rendered)
+                self.assertIn("lowercase `true|false`, не `1|0`", rendered)
+                self.assertIn("`A:<amount>,B:<amount>`", rendered)
+                self.assertIn("`<fact>/<plan>`", rendered)
+                self.assertIn("`PASS|FAIL`", rendered)
+                self.assertIn("`complete|wrong_view/incomplete`", rendered)
+
     def test_complete_chain_can_be_established_after_gate_7(self) -> None:
         errors = validate_evals.validate_result(
             complete_cost_result(), self.cases["complete-cost-chain"]
