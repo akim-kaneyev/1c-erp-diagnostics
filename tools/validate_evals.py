@@ -1016,7 +1016,13 @@ def render_prompt(case: dict[str, Any]) -> str:
             "через '; ' без пояснений. Создай ровно один Claim на каждый marker в том же "
             "порядке; текст каждого Claim должен быть ровно `Материальный вывод: key=value`, "
             "а status, evidence_ids и falsifier должны относиться к этому отдельному выводу; "
-            "ожидаемые значения не заданы и должны быть получены из входа."
+            "ожидаемые значения не заданы и должны быть получены из входа. Каноническое "
+            "кодирование применяй только к присутствующим markers: boolean marker values — "
+            "только lowercase `true|false`, не `1|0`; allocation markers — ровно "
+            "`A:<amount>,B:<amount>` с двоеточием внутри пары и запятой между парами, без "
+            "residual и пояснений; totals markers — ровно `<fact>/<plan>`; "
+            "`state_validation` — только uppercase `PASS|FAIL`; `view_status` — только "
+            "`complete|wrong_view/incomplete`. В value не добавляй пробелы или иные части."
         )
     return (
         "@one-c-erp-diagnostics\n\n"

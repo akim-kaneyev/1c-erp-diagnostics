@@ -11,6 +11,7 @@
 - made the `warehouse-first-divergence` runtime prompt deterministic after the same clean-session ambiguity appeared in the warehouse domain; locating the series difference remains intermediate until the consuming mechanism proves its effect on the final balance;
 - made the `post-item-expenses` bounded evidence assessment deterministic after a clean-session model promoted the supplied setting and base-export facts into established claims; the prompt now keeps those facts inside a non-established causal assessment while closing only the evidence-sufficiency goal;
 - reproduced the same hidden zero-established-claim boundary in `production-chain-gap`, added a fail-closed static validator for every `max_established_claims=0` case and aligned all seven remaining prompts that had not exposed that boundary to the runtime runner; no hidden expectation or acceptance limit was weakened;
+- reproduced a hidden value-encoding boundary in the isolated `six-row-balanced-fallback` runtime case and defined one shared semantic-marker encoding contract for all ten semantic regressions: lowercase booleans, canonical allocation/totals forms and bounded status enums, without exposing expected values;
 - retained the 26-case strict evaluation suite and made exact v0.3.10 clean-session runtime acceptance a separate blocked release gate.
 
 ## 0.3.9 — installed-package resource closure
