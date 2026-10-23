@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from update_skill_lock import canonical_file_bytes
 from validate_evals import load_suite, validate_result
 from validate_runtime_log import inspect_runtime_log
 
@@ -130,9 +131,8 @@ def require_clean_worktree(errors: list[str]) -> None:
         add(errors, str(ROOT), "Git worktree must be clean for runtime acceptance")
 
 
-def current_plugin_tree_sha256() -> str:
+def plugin_tree_sha256(plugin_root: Path) -> str:
     digest = hashlib.sha256()
-    plugin_root = PLUGIN_MANIFEST.parent.parent
     files = sorted(
         path
         for path in plugin_root.rglob("*")
@@ -144,9 +144,13 @@ def current_plugin_tree_sha256() -> str:
         relative = path.relative_to(plugin_root).as_posix().encode("utf-8")
         digest.update(relative)
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        digest.update(canonical_file_bytes(path))
         digest.update(b"\0")
     return digest.hexdigest()
+
+
+def current_plugin_tree_sha256() -> str:
+    return plugin_tree_sha256(PLUGIN_MANIFEST.parent.parent)
 
 
 def parse_timestamp(value: Any, errors: list[str], location: str) -> None:
