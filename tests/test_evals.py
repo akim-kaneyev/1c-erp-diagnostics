@@ -282,6 +282,8 @@ class EvalSuiteTests(unittest.TestCase):
         for token in (
             "distinct second calculation",
             "а не запрос внешнего повторного запуска",
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ",
+            "доказаны только bounded control-факты",
             "decision=NO_ACTION",
             "current_goal_status=closed",
             "linked_incident_status=not_in_scope",
