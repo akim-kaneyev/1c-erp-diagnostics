@@ -84,7 +84,7 @@ Calculate SHA-256 for each result file and create `run.json`:
 }
 ```
 
-The zero values are examples of required shape, not valid release evidence. Schema 2 rejects incomplete suites, placeholder/hash mismatches, wrong versions, a dirty worktree, source commits that differ from current `HEAD`, plugin-tree mismatches, missing/unreferenced logs, reused session/workdir identities, logs whose final JSON differs from the result file, absent primary-plugin mentions and any model tool use. A schema-1 manifest or a self-asserted `expectations_visible_to_runner=false` without validated logs cannot pass.
+The zero values are examples of required shape, not valid release evidence. The packaged-plugin tree hash normalizes CRLF and CR to LF for the same known text extensions as `SKILLS.lock.json`, while binary assets remain byte-exact, so an exact Git package is stable across checkout platforms. Schema 2 rejects incomplete suites, placeholder/hash mismatches, wrong versions, a dirty worktree, source commits that differ from current `HEAD`, canonical plugin-tree mismatches, missing/unreferenced logs, reused session/workdir identities, logs whose final JSON differs from the result file, absent primary-plugin mentions and any model tool use. A schema-1 manifest or a self-asserted `expectations_visible_to_runner=false` without validated logs cannot pass.
 
 ## Priority re-test after 0.3.10 installation
 

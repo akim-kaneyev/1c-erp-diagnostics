@@ -284,20 +284,30 @@ class EvalSuiteTests(unittest.TestCase):
 
     def test_plugin_tree_hash_is_scoped_to_primary_plugin(self) -> None:
         plugin_root = validate_runtime_run.PLUGIN_MANIFEST.parent.parent
-        digest = hashlib.sha256()
-        files = sorted(
-            path
-            for path in plugin_root.rglob("*")
-            if path.is_file()
-            and "__pycache__" not in path.parts
-            and path.suffix.casefold() != ".pyc"
+        self.assertEqual(
+            validate_runtime_run.current_plugin_tree_sha256(),
+            validate_runtime_run.plugin_tree_sha256(plugin_root),
         )
-        for path in files:
-            digest.update(path.relative_to(plugin_root).as_posix().encode("utf-8"))
-            digest.update(b"\0")
-            digest.update(path.read_bytes())
-            digest.update(b"\0")
-        self.assertEqual(validate_runtime_run.current_plugin_tree_sha256(), digest.hexdigest())
+        self.assertNotEqual(
+            validate_runtime_run.current_plugin_tree_sha256(),
+            validate_runtime_run.plugin_tree_sha256(plugin_root.parent),
+        )
+
+    def test_plugin_tree_hash_normalizes_text_line_endings(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            lf_root = root / "lf"
+            crlf_root = root / "crlf"
+            lf_root.mkdir()
+            crlf_root.mkdir()
+            (lf_root / "contract.md").write_bytes(b"line-one\nline-two\n")
+            (crlf_root / "contract.md").write_bytes(b"line-one\r\nline-two\r\n")
+            (lf_root / "asset.png").write_bytes(b"\x89PNG\r\n")
+            (crlf_root / "asset.png").write_bytes(b"\x89PNG\r\n")
+            self.assertEqual(
+                validate_runtime_run.plugin_tree_sha256(lf_root),
+                validate_runtime_run.plugin_tree_sha256(crlf_root),
+            )
 
     def test_runtime_log_rejects_expectation_search_and_external_state(self) -> None:
         contaminated_log = (
