@@ -7,12 +7,14 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from validate_evals import load_suite, validate_result
+from validate_runtime_log import inspect_runtime_log
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_MANIFEST = (
@@ -36,9 +38,14 @@ ENVIRONMENT_KEYS = {
     "host",
     "clean_session",
     "installed_plugin_version",
+    "installed_plugin_tree_sha256",
     "expectations_visible_to_runner",
+    "web_search",
+    "working_directory_isolated",
+    "runner_tool_policy",
 }
-RESULT_ENTRY_KEYS = {"case_id", "file", "sha256"}
+RESULT_ENTRY_KEYS = {"case_id", "file", "sha256", "log_file", "log_sha256"}
+RUNNER_TOOL_POLICY = "no-tools"
 
 
 def add(errors: list[str], location: str, message: str) -> None:
@@ -92,6 +99,56 @@ def current_plugin_version(errors: list[str]) -> str:
     return str(value)
 
 
+def current_source_commit(errors: list[str]) -> str:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    value = completed.stdout.strip()
+    if completed.returncode != 0 or not COMMIT.fullmatch(value):
+        add(errors, str(ROOT), "cannot resolve current Git HEAD")
+        return ""
+    return value
+
+
+def require_clean_worktree(errors: list[str]) -> None:
+    completed = subprocess.run(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if completed.returncode != 0:
+        add(errors, str(ROOT), "cannot verify Git worktree cleanliness")
+    elif completed.stdout.strip():
+        add(errors, str(ROOT), "Git worktree must be clean for runtime acceptance")
+
+
+def current_plugin_tree_sha256() -> str:
+    digest = hashlib.sha256()
+    plugin_root = PLUGIN_MANIFEST.parent.parent
+    files = sorted(
+        path
+        for path in plugin_root.rglob("*")
+        if path.is_file()
+        and "__pycache__" not in path.parts
+        and path.suffix.casefold() != ".pyc"
+    )
+    for path in files:
+        relative = path.relative_to(plugin_root).as_posix().encode("utf-8")
+        digest.update(relative)
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def parse_timestamp(value: Any, errors: list[str], location: str) -> None:
     if not nonempty_text(value):
         add(errors, location, "must be a non-empty ISO-8601 timestamp")
@@ -110,6 +167,9 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
     suite, cases, suite_errors = load_suite()
     errors.extend(suite_errors)
     expected_version = current_plugin_version(errors)
+    expected_commit = current_source_commit(errors)
+    expected_plugin_tree = current_plugin_tree_sha256()
+    require_clean_worktree(errors)
 
     run_dir = run_dir.resolve()
     if not run_dir.is_dir():
@@ -122,8 +182,8 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
     manifest = load_object(manifest_path, errors)
     check_exact_keys(manifest, RUN_KEYS, errors, "run.json")
 
-    if manifest.get("schema_version") != 1:
-        add(errors, "run.json", "schema_version must be 1")
+    if manifest.get("schema_version") != 2:
+        add(errors, "run.json", "schema_version must be 2")
     run_id = manifest.get("run_id")
     if not isinstance(run_id, str) or not RUN_ID.fullmatch(run_id):
         add(errors, "run.json", "run_id must be lower-case hyphen-case")
@@ -140,6 +200,8 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
         add(errors, "run.json", "source_commit must be a 40-character lower-case Git SHA")
     elif source_commit == "0" * 40:
         add(errors, "run.json", "source_commit cannot be the all-zero placeholder")
+    elif source_commit != expected_commit:
+        add(errors, "run.json", f"source_commit must match current Git HEAD {expected_commit!r}")
     parse_timestamp(manifest.get("executed_at"), errors, "run.json.executed_at")
 
     environment = manifest.get("environment")
@@ -159,11 +221,28 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
             "run.json.environment",
             f"installed_plugin_version must be {expected_version!r}",
         )
+    installed_tree = environment.get("installed_plugin_tree_sha256")
+    if installed_tree != expected_plugin_tree:
+        add(
+            errors,
+            "run.json.environment",
+            "installed_plugin_tree_sha256 must match the current packaged plugin tree",
+        )
     if environment.get("expectations_visible_to_runner") is not False:
         add(
             errors,
             "run.json.environment",
             "expectations_visible_to_runner must be false",
+        )
+    if environment.get("web_search") != "disabled":
+        add(errors, "run.json.environment", "web_search must be 'disabled'")
+    if environment.get("working_directory_isolated") is not True:
+        add(errors, "run.json.environment", "working_directory_isolated must be true")
+    if environment.get("runner_tool_policy") != RUNNER_TOOL_POLICY:
+        add(
+            errors,
+            "run.json.environment",
+            f"runner_tool_policy must be {RUNNER_TOOL_POLICY!r}",
         )
 
     entries = manifest.get("results")
@@ -174,6 +253,9 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
     run_root = run_dir.resolve()
     seen: set[str] = set()
     referenced_files: set[Path] = set()
+    referenced_logs: set[Path] = set()
+    seen_session_ids: set[str] = set()
+    seen_workdirs: set[str] = set()
     for index, entry in enumerate(entries):
         location = f"run.json.results[{index}]"
         if not isinstance(entry, dict):
@@ -193,6 +275,8 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
         if not nonempty_text(relative_file):
             add(errors, location, "file must be a non-empty relative path")
             continue
+        if relative_file != f"{case_id}.result.json":
+            add(errors, location, f"file must be {case_id}.result.json")
         result_path = (run_dir / str(relative_file)).resolve()
         try:
             result_path.relative_to(run_root)
@@ -221,6 +305,58 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
         result = load_object(result_path, errors)
         errors.extend(validate_result(result, cases[case_id], str(result_path)))
 
+        relative_log = entry.get("log_file")
+        if not nonempty_text(relative_log):
+            add(errors, location, "log_file must be a non-empty relative path")
+            continue
+        if relative_log != f"{case_id}.log":
+            add(errors, location, f"log_file must be {case_id}.log")
+        log_path = (run_dir / str(relative_log)).resolve()
+        try:
+            log_path.relative_to(run_root)
+        except ValueError:
+            add(errors, location, "log file escapes the run directory")
+            continue
+        if log_path in referenced_logs:
+            add(errors, location, f"log file is referenced more than once: {relative_log}")
+        referenced_logs.add(log_path)
+        if not log_path.is_file():
+            add(errors, location, f"log file is missing: {relative_log}")
+            continue
+        if log_path.suffix.casefold() != ".log":
+            add(errors, location, "log filename must end with .log")
+
+        expected_log_hash = entry.get("log_sha256")
+        if not isinstance(expected_log_hash, str) or not SHA256.fullmatch(expected_log_hash):
+            add(errors, location, "log_sha256 must be 64 lower-case hexadecimal characters")
+        elif expected_log_hash == "0" * 64:
+            add(errors, location, "log_sha256 cannot be the all-zero placeholder")
+        else:
+            actual_log_hash = hashlib.sha256(log_path.read_bytes()).hexdigest()
+            if actual_log_hash != expected_log_hash:
+                add(errors, location, f"SHA-256 mismatch for {relative_log}")
+        log_errors, log_metadata, logged_result = inspect_runtime_log(log_path, case_id)
+        errors.extend(log_errors)
+        session_id = log_metadata.get("session_id")
+        if session_id:
+            if session_id in seen_session_ids:
+                add(errors, location, f"clean-session id is reused: {session_id}")
+            seen_session_ids.add(session_id)
+        workdir = log_metadata.get("workdir")
+        if workdir:
+            workdir_key = str(Path(workdir).resolve()).casefold()
+            if workdir_key in seen_workdirs:
+                add(errors, location, f"isolated workdir is reused: {workdir}")
+            seen_workdirs.add(workdir_key)
+            try:
+                Path(workdir).resolve().relative_to(ROOT.resolve())
+            except ValueError:
+                pass
+            else:
+                add(errors, location, "runtime workdir must be outside the repository")
+        if logged_result is not None and logged_result != result:
+            add(errors, location, "final JSON in the Codex log does not match the result file")
+
     missing = sorted(set(cases) - seen)
     if missing:
         add(errors, "run.json", "missing complete-suite results: " + ", ".join(missing))
@@ -238,6 +374,13 @@ def validate_runtime_run(run_dir: Path) -> list[str]:
     )
     if unreferenced:
         add(errors, "run.json", "unreferenced result files: " + ", ".join(unreferenced))
+    unreferenced_logs = sorted(
+        str(path.relative_to(run_root))
+        for path in run_dir.glob("*.log")
+        if path.resolve() not in referenced_logs
+    )
+    if unreferenced_logs:
+        add(errors, "run.json", "unreferenced log files: " + ", ".join(unreferenced_logs))
 
     return errors
 

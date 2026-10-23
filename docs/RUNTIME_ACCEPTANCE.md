@@ -8,12 +8,14 @@ A runtime run passes only when all conditions are true:
 
 1. the exact candidate plugin version is installed;
 2. every case from `evals/suite.json` is executed in a clean session;
-3. the runner sees the exact prompt rendered by `tools/validate_evals.py`, including the strict output instructions, deterministic capability block and skeleton, but not the case `expect` block;
+3. the runner sees the exact prompt rendered by `tools/validate_evals.py`, including the exact `plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace` mention, strict output instructions, deterministic capability block and skeleton, but not the case `expect` block;
 4. every response is exactly one JSON object and is saved as one `*.result.json` file;
 5. every result passes the exact field/type/status/scope/capability/semantic checks in `tools/validate_evals.py`;
-6. `run.json` identifies the source commit, host, surface, installed version and timestamp;
-7. every result hash matches and every case-specific/global control passes;
-8. no case is missing, duplicated or unreferenced.
+6. built-in web search is explicitly disabled and the runner uses an external empty working directory with the `no-tools` policy;
+7. every per-case Codex log contains the exact primary-plugin mention and no shell, MCP/browser/web or node-repl use;
+8. `run.json` identifies the exact source commit, host, surface, installed version, packaged-plugin tree hash, runner controls and timestamp;
+9. every result/log hash matches and every case-specific/global control passes;
+10. no case, result or log is missing, duplicated or unreferenced.
 
 The suite exercises provenance closure and execution-identity freshness. A prior tool result for different material inputs must not be accepted as current evidence.
 
@@ -30,29 +32,31 @@ Version 0.3.8 added 10 accounting/state/security cases and passed a complete has
 Until this command passes, runtime acceptance is `blocked`:
 
 ```text
-python tools/validate_runtime_run.py evals/runs/<run-id>
+python tools/validate_runtime_run.py <external-run-dir>
 ```
 
 ## Procedure
 
-Create a local ignored directory under `evals/runs/`. Render each prompt without expectations:
+Create one new external run directory outside the repository and one new empty external working directory per case. Never reuse a failed or contaminated run ID. Render each prompt without expectations:
 
 ```text
 python tools/validate_evals.py --render <case-id>
 ```
 
-Do not shorten or manually rewrite the rendered prompt. Run it in a clean task with the exact candidate installed. Save the single returned JSON object as `<case-id>.result.json`, then validate it immediately:
+Do not shorten or manually rewrite the rendered prompt. Run it in a clean task with the exact candidate installed, web search disabled and no tools used by the model. Save both the single returned JSON object as `<case-id>.result.json` and the complete Codex stream as `<case-id>.log`, then validate both immediately:
 
 ```text
-python tools/validate_evals.py --results evals/runs/<run-id>/<case-id>.result.json
+python tools/validate_evals.py --render <case-id> | codex exec --strict-config -c 'web_search="disabled"' -c 'features.apps=false' -c 'features.multi_agent=false' --ephemeral --skip-git-repo-check -s read-only -C <external-empty-case-dir> -m gpt-5.6-sol --color never -o <external-run-dir>/<case-id>.result.json - 2>&1 | Tee-Object -FilePath <external-run-dir>/<case-id>.log
+python tools/validate_evals.py --results <external-run-dir>/<case-id>.result.json
+python tools/validate_runtime_log.py <external-run-dir>/<case-id>.log
 ```
 
 Calculate SHA-256 for each result file and create `run.json`:
 
 ```json
 {
-  "schema_version": 1,
-  "run_id": "v0-3-9-clean-example",
+  "schema_version": 2,
+  "run_id": "v0-3-10-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
   "plugin_version": "0.3.10",
   "source_commit": "0000000000000000000000000000000000000000",
@@ -62,19 +66,25 @@ Calculate SHA-256 for each result file and create `run.json`:
     "host": "clean test host identifier",
     "clean_session": true,
     "installed_plugin_version": "0.3.10",
-    "expectations_visible_to_runner": false
+    "installed_plugin_tree_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "expectations_visible_to_runner": false,
+    "web_search": "disabled",
+    "working_directory_isolated": true,
+    "runner_tool_policy": "no-tools"
   },
   "results": [
     {
       "case_id": "capability-inventory",
       "file": "capability-inventory.result.json",
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "log_file": "capability-inventory.log",
+      "log_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
     }
   ]
 }
 ```
 
-The zero values are examples of required shape, not valid release evidence. The strict validator rejects incomplete suites, placeholder hashes, hash mismatches, wrong versions and non-clean runs.
+The zero values are examples of required shape, not valid release evidence. Schema 2 rejects incomplete suites, placeholder/hash mismatches, wrong versions, a dirty worktree, source commits that differ from current `HEAD`, plugin-tree mismatches, missing/unreferenced logs, reused session/workdir identities, logs whose final JSON differs from the result file, absent primary-plugin mentions and any model tool use. A schema-1 manifest or a self-asserted `expectations_visible_to_runner=false` without validated logs cannot pass.
 
 ## Priority re-test after 0.3.10 installation
 

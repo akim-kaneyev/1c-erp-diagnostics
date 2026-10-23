@@ -37,7 +37,7 @@
 - [ ] Refresh/re-import the marketplace and confirm exact installed version `0.3.10` when exposed.
 - [ ] Confirm the bundled `one-c-erp-case-state/assets/STATE.json` is readable from the installed package.
 - [ ] Execute every case from `evals/suite.json` in separate clean sessions against exact installed v0.3.10.
-- [ ] Pass `tools/validate_runtime_run.py` for the complete v0.3.10 hash manifest.
+- [ ] Pass schema-2 `tools/validate_runtime_run.py` for the complete v0.3.10 external run with exact plugin mention, no model tools, current source/plugin-tree identity and per-case result/log hashes.
 - [ ] Re-run the canonical accounting helper baseline/patch comparison and record current helper/input/result hashes.
 
 The v0.3.8 runtime run does not accept v0.3.10 because the installed package contents changed.

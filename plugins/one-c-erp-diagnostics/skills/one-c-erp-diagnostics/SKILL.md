@@ -26,6 +26,7 @@ When the request contains the literal token `EVAL_RESULT_JSON`, machine-readable
 11. If no in-scope action exists, `actions` must be `[]`. If present, each item must be exactly `{description, risk, approved, executed, approval_reference, rollback, validation}`.
 12. Cross-field invariants are mandatory: a closed current goal requires Gate 10 `passed`; Gate 10 `passed` requires a closed goal; `final_status = УСТАНОВЛЕНО` requires Gate 7 `passed`, Gate 10 `passed` and `causal_chain.complete = true`.
 13. Remove every placeholder and validate the finished object against the supplied skeleton before sending.
+14. In an isolated synthetic runtime, the exact plugin mention activates this primary plugin. Derive the result only from the current rendered prompt and automatically provided primary-plugin instructions. Do not invoke shell, MCP, browser, web search or any other tool; do not use another skill/plugin, repository/eval/test/validator or publication/release material, Git history, memory, sessions or user state. Never search for a case ID, Evidence ID, marker or prepared answer. Any tool call invalidates runtime acceptance.
 
 ### Inventory-only `capability-inventory` contract
 
@@ -79,6 +80,24 @@ no registrar, movement, register or consuming-mechanism evidence exists:
 
 Gate 7 passes by rejecting a precise cause that lacks the required evidence chain.
 Gate 10 cannot pass while the exact-cause goal remains blocked.
+
+### Exact `provenance-closure-broken` profile
+
+For the bounded synthetic evidence-sufficiency assessment where D-1 has no lineage
+to S-1:
+
+- use `ТРЕБУЕТ ПРОВЕРКИ`, `R0`, `EVIDENCE_REQUIRED`;
+- close the current assessment goal and keep the linked source/root-cause incident
+  `blocked`;
+- set Gates 0–4, 6–8 and 10 `passed`; set Gates 5 and 9 `not_required`;
+- Gate 6 passes because synthesis correctly records insufficient provenance, Gate 7
+  passes because it rejects unsupported source-value/root-cause conclusions, and Gate
+  8 passes by selecting `EVIDENCE_REQUIRED`;
+- return no capabilities and at most one `УСТАНОВЛЕНО` claim, limited to the directly
+  evidenced absence of D-1 lineage; source content, derivation and causality remain
+  below established;
+- return an incomplete empty causal chain, string-only requested evidence and no
+  actions.
 
 ## Verified marketplace registry
 

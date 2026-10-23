@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 import tempfile
@@ -13,6 +14,7 @@ if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
 import validate_evals  # noqa: E402
+import validate_runtime_log  # noqa: E402
 import validate_runtime_run  # noqa: E402
 
 
@@ -189,10 +191,26 @@ class EvalSuiteTests(unittest.TestCase):
         self.assertEqual(set(result_schema["required"]), validate_evals.RESULT_KEYS)
         self.assertFalse(run_schema["additionalProperties"])
         self.assertEqual(set(run_schema["required"]), validate_runtime_run.RUN_KEYS)
+        self.assertEqual(
+            set(run_schema["properties"]["environment"]["required"]),
+            validate_runtime_run.ENVIRONMENT_KEYS,
+        )
+        self.assertEqual(
+            set(run_schema["properties"]["results"]["items"]["required"]),
+            validate_runtime_run.RESULT_ENTRY_KEYS,
+        )
 
     def test_rendered_prompt_does_not_leak_expectations(self) -> None:
         rendered = validate_evals.render_prompt(self.cases["under-evidenced-cost"])
-        self.assertIn("@one-c-erp-diagnostics", rendered)
+        self.assertIn(
+            "[@one-c-erp-diagnostics]"
+            "(plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace)",
+            rendered,
+        )
+        self.assertIn("Изолированный synthetic runtime", rendered)
+        self.assertIn("не вызывай shell, MCP, browser, web search", rendered)
+        self.assertIn("не ищи case ID, Evidence ID, marker или готовый ответ", rendered)
+        self.assertIn("Любой tool call делает runtime-результат недействительным", rendered)
         self.assertIn("E-COST-1", rendered)
         self.assertIn('"case_id": "under-evidenced-cost"', rendered)
         self.assertNotIn('"expect"', rendered)
@@ -215,6 +233,12 @@ class EvalSuiteTests(unittest.TestCase):
         )
         self.assertIn("ровно один Claim", analysis_rendered)
         self.assertIn("max_established_claims = 1", analysis_rendered)
+        provenance_rendered = validate_evals.render_prompt(
+            self.cases["provenance-closure-broken"]
+        )
+        self.assertIn("Gates 0–4, 6–8 и 10=passed", provenance_rendered)
+        self.assertIn("не более одного УСТАНОВЛЕНО Claim", provenance_rendered)
+        self.assertIn("actions=[]", provenance_rendered)
 
     def test_zero_established_limit_is_visible_to_runtime_runner(self) -> None:
         for case_id, case in sorted(self.cases.items()):
@@ -237,6 +261,63 @@ class EvalSuiteTests(unittest.TestCase):
                 self.assertIn("`<fact>/<plan>`", rendered)
                 self.assertIn("`PASS|FAIL`", rendered)
                 self.assertIn("`complete|wrong_view/incomplete`", rendered)
+
+    def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
+        clean_log = (
+            "OpenAI Codex v0.150.0-alpha.8\n"
+            "workdir: external-case-dir-a\n"
+            "session id: 00000000-0000-4000-8000-000000000001\n"
+            "user\n"
+            "[@one-c-erp-diagnostics]"
+            "(plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace)\n"
+            "codex\n{\"schema_version\": 1}\n"
+            "tokens used\n123\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "clean.log"
+            path.write_text(clean_log, encoding="utf-8")
+            self.assertEqual(validate_runtime_log.validate_runtime_log(path), [])
+            errors, metadata, logged_result = validate_runtime_log.inspect_runtime_log(path)
+            self.assertEqual(errors, [])
+            self.assertEqual(metadata["session_id"], "00000000-0000-4000-8000-000000000001")
+            self.assertEqual(logged_result, {"schema_version": 1})
+
+    def test_plugin_tree_hash_is_scoped_to_primary_plugin(self) -> None:
+        plugin_root = validate_runtime_run.PLUGIN_MANIFEST.parent.parent
+        digest = hashlib.sha256()
+        files = sorted(
+            path
+            for path in plugin_root.rglob("*")
+            if path.is_file()
+            and "__pycache__" not in path.parts
+            and path.suffix.casefold() != ".pyc"
+        )
+        for path in files:
+            digest.update(path.relative_to(plugin_root).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(path.read_bytes())
+            digest.update(b"\0")
+        self.assertEqual(validate_runtime_run.current_plugin_tree_sha256(), digest.hexdigest())
+
+    def test_runtime_log_rejects_expectation_search_and_external_state(self) -> None:
+        contaminated_log = (
+            "[@one-c-erp-diagnostics]"
+            "(plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace)\n"
+            "web search: hidden case answer\n"
+            "mcp: codex_apps/github.fetch_file started\n"
+            '"pwsh.exe" -Command "rg -n provenance-closure-broken '
+            "'<user-home>/.codex'\" in <external-case-dir>\n"
+            '"pwsh.exe" -Command "Get-Content -Raw '
+            "'<user-home>/.codex/skills/diagnose-1c-erp/"
+            "SKILL.md'\" in <external-case-dir>\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "contaminated.log"
+            path.write_text(contaminated_log, encoding="utf-8")
+            errors = validate_runtime_log.validate_runtime_log(path)
+        self.assertTrue(any("web search" in error for error in errors), errors)
+        self.assertTrue(any("mcp" in error for error in errors), errors)
+        self.assertTrue(any("shell command used under no-tools policy" in error for error in errors), errors)
 
     def test_complete_chain_can_be_established_after_gate_7(self) -> None:
         errors = validate_evals.validate_result(
@@ -503,7 +584,7 @@ class EvalSuiteTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             run_dir = Path(tmp)
             manifest = {
-                "schema_version": 1,
+                "schema_version": 2,
                 "run_id": "incomplete-contract-test",
                 "suite": self.suite["name"],
                 "plugin_version": version,
@@ -514,7 +595,13 @@ class EvalSuiteTests(unittest.TestCase):
                     "host": "local",
                     "clean_session": True,
                     "installed_plugin_version": version,
+                    "installed_plugin_tree_sha256": (
+                        validate_runtime_run.current_plugin_tree_sha256()
+                    ),
                     "expectations_visible_to_runner": False,
+                    "web_search": "disabled",
+                    "working_directory_isolated": True,
+                    "runner_tool_policy": validate_runtime_run.RUNNER_TOOL_POLICY,
                 },
                 "results": [],
             }
@@ -527,6 +614,65 @@ class EvalSuiteTests(unittest.TestCase):
             any(f"exactly {len(self.cases)} entries" in error for error in errors)
         )
         self.assertTrue(any("all-zero placeholder" in error for error in errors))
+
+    def test_runtime_gate_validates_hashed_no_tools_log(self) -> None:
+        version = json.loads(
+            validate_runtime_run.PLUGIN_MANIFEST.read_text(encoding="utf-8")
+        )["version"]
+        result = scoped_r3_result()
+        with tempfile.TemporaryDirectory() as tmp:
+            run_dir = Path(tmp)
+            result_path = run_dir / "scoped-r3-mass-repost.result.json"
+            result_path.write_text(
+                json.dumps(result, ensure_ascii=False), encoding="utf-8"
+            )
+            log_path = run_dir / "scoped-r3-mass-repost.log"
+            log_path.write_text(
+                "[@one-c-erp-diagnostics]"
+                "(plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace)\n"
+                "web search: forbidden expectation lookup\n",
+                encoding="utf-8",
+            )
+            commit_errors: list[str] = []
+            manifest = {
+                "schema_version": 2,
+                "run_id": "contaminated-log-test",
+                "suite": self.suite["name"],
+                "plugin_version": version,
+                "source_commit": validate_runtime_run.current_source_commit(commit_errors),
+                "executed_at": "2026-10-23T10:00:00+03:00",
+                "environment": {
+                    "surface": "contract test",
+                    "host": "local",
+                    "clean_session": True,
+                    "installed_plugin_version": version,
+                    "installed_plugin_tree_sha256": (
+                        validate_runtime_run.current_plugin_tree_sha256()
+                    ),
+                    "expectations_visible_to_runner": False,
+                    "web_search": "disabled",
+                    "working_directory_isolated": True,
+                    "runner_tool_policy": validate_runtime_run.RUNNER_TOOL_POLICY,
+                },
+                "results": [
+                    {
+                        "case_id": "scoped-r3-mass-repost",
+                        "file": result_path.name,
+                        "sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
+                        "log_file": log_path.name,
+                        "log_sha256": hashlib.sha256(log_path.read_bytes()).hexdigest(),
+                    }
+                ],
+            }
+            self.assertEqual(commit_errors, [])
+            (run_dir / "run.json").write_text(
+                json.dumps(manifest, ensure_ascii=False), encoding="utf-8"
+            )
+            errors = validate_runtime_run.validate_runtime_run(run_dir)
+        self.assertTrue(
+            any("model tool call used under no-tools policy: web search" in error for error in errors),
+            errors,
+        )
 
 
 if __name__ == "__main__":

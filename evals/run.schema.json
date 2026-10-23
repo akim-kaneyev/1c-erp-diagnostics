@@ -15,7 +15,7 @@
     "results"
   ],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "run_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "suite": {"type": "string", "minLength": 1},
     "plugin_version": {"type": "string", "minLength": 1},
@@ -29,14 +29,22 @@
         "host",
         "clean_session",
         "installed_plugin_version",
-        "expectations_visible_to_runner"
+        "installed_plugin_tree_sha256",
+        "expectations_visible_to_runner",
+        "web_search",
+        "working_directory_isolated",
+        "runner_tool_policy"
       ],
       "properties": {
         "surface": {"type": "string", "minLength": 1},
         "host": {"type": "string", "minLength": 1},
         "clean_session": {"const": true},
         "installed_plugin_version": {"type": "string", "minLength": 1},
-        "expectations_visible_to_runner": {"const": false}
+        "installed_plugin_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "expectations_visible_to_runner": {"const": false},
+        "web_search": {"const": "disabled"},
+        "working_directory_isolated": {"const": true},
+        "runner_tool_policy": {"const": "no-tools"}
       }
     },
     "results": {
@@ -44,11 +52,13 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["case_id", "file", "sha256"],
+        "required": ["case_id", "file", "sha256", "log_file", "log_sha256"],
         "properties": {
           "case_id": {"type": "string", "minLength": 1},
           "file": {"type": "string", "pattern": "^[^/\\\\]+\\.result\\.json$"},
-          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "log_file": {"type": "string", "pattern": "^[^/\\\\]+\\.log$"},
+          "log_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
         }
       }
     }

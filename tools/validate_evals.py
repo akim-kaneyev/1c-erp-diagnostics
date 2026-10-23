@@ -1005,7 +1005,30 @@ def render_prompt(case: dict[str, Any]) -> str:
         "только потому, что отдельные control-факты доказаны: для него одновременно нужны "
         "Gate 7 passed, Gate 10 passed, closed goal и complete causal chain."
     )
+    isolation_contract = (
+        "Изолированный synthetic runtime: primary plugin активирован точным plugin mention; "
+        "используй только этот prompt и автоматически предоставленные инструкции primary "
+        "plugin. Не используй другие skills, plugins или capabilities; не вызывай shell, "
+        "MCP, browser, web search или любые иные tools; не ищи case ID, Evidence ID, marker "
+        "или готовый ответ; не читай repository, eval/test/validator, publication/release "
+        "docs, Git history, memory, sessions или user state. Все вычисления и выводы получи "
+        "только из текущего input. Любой tool call делает runtime-результат недействительным."
+    )
     required_markers = case.get("expect", {}).get("required_summary_markers", {})
+    case_contract = ""
+    if case.get("id") == "provenance-closure-broken":
+        case_contract = (
+            "\n\nДля bounded evidence-sufficiency assessment используй точный профиль: "
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ, risk=R0, decision=EVIDENCE_REQUIRED, "
+            "current_goal_status=closed, linked_incident_status=blocked; Gates 0–4, 6–8 "
+            "и 10=passed, Gates 5 и 9=not_required. Gate 6 проходит, потому что synthesis "
+            "корректно фиксирует недостаточность; Gate 7 проходит, потому что отвергает "
+            "неподтвержденные source-value/root-cause выводы; Gate 8 проходит решением "
+            "EVIDENCE_REQUIRED. Допустим не более одного УСТАНОВЛЕНО Claim — только прямо "
+            "подтвержденный факт отсутствия lineage у D-1. Source content, derivation и "
+            "causality оставь ниже УСТАНОВЛЕНО. Верни capabilities=[], неполную пустую "
+            "causal chain, string-only requested_evidence и actions=[]."
+        )
     semantic_contract = ""
     if case.get("id") in REQUIRED_SEMANTIC_CASE_IDS and isinstance(required_markers, dict):
         marker_names = ", ".join(required_markers)
@@ -1025,9 +1048,13 @@ def render_prompt(case: dict[str, Any]) -> str:
             "`complete|wrong_view/incomplete`. В value не добавляй пробелы или иные части."
         )
     return (
-        "@one-c-erp-diagnostics\n\n"
+        "[@one-c-erp-diagnostics]"
+        "(plugin://one-c-erp-diagnostics@one-c-erp-diagnostics-marketplace)\n\n"
+        + isolation_contract
+        + "\n\n"
         f"Синтетический регрессионный кейс `{case['id']}`. Реальные данные отсутствуют.\n\n"
         f"{case['prompt']}"
+        + case_contract
         + semantic_contract
         + "\n\n"
         "Исходные доказательства:\n"

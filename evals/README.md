@@ -12,7 +12,8 @@ This directory contains synthetic, data-free regression cases for the evidence-f
 - Internal reasoning steps, packaged skills and synthesis/review roles are not capabilities.
 - Keep current-goal closure separate from linked-incident status. A bounded evidence-sufficiency assessment may close while the linked source/root-cause incident remains blocked/open.
 - Assign claim status per statement. A directly evidenced limitation may be established without promoting source content or root cause.
-- Store actual clean-session outputs under `evals/runs/`; that directory is ignored by Git.
+- Store complete clean-session results and full Codex logs together in a new external run directory outside the repository. Hash both artifacts in schema-2 `run.json`; never reuse a failed or contaminated run ID.
+- The rendered prompt must use the exact primary `plugin://` mention. Runtime cases use `web_search="disabled"`, a separate empty external working directory and the `no-tools` policy; any model tool call invalidates the case.
 - Treat a structurally valid suite and a passed runtime run as different claims.
 - Keep accounting helper/state-validator outputs as separate derived Evidence; never add their fields to the closed top-level `EVAL_RESULT_JSON` schema.
 - The required suite contains 26 cases, including ten accounting/state/artifact/security regressions. Adding a case changes the complete clean-session acceptance set.
@@ -35,8 +36,8 @@ python tools/validate_evals.py --render under-evidenced-cost
 Validate one or more returned JSON results:
 
 ```text
-python tools/validate_evals.py --results evals/runs/<run-id>
-python tools/validate_evals.py --results evals/runs/<run-id> --require-complete
+python tools/validate_evals.py --results <external-run-dir>
+python tools/validate_evals.py --results <external-run-dir> --require-complete
 ```
 
-The strict release check additionally requires a clean-session run manifest and SHA-256 hashes; see `docs/RUNTIME_ACCEPTANCE.md`.
+The strict release check additionally requires a schema-2 clean-session run manifest, exact source/plugin identity, per-case result and log hashes, and no-tools log validation; see `docs/RUNTIME_ACCEPTANCE.md`.
