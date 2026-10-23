@@ -132,6 +132,8 @@ A list of references does not close an inferred transition. Gate 6 may pass afte
 ## Gate 7 — Independent/adversarial verification
 Run a distinct second pass: re-read original evidence, confirm coverage, challenge causal links, verify same analytics, test alternatives, identify invented objects, verify provenance closure and confirm all relied-upon executable outputs match current case/input identity. For an accounting correction, independently rerun before/after primary rows, consider counterevidence, prove predicate reachability and do not count one derived calculation twice. Downgrade on open/broken lineage or stale/mismatched run. Final root-cause `УСТАНОВЛЕНО` is forbidden without surviving this gate. Gate 7 may pass by correctly rejecting an unsupported conclusion.
 
+Independence is procedural and does not inherently require another model or agent. For a bounded synthetic read-only case that supplies complete rows and forbids tools, perform the distinct second calculation inside the same response; do not block Gate 7 or request an external rerun solely to obtain another executor. If the second pass confirms row coverage and arithmetic, Gate 7 may pass. This does not establish a real 1C incident or causal chain.
+
 ## Gate 8 — Action decision
 Choose smallest safe reversible action or request evidence. `R0` read-only; `R1` derived local result; `R2` reversible test change; `R3` production/accounting/access/closed period. Missing evidence normally means `R0 + EVIDENCE_REQUIRED`, not `R3 + NO-GO`. R3 requires explicit approval, rollback and validation plan.
 
