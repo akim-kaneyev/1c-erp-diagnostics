@@ -4,6 +4,8 @@
 
 The audit covers the Infoblog incident-search bridge, Unica `v0.12.3`, optional Jev at immutable commit `cf7e76607d4ec70592b24becadd0296dcda8177a`, versioned package/documentation surfaces and preservation of the existing Gate 0–10, provenance, stale-result and publication controls.
 
+The final runtime audit also rejected contaminated canaries where the runner could search public/local acceptance material or prior sessions. The current release gate therefore requires schema-2 manifests, the exact primary `plugin://` mention, disabled web search, no model tool calls, external empty working directories, installed plugin-tree identity and hashed per-case Codex logs.
+
 ## Controls
 
 | # | Status | Evidence | Remaining action |

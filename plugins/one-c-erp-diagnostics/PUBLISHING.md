@@ -69,7 +69,7 @@
 14. a static finding without runtime and ERP-chain evidence remains below root-cause `УСТАНОВЛЕНО` after Gate 7;
 15. the exact rendered `stale-execution-result` result passes `tools/validate_evals.py` with `R0`, `EVIDENCE_REQUIRED`, linked incident blocked, Gate 5 stale, Gate 7 passed, Gate 10 blocked, empty capabilities, exact claims, incomplete causality and empty actions;
 16. the exact rendered `provenance-closure-broken` result passes `tools/validate_evals.py` with current goal closed, linked incident blocked, Gate 2/6/7/8/10 passed, empty capabilities, at most one directly established missing-lineage fact, source/root-cause claims below established, incomplete causality and empty actions;
-17. the complete 26-case clean-session run passes `tools/validate_runtime_run.py` for exact installed version `0.3.10`;
+17. the complete 26-case external clean-session run passes schema-2 `tools/validate_runtime_run.py` for exact installed version `0.3.10`, current source/plugin-tree identity, the exact `plugin://` mention and hashed no-tools logs;
 18. the canonical six-row baseline and fallback-zero comparison are rerun against the exact packaged helper with recorded helper/input/result hashes.
 19. a generic Infoblog query returns metadata-only results with source hash/validators, and an explicit offline-cache run is marked `stale_unverified`.
 20. optional Jev is either reported unavailable/confirmation-required or is tested on an authorized non-production origin with provider consent and independent post-action verification.

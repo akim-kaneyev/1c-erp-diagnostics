@@ -41,6 +41,7 @@ REQUIRED_FILES = [
     ROOT / "tests" / "test_evals.py",
     ROOT / "tests" / "test_skill_governance.py",
     ROOT / "tools" / "validate_evals.py",
+    ROOT / "tools" / "validate_runtime_log.py",
     ROOT / "tools" / "validate_runtime_run.py",
     ROOT / "tools" / "validate_publication_history.py",
     ROOT / "tools" / "validate_skills.py",

@@ -130,8 +130,12 @@ The executable superset is `evals/suite.json` (26 synthetic cases):
 
 ```text
 python tools/validate_evals.py
-python tools/validate_runtime_run.py evals/runs/<run-id>
+python tools/validate_runtime_run.py <external-run-dir>
 ```
+
+The runtime directory must contain the complete schema-2 manifest, all 26 result
+files and their full Codex logs produced under the exact mention/no-tools isolation
+contract in `docs/RUNTIME_ACCEPTANCE.md`.
 
 Repository publication integrity is tested separately:
 

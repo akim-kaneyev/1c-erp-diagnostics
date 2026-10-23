@@ -32,7 +32,7 @@ The marketplace is an installation/discovery bundle. It does not merge code, gra
 13. **Adversarial verifier** — attempts to falsify the preliminary cause using original evidence and verifies provenance closure plus run freshness.
 14. **Risk controller** — separates `R0–R3` work and blocks unauthorized high-impact action.
 15. **Validation ladder / post-change validator** — requires the highest validation level demanded by the claim: structural → static → metadata/runtime → functional → business/accounting.
-16. **Evaluation and release gate** — validates synthetic domain/control coverage, exact machine-readable Gate results and complete hashed clean-session runtime evidence without exposing expected answers to the runner.
+16. **Evaluation and release gate** — validates synthetic domain/control coverage, exact machine-readable Gate results and schema-2 clean-session evidence: exact plugin mention, external isolated working directories, no model tools, current source/plugin identity and hashes for every result and complete Codex log.
 17. **Synthetic capability-snapshot controller** — requires eval results to reproduce exactly the capabilities declared by the case; internal reasoning, skills and roles cannot be emitted as runtime capabilities.
 18. **Publication integrity gate** — compares the Git archive with tracked HEAD, requires full history in CI and scans history for prohibited case/database/credential artifacts, plaintext credential assignments and user-machine absolute paths.
 19. **Regression feedback loop** — escaped defects, contradictions and material omissions are traced to the earliest missed control and converted into an eval/checklist improvement when reproducible.
