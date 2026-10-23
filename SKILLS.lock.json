@@ -179,8 +179,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "20578d44ab392c4c6882dfe2954c5c85a72797a196ffe772fc1889b9e08a84f9",
-      "size_bytes": 18128
+      "sha256": "95dbcdaa9dc3ea749eec324f8ef7d5e4faa05c93aef3948634206d853698fa31",
+      "size_bytes": 18582
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-dynamic-plan/SKILL.md",
@@ -294,8 +294,8 @@
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "8c8bd90ec346a735334c3ccb88c0d57d992a5c367c22781d8a7841f13777b7cc",
-      "size_bytes": 13956
+      "sha256": "fb8700e9b736d15c0ef37f55c88f1adf564cdb19ee39217446503a5cb0006630",
+      "size_bytes": 14410
     },
     {
       "path": "templates/case/STATE.json",
@@ -308,7 +308,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "f26cb6c36a514746d4c3fcd3cbd348e0c3371e1d986820975ef6c1ddb8f67024",
+  "manifest_sha256": "5c1a3c097e4ee4e9f2f218c02c066bcbefcf89609975120bc10ce1fbb9d0dcb3",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

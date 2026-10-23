@@ -1032,6 +1032,24 @@ def render_prompt(case: dict[str, Any]) -> str:
     semantic_contract = ""
     if case.get("id") in REQUIRED_SEMANTIC_CASE_IDS and isinstance(required_markers, dict):
         marker_names = ", ".join(required_markers)
+        boolean_marker_names = [
+            name
+            for name, expected_value in required_markers.items()
+            if expected_value in {"true", "false"}
+        ]
+        boolean_marker_contract = (
+            "boolean markers present in this case: "
+            + ", ".join(f"`{name}`" for name in boolean_marker_names)
+            + "; encode only those markers as lowercase `true|false`, never `1|0`. "
+            if boolean_marker_names
+            else "this case has no boolean markers. "
+        )
+        ratio_marker_contract = (
+            "`sum_share` is an exact scalar ratio: encode it as a normalized numeric "
+            "value, not as a boolean. "
+            if "sum_share" in required_markers
+            else ""
+        )
         semantic_contract = (
             "\n\nДля machine-check вычисли markers: "
             + marker_names
@@ -1040,8 +1058,10 @@ def render_prompt(case: dict[str, Any]) -> str:
             "порядке; текст каждого Claim должен быть ровно `Материальный вывод: key=value`, "
             "а status, evidence_ids и falsifier должны относиться к этому отдельному выводу; "
             "ожидаемые значения не заданы и должны быть получены из входа. Каноническое "
-            "кодирование применяй только к присутствующим markers: boolean marker values — "
-            "только lowercase `true|false`, не `1|0`; allocation markers — ровно "
+            "кодирование применяй только к присутствующим markers: "
+            + boolean_marker_contract
+            + ratio_marker_contract
+            + "allocation markers — ровно "
             "`A:<amount>,B:<amount>` с двоеточием внутри пары и запятой между парами, без "
             "residual и пояснений; totals markers — ровно `<fact>/<plan>`; "
             "`state_validation` — только uppercase `PASS|FAIL`; `view_status` — только "

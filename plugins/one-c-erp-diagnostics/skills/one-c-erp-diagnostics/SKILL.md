@@ -153,6 +153,8 @@ Keep accounting effect classification in the helper Evidence, not as extra top-l
 ### Gate 7 — challenge
 Apply `one-c-erp-verify-conclusion` as a distinct adversarial pass over original evidence. Verify evidence coverage, every material causal link, provenance closure and execution freshness. For an accounting correction, rerun baseline and changed primary rows independently, test an alternative and counterevidence, verify predicate reachability for each claimed fact/plan field and reject duplicate use of one derived calculation. Reviewer severity/confidence is a testable finding, not proof. Final root-cause `УСТАНОВЛЕНО` is forbidden with open/broken lineage, stale/mismatched execution evidence or failed/unavailable Gate 7. Gate 7 passes when it correctly rejects an unsupported current-state claim.
 
+Independence is procedural and does not inherently require another model or agent. For a bounded synthetic read-only case that supplies complete rows and forbids tools, perform the distinct second calculation inside the same response; do not block Gate 7 or request an external rerun solely to obtain another executor. If the second pass confirms row coverage and arithmetic, Gate 7 may pass. This does not establish a real 1C incident or causal chain.
+
 ### Gate 8 — decide action
 Apply `one-c-erp-action-decision` and `one-c-erp-risk-control`. Use the smallest safe reversible action or request evidence. Do not transform missing evidence into `R3 + NO-GO`; a read-only evidence gap is normally `R0 + EVIDENCE_REQUIRED`.
 

@@ -255,12 +255,43 @@ class EvalSuiteTests(unittest.TestCase):
         for case_id in sorted(validate_evals.REQUIRED_SEMANTIC_CASE_IDS):
             with self.subTest(case_id=case_id):
                 rendered = validate_evals.render_prompt(self.cases[case_id])
-                self.assertIn("boolean marker values", rendered)
-                self.assertIn("lowercase `true|false`, не `1|0`", rendered)
+                self.assertIn("boolean markers present in this case", rendered)
+                self.assertIn("lowercase `true|false`, never `1|0`", rendered)
                 self.assertIn("`A:<amount>,B:<amount>`", rendered)
                 self.assertIn("`<fact>/<plan>`", rendered)
                 self.assertIn("`PASS|FAIL`", rendered)
                 self.assertIn("`complete|wrong_view/incomplete`", rendered)
+
+        six_row = validate_evals.render_prompt(
+            self.cases["six-row-balanced-fallback"]
+        )
+        self.assertIn(
+            "boolean markers present in this case: `completeness_missing`",
+            six_row,
+        )
+        self.assertNotIn(
+            "boolean markers present in this case: `sum_share`",
+            six_row,
+        )
+        self.assertIn("`sum_share` is an exact scalar ratio", six_row)
+
+    def test_six_row_gate_7_is_a_bounded_internal_second_pass(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["six-row-balanced-fallback"]
+        )
+        for token in (
+            "distinct second calculation",
+            "а не запрос внешнего повторного запуска",
+            "decision=NO_ACTION",
+            "current_goal_status=closed",
+            "linked_incident_status=not_in_scope",
+            "Gate 7=passed",
+            "Gate 10=passed",
+            "requested_evidence=[]",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
 
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
