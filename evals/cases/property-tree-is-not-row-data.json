@@ -6,7 +6,7 @@
   "controls": ["artifact_view", "under_evidenced", "gate_7"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Синтетический artifact profile содержит schema/column metadata и заявленный row_count, но value preview отсутствует. Выполни bounded evidence-view assessment и запроси фактические rows. В summary выведи markers rows_present, view_status, gate_2_complete и repeat_same_export через точку с запятой. EVAL_RESULT_JSON",
+  "prompt": "Синтетический artifact profile содержит schema/column metadata и заявленный row_count, но value preview отсутствует. Выполни bounded evidence-view assessment и запроси фактические rows. Текущая evidence-view цель и связанный инцидент остаются заблокированы: current_goal_status=blocked, linked_incident_status=blocked. Используй Gates 0–1=passed, Gate 2=blocked, Gates 3–9=not_required и Gate 10=blocked; в частности Gate 7=not_required, потому что без строк еще нечего независимо перепроверять. Используй final_status=ТРЕБУЕТ ПРОВЕРКИ, risk=R0, decision=EVIDENCE_REQUIRED и actions=[]. Создай ровно четыре claims со status=УСТАНОВЛЕНО и evidence_ids=[E-AV-1]: rows_present=false, view_status=wrong_view/incomplete, gate_2_complete=false и repeat_same_export=false. Последний marker означает, что не нужно повторять ту же неполную выгрузку: запроси фактические строки строкой в requested_evidence. В summary выведи markers rows_present, view_status, gate_2_complete и repeat_same_export через точку с запятой. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-AV-1",

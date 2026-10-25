@@ -454,6 +454,24 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_property_tree_blocks_row_evidence_goal(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["property-tree-is-not-row-data"]
+        )
+        for token in (
+            "current_goal_status=blocked",
+            "linked_incident_status=blocked",
+            "Gates 0–1=passed",
+            "Gate 2=blocked",
+            "Gates 3–9=not_required",
+            "Gate 10=blocked",
+            "Gate 7=not_required",
+            "ровно четыре claims",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
