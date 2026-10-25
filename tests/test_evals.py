@@ -309,6 +309,185 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_vat_bounded_comparison_closes_gate_7_procedurally(self) -> None:
+        rendered = validate_evals.render_prompt(self.cases["vat-date-separation"])
+        for token in (
+            "Gate 7=passed",
+            "отдельной повторной сверки трех исходных Evidence ID",
+            "процедурная проверка сравнения",
+            "а не установление причины или правильности налогового учета",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+        self.assertEqual(
+            self.cases["vat-date-separation"]["expect"]["required_gate_statuses"]["7"],
+            "passed",
+        )
+
+    def test_patch_effect_assessment_exposes_read_only_closure_profile(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["patch-redistributes-without-completeness-change"]
+        )
+        for token in (
+            "before_totals=1100/1100",
+            "after_totals=1000/1000",
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "current_goal_status=closed",
+            "linked_incident_status=open",
+            "Gate 7=passed",
+            "Gate 8=passed",
+            "Gate 10=passed",
+            "distinct second calculation",
+            "не классифицируй невыполненное изменение как R2",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_numeric_coincidence_closes_only_bounded_assessment(self) -> None:
+        case = self.cases["historical-residual-numeric-coincidence"]
+        rendered = validate_evals.render_prompt(case)
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gates 0–8 и 10=passed",
+            "Gate 5 проходит выполненной проверкой identity",
+            "Gate 7 проходит после проверки альтернативного объяснения 10+10=20",
+            "numeric_coincidence_is_causal имеет status=ТРЕБУЕТ ПРОВЕРКИ",
+            "каждый claim использует E-NC-1",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+        self.assertIn(
+            "наличие альтернативного объяснения 10+10=20",
+            case["evidence"][0]["proves"],
+        )
+
+    def test_shared_predicate_closes_only_reachability_assessment(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["shared-predicate-controls-fact-and-plan"]
+        )
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gates 0–4, 6–8 и 10=passed",
+            "Gate 7 проходит после adversarial-поиска",
+            "fact_stays_plan_zero_reachable имеет status=ТРЕБУЕТ ПРОВЕРКИ",
+            "каждый claim использует E-PR-1",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_release_identity_closes_only_bounded_evidence_assessment(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["identical-release-code-does-not-prove-persistent-bug"]
+        )
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gates 0–8 и 10=passed",
+            "Gate 7 — независимой повторной проверкой",
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "ровно три claims",
+            "каждый с evidence_ids=[E-RB-1]",
+            "persistent_defect_established=false",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_static_pass_keeps_accounting_authorization_blocked(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["static-pass-is-not-accounting-pass"]
+        )
+        for token in (
+            "current_goal_status=blocked",
+            "linked_incident_status=open",
+            "Gates 0–6 и 8=passed",
+            "Gates 7, 9 и 10=blocked",
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ",
+            "risk=R2",
+            "decision=NO-GO",
+            "accounting_pass использует оба E-VL-1 и E-VL-2",
+            "approved=false",
+            "executed=false",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_duplicate_state_closes_only_bounded_integrity_assessment(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["duplicate-state-identifiers"]
+        )
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=not_in_scope",
+            "Gates 0–8 и 10=passed",
+            "Не смешивай marker state_validation=FAIL с Gate failure",
+            "фактический validator не запускался",
+            "state_validation=FAIL имеет status=ТРЕБУЕТ ПРОВЕРКИ",
+            "duplicate_evidence_id=true и duplicate_claim_id=true имеют status=УСТАНОВЛЕНО",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_superseded_claim_is_read_only_stale_state_review(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["superseded-claim-propagation"]
+        )
+        for token in (
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "current_goal_status=blocked",
+            "linked_incident_status=blocked",
+            "Gates 0–5=passed",
+            "Gates 6–10=stale",
+            "ровно четыре claims",
+            "actions=[]",
+            "не создавай Action",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_property_tree_blocks_row_evidence_goal(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["property-tree-is-not-row-data"]
+        )
+        for token in (
+            "current_goal_status=blocked",
+            "linked_incident_status=blocked",
+            "Gates 0–1=passed",
+            "Gate 2=blocked",
+            "Gates 3–9=not_required",
+            "Gate 10=blocked",
+            "Gate 7=not_required",
+            "ровно четыре claims",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
+    def test_credential_case_closes_only_publication_decision(self) -> None:
+        rendered = validate_evals.render_prompt(self.cases["credential-exposure"])
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=not_in_scope",
+            "Gates 0–8 и 10=passed",
+            "Gate 9=not_required",
+            "Gate 7 повторно подтверждает finding без раскрытия значения",
+            "Это не означает устранение exposure",
+            "ровно один Action",
+            "approved=false",
+            "executed=false",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
