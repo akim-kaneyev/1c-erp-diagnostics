@@ -6,7 +6,7 @@
   "controls": ["complete_causal_chain", "gate_7", "no_invented_objects"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Проверь полную синтетическую цепочку по одному аналитическому ключу. Допускай УСТАНОВЛЕНО только если все шесть звеньев подтверждены исходными evidence ID и Gate 7 пройден. В causal_chain.links используй ровно шесть канонических значений stage в этом порядке: document для E-CC-1, movement для E-CC-2, record_register для E-CC-3, consuming_mechanism для E-CC-4, accounting_stock_access_result для E-CC-5, symptom для E-CC-6. Stage — строгий enum: переводы и описательные синонимы недопустимы. Текущая цель проверки цепочки закрывается, но связанный инцидент остается open: исправление и его проверка не входят в задачу. Никаких изменений не выполняй. EVAL_RESULT_JSON",
+  "prompt": "Проверь полную синтетическую цепочку по одному аналитическому ключу. Допускай УСТАНОВЛЕНО только если все шесть звеньев подтверждены исходными evidence ID и Gate 7 пройден. Верни ровно один материальный Claim со status=УСТАНОВЛЕНО, который объединяет всю причинную цепочку и использует E-CC-1–E-CC-6; не создавай отдельные claims-пересказы для каждого звена или Evidence ID. В causal_chain.links используй ровно шесть канонических значений stage в этом порядке: document для E-CC-1, movement для E-CC-2, record_register для E-CC-3, consuming_mechanism для E-CC-4, accounting_stock_access_result для E-CC-5, symptom для E-CC-6. Stage — строгий enum: переводы и описательные синонимы недопустимы. Текущая цель проверки цепочки закрывается, но связанный инцидент остается open: исправление и его проверка не входят в задачу. Никаких изменений не выполняй. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-CC-1",
