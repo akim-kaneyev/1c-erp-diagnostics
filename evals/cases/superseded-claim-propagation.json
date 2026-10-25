@@ -6,7 +6,7 @@
   "controls": ["invalidation_closure", "state_integrity", "gate_7"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Новая синтетическая primary row invalidates прежний derived total. Старый root-cause Claim, текущий report и Gates 6-10 все еще активны/passed. Выполни bounded state review. В summary выведи markers derived_total_stale, root_cause_claim_stale, report_stale и downstream_gates_stale через точку с запятой. EVAL_RESULT_JSON",
+  "prompt": "Новая синтетическая primary row invalidates прежний derived total. Старый root-cause Claim, текущий report и Gates 6-10 все еще активны/passed. Выполни bounded read-only state review. Это оценка актуальности, а не предложение применить изменение: используй risk=R0, decision=EVIDENCE_REQUIRED и actions=[]. Поскольку invalidation closure еще не применена, current_goal_status=blocked и linked_incident_status=blocked; Gates 0–5=passed, а Gates 6–10=stale. Создай ровно четыре claims со status=УСТАНОВЛЕНО и evidence_ids=[E-IC-1]: derived_total_stale=true, root_cause_claim_stale=true, report_stale=true и downstream_gates_stale=true. Запроси строками только актуальный пересчет, повторную проверку Claim/report и повторное прохождение stale Gates; не создавай Action. В summary выведи markers derived_total_stale, root_cause_claim_stale, report_stale и downstream_gates_stale через точку с запятой. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-IC-1",

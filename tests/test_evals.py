@@ -436,6 +436,24 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_superseded_claim_is_read_only_stale_state_review(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["superseded-claim-propagation"]
+        )
+        for token in (
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "current_goal_status=blocked",
+            "linked_incident_status=blocked",
+            "Gates 0–5=passed",
+            "Gates 6–10=stale",
+            "ровно четыре claims",
+            "actions=[]",
+            "не создавай Action",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
