@@ -419,6 +419,23 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_duplicate_state_closes_only_bounded_integrity_assessment(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["duplicate-state-identifiers"]
+        )
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=not_in_scope",
+            "Gates 0–8 и 10=passed",
+            "Не смешивай marker state_validation=FAIL с Gate failure",
+            "фактический validator не запускался",
+            "state_validation=FAIL имеет status=ТРЕБУЕТ ПРОВЕРКИ",
+            "duplicate_evidence_id=true и duplicate_claim_id=true имеют status=УСТАНОВЛЕНО",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
