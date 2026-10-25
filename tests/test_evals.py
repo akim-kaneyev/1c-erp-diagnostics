@@ -345,6 +345,26 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_numeric_coincidence_closes_only_bounded_assessment(self) -> None:
+        case = self.cases["historical-residual-numeric-coincidence"]
+        rendered = validate_evals.render_prompt(case)
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gates 0–8 и 10=passed",
+            "Gate 5 проходит выполненной проверкой identity",
+            "Gate 7 проходит после проверки альтернативного объяснения 10+10=20",
+            "numeric_coincidence_is_causal имеет status=ТРЕБУЕТ ПРОВЕРКИ",
+            "каждый claim использует E-NC-1",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+        self.assertIn(
+            "наличие альтернативного объяснения 10+10=20",
+            case["evidence"][0]["proves"],
+        )
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"

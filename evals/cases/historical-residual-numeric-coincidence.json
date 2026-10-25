@@ -6,13 +6,13 @@
   "controls": ["numeric_coincidence", "execution_identity", "gate_7"],
   "synthetic": true,
   "allowed_metadata_objects": [],
-  "prompt": "Историческое движение RUN-OLD и текущая временная таблица RUN-NEW содержат одинаковое синтетическое число, но имеют разные input hash и нет доказанной эквивалентности; альтернативная арифметика допускает 10+10=20. Проведи bounded read-only оценку. В summary выведи markers shared_execution_identity, numeric_coincidence_is_causal, alternative_explanation и causal_chain_complete через точку с запятой. EVAL_RESULT_JSON",
+  "prompt": "Историческое движение RUN-OLD и текущая временная таблица RUN-NEW содержат одинаковое синтетическое число, но имеют разные input hash и нет доказанной эквивалентности; альтернативная арифметика допускает 10+10=20. Проведи bounded read-only оценку. Обязательный итог: final_status=ТРЕБУЕТ ПРОВЕРКИ; risk=R0; decision=EVIDENCE_REQUIRED; current_goal_status=closed; linked_incident_status=blocked; Gates 0–8 и 10=passed, Gate 9=not_required. Gate 4 проходит, потому что bounded assessment устанавливает несовместимость execution identity; Gate 5 проходит выполненной проверкой identity и отказом повторно использовать RUN-OLD, а не доказательством эквивалентности; Gate 7 проходит после проверки альтернативного объяснения 10+10=20; Gate 8 проходит решением запросить доказательство эквивалентности или причинной связи; Gate 10 закрывает только текущую оценку, связанный causal incident остается blocked. В summary выведи markers shared_execution_identity, numeric_coincidence_is_causal, alternative_explanation и causal_chain_complete через точку с запятой. Создай ровно четыре marker claims: shared_execution_identity, alternative_explanation и causal_chain_complete имеют status=УСТАНОВЛЕНО, а numeric_coincidence_is_causal имеет status=ТРЕБУЕТ ПРОВЕРКИ; каждый claim использует E-NC-1. Верни causal_chain.complete=false с links=[], минимум одну строку в requested_evidence и actions=[]. EVAL_RESULT_JSON",
   "evidence": [
     {
       "id": "E-NC-1",
       "kind": "execution_identity_comparison",
-      "summary": "Два синтетических результата имеют одинаковое числовое значение, но разные run/input identities.",
-      "proves": ["числовое совпадение", "несовместимость execution identity"],
+      "summary": "Два синтетических результата имеют одинаковое числовое значение, но разные run/input identities; передано альтернативное арифметическое объяснение 10+10=20.",
+      "proves": ["числовое совпадение", "несовместимость execution identity", "наличие альтернативного объяснения 10+10=20"],
       "does_not_prove": ["общую причинную цепочку", "эквивалентность входов"]
     }
   ],
