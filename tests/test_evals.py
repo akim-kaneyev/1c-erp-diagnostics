@@ -324,6 +324,27 @@ class EvalSuiteTests(unittest.TestCase):
             "passed",
         )
 
+    def test_patch_effect_assessment_exposes_read_only_closure_profile(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["patch-redistributes-without-completeness-change"]
+        )
+        for token in (
+            "before_totals=1100/1100",
+            "after_totals=1000/1000",
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "current_goal_status=closed",
+            "linked_incident_status=open",
+            "Gate 7=passed",
+            "Gate 8=passed",
+            "Gate 10=passed",
+            "distinct second calculation",
+            "не классифицируй невыполненное изменение как R2",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
