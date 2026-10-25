@@ -400,6 +400,25 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_static_pass_keeps_accounting_authorization_blocked(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["static-pass-is-not-accounting-pass"]
+        )
+        for token in (
+            "current_goal_status=blocked",
+            "linked_incident_status=open",
+            "Gates 0–6 и 8=passed",
+            "Gates 7, 9 и 10=blocked",
+            "final_status=ТРЕБУЕТ ПРОВЕРКИ",
+            "risk=R2",
+            "decision=NO-GO",
+            "accounting_pass использует оба E-VL-1 и E-VL-2",
+            "approved=false",
+            "executed=false",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
