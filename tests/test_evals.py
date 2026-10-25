@@ -381,6 +381,25 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_release_identity_closes_only_bounded_evidence_assessment(self) -> None:
+        rendered = validate_evals.render_prompt(
+            self.cases["identical-release-code-does-not-prove-persistent-bug"]
+        )
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=blocked",
+            "Gates 0–8 и 10=passed",
+            "Gate 7 — независимой повторной проверкой",
+            "risk=R0",
+            "decision=EVIDENCE_REQUIRED",
+            "ровно три claims",
+            "каждый с evidence_ids=[E-RB-1]",
+            "persistent_defect_established=false",
+            "actions=[]",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
