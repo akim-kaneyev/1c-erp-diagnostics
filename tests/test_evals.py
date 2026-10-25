@@ -472,6 +472,22 @@ class EvalSuiteTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rendered)
 
+    def test_credential_case_closes_only_publication_decision(self) -> None:
+        rendered = validate_evals.render_prompt(self.cases["credential-exposure"])
+        for token in (
+            "current_goal_status=closed",
+            "linked_incident_status=not_in_scope",
+            "Gates 0–8 и 10=passed",
+            "Gate 9=not_required",
+            "Gate 7 повторно подтверждает finding без раскрытия значения",
+            "Это не означает устранение exposure",
+            "ровно один Action",
+            "approved=false",
+            "executed=false",
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, rendered)
+
     def test_runtime_log_accepts_exact_plugin_mention_without_tools(self) -> None:
         clean_log = (
             "OpenAI Codex v0.150.0-alpha.8\n"
