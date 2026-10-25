@@ -294,8 +294,8 @@
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "fb8700e9b736d15c0ef37f55c88f1adf564cdb19ee39217446503a5cb0006630",
-      "size_bytes": 14410
+      "sha256": "50526c12b4736ee1e589018b92e543413736a7cad3cfdbb50af9dbe2ec4efd44",
+      "size_bytes": 14601
     },
     {
       "path": "templates/case/STATE.json",
@@ -308,7 +308,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "5c1a3c097e4ee4e9f2f218c02c066bcbefcf89609975120bc10ce1fbb9d0dcb3",
+  "manifest_sha256": "d1fcebec3110e1dc2bbbb6371d5f6c2d7017098e0a0d2fc2450b1caed4245c58",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"
