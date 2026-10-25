@@ -26,7 +26,7 @@ When the prompt contains `EVAL_RESULT_JSON`:
 - use `linked_incident_status = not_in_scope` only when the incident was explicitly excluded; a completed evidence-sufficiency assessment may close the current goal while the linked incident remains `blocked` or `open`;
 - report only the exact synthetic capability snapshot; every capability item is exactly `{name, status, simulated}`, `simulated` is false, and `evidence_id` is forbidden; internal reasoning steps, skills and invented tool names are not capabilities, and an empty snapshot requires `capabilities: []`;
 - make every claim exactly `{id, status, text, evidence_ids, falsifier}` and include only material conclusions, not copied evidence summaries or capability rows; assess claims independently so an observed missing-lineage fact may be `УСТАНОВЛЕНО` while source content/cause remains `ТРЕБУЕТ ПРОВЕРКИ`;
-- set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; logical freshness/provenance reasoning is not that causal chain;
+- set `causal_chain.complete` true only for all six canonical 1C stages in order, with link objects `{stage, evidence_ids}`; the exact `stage` enum is `document`, `movement`, `record_register`, `consuming_mechanism`, `accounting_stock_access_result`, `symptom`, and translations or descriptive synonyms are invalid; logical freshness/provenance reasoning is not that causal chain;
 - use `actions: []` when no action exists; otherwise use exact action objects;
 - enforce: a closed current goal requires Gate 10 passed, and `final_status = УСТАНОВЛЕНО` requires Gate 7 passed, Gate 10 passed and a complete causal chain;
 - remove placeholders and validate the object against the skeleton before sending.

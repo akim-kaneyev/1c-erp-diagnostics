@@ -228,6 +228,17 @@ class EvalSuiteTests(unittest.TestCase):
             rendered,
         )
         self.assertIn("requested_evidence содержит только строки", rendered)
+        complete_chain_rendered = validate_evals.render_prompt(
+            self.cases["complete-cost-chain"]
+        )
+        self.assertIn("stage является enum, а не свободным текстом", complete_chain_rendered)
+        self.assertIn(
+            "document, movement, record_register, consuming_mechanism, "
+            "accounting_stock_access_result, symptom",
+            complete_chain_rendered,
+        )
+        self.assertIn("document для E-CC-1", complete_chain_rendered)
+        self.assertIn("symptom для E-CC-6", complete_chain_rendered)
         analysis_rendered = validate_evals.render_prompt(
             self.cases["analysis-only-comparison"]
         )
