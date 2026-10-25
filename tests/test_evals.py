@@ -239,6 +239,9 @@ class EvalSuiteTests(unittest.TestCase):
         )
         self.assertIn("document для E-CC-1", complete_chain_rendered)
         self.assertIn("symptom для E-CC-6", complete_chain_rendered)
+        self.assertIn("ровно один материальный Claim", complete_chain_rendered)
+        self.assertIn("использует E-CC-1–E-CC-6", complete_chain_rendered)
+        self.assertIn("не создавай отдельные claims-пересказы", complete_chain_rendered)
         analysis_rendered = validate_evals.render_prompt(
             self.cases["analysis-only-comparison"]
         )
