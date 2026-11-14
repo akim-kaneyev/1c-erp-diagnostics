@@ -152,6 +152,14 @@ The independently authored packaged `one-c-erp-test-bridge` skill supports loopb
 
 Validation uses synthetic loopback HTTP fixtures for request encoding, response contracts, failure handling, scope, hash tampering and stale-context rejection. It does not prove compatibility with a live 1C base. Query row limits never become population completeness, and Health does not attest an installed commit. Fallback: offline evidence, separately installed Unica/1C Skills in an authorized disposable contour, or manual exports. Rollback: revert the adapter/skill release; there is no base/publication state to undo. See [the packaged workflow](../plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/references/bridge-contract.md).
 
+## Vercel UI SDK
+
+Reviewed 2026-11-14: https://github.com/vercel-labs/ui at immutable commit `724a7d6c2d0ca1251a8eb6172462ae220c484714`, Apache-2.0. UI SDK is beta. The reviewed standalone skill is `packages/core/skills/ui-sdk` with one entrypoint and seven references; it contains no executable scripts.
+
+Use: a user-scoped UI authoring skill and a project-specific methodology mapping through `one-c-erp-ui-design`. The user skill is independently installed; SDK code and upstream skill contents are not bundled in the primary plugin or marketplace. Actual UI projects install and lock core plus their framework adapter separately. The source pin records reviewed instructions, not certification of a future npm version.
+
+Risk: local instruction installation and UI artifact authoring are bounded local changes. A browser component agent bridge is not 1C access, a Codex MCP backend or permission to send case data to a remote provider. WebMCP, deployments, external data transfer and database mutations retain their own scope and authorization. Ordinary diagnostic and strict-JSON paths do not require this skill. Fallback: existing native form tooling or a plain diagnostic report. Verification: source hashes, cross-workspace discovery, package governance and scoped behavior checks; rendered UI/accounting acceptance belongs to the actual UI task. See [installation and scope](UI_SDK_INTEGRATION.md).
+
 ## Adoption rule
 
 A new tool or skill enters the ecosystem only after:

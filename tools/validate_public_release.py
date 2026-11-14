@@ -66,6 +66,7 @@ REQUIRED_DYNAMIC_SKILLS = {
     "one-c-erp-local-static-analysis",
     "one-c-erp-incident-search",
     "one-c-erp-test-bridge",
+    "one-c-erp-ui-design",
 }
 
 FORBIDDEN_SUFFIXES = {
@@ -428,8 +429,8 @@ def main() -> int:
 
     skill_paths = sorted((PLUGIN_DIR / "skills").glob("*/SKILL.md"))
     skill_names = {name for path in skill_paths if (name := validate_skill(path, errors))}
-    if len(skill_paths) < 34:
-        fail(errors, f"Expected at least 34 packaged skills, found {len(skill_paths)}")
+    if len(skill_paths) < 35:
+        fail(errors, f"Expected at least 35 packaged skills, found {len(skill_paths)}")
     missing_dynamic = sorted(REQUIRED_DYNAMIC_SKILLS - skill_names)
     if missing_dynamic:
         fail(errors, "Missing dynamic skills: " + ", ".join(missing_dynamic))
