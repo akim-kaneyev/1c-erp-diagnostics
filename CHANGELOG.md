@@ -2,6 +2,8 @@
 
 ## 0.3.11 — 2026-11-14
 
+- Reproduce a clean-session claim-status failure (`supported`) and expose the existing exact Claim status enum in rendered prompts and all orchestrator surfaces without relaxing validation or revealing expected per-claim answers.
+
 - Add an independently authored loopback-only CodexTestBridge read adapter for explicitly identified test contours: Health, Metadata, Describe and Query.
 - Preserve exact request/response hashes, case/Evidence IDs, analytic key and run identity; verify artifact integrity and context offline without claiming freshness or population coverage.
 - Add a packaged test-bridge skill and separately scoped report/print-form acceptance workflow, plus synthetic HTTP regression tests.

@@ -14,8 +14,8 @@
     },
     {
       "path": "SKILL.md",
-      "sha256": "d49f021cd064049f49611437ae81f15539a053afa0428765d0e9d87dc321a83d",
-      "size_bytes": 25977
+      "sha256": "98bf7e240cb8f464fa10dc4ca4f278ec1ad0898f4428efbe3641a75c7c9649b1",
+      "size_bytes": 26169
     },
     {
       "path": "checklists/accounting.md",
@@ -179,8 +179,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "543958eb2573aa7d5701c0b71ac693ae36e8d7f805ea6d7c964b15a81b8e5a0a",
-      "size_bytes": 19074
+      "sha256": "9e91d2ee732fd267ef8dbebd00e254b0849c74c12d973bc5ac682169eedb2102",
+      "size_bytes": 19266
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-dynamic-plan/SKILL.md",
@@ -309,8 +309,8 @@
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "a03c24a25fca41c24954efacfaa7d9cf6269cabfa8bcac3749d6bc410a414683",
-      "size_bytes": 15093
+      "sha256": "216a0d212791bec738a0880ad43715f7165b518298bc9aca782397a2c2a4443b",
+      "size_bytes": 15260
     },
     {
       "path": "templates/case/STATE.json",
@@ -323,7 +323,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "55eda85121b3cc2261651bafc2c9afdcaaad12dc93d2ea3f78a393c74305ccaf",
+  "manifest_sha256": "f1ea065477884198a6880fbc4a9d261d67259c1df59b5ccece2ac50bff5261c2",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

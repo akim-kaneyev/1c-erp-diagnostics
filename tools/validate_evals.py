@@ -996,7 +996,11 @@ def render_prompt(case: dict[str, Any]) -> str:
     nested_contract = (
         "Вложенные структуры также являются строгим контрактом. Каждый Claim — ровно "
         "{id, status, text, evidence_ids, falsifier}; id/text/falsifier — непустые строки, "
-        "evidence_ids — массив Evidence ID. Каждый Action — ровно {description, risk, "
+        "evidence_ids — массив Evidence ID. Claim.status enum: "
+        "УСТАНОВЛЕНО | ВЕРОЯТНО | ТРЕБУЕТ ПРОВЕРКИ. Выбери точное значение для "
+        "каждого Claim независимо; supported, confirmed, passed и переводы недопустимы. "
+        "Допустимые значения enum не определяют, какой статус подтверждается входными "
+        "данными. Каждый Action — ровно {description, risk, "
         "approved, executed, approval_reference, rollback, validation}; proposed/blocked "
         "действие всё равно представляется объектом, не строкой. requested_evidence содержит "
         "только строки. Каждый causal link — ровно {stage, evidence_ids}; stage является "

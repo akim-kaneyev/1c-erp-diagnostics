@@ -15,4 +15,6 @@ Unchanged companion pins:
 
 Validation: synthetic loopback HTTP tests exercise UTF-8, contour mismatch, allowlisted commands, proxy/redirect isolation, invalid JSON/counts, response limits, offline context checks and file tampering. Repository checks must pass before publication. These fixtures are not live 1C acceptance.
 
+The first exact-installed clean-session run rejected the redistribution case because its Claim statuses were `supported` despite correct arithmetic. The renderer and all orchestrator surfaces now expose the existing exact Claim status enum. Validation still rejects aliases and independently checks each Claim's status/evidence; hidden expected answers remain hidden. The failed run is retained as failure evidence and a fresh complete run is required.
+
 Protected PR CI and CodeQL, exact installed v0.3.11 clean-session acceptance, and an actual identified test-contour smoke remain separate gates. No production base, external publication or global Plugin Directory release is changed by this candidate. The 0.3.8 acceptance does not transfer. Rollback is reverting this candidate/plugin version; the adapter never mutates 1C or publication settings.
