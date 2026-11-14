@@ -54,3 +54,5 @@ For `sonarqube-bsl-local`, do not infer availability from marketplace presence a
 Select the minimum sufficient capability set. Do not use a tool merely because it exists. If two capabilities overlap, prefer the one with lower write risk and clearer reproducibility.
 
 Output a compact capability map and feed it into the dynamic plan.
+
+For an explicitly selected local test contour, consider `codex-test-bridge-local` through `one-c-erp-test-bridge`. Require test-scope provenance, expected metadata name and a real health capture before classifying availability. Do not scan unknown endpoints, install CFE, publish HTTP services or equate configuration name with unique base identity. Authentication/permission requirements remain `confirmation_required`; remote/production contours are `prohibited` for this adapter. Synthetic snapshots remain authoritative and acquire no extra capabilities.

@@ -62,3 +62,5 @@ When companion outputs disagree:
 External plugins and host adapters are invoked, not copied. Their runtime availability is host-managed. The marketplace entry makes the four canonical companion plugins discoverable from one source; it does not include SonarQube or bypass installation, permissions, authentication, external-provider disclosure or action confirmation.
 
 A missing companion triggers a documented fallback or `blocked`, never a simulated result.
+
+The optional `codex-test-bridge-local` host adapter is separate from all marketplace entries. Apply `one-c-erp-test-bridge` only for an explicitly identified disposable local contour; preserve exact request/response hashes and current case/analytic context. The protocol-reference commit does not attest the installed bridge. Upstream msrv-tech code/CFE is not bundled or automatically installed.

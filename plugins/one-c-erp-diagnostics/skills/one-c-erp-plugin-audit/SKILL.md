@@ -39,3 +39,5 @@ Audit before release or public submission:
 30. every local resource referenced by a packaged skill resolves inside the installable plugin boundary; repository-root fixtures cannot substitute for package contents.
 
 Report each control as `PASS | FAIL | WARNING` with exact evidence and remediation. Any critical `FAIL` blocks merge, repository publication, tag/release creation and global Plugin Directory submission.
+
+31. the optional local test-bridge adapter rejects remote/production scope, credentials in URLs, redirects, proxy inheritance, writes and inconsistent responses; captures preserve raw hashes and current context, while offline integrity never implies freshness, population completeness or ERP causality; external report rendering remains separately scoped execution.

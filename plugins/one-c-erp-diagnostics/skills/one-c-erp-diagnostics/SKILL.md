@@ -184,3 +184,7 @@ Gate statuses are `pending | passed | blocked | failed | stale | not_required`. 
 ## Companion boundary
 
 Unica, 1C Skills, Jev, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use, OpenSandbox and local SonarQube are optional runtime capabilities. External implementations are invoked, not copied. Missing required capability becomes fallback or `blocked` only after documented discovery.
+
+## Local test-contour execution
+
+When an explicitly identified local test contour already exposes CodexTestBridge, apply `one-c-erp-test-bridge` for `codex-test-bridge-local` read-only capture and offline integrity/context verification. Require the expected configuration and test-contour scope before connection; never install or enable the external bridge during discovery. Query samples do not prove population coverage, and health/metadata do not satisfy functional/business validation.

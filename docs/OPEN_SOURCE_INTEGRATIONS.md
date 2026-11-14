@@ -140,6 +140,18 @@ License: MIT.
 
 Use: methodology reference for uniform skill structure, separation of deep references, deterministic lock files and CI linting. The project implements its own 1C-specific governance in `docs/SKILL_AUTHORING_STANDARD.md`, `tools/validate_skills.py` and `tools/update_skill_lock.py`. RampStack's external skills, private lint inputs, marketing/web catalog and plugin manifests are not copied or added to the marketplace.
 
+## msrv-tech Test Bridge protocol
+
+Reviewed 2026-11-14 from the discovery article https://infostart.ru/1c/articles/2705751/ and repository https://github.com/msrv-tech/skills at immutable commit `702dc8dbe0a0d31b1a16af3d871af29b99ef1122`.
+
+Problem addressed: close the gap between static artifact checks and observable test-base evidence. The article describes 82 operation skills; the reviewed current README describes 13 domains. Old operation paths are not assumed current. This source is distinct from the existing Nikolay-Shirokov marketplace companions.
+
+Intake decision: **protocol reference and optional host adapter only; upstream code/CFE redistribution and automatic installation deferred**. No root LICENSE/COPYING/NOTICE file or explicit license grant was found in the reviewed tree. The repository does not vendor, execute, relicense or install upstream implementation. No sixth marketplace entry is added. License clarification and a separate security/compatibility review are prerequisites to any future redistribution or installation workflow.
+
+The independently authored packaged `one-c-erp-test-bridge` skill supports loopback-only Health/Metadata/Describe/Query capture, exact request/response SHA-256 and offline integrity/context verification. Risk: authorized test-contour reads `R0`, local evidence writes `R1`; bridge installation, external-code rendering, BSL, object changes and UI execution are excluded and require separately classified authorization. Loopback is not proof of test status. The expected metadata name is checked but cannot uniquely identify an infobase. No authentication fallback, credentials, remote access, redirects, proxy inheritance or generic command forwarding.
+
+Validation uses synthetic loopback HTTP fixtures for request encoding, response contracts, failure handling, scope, hash tampering and stale-context rejection. It does not prove compatibility with a live 1C base. Query row limits never become population completeness, and Health does not attest an installed commit. Fallback: offline evidence, separately installed Unica/1C Skills in an authorized disposable contour, or manual exports. Rollback: revert the adapter/skill release; there is no base/publication state to undo. See [the packaged workflow](../plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/references/bridge-contract.md).
+
 ## Adoption rule
 
 A new tool or skill enters the ecosystem only after:

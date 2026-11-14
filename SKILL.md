@@ -169,6 +169,8 @@ If diagnosis is outside the current goal, Gate 4 may be `not_required`; keep the
 
 ## Gate 5 — Executable validation and sandbox decision
 
+When an explicitly identified local test contour already exposes CodexTestBridge, apply `one-c-erp-test-bridge` for `codex-test-bridge-local` read-only capture and offline integrity/context verification. Require the expected configuration and test-contour scope before connection; never install or enable the external bridge during discovery. Query samples do not prove population coverage, and health/metadata do not satisfy functional/business validation.
+
 Use local tools, `1c-skills`, `1c-skills-py`, Unica runtime, optional Jev, OpenSandbox or `one-c-erp-local-static-analysis` only when executable validation adds measurable value. Default to read-only and sanitized inputs. Do not use Jev to bypass fixed-origin search controls or as independent verification of a browser action.
 
 Every executable result relied on later must have an execution identity: unique `run_id`, current `case_id`, input Evidence IDs and hashes/stable identifiers, tool/runtime version/ref, operation without secrets, timestamps when exposed, output hash/identifier, status and limitations.

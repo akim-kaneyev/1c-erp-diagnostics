@@ -145,3 +145,7 @@ Return `Краткий вывод`, `Основание`, `Что делать �
 
 ## Resume behavior
 Read prior state first and continue from earliest incomplete/stale gate. Do not restart valid passed work unless new evidence invalidates it.
+
+## Local test-contour execution
+
+When an explicitly identified local test contour already exposes CodexTestBridge, apply `one-c-erp-test-bridge` for `codex-test-bridge-local` read-only capture and offline integrity/context verification. Require the expected configuration and test-contour scope before connection; never install or enable the external bridge during discovery. Query samples do not prove population coverage, and health/metadata do not satisfy functional/business validation.

@@ -64,6 +64,8 @@ Jev is not required by the deterministic Infoblog bridge. It requires Node.js 22
 
 ## Runtime contract
 
+`codex-test-bridge-local` is another optional host adapter, not a sixth marketplace entry. The project provides its own read-only evidence client; it does not install or redistribute `msrv-tech/skills` or its CFE. Use only an explicitly identified disposable loopback contour and the packaged `one-c-erp-test-bridge` workflow. The reviewed upstream snapshot has no verified redistribution license. Protocol-reference revision and observed Health metadata must not be represented as attestation of an installed bridge version.
+
 A diagnostic starts with `@one-c-erp-diagnostics`.
 
 Gate 0 records, for every companion:
