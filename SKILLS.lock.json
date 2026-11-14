@@ -1,6 +1,6 @@
 {
   "algorithm": "sha256",
-  "file_count": 61,
+  "file_count": 64,
   "files": [
     {
       "path": ".agents/skills/one-c-erp-diagnostics/SKILL.md",
@@ -14,8 +14,8 @@
     },
     {
       "path": "SKILL.md",
-      "sha256": "d78e2b79f6e0cce4e83a98d611348313629b4e1d5884a9eb6bf95d3c2b485c17",
-      "size_bytes": 25518
+      "sha256": "98bf7e240cb8f464fa10dc4ca4f278ec1ad0898f4428efbe3641a75c7c9649b1",
+      "size_bytes": 26169
     },
     {
       "path": "checklists/accounting.md",
@@ -114,8 +114,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-capability-discovery/SKILL.md",
-      "sha256": "439d6b7a6b4bbe24a216e139535d4621fca0f878a00d76b096997a916ce12f03",
-      "size_bytes": 4334
+      "sha256": "6439b940ad3fd6ca3af91db9e8a536ff72d5fc243e98bdb6540748987bc94b6d",
+      "size_bytes": 4894
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state/SKILL.md",
@@ -144,8 +144,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-companion-plugins/SKILL.md",
-      "sha256": "81f762e7605a143d03a2dd70cc0e031c993d87b9a264c13ba6cc61f4e583e570",
-      "size_bytes": 4796
+      "sha256": "b1aa031401c9e5c4c2bf6095d667d20ccf777cb68e53c32d1fa7f560464b9049",
+      "size_bytes": 5194
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-compare-documents/SKILL.md",
@@ -179,8 +179,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "95dbcdaa9dc3ea749eec324f8ef7d5e4faa05c93aef3948634206d853698fa31",
-      "size_bytes": 18582
+      "sha256": "9e91d2ee732fd267ef8dbebd00e254b0849c74c12d973bc5ac682169eedb2102",
+      "size_bytes": 19266
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-dynamic-plan/SKILL.md",
@@ -234,8 +234,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-plugin-audit/SKILL.md",
-      "sha256": "4946d95300bc8dd589d7ccbb9ac517cb17d3144c8e7795af82e62d69871fea9a",
-      "size_bytes": 3313
+      "sha256": "63f6d553812ae2188764cf71e1acfdc8c31fa0c737a590bd8cee152121fea6af",
+      "size_bytes": 3680
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-post-change-validation/SKILL.md",
@@ -278,6 +278,21 @@
       "size_bytes": 588
     },
     {
+      "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/SKILL.md",
+      "sha256": "d9f5d58174b92742c576c4da0c011e9acfc8f6ef900fe0e3d3c8f52ff06e88f6",
+      "size_bytes": 4676
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/references/bridge-contract.md",
+      "sha256": "bdba73a8e25d6d96857a31998c1774fd402760e6bfa7aeaeb52d6acb75c495fd",
+      "size_bytes": 7486
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/scripts/test_bridge.py",
+      "sha256": "b003418f0988e7c28678f787b4a89328e2d9d50b9ab2ca4cb2fe9457612903fd",
+      "size_bytes": 15677
+    },
+    {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-vat/SKILL.md",
       "sha256": "60f26e460c3fda158518240bfc74ec4a2d48d4c9f50947a6194b012ce9cc4caa",
       "size_bytes": 762
@@ -294,8 +309,8 @@
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
-      "sha256": "50526c12b4736ee1e589018b92e543413736a7cad3cfdbb50af9dbe2ec4efd44",
-      "size_bytes": 14601
+      "sha256": "216a0d212791bec738a0880ad43715f7165b518298bc9aca782397a2c2a4443b",
+      "size_bytes": 15260
     },
     {
       "path": "templates/case/STATE.json",
@@ -308,7 +323,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "d1fcebec3110e1dc2bbbb6371d5f6c2d7017098e0a0d2fc2450b1caed4245c58",
+  "manifest_sha256": "f1ea065477884198a6880fbc4a9d261d67259c1df59b5ccece2ac50bff5261c2",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

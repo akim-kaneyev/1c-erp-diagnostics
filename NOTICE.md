@@ -17,3 +17,5 @@ The 1C toolchain candidate map references `Oxotka/StackTechnologies1C` at commit
 The optional marketplace companion `wy-coliney/jev-browser-use` is referenced at commit `cf7e76607d4ec70592b24becadd0296dcda8177a` under its MIT license. Its source is not copied into this project.
 
 The Infoblog public search index is queried only for metadata and links. Article bodies and site assets are not copied or relicensed.
+
+The Infostart article `1C Skills для ИИ-агентов` and `msrv-tech/skills` at commit `702dc8dbe0a0d31b1a16af3d871af29b99ef1122` informed the optional local test-contour workflow. Only the public HTTP protocol was referenced. The adapter is independently authored; article text/images, upstream scripts and CFE are not copied or relicensed. No redistribution license was verified for that upstream snapshot.

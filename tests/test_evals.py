@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -648,6 +649,25 @@ class EvalSuiteTests(unittest.TestCase):
             any("semantic Claim" in item and "status" in item for item in errors),
             errors,
         )
+
+    def test_rendered_claim_status_enum_matches_validator(self) -> None:
+        for case in self.cases.values():
+            with self.subTest(case_id=case["id"]):
+                rendered = validate_evals.render_prompt(case)
+                match = re.search(r"Claim\.status enum: ([^.]+)\.", rendered)
+                self.assertIsNotNone(match)
+                self.assertEqual(set(match.group(1).split(" | ")), validate_evals.FINAL_STATUSES)
+                self.assertNotIn("required_claim_statuses", rendered)
+
+    def test_supported_claim_status_is_rejected_without_normalization(self) -> None:
+        case = self.cases["patch-redistributes-without-completeness-change"]
+        result = semantic_result(case)
+        self.assertEqual(validate_evals.validate_result(result, case), [])
+        for claim in result["claims"]:
+            claim["status"] = "supported"
+        errors = validate_evals.validate_result(result, case)
+        self.assertEqual(sum("invalid status 'supported'" in error for error in errors), len(result["claims"]))
+        self.assertTrue(all(claim["status"] == "supported" for claim in result["claims"]))
 
     def test_semantic_claim_requires_marker_specific_evidence(self) -> None:
         case = self.cases["static-pass-is-not-accounting-pass"]

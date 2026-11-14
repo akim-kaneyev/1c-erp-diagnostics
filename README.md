@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.10" src="https://img.shields.io/badge/version-0.3.10-0D1B2A.svg" />
+  <img alt="Version 0.3.11" src="https://img.shields.io/badge/version-0.3.11-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -138,6 +138,12 @@ Version 0.3.9 closes the installed-package resource gap found after v0.3.8: the 
 
 Version 0.3.10 adds a fixed-origin, metadata-only Infoblog incident-search bridge with provenance and explicit stale-cache status, updates Unica to 0.12.3, and adds Jev 0.1.0 as an optional immutable-pinned browser companion. Queries stay local; external results remain non-authoritative leads.
 
+## Local test-base validation
+
+The optional `codex-test-bridge-local` host adapter captures Health, Metadata, Describe and Query results from an explicitly identified loopback test contour. Each capture includes exact request/response hashes, case/Evidence IDs, analytic key and run identity; an offline verifier detects damaged files and mismatched context. Query results remain bounded evidence, and health/metadata never count as accounting acceptance.
+
+See the [workflow and commands](plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/references/bridge-contract.md). Rendering reports/print forms is documented as separately scoped code execution. No installation, publication changes or production access occurs automatically.
+
 ## Additional capabilities
 
 - PDF, Spreadsheets and Documents for evidence extraction;
@@ -212,9 +218,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.10 Public Preview release candidate.** This release adds the guarded Infoblog metadata bridge, updates Unica to 0.12.3 and exposes optional immutable-pinned Jev browser action planning. It preserves the 26-case synthetic suite and approved Velis assets, expands the marketplace to five plugins and packages 33 reviewed skills.
+**v0.3.11 Public Preview release candidate.** This release adds a local test-contour read adapter and evidence verifier inspired by the reviewed msrv-tech Test Bridge protocol. It preserves the 26-case synthetic suite, approved Velis assets and five-plugin marketplace, and packages 34 reviewed skills. No upstream code or CFE is bundled.
 
-Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for v0.3.10 is **BLOCKED** until the exact installed package passes all 26 cases in fresh clean sessions and `tools/validate_runtime_run.py` validates the complete hashed run. The validated v0.3.8 run does not transfer to a changed package.
+Protected Pull Request CI, CodeQL, merge and exact-version clean-session acceptance remain separate evidence. Runtime acceptance for v0.3.11 is **BLOCKED** until the exact installed package passes all 26 cases in fresh clean sessions and `tools/validate_runtime_run.py` validates the complete hashed run. The validated v0.3.8 run does not transfer to a changed package.
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

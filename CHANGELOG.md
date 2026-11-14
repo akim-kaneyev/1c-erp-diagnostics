@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.11 — 2026-11-14
+
+- Reproduce a clean-session claim-status failure (`supported`) and expose the existing exact Claim status enum in rendered prompts and all orchestrator surfaces without relaxing validation or revealing expected per-claim answers.
+
+- Add an independently authored loopback-only CodexTestBridge read adapter for explicitly identified test contours: Health, Metadata, Describe and Query.
+- Preserve exact request/response hashes, case/Evidence IDs, analytic key and run identity; verify artifact integrity and context offline without claiming freshness or population coverage.
+- Add a packaged test-bridge skill and separately scoped report/print-form acceptance workflow, plus synthetic HTTP regression tests.
+- Review msrv-tech/skills at immutable commit `702dc8dbe0a0d31b1a16af3d871af29b99ef1122`; defer upstream code/CFE redistribution because no license grant was verified. Preserve the five-plugin marketplace.
+- Keep live-contour and exact-version clean-session acceptance explicitly pending; previous runtime runs do not transfer to this package.
+
 ## 0.3.10 — incident discovery and companion provenance
 
 - added a fixed-origin, metadata-only Infoblog title-search bridge that keeps the query local, validates schema/content/origin/size, records payload provenance and marks explicit offline cache as stale;
