@@ -188,3 +188,7 @@ Unica, 1C Skills, Jev, GitHub, Drive, PDF, Spreadsheets, Documents, Computer Use
 ## Local test-contour execution
 
 When an explicitly identified local test contour already exposes CodexTestBridge, apply `one-c-erp-test-bridge` for `codex-test-bridge-local` read-only capture and offline integrity/context verification. Require the expected configuration and test-contour scope before connection; never install or enable the external bridge during discovery. Query samples do not prove population coverage, and health/metadata do not satisfy functional/business validation.
+
+## Requested diagnostic web interfaces
+
+For an explicit web-interface task, apply `one-c-erp-ui-design` and the independently installed `ui-sdk` skill when available. Use UI SDK behaviors/components for accessible, agent-readable diagnostic interfaces; preserve evidence identity, backend authorization and the difference between UI and business validation. Ordinary diagnoses and native 1C forms keep their existing workflows. Strict `EVAL_RESULT_JSON` output remains exact JSON with no UI artifacts or inferred capabilities.

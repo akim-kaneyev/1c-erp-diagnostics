@@ -1,9 +1,9 @@
-# Public release checklist — v0.3.11 integration and provenance candidate
+# Public release checklist — v0.3.12 integration and provenance candidate
 
 ## Repository and plugin package
 
 - [x] Dynamic Gate 0–10, Gate 7, Gate 9, Gate 10 and `R0–R3` contracts remain present.
-- [x] The package contains 34 reviewed skills and the stable marketplace identity exposes five independently installable plugins.
+- [x] The package contains 35 reviewed skills and the stable marketplace identity exposes five independently installable plugins.
 - [x] Accounting, state, artifact-view and credential controls from v0.3.8 remain in the 26-case suite.
 - [x] The case-state template is bundled at `plugins/one-c-erp-diagnostics/skills/one-c-erp-case-state/assets/STATE.json`.
 - [x] The packaged template is linked from the owning skill and reference, so normal local-link validation covers it.
@@ -16,8 +16,8 @@
 - [x] The Infoblog bridge is fixed-origin, metadata-only, locally searched, bounded and fail-closed; cache freshness and payload provenance are explicit.
 - [x] Unica is pinned to the canonical marketplace commit for `v0.12.3`.
 - [x] Jev is optional, immutable-pinned, not vendored and documented with its CUA/provider/data-transfer boundary.
-- [x] Plugin manifest, `pyproject.toml`, active documentation and validator expectations declare `0.3.11`.
-- [x] v0.3.11 release notes and self-audit exist without claiming pending external checks as complete.
+- [x] Plugin manifest, `pyproject.toml`, active documentation and validator expectations declare `0.3.12`.
+- [x] v0.3.12 release notes and self-audit exist without claiming pending external checks as complete.
 - [x] Confirm the final branch diff contains no unrelated files or local runtime evidence.
 
 ## Repository validation
@@ -33,14 +33,16 @@
 
 ## Runtime acceptance
 
+- [x] Historical v0.3.11 accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d` passed all 26 cases; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical tree (PR #41).
+
 - [x] Historical v0.3.8 public-install run passed all 26 cases with a valid hash manifest for merge commit `826aae46ed278e42c182c1be3e3c93cc2a53766c`.
-- [ ] Refresh/re-import the marketplace and confirm exact installed version `0.3.11` when exposed.
+- [ ] Refresh/re-import the marketplace and confirm exact installed version `0.3.12` when exposed.
 - [ ] Confirm the bundled `one-c-erp-case-state/assets/STATE.json` is readable from the installed package.
-- [ ] Execute every case from `evals/suite.json` in separate clean sessions against exact installed v0.3.11.
-- [ ] Pass schema-2 `tools/validate_runtime_run.py` for the complete v0.3.11 external run with exact plugin mention, no model tools, current source/plugin-tree identity and per-case result/log hashes.
+- [ ] Execute every case from `evals/suite.json` in separate clean sessions against exact installed v0.3.12.
+- [ ] Pass schema-2 `tools/validate_runtime_run.py` for the complete v0.3.12 external run with exact plugin mention, no model tools, current source/plugin-tree identity and per-case result/log hashes.
 - [ ] Re-run the canonical accounting helper baseline/patch comparison and record current helper/input/result hashes.
 
-The v0.3.8 runtime run does not accept v0.3.11 because the installed package contents changed.
+The v0.3.8 runtime run does not accept v0.3.12 because the installed package contents changed.
 
 ## GitHub identity, security and presentation
 
@@ -60,7 +62,7 @@ The v0.3.8 runtime run does not accept v0.3.11 because the installed package con
 
 ## Stop condition
 
-Do **not** merge, tag, release or claim v0.3.11 runtime acceptance while any critical package/resource check fails, required CI/CodeQL is incomplete, the exact installed version is not confirmed, or the complete v0.3.11 clean-session run is absent. Repository validation and historical v0.3.8 evidence do not substitute for exact-version runtime evidence.
+Do **not** merge, tag, release or claim v0.3.12 runtime acceptance while any critical package/resource check fails, required CI/CodeQL is incomplete, the exact installed version is not confirmed, or the complete v0.3.12 clean-session run is absent. Repository validation and historical v0.3.8 evidence do not substitute for exact-version runtime evidence.
 
 ## Local test-bridge acceptance
 
@@ -70,3 +72,12 @@ Do **not** merge, tag, release or claim v0.3.11 runtime acceptance while any cri
 - [ ] Where in scope, execute report/print-form validation and inspect actual output artifacts.
 
 Synthetic HTTP fixtures do not satisfy these live-contour checks.
+
+## UI SDK workflow
+
+- [x] Verify upstream source/license and installed skill hashes.
+- [x] Verify global user-scope discovery in separate working directories.
+- [x] Verify packaged UI skill references resolve within the plugin.
+- [ ] Record the exact-version diagnostic regression and UI workflow checks separately.
+
+No application or real-browser UI acceptance is claimed by an instruction-only integration.
