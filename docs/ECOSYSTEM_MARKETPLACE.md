@@ -64,6 +64,8 @@ Jev is not required by the deterministic Infoblog bridge. It requires Node.js 22
 
 ## Runtime contract
 
+The independently installed `ui-sdk` user skill is not a sixth marketplace plugin. `one-c-erp-ui-design` supplies the 1C-specific UI workflow within the primary plugin. Neither skill installation nor marketplace presence supplies a UI SDK adapter package, browser renderer, WebMCP capability, hosted model or database access.
+
 `codex-test-bridge-local` is another optional host adapter, not a sixth marketplace entry. The project provides its own read-only evidence client; it does not install or redistribute `msrv-tech/skills` or its CFE. Use only an explicitly identified disposable loopback contour and the packaged `one-c-erp-test-bridge` workflow. The reviewed upstream snapshot has no verified redistribution license. Protocol-reference revision and observed Health metadata must not be represented as attestation of an installed bridge version.
 
 A diagnostic starts with `@one-c-erp-diagnostics`.

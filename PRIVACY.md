@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.11 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.3.12 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica, 1C Skills and Jev. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -73,3 +73,7 @@ If a future version adds a developer-operated MCP server, hosted service, teleme
 ## Local test-bridge evidence
 
 Version 0.3.11 adds opt-in HTTP reads against an explicitly identified loopback-only test publication. The adapter sends Health/Metadata/Describe/Query requests to that local service; proxies, redirects, remote hosts and URL credentials are rejected. It does not install or publish a bridge. Query text, parameters, metadata names and returned data may be confidential. Exact request/response files and a manifest are saved only to a fresh user-selected private directory; stdout reports status and bounded coverage only. Keep captures outside Git and restrict filesystem access. The adapter does not redact raw evidence, attest the installed CFE revision or prove that data is current. Authenticated endpoints require a separately reviewed capability. No evidence is sent to a developer-operated service.
+
+## Requested diagnostic web interfaces
+
+Version 0.3.12 adds UI authoring instructions, not a hosted application, server, provider or data destination. UI SDK remains an independent project dependency and its upstream skill is installed separately at user scope. A component agent bridge operates in the interface browser; it is not the 1C HTTP bridge or proof of a Codex tool connection. Keep confidential evidence local, prefer lockfile-pinned local bundles, and review any CDN, remote model or external transmission in the actual UI task. UI confirmation/secret/hidden markers do not replace backend authorization or data-handling controls. This change does not start or install a database bridge.

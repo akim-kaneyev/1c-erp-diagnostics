@@ -27,9 +27,11 @@ Version 0.3.6 fixes the subsequently reproduced stale-execution output: Gate 5 m
 
 Version 0.3.7 fixes the next clean-session failure in `under-evidenced-cost`: Gate 2 passes after all supplied evidence is accounted for, Gate 4 and Gate 10 remain blocked, Gate 7 passes by rejecting an unsupported cause, and claim/request/action collections use the exact schema.
 
-Version 0.3.8 added 10 accounting/state/security cases and passed a complete hashed 26-case run after public installation. Versions 0.3.9 through 0.3.11 change the installed package; v0.3.11 therefore requires a new complete 26-case clean-session run. The prior run is historical evidence, not acceptance of v0.3.11.
+Version 0.3.8 added 10 accounting/state/security cases and passed a complete hashed 26-case run after public installation. Versions 0.3.9 through 0.3.12 change the installed package; v0.3.12 therefore requires a new complete 26-case clean-session run. The prior run is historical evidence, not acceptance of v0.3.12.
 
-Until this command passes, runtime acceptance is `blocked`:
+Version 0.3.11 subsequently passed all 26 cases for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; PR #41 merged the identical tree as `d69db19504e7525ea1c1e95146c3b2070ab8b5f0`. That historical run does not automatically accept the changed 0.3.12 package.
+
+Until this command passes for the current candidate, runtime acceptance is `blocked`:
 
 ```text
 python tools/validate_runtime_run.py <external-run-dir>
@@ -56,16 +58,16 @@ Calculate SHA-256 for each result file and create `run.json`:
 ```json
 {
   "schema_version": 2,
-  "run_id": "v0-3-11-clean-example",
+  "run_id": "v0-3-12-clean-example",
   "suite": "1C ERP Diagnostics Gate 0-10 acceptance",
-  "plugin_version": "0.3.11",
+  "plugin_version": "0.3.12",
   "source_commit": "0000000000000000000000000000000000000000",
   "executed_at": "2026-08-26T10:00:00+03:00",
   "environment": {
     "surface": "Codex desktop",
     "host": "clean test host identifier",
     "clean_session": true,
-    "installed_plugin_version": "0.3.11",
+    "installed_plugin_version": "0.3.12",
     "installed_plugin_tree_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "expectations_visible_to_runner": false,
     "web_search": "disabled",
@@ -86,9 +88,9 @@ Calculate SHA-256 for each result file and create `run.json`:
 
 The zero values are examples of required shape, not valid release evidence. The packaged-plugin tree hash normalizes CRLF and CR to LF for the same known text extensions as `SKILLS.lock.json`, while binary assets remain byte-exact, so an exact Git package is stable across checkout platforms. Schema 2 rejects incomplete suites, placeholder/hash mismatches, wrong versions, a dirty worktree, source commits that differ from current `HEAD`, canonical plugin-tree mismatches, missing/unreferenced logs, reused session/workdir identities, logs whose final JSON differs from the result file, absent primary-plugin mentions and any model tool use. A schema-1 manifest or a self-asserted `expectations_visible_to_runner=false` without validated logs cannot pass.
 
-## Priority re-test after 0.3.11 installation
+## Priority re-test after 0.3.12 installation
 
-Before running all 26 v0.3.11 cases, validate these four exact rendered prompts in separate clean tasks. Passing them is an early failure check only; it cannot replace the complete run.
+Before running all 26 v0.3.12 cases, validate these four exact rendered prompts in separate clean tasks. Passing them is an early failure check only; it cannot replace the complete run.
 
 ### 1. `capability-inventory`
 
@@ -160,3 +162,7 @@ Repository/publication integrity is separate: `python tools/validate_publication
 ## Test-bridge integration acceptance
 
 The v0.3.11 adapter requires a separate identified disposable local contour. Run Health, Metadata and a bounded known-result query, verify the saved bundle with the current context, and reconcile independent totals at the same cutoff. Confirm installed CFE provenance separately; Health does not expose its commit. Synthetic HTTP fixtures prove client behavior only. Report rendering, when in scope, requires actual retrieved artifact and expected-value checks. No live-contour acceptance has been recorded for this candidate.
+
+## UI SDK scope
+
+The v0.3.12 UI authoring workflow must not activate in ordinary synthetic diagnostic requests or add inferred capabilities to their exact snapshots. The core 26-case run remains required. UI skill routing/planning checks are recorded separately and cannot be described as tests of a rendered application. No UI SDK project packages, browser agent bridge or WebMCP registration are implied by global skill discovery.

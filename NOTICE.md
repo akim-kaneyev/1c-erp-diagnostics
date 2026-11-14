@@ -18,4 +18,6 @@ The optional marketplace companion `wy-coliney/jev-browser-use` is referenced at
 
 The Infoblog public search index is queried only for metadata and links. Article bodies and site assets are not copied or relicensed.
 
+The optional UI authoring workflow references `vercel-labs/ui` at commit `724a7d6c2d0ca1251a8eb6172462ae220c484714`, Apache-2.0, Copyright 2026 Vercel, Inc. The upstream user skill is installed independently; SDK implementation and skill contents are not copied or relicensed within this plugin.
+
 The Infostart article `1C Skills для ИИ-агентов` and `msrv-tech/skills` at commit `702dc8dbe0a0d31b1a16af3d871af29b99ef1122` informed the optional local test-contour workflow. Only the public HTTP protocol was referenced. The adapter is independently authored; article text/images, upstream scripts and CFE are not copied or relicensed. No redistribution license was verified for that upstream snapshot.

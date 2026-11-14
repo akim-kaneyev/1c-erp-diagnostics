@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "one-c-erp-diagnostics"
-PLUGIN_VERSION = "0.3.11"
+PLUGIN_VERSION = "0.3.12"
 
 
 def load_artifact_module():
@@ -109,12 +109,13 @@ class DynamicContractTests(unittest.TestCase):
             "one-c-erp-local-static-analysis",
             "one-c-erp-incident-search",
             "one-c-erp-test-bridge",
+            "one-c-erp-ui-design",
         }
         actual = {
             path.parent.name
             for path in (PLUGIN / "skills").glob("*/SKILL.md")
         }
-        self.assertEqual(len(actual), 34)
+        self.assertEqual(len(actual), 35)
         self.assertTrue(required.issubset(actual))
 
     def test_artifact_adapter_rejects_unsupported_and_nonempty_output(self) -> None:

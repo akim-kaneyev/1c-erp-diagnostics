@@ -263,3 +263,7 @@ Allowed gate statuses: `pending | passed | blocked | failed | stale | not_requir
 - No `EVAL_RESULT_JSON` object that violates the supplied skeleton or synthetic capability snapshot.
 - No incident closure claim when only a narrower goal is complete.
 - No restart from zero when valid state exists.
+
+## Requested diagnostic web interfaces
+
+For an explicit web-interface task, apply `one-c-erp-ui-design` and the independently installed `ui-sdk` skill when available. Use UI SDK behaviors/components for accessible, agent-readable diagnostic interfaces; preserve evidence identity, backend authorization and the difference between UI and business validation. Ordinary diagnoses and native 1C forms keep their existing workflows. Strict `EVAL_RESULT_JSON` output remains exact JSON with no UI artifacts or inferred capabilities.

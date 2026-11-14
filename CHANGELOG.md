@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.12 — 2026-11-14
+
+- Add a scoped `one-c-erp-ui-design` skill for requested diagnostic web interfaces using UI SDK behaviors, accessible controls and deliberate agent interaction.
+- Preserve evidence/run identity, exact diagnostic states, backend authorization and separation of UI and business/accounting acceptance.
+- Review vercel-labs/ui at immutable commit `724a7d6c2d0ca1251a8eb6172462ae220c484714` (Apache-2.0); keep the independently installed upstream user skill and project libraries outside the primary plugin package.
+- Document global user-scope installation/discovery and preserve ordinary diagnosis, native 1C forms and strict JSON behavior. No server or database bridge is installed or started.
+
 ## 0.3.11 — 2026-11-14
 
 - Reproduce a clean-session claim-status failure (`supported`) and expose the existing exact Claim status enum in rendered prompts and all orchestrator surfaces without relaxing validation or revealing expected per-claim answers.

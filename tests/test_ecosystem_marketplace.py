@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-PLUGIN_VERSION = "0.3.11"
+PLUGIN_VERSION = "0.3.12"
 UNICA_COMMIT = "c02e38d44a7dc238310172b9d790487f81aa4fb4"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
