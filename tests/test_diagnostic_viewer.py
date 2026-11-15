@@ -8,6 +8,7 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 UI = ROOT / "plugins/one-c-erp-diagnostics/ui"
@@ -75,6 +76,15 @@ class DiagnosticViewerTests(unittest.TestCase):
             (root / "build.json").write_text(json.dumps({"files": [{"path": "index.html", "sha256": "0" * 64}]}))
             with self.assertRaisesRegex(ValueError, "hash mismatch"):
                 viewer.load_assets(root)
+
+    def test_content_type_uses_fixed_values_and_rejects_header_injection_paths(self):
+        javascript = next(item["path"] for item in self.server.manifest["files"] if item["path"].endswith(".js"))
+        with patch("mimetypes.guess_type", return_value=("text/html\r\nX-Injected: true", None)):
+            status, headers, _ = self.request("/" + javascript)
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Content-Type"], "text/javascript")
+        self.assertNotIn("X-Injected", headers)
+        self.assertEqual(self.request("/" + javascript + "%0d%0aX-Injected:true")[0], 404)
 
     def test_bundle_contains_synthetic_case_and_runtime_licenses(self):
         example = json.loads((UI / "dist/example.json").read_text(encoding="utf-8"))

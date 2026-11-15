@@ -364,8 +364,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/serve_ui.py",
-      "sha256": "c67b2e1561b97174c0f71109c696c2e9e339b9f7b6560e7048628dc4e87a18ca",
-      "size_bytes": 4879
+      "sha256": "2100e1b6b095948948183c50082815deac1f4025d28193fb43c8313d7f8e06c2",
+      "size_bytes": 5155
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
@@ -383,7 +383,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "2d91f32f6a9f4518e6f6bd509a52b8e7e878edd95621bc3066a45ab1fb305e5e",
+  "manifest_sha256": "cdf9956625b4a93e16a899dbc5e6ab563aa528ea8ea62e91631e05aebc8a28d9",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import mimetypes
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -80,10 +79,17 @@ class ViewerHandler(BaseHTTPRequestHandler):
             mime = "application/json"
         elif path in self.server.assets:
             content = self.server.assets[path]
-            mime = mimetypes.guess_type(path)[0] or "application/octet-stream"
-            if path.endswith((".js", ".mjs")):
-                mime = "text/javascript"
-            if path == "/" or path.endswith(".html"):
+            mime = "application/octet-stream"
+            for suffix, content_type in (
+                (".js", "text/javascript"), (".mjs", "text/javascript"),
+                (".css", "text/css"), (".json", "application/json"),
+                (".png", "image/png"), (".txt", "text/plain; charset=utf-8"),
+                (".html", "text/html; charset=utf-8"),
+            ):
+                if path.endswith(suffix):
+                    mime = content_type
+                    break
+            if path == "/":
                 mime = "text/html; charset=utf-8"
         else:
             self._headers(404, "text/plain; charset=utf-8", 0)
