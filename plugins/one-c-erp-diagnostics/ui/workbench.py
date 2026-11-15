@@ -53,6 +53,7 @@ class Workbench:
         with self.lock:
             for key in list(self.sessions):
                 self.disconnect(key)
+            self.store.close()
 
     def bootstrap(self):
         self.cleanup()

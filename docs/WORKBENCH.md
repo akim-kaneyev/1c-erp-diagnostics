@@ -18,6 +18,8 @@ No Node.js installation is needed to use the packaged build. The server binds to
 
 By default profiles/cases are stored under the current user's local application-data directory `VelisDiagnostics`; `--data-dir` can select another private directory. Raw captures may contain confidential metadata or business rows: keep this directory and exports outside Git. JSON export is a viewer bundle containing canonical `state` and annotations. Notes are in the Markdown/ZIP exports, separate from evidence.
 
+Only one running workbench can own a material directory. An OS file lock refuses a second process before it can change profiles or cases, preventing concurrent instances from overwriting evidence indexes. The lock releases on normal shutdown or process termination; its small `.workbench.lock` file stays in the directory and must not be deleted while a workbench is running. Use a different `--data-dir` for an independent workspace.
+
 An existing credential-free profile can be imported with `--profile <selected.json> --test-contour`. Import does not sign in, publish a service or install an extension. `bridge_doctor.py --profile <selected.json>` tests unauthenticated endpoint behavior; optional `--apache-config`, `--vrd` and `--web-module` inspect explicitly supplied local files. A PASS is limited to the listed checks.
 
 ## Reproducible row checks

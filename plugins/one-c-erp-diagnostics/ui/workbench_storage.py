@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import errno
 import hashlib
 import json
 import os
@@ -9,7 +10,7 @@ from pathlib import Path
 from threading import RLock
 import uuid
 
-from workbench_common import BRIDGE, CASE_STATE, MAX_BYTES, VERSION, exact, identifier, normalized_profile, public_json, require, text
+from workbench_common import BRIDGE, CASE_STATE, MAX_BYTES, VERSION, WorkbenchError, exact, identifier, normalized_profile, public_json, require, text
 
 
 def now():
@@ -27,10 +28,44 @@ class Store:
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
-        for folder in ("profiles", "cases"):
-            self.path(folder).mkdir(exist_ok=True)
+        self._workspace_guard = None
+        guard = self.root / ".workbench.lock"
+        require(not guard.is_symlink() and guard.resolve().is_relative_to(self.root), "unsafe_storage_path")
+        handle = guard.open("a+b")
+        try:
+            handle.seek(0, os.SEEK_END)
+            if handle.tell() == 0:
+                handle.write(b"\0")
+                handle.flush()
+            handle.seek(0)
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as error:
+            handle.close()
+            code = "workspace_in_use" if error.errno in {errno.EACCES, errno.EAGAIN} else "workspace_lock_failed"
+            raise WorkbenchError(code) from None
+        self._workspace_guard = handle
+        try:
+            for folder in ("profiles", "cases"):
+                self.path(folder).mkdir(exist_ok=True)
+        except BaseException:
+            self.close()
+            raise
+
+    def close(self):
+        with self.lock:
+            if self._workspace_guard is not None:
+                # Closing releases the OS lock, including after process termination.
+                # Keep the file: deleting it could let another process lock a new inode.
+                self._workspace_guard.close()
+                self._workspace_guard = None
 
     def path(self, *parts):
+        require(self._workspace_guard is not None, "workspace_closed")
         candidate = self.root.joinpath(*parts)
         require(candidate.resolve().is_relative_to(self.root), "unsafe_storage_path")
         require(not candidate.is_symlink(), "unsafe_storage_path")

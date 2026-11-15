@@ -6,6 +6,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import importlib.util
 import io
 import json
+import socket
+import subprocess
 from pathlib import Path
 import sys
 import tempfile
@@ -103,10 +105,11 @@ class WorkbenchTests(unittest.TestCase):
         raw = (self.app.store.root / "cases/CASE-TEST" / (record["id"] + ".json")).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(), record["artifact_hash"])
         self.assertEqual(json.loads(raw)["rows"], [{"text": "Проверка UTF-8 — 1С", "number": 27.125, "flag": True}])
+        self.assertNotIn("synthetic-only", repr(self.app.sessions))
+        self.app.close()
         for file in self.app.store.root.rglob("*"):
             if file.is_file():
                 self.assertNotIn(b"synthetic-only", file.read_bytes())
-        self.assertNotIn("synthetic-only", repr(self.app.sessions))
 
     def test_wrong_identity_and_authentication_do_not_create_session(self):
         self.bridge.metadata_name = "Other"
@@ -316,6 +319,45 @@ class WorkbenchHTTPTests(unittest.TestCase):
         self.assertEqual(self.request("/api/ExecuteBSL", {"code": "synthetic"}, **headers)[0], 400)
         self.assertEqual(self.request("/api/profile", {CREDENTIAL_FIELD: "synthetic-only"}, **headers)[0], 400)
         self.assertEqual(list(Path(self.tmp.name).rglob("*.json")), [])
+
+
+class WorkspaceOwnershipTests(unittest.TestCase):
+    def test_process_exit_releases_lock_without_deleting_the_lock_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            script = "import os,sys; sys.path.insert(0,sys.argv[1]); from workbench import Workbench; app=Workbench(sys.argv[2]); os._exit(0)"
+            child = subprocess.run([sys.executable, '-c', script, str(UI), directory], capture_output=True, text=True, timeout=15)
+            self.assertEqual(child.returncode, 0, child.stderr)
+            self.assertTrue((Path(directory) / '.workbench.lock').is_file())
+            reopened = Workbench(directory)
+            reopened.close()
+
+    def test_another_process_is_refused_and_can_reopen_after_owner_closes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            app = Workbench(directory)
+            script = (
+                "import sys; sys.path.insert(0,sys.argv[1]); "
+                "from workbench import Workbench; from workbench_common import WorkbenchError; "
+                "exec('try:\\n app=Workbench(sys.argv[2])\\n app.close()\\nexcept WorkbenchError as error:\\n print(str(error))\\n sys.exit(17)')"
+            )
+            try:
+                blocked = subprocess.run([sys.executable, '-c', script, str(UI), directory], capture_output=True, text=True, timeout=15)
+                self.assertEqual(blocked.returncode, 17, blocked.stderr)
+                self.assertEqual(blocked.stdout.strip(), 'workspace_in_use')
+                with self.assertRaisesRegex(WorkbenchError, 'workspace_in_use'):
+                    Workbench(directory)
+            finally:
+                app.close()
+            reopened = subprocess.run([sys.executable, '-c', script, str(UI), directory], capture_output=True, text=True, timeout=15)
+            self.assertEqual(reopened.returncode, 0, reopened.stderr)
+
+    def test_failed_server_bind_releases_workspace_ownership(self):
+        with tempfile.TemporaryDirectory() as directory, socket.socket() as occupied:
+            occupied.bind(('127.0.0.1', 0))
+            occupied.listen()
+            with self.assertRaises(OSError):
+                ViewerServer(occupied.getsockname()[1], data_dir=Path(directory))
+            reopened = Workbench(directory)
+            reopened.close()
 
 
 if __name__ == "__main__":

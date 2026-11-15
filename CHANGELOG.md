@@ -2,6 +2,8 @@
 
 ## 0.5.0 — 2026-11-15
 
+- prevent simultaneous workbench processes from overwriting one material directory; release workspace ownership on shutdown or process exit;
+
 - Add an opt-in local UI SDK workbench: explicit test profiles, memory-only authenticated sessions, metadata and object descriptions, private cases and separate notes.
 - Capture exact responses with case context, SHA-256 and original-source packages. Preserve pending diagnostic gates and require independent accounting conclusions.
 - Add deterministic row comparison, negative-stock checks and exact-decimal expense allocation with explicit synthetic examples and source lineage.

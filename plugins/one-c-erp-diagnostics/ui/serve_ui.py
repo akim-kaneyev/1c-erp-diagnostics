@@ -45,7 +45,12 @@ class ViewerServer(ThreadingHTTPServer):
             sys.path.insert(0, str(UI_ROOT))
             from workbench import Workbench
             self.workbench = Workbench(data_dir)
-        super().__init__(("127.0.0.1", port), ViewerHandler)
+        try:
+            super().__init__(("127.0.0.1", port), ViewerHandler)
+        except BaseException:
+            if self.workbench is not None:
+                self.workbench.close()
+            raise
 
     def server_close(self):
         if self.workbench is not None:
@@ -211,7 +216,13 @@ def main() -> None:
     data_dir = None
     if args.workbench:
         data_dir = args.data_dir or Path(os.environ.get("LOCALAPPDATA", str(Path.home() / ".local/share"))) / "VelisDiagnostics"
-    with ViewerServer(args.port, data_dir=data_dir) as server:
+    try:
+        server = ViewerServer(args.port, data_dir=data_dir)
+    except ValueError as error:
+        if str(error) == "workspace_in_use":
+            parser.error("Этот каталог материалов уже открыт. Используйте работающий интерфейс или завершите его перед повторным запуском.")
+        raise
+    with server:
         if args.profile:
             sys.path.insert(0, str(UI_ROOT))
             from workbench_common import CASE_STATE, MAX_BYTES, normalized_profile
