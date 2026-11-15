@@ -11,11 +11,19 @@ Use when the user asks for a web interface, interactive evidence viewer, diagnos
 
 ## When NOT to use
 
-Do not turn an ordinary diagnostic answer into an application. In strict `EVAL_RESULT_JSON` mode return the existing exact JSON contract; do not add HTML, UI fields or UI capabilities. Native managed 1C forms remain a Unica/form workflow. This skill does not install a database bridge, alter 1C, start a server or authorize deployment.
+Do not turn an ordinary diagnostic answer into an application. In strict `EVAL_RESULT_JSON` mode return the existing exact JSON contract; do not add HTML, UI fields or UI capabilities. Native managed 1C forms remain a Unica/form workflow. Selecting this skill alone does not authorize starting a server or deployment. Launch the packaged local viewer when the user requests it; database bridges and 1C changes remain separate scopes.
 
 ## Required inputs
 
 Identify the requested user task, existing UI framework and package manager, input format, case/Evidence IDs, current run/source identity, data sensitivity and allowed actions. For real case data, keep source bytes local and use a sanitized slice. If no dataset is supplied, label demonstration data as synthetic.
+
+## Ready local viewer
+
+For viewing an existing case, use the packaged [viewer launcher](../../ui/serve_ui.py) or the [Windows launcher](../../ui/launch.ps1). Resolve its absolute path from this installed skill before running it; the repository checkout is not required. Run the Python launcher with `--open` to open the printed loopback URL, or omit that flag when a host browser tool will open it. The server verifies bundled asset hashes before listening and stops with Ctrl+C.
+
+The viewer accepts the existing `STATE.json` or a version-1 viewer bundle with optional annotations. The [synthetic example](../../ui/dist/example.json) demonstrates the format. Ask the user to choose their local file in the viewer; never upload it or inspect unrelated cases. Preserve exact source bytes when saving a copy. Use the canonical case-state validator separately when validating diagnostic meaning: the viewer performs structural checks and preserves declared statuses. The browser UI agent is local component control, not a model/provider connection or a database tool.
+
+The viewer provides evidence/claim/run tabs, search/status/date filters, bounded pagination, details, local source-file SHA-256 comparison and immutable JSON export. Native 1C forms continue through Unica. Do not install a database bridge for viewing files. Prefer this ready viewer over generating another application when it already meets the user's task.
 
 ## The framework
 

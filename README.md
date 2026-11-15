@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.3.12" src="https://img.shields.io/badge/version-0.3.12-0D1B2A.svg" />
+  <img alt="Version 0.4.0" src="https://img.shields.io/badge/version-0.4.0-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -146,9 +146,9 @@ See the [workflow and commands](plugins/one-c-erp-diagnostics/skills/one-c-erp-t
 
 ## UI SDK interface workflow
 
-Version 0.3.12 adds [one-c-erp-ui-design](plugins/one-c-erp-diagnostics/skills/one-c-erp-ui-design/SKILL.md) for explicitly requested diagnostic web interfaces. It applies UI SDK behaviors for keyboard, focus, selection and accessibility, then checks named controls and agent interactions against visible state. It preserves evidence IDs, verification states and backend permissions. Native 1C forms and ordinary diagnostic answers keep their existing workflows.
+Version 0.4.0 includes a ready [local diagnostic viewer](docs/LOCAL_VIEWER.md) on React/Vite and UI SDK. Open STATE.json, browse evidence/claims/runs and Gate 0–10, filter by text/status/date, inspect lineage and compare source-file SHA-256 locally. Export preserves the original bytes. The [UI skill](plugins/one-c-erp-diagnostics/skills/one-c-erp-ui-design/SKILL.md) launches the bundled app from the installed package; Node.js is not needed to use it. Native 1C forms and ordinary diagnostic answers retain their existing workflows.
 
-The upstream `ui-sdk` skill can be installed once at user scope for all local Codex projects; see [installation and scope](docs/UI_SDK_INTEGRATION.md). The plugin neither bundles the SDK nor assumes project packages, WebMCP, a server or a database bridge are available.
+The upstream `ui-sdk` skill can be installed once at user scope for all local Codex projects; see [installation and scope](docs/UI_SDK_INTEGRATION.md). The viewer bundles pinned SDK code and all runtime license texts. It has no database connection, hosted data service or automatic WebMCP registration. Its Python launcher serves static assets only on loopback.
 
 ## Additional capabilities
 
@@ -224,9 +224,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.3.12 Public Preview release candidate.** This candidate adds a scoped UI SDK workflow and packages 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
+**v0.4.0 Public Preview release candidate.** This candidate ships the ready local UI SDK viewer and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
 
-Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. That historical acceptance does not automatically accept changed v0.3.12 package contents. See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
+Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. That historical acceptance does not automatically accept changed v0.4.0 package contents. See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 

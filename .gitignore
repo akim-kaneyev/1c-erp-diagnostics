@@ -25,6 +25,9 @@ evals/runs/
 .scannerwork/
 
 # Python
+node_modules/
+web/coverage/
+.sites-runtime/
 __pycache__/
 *.pyc
 .venv/

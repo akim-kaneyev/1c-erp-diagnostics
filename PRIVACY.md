@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.3.12 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.4.0 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica, 1C Skills and Jev. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -76,4 +76,6 @@ Version 0.3.11 adds opt-in HTTP reads against an explicitly identified loopback-
 
 ## Requested diagnostic web interfaces
 
-Version 0.3.12 adds UI authoring instructions, not a hosted application, server, provider or data destination. UI SDK remains an independent project dependency and its upstream skill is installed separately at user scope. A component agent bridge operates in the interface browser; it is not the 1C HTTP bridge or proof of a Codex tool connection. Keep confidential evidence local, prefer lockfile-pinned local bundles, and review any CDN, remote model or external transmission in the actual UI task. UI confirmation/secret/hidden markers do not replace backend authorization or data-handling controls. This change does not start or install a database bridge.
+Version 0.4.0 includes a local read-only diagnostic viewer with bundled, lockfile-pinned UI SDK code. Its Python server serves static assets on IPv4 loopback only, checks Host/Origin and has no upload, case-storage or database endpoint. The browser reads user-selected JSON/source files locally; files are kept in page memory without localStorage/IndexedDB, analytics, CDN or remote model calls. Refresh clears the open case. Saving a copy is a local browser download of the original bytes. Source-file hashing is local and does not change evidence status. No selected case data is sent to the static server. Stop the server with Ctrl+C when finished.
+
+The independently installed user skill remains separate. The viewer's component agent API operates in the browser; it is not a 1C HTTP bridge, provider connection or Codex MCP installation. WebMCP is not automatically registered. UI confirmation/secret/hidden markers do not replace backend authorization. No database bridge is installed or started.

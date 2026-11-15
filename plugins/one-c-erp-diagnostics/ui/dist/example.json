@@ -1,0 +1,205 @@
+{
+  "viewer_schema_version": 1,
+  "annotations": {
+    "title": "Отклонение себестоимости выпуска",
+    "goal": "Сопоставить движения и проверить, достаточно ли данных для вывода о причине.",
+    "synthetic": true,
+    "coverage": {
+      "total": null,
+      "limitation": "Учебная выборка: два первичных источника и один устаревший результат. Полнота базы не проверялась."
+    },
+    "records": {
+      "E-DEMO-1": {
+        "title": "Движения проблемного документа",
+        "description": "Зафиксировано отличие аналитики назначения. Влияние на расчёт пока не доказано.",
+        "source": "Движения документа · учебные данные",
+        "date": "2026-10-27"
+      },
+      "E-DEMO-2": {
+        "title": "Контрольный срез регистра",
+        "description": "Контрольный срез по тому же периоду. Данные потребляющего механизма ещё нужны.",
+        "source": "Срез регистра · учебные данные",
+        "date": "2026-10-27"
+      },
+      "E-DEMO-3": {
+        "title": "Предыдущий расчёт распределения",
+        "description": "Результат до обновления входных данных. Для текущего вывода использовать нельзя.",
+        "source": "Результат RUN-DEMO-OLD",
+        "date": "2026-10-26"
+      },
+      "C-DEMO-1": {
+        "title": "Причина отклонения требует проверки",
+        "description": "Разница в назначении наблюдается, но использование признака механизмом расчёта не подтверждено.",
+        "date": "2026-10-27"
+      },
+      "RUN-DEMO-OLD": {
+        "title": "Предыдущий запуск анализа",
+        "description": "Сохранён для истории. Нужен повторный запуск на актуальных входных данных."
+      }
+    }
+  },
+  "state": {
+    "schema_version": 1,
+    "case_id": "demo-cost-20261027",
+    "evidence": [
+      {
+        "status": "active",
+        "derived_from": [],
+        "run_id": null,
+        "transformation": null,
+        "tool": null,
+        "tool_version": null,
+        "limitations": [
+          "Нет кода потребляющего механизма."
+        ],
+        "superseded_by": null,
+        "invalidates_ids": [],
+        "id": "E-DEMO-1",
+        "artifact_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "status": "active",
+        "derived_from": [],
+        "run_id": null,
+        "transformation": null,
+        "tool": null,
+        "tool_version": null,
+        "limitations": [
+          "Ограниченная учебная выборка."
+        ],
+        "superseded_by": null,
+        "invalidates_ids": [],
+        "id": "E-DEMO-2",
+        "artifact_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      {
+        "status": "stale",
+        "derived_from": [
+          "E-DEMO-1",
+          "E-DEMO-2"
+        ],
+        "run_id": "RUN-DEMO-OLD",
+        "transformation": "Сопоставление первичных источников",
+        "tool": null,
+        "tool_version": null,
+        "limitations": [
+          "Устаревшая идентичность входных данных."
+        ],
+        "superseded_by": null,
+        "invalidates_ids": [],
+        "id": "E-DEMO-3",
+        "artifact_hash": "3333333333333333333333333333333333333333333333333333333333333333"
+      }
+    ],
+    "runs": [
+      {
+        "id": "RUN-DEMO-OLD",
+        "case_id": "demo-cost-20261027",
+        "status": "stale",
+        "input_evidence_ids": [
+          "E-DEMO-1",
+          "E-DEMO-2"
+        ],
+        "input_hashes": [
+          "1111111111111111111111111111111111111111111111111111111111111111",
+          "2222222222222222222222222222222222222222222222222222222222222222"
+        ],
+        "release": "synthetic",
+        "extension_set": [],
+        "period": "2026-10",
+        "tool": "synthetic-comparison",
+        "tool_version": "1",
+        "operation": "Сравнение движений и среза",
+        "limitations": [
+          "Не подтверждает текущее состояние."
+        ],
+        "started_at": "2026-10-26T09:00:00Z",
+        "completed_at": "2026-10-26T09:00:02Z",
+        "superseded_by": null,
+        "invalidates_ids": []
+      }
+    ],
+    "claims": [
+      {
+        "id": "C-DEMO-1",
+        "status": "ТРЕБУЕТ ПРОВЕРКИ",
+        "evidence_ids": [
+          "E-DEMO-1",
+          "E-DEMO-2"
+        ],
+        "depends_on_claim_ids": [],
+        "document_ids": [],
+        "historical_document_ids": [],
+        "superseded_by": null,
+        "invalidates_ids": []
+      }
+    ],
+    "documents": [],
+    "gates": [
+      {
+        "id": "0",
+        "status": "passed",
+        "claim_ids": []
+      },
+      {
+        "id": "1",
+        "status": "passed",
+        "claim_ids": []
+      },
+      {
+        "id": "2",
+        "status": "passed",
+        "claim_ids": []
+      },
+      {
+        "id": "3",
+        "status": "passed",
+        "claim_ids": []
+      },
+      {
+        "id": "4",
+        "status": "blocked",
+        "claim_ids": []
+      },
+      {
+        "id": "5",
+        "status": "stale",
+        "claim_ids": []
+      },
+      {
+        "id": "6",
+        "status": "stale",
+        "claim_ids": []
+      },
+      {
+        "id": "7",
+        "status": "stale",
+        "claim_ids": []
+      },
+      {
+        "id": "8",
+        "status": "stale",
+        "claim_ids": []
+      },
+      {
+        "id": "9",
+        "status": "stale",
+        "claim_ids": []
+      },
+      {
+        "id": "10",
+        "status": "stale",
+        "claim_ids": [
+          "C-DEMO-1"
+        ]
+      }
+    ],
+    "active_index": {
+      "run_id": null,
+      "claim_ids": [
+        "C-DEMO-1"
+      ],
+      "document_ids": []
+    }
+  }
+}
