@@ -13,7 +13,7 @@ MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 MANIFEST = ROOT / "plugins" / "one-c-erp-diagnostics" / ".codex-plugin" / "plugin.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.4.0"
+EXPECTED_VERSION = "0.4.1"
 EXPECTED_ORDER = [
     "one-c-erp-diagnostics",
     "unica",
@@ -27,7 +27,7 @@ EXPECTED_SOURCES = {
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "sha": "c02e38d44a7dc238310172b9d790487f81aa4fb4",
+        "sha": "885ca40dffd127dc29715f637d2ebdd7846b8b6e",
     },
     "1c-skills": {
         "source": "url",

@@ -9,7 +9,7 @@ The marketplace contains:
 | Plugin | Role | Source/SHA | License |
 |---|---|---|---|
 | `one-c-erp-diagnostics` | Evidence-first Gate 0–10 orchestration for 1C:ERP incidents | this repository, local package | MIT |
-| `unica` | 1C developer workflows, BSL/metadata investigation and controlled build/test capabilities | `IngvarConsulting/unica-marketplace`, SHA `c02e38d44a7dc238310172b9d790487f81aa4fb4` (release tag `v0.12.3`), path `plugins/unica` | LGPL-3.0-or-later |
+| `unica` | 1C developer workflows, BSL/metadata investigation and controlled build/test capabilities | `IngvarConsulting/unica-marketplace`, SHA `885ca40dffd127dc29715f637d2ebdd7846b8b6e` (release tag `v0.13.0`), path `plugins/unica` | LGPL-3.0-or-later |
 | `1c-skills` | Windows-first PowerShell tooling for 1C artifacts, configurator and web-client workflows | `Nikolay-Shirokov/cc-1c-skills`, SHA `8cb7868145281d8e353831512cc1ffa72f1b5c89` | MIT |
 | `1c-skills-py` | Cross-platform Python tooling for 1C artifacts and automation | `Nikolay-Shirokov/cc-1c-skills`, SHA `c1f79f5ac9f31c620b8508f75464f8c42c559ae4` | MIT |
 | `jev-browser-use` | Optional mechanical browser navigation/click/scroll planning through Codex CUA; no typing or independent semantic verification | `wy-coliney/jev-browser-use`, SHA `cf7e76607d4ec70592b24becadd0296dcda8177a`, manifest version `0.1.0` | MIT |
@@ -83,7 +83,7 @@ The orchestrator may delegate a bounded task, but the final causal conclusion re
 
 ## Provenance rationale
 
-The marketplace uses the official `sha` selector for every external plugin commit. The installer checks out the requested SHA and verifies that `HEAD` matches it. The human-readable Unica release tag `v0.12.3` was resolved to canonical marketplace commit `c02e38d44a7dc238310172b9d790487f81aa4fb4` before inclusion. The 1C Skills SHAs are generated Codex plugin commits produced from upstream source commit `113dc9e9280b33b7aa3e4691eb8915cdaddea65b`. Jev has no reviewed release tag, so its reviewed repository state is pinned directly to commit `cf7e76607d4ec70592b24becadd0296dcda8177a`.
+The marketplace uses the official `sha` selector for every external plugin commit. The installer checks out the requested SHA and verifies that `HEAD` matches it. The human-readable Unica release tag `v0.13.0` was resolved to canonical marketplace commit `885ca40dffd127dc29715f637d2ebdd7846b8b6e` before inclusion. The 1C Skills SHAs are generated Codex plugin commits produced from upstream source commit `113dc9e9280b33b7aa3e4691eb8915cdaddea65b`. Jev has no reviewed release tag, so its reviewed repository state is pinned directly to commit `cf7e76607d4ec70592b24becadd0296dcda8177a`.
 
 Immutable SHAs prevent a reviewed marketplace package from changing silently when an upstream branch or tag target changes. They do not replace installation-time review, license review or runtime permission controls.
 

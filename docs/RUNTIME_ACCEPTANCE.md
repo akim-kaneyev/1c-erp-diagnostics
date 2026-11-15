@@ -29,7 +29,7 @@ Version 0.3.7 fixes the next clean-session failure in `under-evidenced-cost`: Ga
 
 Version 0.3.8 added 10 accounting/state/security cases and passed a complete hashed 26-case run after public installation. Versions 0.3.9 through 0.3.12 change the installed package; v0.3.12 therefore requires a new complete 26-case clean-session run. The prior run is historical evidence, not acceptance of v0.3.12.
 
-Version 0.3.11 subsequently passed all 26 cases for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; PR #41 merged the identical tree as `d69db19504e7525ea1c1e95146c3b2070ab8b5f0`. Version 0.3.12 passed all 26 cases at source `2527eb9ace90d030d253b60e0ccee67a53119d9d`, merged with identical tree as `77fed1458cfaef770503d14665fe0944ed4fe1d6` (PR #42). Neither historical run accepts the changed 0.4.0 viewer package. Version 0.4.0 requires its own installed-package suite, separately from frontend/browser/server acceptance.
+Version 0.3.11 subsequently passed all 26 cases for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; PR #41 merged the identical tree as `d69db19504e7525ea1c1e95146c3b2070ab8b5f0`. Version 0.3.12 passed all 26 cases at source `2527eb9ace90d030d253b60e0ccee67a53119d9d`, merged with identical tree as `77fed1458cfaef770503d14665fe0944ed4fe1d6` (PR #42). Version 0.4.0 subsequently passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged with an identical tree as `17f92b7e9e3303546341f082dae3faf4582e9a11` (PR #43). Version 0.4.1 requires its own installed-package suite and fresh Unica 0.13.0 MCP checks. The matching viewer 0.4.1 rebuild keeps separate frontend/browser/server evidence.
 
 Until this command passes for the current candidate, runtime acceptance is `blocked`:
 

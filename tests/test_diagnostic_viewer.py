@@ -55,7 +55,7 @@ class DiagnosticViewerTests(unittest.TestCase):
         self.assertIn("script-src 'self'", headers["Content-Security-Policy"])
         self.assertIn("frame-ancestors 'none'", headers["Content-Security-Policy"])
         status, _, health = self.request("/health")
-        self.assertEqual(json.loads(health)["version"], "0.4.0")
+        self.assertEqual(json.loads(health)["version"], "0.4.1")
         for item in self.server.manifest["files"]:
             status, _, content = self.request("/" + item["path"])
             self.assertEqual(status, 200)

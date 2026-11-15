@@ -1,6 +1,6 @@
 {
   "algorithm": "sha256",
-  "file_count": 76,
+  "file_count": 77,
   "files": [
     {
       "path": ".agents/skills/one-c-erp-diagnostics/SKILL.md",
@@ -144,8 +144,13 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-companion-plugins/SKILL.md",
-      "sha256": "b1aa031401c9e5c4c2bf6095d667d20ccf777cb68e53c32d1fa7f560464b9049",
-      "size_bytes": 5194
+      "sha256": "75cc1049989800e0343abbcbff9b26542f83c93af5e94c9bd592a16c5707ac7e",
+      "size_bytes": 6122
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-companion-plugins/references/plugin-updates.md",
+      "sha256": "83211724c5dd3843245cb762ed2b886845d8cf6bbf22b7d52f0ef45bb0f42b9c",
+      "size_bytes": 2962
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-compare-documents/SKILL.md",
@@ -234,8 +239,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-plugin-audit/SKILL.md",
-      "sha256": "63f6d553812ae2188764cf71e1acfdc8c31fa0c737a590bd8cee152121fea6af",
-      "size_bytes": 3680
+      "sha256": "f8a7f00f9e22cac63e10fde41f1eb5c045eb17d87beb53d4ca51e709f2130e07",
+      "size_bytes": 3731
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-post-change-validation/SKILL.md",
@@ -328,8 +333,8 @@
       "size_bytes": 13752
     },
     {
-      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-SFSzOwSf.js",
-      "sha256": "fc0762df0d942d255a8aab5728e827af0e0a429a15dd5da686f567e8b60aaf9e",
+      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-r7LK6iGJ.js",
+      "sha256": "9f7f12386c1d521a6b41e328964502ea6fe2ac448496cf9a5e98901ec72664bf",
       "size_bytes": 556488
     },
     {
@@ -338,13 +343,13 @@
       "size_bytes": 5577
     },
     {
-      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/sheet-presentation-b3sjf1Bw.js",
-      "sha256": "8697f13f8e910a82da9578000a15aafc6b9d3fd2526b5bcb8e40ccacfa81d41a",
+      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/sheet-presentation-DgcGpWA7.js",
+      "sha256": "e6e076582eccaa6620be536a3ad233b3104cdba08c1c576b54c4676bca2999ae",
       "size_bytes": 36315
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/build.json",
-      "sha256": "8574f204cbf62ac25a8c51793f2d97c76c95e2f844500443de9ab9cdc70226e6",
+      "sha256": "84f9ff9e6b64a1cc862618ddb8a300666d4b26f196814219ecf2f8018228d06e",
       "size_bytes": 3676
     },
     {
@@ -354,7 +359,7 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/index.html",
-      "sha256": "3dc204ca6ba963bed77623fba776c524e7ad722dd5f4f4c92f7fa4476e314fa3",
+      "sha256": "46bfbc0f65b050036399ef4408a0669c6235dbe0d21c7af6bc2301a525889a8c",
       "size_bytes": 463
     },
     {
@@ -383,7 +388,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "d79009aabe2a230dd3eb0f06912a317213390a1c125aae746d14d6c8a469b02f",
+  "manifest_sha256": "f9ab2d0d400be2a9665f7bce6c45e36b38ee0563fc1bf651197f57193c9e868d",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "framework": "React/Vite",
   "sdk_version": "0.1.0-beta.1",
   "dependencies": [
@@ -42,7 +42,7 @@
     },
     {
       "path": "web/package.json",
-      "sha256": "8c3f2e320a183f584ae8d4f3abb68824c114965528fff1be01f87115d3e0a277"
+      "sha256": "5036852b35404cfe36e2682666889d8e00a3108a0082ec1b691ff1c1b0be5e78"
     },
     {
       "path": "web/pnpm-lock.yaml",
@@ -107,16 +107,16 @@
       "sha256": "0674fed6cc7fa393224737c00a920d63c93b163ed6d9866b898443e936059378"
     },
     {
-      "path": "assets/index-SFSzOwSf.js",
-      "sha256": "fc0762df0d942d255a8aab5728e827af0e0a429a15dd5da686f567e8b60aaf9e"
+      "path": "assets/index-r7LK6iGJ.js",
+      "sha256": "9f7f12386c1d521a6b41e328964502ea6fe2ac448496cf9a5e98901ec72664bf"
     },
     {
       "path": "assets/logo-BWUTSQcX.png",
       "sha256": "0dabb9f8ff7f73a8785d57fa2aaf0ab4bd5906ced60b9cd7cf22a073129f1d27"
     },
     {
-      "path": "assets/sheet-presentation-b3sjf1Bw.js",
-      "sha256": "8697f13f8e910a82da9578000a15aafc6b9d3fd2526b5bcb8e40ccacfa81d41a"
+      "path": "assets/sheet-presentation-DgcGpWA7.js",
+      "sha256": "e6e076582eccaa6620be536a3ad233b3104cdba08c1c576b54c4676bca2999ae"
     },
     {
       "path": "example.json",
@@ -124,7 +124,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "3dc204ca6ba963bed77623fba776c524e7ad722dd5f4f4c92f7fa4476e314fa3"
+      "sha256": "46bfbc0f65b050036399ef4408a0669c6235dbe0d21c7af6bc2301a525889a8c"
     }
   ]
 }
