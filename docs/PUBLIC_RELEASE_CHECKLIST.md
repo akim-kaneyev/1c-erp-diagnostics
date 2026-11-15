@@ -7,7 +7,7 @@
 - [x] Windows update procedure separates catalog refresh from replacing a running unchanged cache.
 - [x] Five plugin identities, 35 primary skills, Gate 0–10, EVAL_RESULT_JSON and Velis assets are retained.
 - [ ] Pass public-package, skill governance, deterministic lock, ecosystem and full-history validators.
-- [ ] Pass Python 3.10/3.12 regressions and unchanged frontend typecheck/tests/reproducible build.
+- [ ] Pass Python 3.10/3.12 regressions and frontend typecheck/tests/reproducible build.
 - [ ] Confirm required protected PR checks and CodeQL before merge.
 
 ## Exact installed acceptance
@@ -17,7 +17,7 @@
 - [ ] Start a fresh host; enumerate Unica 0.13.0 MCP schemas and exercise offline synthetic operations.
 - [ ] Execute all 26 clean diagnostic sessions against exact installed 0.4.1, then strictly validate logs/manifests.
 - [ ] Confirm main has the accepted tree and the final GitHub installation has the same package hashes.
-- [ ] Keep the existing viewer 0.4.0 asset identity and its UI acceptance separate from primary versioning.
+- [ ] Confirm the viewer 0.4.1 rebuild matches source/version identities and retains its UI behavior.
 
 ## Public presentation and release
 

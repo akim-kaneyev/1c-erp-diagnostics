@@ -22,7 +22,7 @@ They are offered from one marketplace but remain separate plugins with their own
 
 Use the [Windows update procedure](references/plugin-updates.md). Refresh the catalog separately from installed plugins, compare offered and installed versions, and install only changed versions. A running Windows MCP bootstrap can lock its installed version directory; do not repair that lock by granting broader filesystem permissions or stopping 1C processes. Keep the canonical plugin ID and immutable source pin.
 
-Unica 0.13.0 changes parts of the public tool contract: discover current schemas, including the added dry-run/receipt behavior, deferred result delivery and metadata-edit operations. Do not reuse removed template/help tools or assume an earlier session's schemas represent a freshly updated server. Start a fresh Codex task after an update.
+Unica 0.13.0 changes the public tool contract: discover current schemas such as `unica.view`, `unica.check`, `unica.apply` and `unica.run`, including their preview/revision receipts and deferred result delivery. The old operation-specific tools are not aliases. Do not assume an earlier session's schemas represent a freshly updated server. A bare `unica.run {}` reads the operation dictionary; it does not start a database operation. Start a fresh Codex task after an update.
 
 ## Typical roles
 

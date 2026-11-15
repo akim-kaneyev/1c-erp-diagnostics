@@ -30,6 +30,6 @@ Open a new Codex task after an update so its MCP server and tool schemas come fr
 
 ## Acceptance scope and rollback
 
-The primary app is still the locally bundled viewer 0.4.0; the diagnostic plugin version is 0.4.1. Its compiled assets are unchanged. UI acceptance and 1C runtime acceptance remain separate. The 1C HTTP test bridge is not installed or started by this update.
+The primary app and diagnostic plugin both report 0.4.1. The viewer is rebuilt with the matching version and retains its behavior. UI acceptance and 1C runtime acceptance remain separate. The 1C HTTP test bridge is not installed or started by this update.
 
 Rollback restores the prior reviewed marketplace pin and primary package through the same supported install flow and starts a fresh task. Do not modify the user's database, credentials, licenses or companion configuration to make an update pass.

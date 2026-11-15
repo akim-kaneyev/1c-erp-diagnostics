@@ -1,6 +1,6 @@
 # Plugin self-audit — 0.4.1
 
-Scope: official Unica 0.13.0 pin, Windows cache-safe update procedure and unchanged local viewer 0.4.0. External implementation remains externally installed and LGPL-3.0-or-later; none is vendored into this MIT plugin.
+Scope: official Unica 0.13.0 pin, Windows cache-safe update procedure and matching local viewer 0.4.1 rebuild with unchanged behavior. External implementation remains externally installed and LGPL-3.0-or-later; none is vendored into this MIT plugin.
 
 Reviewed source: `IngvarConsulting/unica-marketplace` at `885ca40dffd127dc29715f637d2ebdd7846b8b6e`; version, license, source commit, runtime manifest and successful official Windows fresh-install/upgrade checks were examined on 2026-11-15. A fresh host must verify the installed public MCP schemas and runtime-file hashes before functional claims.
 

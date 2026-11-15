@@ -224,7 +224,7 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.4.1 Public Preview release candidate.** This candidate updates the reviewed Unica pin to 0.13.0 and documents Windows cache-safe updates. It retains the ready local UI SDK viewer 0.4.0 and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
+**v0.4.1 Public Preview release candidate.** This candidate updates the reviewed Unica pin to 0.13.0 and documents Windows cache-safe updates. It retains the ready local UI SDK viewer with the matching 0.4.1 build and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
 
 Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. Version 0.4.0 also passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged as `17f92b7e9e3303546341f082dae3faf4582e9a11` with an identical tree (PR #43). These historical runs do not automatically accept changed v0.4.1 package contents. See [Windows plugin updates](docs/PLUGIN_UPDATES.md). See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
 

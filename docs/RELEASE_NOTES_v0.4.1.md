@@ -2,7 +2,7 @@
 
 Updates the reviewed Unica companion to 0.13.0 and separates catalog refresh from installed-plugin refresh on Windows. A running bootstrap may lock an unchanged version directory; the documented flow skips identical files and installs changed versions separately. Saved enabled flags and current sessions are preserved. Fresh tasks load the updated MCP schemas.
 
-The primary viewer app remains 0.4.0, with its exact existing build and approved Velis assets. The diagnostic plugin is 0.4.1. The 35-skill contract, Gate 0–10, EVAL_RESULT_JSON, immutable evidence and five-plugin marketplace remain in place. No 1C bridge, database mutation or permission widening is added.
+The viewer app is rebuilt with the matching 0.4.1 version and unchanged behavior/approved Velis assets. The diagnostic plugin is 0.4.1. The 35-skill contract, Gate 0–10, EVAL_RESULT_JSON, immutable evidence and five-plugin marketplace remain in place. No 1C bridge, database mutation or permission widening is added.
 
 ## Reviewed external sources
 

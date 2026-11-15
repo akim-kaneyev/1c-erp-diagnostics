@@ -4,7 +4,7 @@
 
 - pin Unica 0.13.0 to its official immutable marketplace commit; record public-tool migration boundaries;
 - document a catalog-only refresh and targeted version installation for Windows running-bootstrap cache locks;
-- preserve the viewer 0.4.0 assets, five-plugin catalog, companion permissions and deferred 1C bridge;
+- preserve viewer behavior with a matching 0.4.1 build, five-plugin catalog, companion permissions and deferred 1C bridge;
 - exact installed-package, fresh MCP and clean-session acceptance are recorded on the release PR before merge.
 
 ## 0.4.0 — 2026-11-14
