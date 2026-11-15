@@ -24,12 +24,13 @@ EXPLICIT_FILES = (
 RECURSIVE_ROOTS = (
     "plugins/one-c-erp-diagnostics/skills",
     "plugins/one-c-erp-diagnostics/ui",
+    "plugins/one-c-erp-diagnostics/bridge",
     "playbooks",
     "checklists",
 )
 IGNORED_NAMES = {".DS_Store", "Thumbs.db"}
 IGNORED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache"}
-CANONICAL_TEXT_EXTENSIONS = {".json", ".md", ".py", ".txt", ".yaml", ".yml"}
+CANONICAL_TEXT_EXTENSIONS = {".json", ".md", ".py", ".txt", ".yaml", ".yml", ".bsl", ".xml"}
 
 
 def _inside_root(path: Path, root: Path) -> bool:

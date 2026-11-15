@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@ui-sdk/react/button'
 import { Field, FieldLabel } from '@ui-sdk/react/field'
 import { Input } from '@ui-sdk/react/input'
@@ -12,6 +12,8 @@ import { demoText } from './demo'
 import { version as viewerVersion } from '../package.json'
 import { emptyFilters, filterRows, parseCase, rowsFor, sha256, statusLabels, validDateChange } from './model'
 import type { Bundle, Filters, Row, Section } from './model'
+import { download, readBytes } from './files'
+import { Workbench } from './Workbench'
 
 type Loaded = { bundle: Bundle; bytes: ArrayBuffer; filename: string; hash: string }
 const sections: { id: Section; name: string; singular: string }[] = [
@@ -19,14 +21,7 @@ const sections: { id: Section; name: string; singular: string }[] = [
   { id: 'claims', name: 'Выводы', singular: 'вывод' },
   { id: 'runs', name: 'Запуски', singular: 'запуск' },
 ]
-export function readBytes(file: File): Promise<ArrayBuffer> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onerror = () => reject(new Error('Не удалось прочитать файл.'))
-    reader.onload = () => resolve(reader.result as ArrayBuffer)
-    reader.readAsArrayBuffer(file)
-  })
-}
+export { readBytes } from './files'
 
 function Status({ value }: { value: string }) {
   return <span className="status" data-status={value}>{statusLabels[value] || value}</span>
@@ -70,7 +65,7 @@ function RecordDialog({ row }: { row: Row }) {
   </Dialog>
 }
 
-export function App() {
+function Viewer({ incoming, onWorkbench }: { incoming: { bundle: Bundle } | null; onWorkbench: () => void }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null)
   const [section, setSection] = useState<Section>('evidence')
   const [filters, setFilters] = useState<Filters>({ ...emptyFilters })
@@ -88,6 +83,16 @@ export function App() {
   const annotations = loaded?.bundle.annotations
   const staleCount = state ? [...state.evidence, ...state.runs, ...state.claims].filter(x => ['stale', 'superseded', 'withdrawn'].includes(x.status)).length : 0
   const undated = rows.filter(row => !row.date).length
+
+  useEffect(() => {
+    if (!incoming) return
+    const ticket = ++serial.current
+    setLoading(true)
+    const bytes = new TextEncoder().encode(JSON.stringify(incoming.bundle)).buffer
+    void loadBytes(bytes, incoming.bundle.state.case_id + '.json', ticket)
+      .catch(() => { if (ticket === serial.current) setError('Не удалось открыть выбранный разбор. Предыдущий файл сохранён.') })
+      .finally(() => { if (ticket === serial.current) setLoading(false) })
+  }, [incoming])
 
   async function loadBytes(bytes: ArrayBuffer, filename: string, ticket: number) {
     const bundle = parseCase(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
@@ -110,15 +115,14 @@ export function App() {
   function update(next: Filters) { setFilters(next); setPage(0) }
   function exportOriginal() {
     if (!loaded) return
-    const url = URL.createObjectURL(new Blob([loaded.bytes], { type: 'application/json' }))
-    const link = document.createElement('a'); link.href = url; link.download = loaded.filename; link.click()
-    setTimeout(() => URL.revokeObjectURL(url), 1000)
+    download(new Blob([loaded.bytes], { type: 'application/json' }), loaded.filename)
   }
   return <div className="app-shell">
     <aside className="sidebar">
       <div className="brand"><img src={logo} alt="Velis" /><div><strong>VELIS</strong><span>Диагностика 1С</span></div></div>
       <div className="workspace-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
       <div className="sidebar-current"><span aria-hidden="true">▦</span> Диагностический разбор</div>
+      <Button className="button sidebar-nav" onClick={onWorkbench}>Подключение и проверки</Button>
       <div className="sidebar-note"><span className="live-dot" /> Локальное приложение<p>Файлы остаются на вашем компьютере. Подключение к базе не требуется.</p></div>
       <footer className="sidebar-footer"><strong>1C ERP Diagnostics</strong><span>Viewer {viewerVersion} · UI SDK</span></footer>
     </aside>
@@ -170,4 +174,18 @@ export function App() {
       </div>
     </main>
   </div>
+}
+
+export function App() {
+  const [mode, setMode] = useState<'viewer' | 'workbench'>('viewer')
+  const [opened, setOpened] = useState(false)
+  const [incoming, setIncoming] = useState<{ bundle: Bundle } | null>(null)
+  const viewer = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (mode === 'viewer' && opened) viewer.current?.querySelector<HTMLButtonElement>('.sidebar-nav')?.focus()
+  }, [mode, opened])
+  return <>
+    <div ref={viewer} hidden={mode !== 'viewer'} data-agent-hidden={mode !== 'viewer' ? '' : undefined}><Viewer incoming={incoming} onWorkbench={() => { setOpened(true); setMode('workbench') }} /></div>
+    {opened && <div hidden={mode !== 'workbench'} data-agent-hidden={mode !== 'workbench' ? '' : undefined}><Workbench active={mode === 'workbench'} onBack={() => setMode('viewer')} onViewer={bundle => { setIncoming({ bundle }); setMode('viewer') }} /></div>}
+  </>
 }

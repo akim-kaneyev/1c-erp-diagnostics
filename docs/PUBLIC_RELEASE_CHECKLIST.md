@@ -1,4 +1,4 @@
-# Public release checklist — v0.4.1
+# Public release checklist — v0.5.0
 
 ## Repository and package
 
@@ -12,12 +12,12 @@
 
 ## Exact installed acceptance
 
-- [ ] Confirm actual installed primary 0.4.1 and Unica 0.13.0 files match reviewed source hashes.
+- [ ] Confirm actual installed primary 0.5.0 and Unica 0.13.0 files match reviewed source hashes.
 - [ ] Confirm both saved enabled flags and user-scope skills in separate workspaces.
 - [ ] Start a fresh host; enumerate Unica 0.13.0 MCP schemas and exercise offline synthetic operations.
-- [ ] Execute all 26 clean diagnostic sessions against exact installed 0.4.1, then strictly validate logs/manifests.
+- [ ] Execute all 26 clean diagnostic sessions against exact installed 0.5.0, then strictly validate logs/manifests.
 - [ ] Confirm main has the accepted tree and the final GitHub installation has the same package hashes.
-- [ ] Confirm the viewer 0.4.1 rebuild matches source/version identities and retains its UI behavior.
+- [ ] Confirm the viewer/workbench 0.5.0 rebuild matches source/version identities and retains its UI behavior.
 
 ## Public presentation and release
 
@@ -30,4 +30,4 @@
 
 Do not merge or claim current acceptance while a critical package check fails, CI/CodeQL is incomplete, a reviewed source mismatch remains or current installed/runtime evidence is absent. Historical runs cannot accept changed bytes. Version 0.4.0 acceptance at `dd351682e6eb14520308824d2b0e7e44323dae88` is preserved as historical evidence only.
 
-No bridge 1С, connection probe, configuration update, document posting or live business-accounting test is included. Offline XML and synthetic fixtures verify the declared integration scope.
+The first-party bridge and explicitly authorized test-contour migration require separate native/live evidence. No document posting or accounting correction belongs to this release. Offline XML, synthetic fixtures and connectivity probes do not establish business-accounting correctness.

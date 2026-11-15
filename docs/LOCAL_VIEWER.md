@@ -1,6 +1,8 @@
 # Local diagnostic viewer
 
-Version 0.4.1 includes a ready React/Vite interface built with `@ui-sdk/core` and `@ui-sdk/react` 0.1.0-beta.1. The installed plugin includes the production build, local server, synthetic example, dependency licenses and build identity. Node.js and a package manager are needed only to develop/rebuild it.
+Version 0.5.0 includes a ready React/Vite interface built with `@ui-sdk/core` and `@ui-sdk/react` 0.1.0-beta.1. The installed plugin includes the production build, local server, synthetic example, dependency licenses and build identity. Node.js and a package manager are needed only to develop/rebuild it.
+
+The separate opt-in [workbench](WORKBENCH.md) adds test connections and private persistent cases. The behavior described below applies to the original file-viewing mode.
 
 ## Open it
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" version="2.20">
+  <Configuration uuid="75344d23-1f39-51b0-81b7-1097d350f7be">
+    <InternalInfo>
+      <xr:ContainedObject><xr:ClassId>9cd510cd-abfc-11d4-9434-004095e12fc7</xr:ClassId><xr:ObjectId>8e19d415-a202-5210-b315-b0647c6abc29</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>9fcd25a0-4822-11d4-9414-008048da11f9</xr:ClassId><xr:ObjectId>e72a6877-1d08-506d-a310-986fe1cf4140</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>e3687481-0a87-462c-a166-9f34594f9bba</xr:ClassId><xr:ObjectId>0c36a528-faf8-51e0-895e-5d30176c6ed4</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>9de14907-ec23-4a07-96f0-85521cb6b53b</xr:ClassId><xr:ObjectId>de4b1535-902a-5dfe-ab5f-8a19bb4927a0</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>51f2d5d8-ea4d-4064-8892-82951750031e</xr:ClassId><xr:ObjectId>03ae6d29-b4ea-514f-b364-3f38b1fd045b</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>e68182ea-4237-4383-967f-90c1e3370bc7</xr:ClassId><xr:ObjectId>17c77ec9-36f8-58cd-b86c-3864b27653b0</xr:ObjectId></xr:ContainedObject>
+      <xr:ContainedObject><xr:ClassId>fb282519-d103-4dd3-bc12-cb271d631dfc</xr:ClassId><xr:ObjectId>333d5b5b-1bdf-5231-a7ad-2d429e6b1866</xr:ObjectId></xr:ContainedObject>
+    </InternalInfo>
+    <Properties>
+      <ObjectBelonging>Adopted</ObjectBelonging><Name>VelisReadOnlyBridge</Name><Synonym/><Comment/>
+      <ConfigurationExtensionPurpose>AddOn</ConfigurationExtensionPurpose>
+      <KeepMappingToExtendedConfigurationObjectsByIDs>true</KeepMappingToExtendedConfigurationObjectsByIDs>
+      <NamePrefix>VRO</NamePrefix><ConfigurationExtensionCompatibilityMode>Version8_3_13</ConfigurationExtensionCompatibilityMode>
+      <ScriptVariant>Russian</ScriptVariant><Vendor>Velis Diagnostics</Vendor><Version>0.1.0</Version>
+      <BriefInformation/><DetailedInformation/><Copyright/><VendorInformationAddress/><ConfigurationInformationAddress/>
+    </Properties>
+    <ChildObjects><HTTPService>VelisReadOnlyBridge</HTTPService></ChildObjects>
+  </Configuration>
+</MetaDataObject>

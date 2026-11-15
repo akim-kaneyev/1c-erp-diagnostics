@@ -127,12 +127,21 @@ REACT_INPUT_FLAGS = re.compile(
     r"month:!0,number:!0," + "pass" + r"word:!0,range:!0,search:!0,tel:!0,text:!0,time:!0,url:!0,week:!0\}"
 )
 
+# Match only the variable-valued local login payload, never literal credentials.
+CONNECT_CREDENTIAL_REFERENCE = re.compile(
+    r"(['\"`])/api/connect\1\s*,\s*\{\s*profile_id\s*:\s*[A-Za-z_$][\w$]*\s*,"
+    r"\s*username(?:\s*:\s*[A-Za-z_$][\w$]*)?\s*,\s*"
+    + "pass" + r"word\s*:\s*(?!(?:true|false|null|undefined|NaN|Infinity)\b)"
+    r"[A-Za-z_$][\w$]*\s*\}"
+)
+
 
 def text_findings(value: str) -> tuple[bool, bool]:
     normalized, unresolved_escape = normalize_security_text(value)
     upper = normalized.upper()
     # React DOM's complete input-type support table contains a boolean flag, not a credential.
-    flag_tables = [match.span() for match in REACT_INPUT_FLAGS.finditer(normalized)]
+    flag_tables = [match.span() for rule in (REACT_INPUT_FLAGS, CONNECT_CREDENTIAL_REFERENCE)
+                   for match in rule.finditer(normalized)]
     secret_assignments = any(
         not any(start <= match.start() and match.end() <= end for start, end in flag_tables)
         for match in SECRET_ASSIGNMENT.finditer(normalized)

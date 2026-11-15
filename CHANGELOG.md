@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 — 2026-11-15
+
+- Add an opt-in local UI SDK workbench: explicit test profiles, memory-only authenticated sessions, metadata and object descriptions, private cases and separate notes.
+- Capture exact responses with case context, SHA-256 and original-source packages. Preserve pending diagnostic gates and require independent accounting conclusions.
+- Add deterministic row comparison, negative-stock checks and exact-decimal expense allocation with explicit synthetic examples and source lineage.
+- Add a first-party fixed-command read-only bridge source, a native isolated builder and a connection preflight. Legacy bridge reads remain explicitly identified.
+- Preserve the file viewer, 35 diagnostic skills, five-plugin marketplace and strict 26-case contract; keep companion pins unchanged.
+
 ## 0.4.1 — 2026-11-15
 
 - pin Unica 0.13.0 to its official immutable marketplace commit; record public-tool migration boundaries;

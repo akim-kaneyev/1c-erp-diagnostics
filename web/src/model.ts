@@ -59,9 +59,7 @@ export type Row = { id: string; title: string; description: string; status: stri
 export type Filters = { search: string; status: string; from: string; to: string }
 export const emptyFilters: Filters = { search: '', status: 'all', from: '', to: '' }
 
-export function parseCase(text: string): Bundle {
-  let input: unknown
-  try { input = JSON.parse(text) } catch { throw new Error('Файл не является корректным JSON. Текущий кейс сохранён.') }
+export function assertLocalMaterial(input: unknown) {
   const stack: [unknown, number][] = [[input, 0]]
   let nodes = 0
   while (stack.length) {
@@ -73,6 +71,12 @@ export function parseCase(text: string): Bundle {
       stack.push([child, depth + 1])
     }
   }
+}
+
+export function parseCase(text: string): Bundle {
+  let input: unknown
+  try { input = JSON.parse(text) } catch { throw new Error('Файл не является корректным JSON. Текущий кейс сохранён.') }
+  assertLocalMaterial(input)
   const wrapped = typeof input === 'object' && input !== null && 'viewer_schema_version' in input
   const parsed = bundleSchema.safeParse(wrapped ? input : { viewer_schema_version: 1, state: input })
   if (!parsed.success) throw new Error(`Неподдерживаемый диагностический файл. ${parsed.error.issues.slice(0, 3).map(x => x.message).join(' ')}`)

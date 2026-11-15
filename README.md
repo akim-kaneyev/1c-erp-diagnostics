@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.4.1" src="https://img.shields.io/badge/version-0.4.1-0D1B2A.svg" />
+  <img alt="Version 0.5.0" src="https://img.shields.io/badge/version-0.5.0-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -148,7 +148,7 @@ See the [workflow and commands](plugins/one-c-erp-diagnostics/skills/one-c-erp-t
 
 Version 0.4.0 includes a ready [local diagnostic viewer](docs/LOCAL_VIEWER.md) on React/Vite and UI SDK. Open STATE.json, browse evidence/claims/runs and Gate 0–10, filter by text/status/date, inspect lineage and compare source-file SHA-256 locally. Export preserves the original bytes. The [UI skill](plugins/one-c-erp-diagnostics/skills/one-c-erp-ui-design/SKILL.md) launches the bundled app from the installed package; Node.js is not needed to use it. Native 1C forms and ordinary diagnostic answers retain their existing workflows.
 
-The upstream `ui-sdk` skill can be installed once at user scope for all local Codex projects; see [installation and scope](docs/UI_SDK_INTEGRATION.md). The viewer bundles pinned SDK code and all runtime license texts. It has no database connection, hosted data service or automatic WebMCP registration. Its Python launcher serves static assets only on loopback.
+The upstream `ui-sdk` skill can be installed once at user scope for all local Codex projects; see [installation and scope](docs/UI_SDK_INTEGRATION.md). The viewer bundles pinned SDK code and all runtime license texts. The file viewer has no database connection. Neither mode uses a hosted data service or automatic WebMCP registration. Its Python launcher defaults to static assets on loopback; the explicitly enabled [workbench](docs/WORKBENCH.md) adds a local case API and authenticated allowlisted test reads.
 
 ## Additional capabilities
 
@@ -224,9 +224,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.4.1 Public Preview release candidate.** This candidate updates the reviewed Unica pin to 0.13.0 and documents Windows cache-safe updates. It retains the ready local UI SDK viewer with the matching 0.4.1 build and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
+**v0.5.0 Public Preview release candidate.** Adds an opt-in [local workbench](docs/WORKBENCH.md) for authenticated read capture, private cases, notes, source packages and deterministic row checks. Includes first-party fixed-command read-only bridge source; build/install/live acceptance are separate. Retains Unica 0.13.0, the immutable file viewer and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
 
-Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. Version 0.4.0 also passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged as `17f92b7e9e3303546341f082dae3faf4582e9a11` with an identical tree (PR #43). These historical runs do not automatically accept changed v0.4.1 package contents. See [Windows plugin updates](docs/PLUGIN_UPDATES.md). See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
+Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. Version 0.4.0 also passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged as `17f92b7e9e3303546341f082dae3faf4582e9a11` with an identical tree (PR #43). These historical runs do not automatically accept changed v0.5.0 package contents. See [Windows plugin updates](docs/PLUGIN_UPDATES.md). See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 
