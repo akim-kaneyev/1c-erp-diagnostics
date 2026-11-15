@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 — 2026-11-14
+
+- Ship a ready local React/Vite diagnostic viewer using UI SDK: immutable STATE.json/bundle import, evidence/claim/run views, filters, pagination, lineage details, source-file hashing and original-byte export.
+- Package a hash-verified loopback-only server, Windows launcher, synthetic example and third-party licenses; integrate launch into the existing UI skill.
+- Add human/agent UI tests, packaged server/native-state tests and CI rebuild equality. Preserve the 35-skill diagnostic contract, 26-case suite and companion pins. The 1C bridge remains deferred.
+
 ## 0.3.12 — 2026-11-14
 
 - Add a scoped `one-c-erp-ui-design` skill for requested diagnostic web interfaces using UI SDK behaviors, accessible controls and deliberate agent interaction.

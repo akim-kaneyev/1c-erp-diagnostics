@@ -122,12 +122,24 @@ def normalize_security_text(value: str) -> tuple[str, bool]:
     return normalized, unresolved
 
 
+REACT_INPUT_FLAGS = re.compile(
+    r"\{color:!0,date:!0,datetime:!0,[\"']datetime-local[\"']:!0,email:!0,"
+    r"month:!0,number:!0," + "pass" + r"word:!0,range:!0,search:!0,tel:!0,text:!0,time:!0,url:!0,week:!0\}"
+)
+
+
 def text_findings(value: str) -> tuple[bool, bool]:
     normalized, unresolved_escape = normalize_security_text(value)
     upper = normalized.upper()
+    # React DOM's complete input-type support table contains a boolean flag, not a credential.
+    flag_tables = [match.span() for match in REACT_INPUT_FLAGS.finditer(normalized)]
+    secret_assignments = any(
+        not any(start <= match.start() and match.end() <= end for start, end in flag_tables)
+        for match in SECRET_ASSIGNMENT.finditer(normalized)
+    )
     has_secret = (
         unresolved_escape
-        or SECRET_ASSIGNMENT.search(normalized) is not None
+        or secret_assignments
         or BEARER_AUTHORIZATION.search(normalized) is not None
         or PRIVATE_KEY_HEADER.search(normalized) is not None
         or PUTTY_PRIVATE_KEY_HEADER.search(normalized) is not None

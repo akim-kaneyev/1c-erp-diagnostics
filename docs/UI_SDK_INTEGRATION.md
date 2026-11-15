@@ -29,7 +29,7 @@ The packaged `one-c-erp-ui-design` skill applies the SDK approach to requested d
 - preserve evidence/run identities, exact diagnostic states and backend authorization;
 - treat UI acceptance and accounting acceptance as different claims.
 
-Ordinary diagnosis stays a diagnostic workflow. Native managed forms stay native 1C forms. The exact `EVAL_RESULT_JSON` contract has no added UI fields or inferred capabilities. No SDK implementation, upstream skill copy, hidden MCP backend, hosted UI, database connection or bridge installation is bundled into this plugin.
+Version 0.4.0 also ships a [ready local viewer](LOCAL_VIEWER.md) with compiled, pinned SDK packages and their license texts. Its static Python server binds only to loopback; selected files stay in browser memory. The original upstream skill remains independent. Ordinary diagnosis stays a diagnostic workflow, native managed forms remain native, and exact `EVAL_RESULT_JSON` has no added UI fields or inferred capabilities. No hosted data service, database connection or bridge installation is bundled.
 
 `createAgent` is a browser-side component API. WebMCP registration requires browser support and explicit task scope; neither becomes a Codex tool merely because a skill is installed. The 1C test bridge remains separate and deferred unless a later task requests it.
 
@@ -37,6 +37,6 @@ Ordinary diagnosis stays a diagnostic workflow. Native managed forms stay native
 
 Installation verification compares all installed files against the pinned upstream tree. User-scope discovery is checked through Codex `skills/list` with `forceReload: true` in the repository and a separate unrelated working directory. That check creates no chat and runs no model.
 
-Repository lint, package links and the deterministic lock cover the packaged 1C skill. The exact-version 26-case clean-session suite checks that UI routing does not alter the diagnostic contract. Separate planning smoke checks can assess the new UI instructions. This instruction-only change does not claim tests of a rendered application, real browser accessibility or live ERP accounting.
+Repository lint, package links and the deterministic lock cover the packaged skill and viewer. Version 0.4.0 adds actual typecheck/build, human/agent interaction tests, native server checks and real-browser UI verification. CI rebuilds the committed production package. The exact-version 26-case clean-session suite separately checks the diagnostic contract; UI acceptance does not establish live ERP accounting correctness. Actual release outcomes are recorded on the PR.
 
 Rollback: uninstall the standalone skill through the chosen skill manager or remove that exact user skill directory after checking its identity; revert the plugin candidate separately. Do not remove unrelated user/project skills or alter existing project settings.

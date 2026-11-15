@@ -1,6 +1,6 @@
 {
   "name": "one-c-erp-diagnostics",
-  "version": "0.3.12",
+  "version": "0.4.0",
   "description": "Dynamic evidence-first orchestration and a verified companion ecosystem for 1C:ERP diagnostics, code analysis and controlled remediation.",
   "author": {
     "name": "Akim Kaneev",
@@ -30,7 +30,7 @@
   "interface": {
     "displayName": "1C ERP Diagnostics",
     "shortDescription": "Доказательная диагностика 1С:ERP · единая экосистема Gate 0–10",
-    "longDescription": "A single dynamic entrypoint for 1C:ERP incidents. It discovers actual capabilities, builds a bounded evidence graph, routes 33 packaged specialist skills, coordinates verified companion plugins and optional local SonarQube BSL analysis when available, provides a provenance-preserving public incident-index search, enforces artifact lineage, execution identity, stale-result and exact-output controls, challenges conclusions adversarially, and controls proposed actions through reversible R0–R3 risk gates.",
+    "longDescription": "A single dynamic entrypoint for 1C:ERP incidents. It discovers actual capabilities, builds a bounded evidence graph, routes 34 packaged specialist skills, coordinates verified companion plugins and optional local SonarQube BSL analysis when available, provides a provenance-preserving public incident-index search, enforces artifact lineage, execution identity, stale-result and exact-output controls, challenges conclusions adversarially, and controls proposed actions through reversible R0–R3 risk gates. Includes a bundled local read-only UI SDK viewer for case evidence, claims, runs and source hashes.",
     "developerName": "Akim Kaneev",
     "category": "Productivity",
     "capabilities": [
@@ -46,7 +46,7 @@
     "defaultPrompt": [
       "Проведи доказательную диагностику 1С:ERP по Gate 0–10.",
       "Сравни корректный и проблемный примеры 1С:ERP и перепроверь причину.",
-      "Покажи доступные 1С-навыки и построй безопасный план анализа."
+      "Открой локальный веб-интерфейс материалов диагностики."
     ]
   }
 }

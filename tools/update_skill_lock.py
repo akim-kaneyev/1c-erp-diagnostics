@@ -23,6 +23,7 @@ EXPLICIT_FILES = (
 )
 RECURSIVE_ROOTS = (
     "plugins/one-c-erp-diagnostics/skills",
+    "plugins/one-c-erp-diagnostics/ui",
     "playbooks",
     "checklists",
 )

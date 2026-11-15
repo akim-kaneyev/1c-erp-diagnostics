@@ -11,11 +11,19 @@ Use when the user asks for a web interface, interactive evidence viewer, diagnos
 
 ## When NOT to use
 
-Do not turn an ordinary diagnostic answer into an application. In strict `EVAL_RESULT_JSON` mode return the existing exact JSON contract; do not add HTML, UI fields or UI capabilities. Native managed 1C forms remain a Unica/form workflow. This skill does not install a database bridge, alter 1C, start a server or authorize deployment.
+Do not turn an ordinary diagnostic answer into an application. In strict `EVAL_RESULT_JSON` mode return the existing exact JSON contract; do not add HTML, UI fields or UI capabilities. Native managed 1C forms remain a Unica/form workflow. Selecting this skill alone does not authorize starting a server or deployment. Launch the packaged local viewer when the user requests it; database bridges and 1C changes remain separate scopes.
 
 ## Required inputs
 
 Identify the requested user task, existing UI framework and package manager, input format, case/Evidence IDs, current run/source identity, data sensitivity and allowed actions. For real case data, keep source bytes local and use a sanitized slice. If no dataset is supplied, label demonstration data as synthetic.
+
+## Ready local viewer
+
+For viewing an existing case, use the packaged [viewer launcher](../../ui/serve_ui.py) or the [Windows launcher](../../ui/launch.ps1). Resolve its absolute path from this installed skill before running it; the repository checkout is not required. Run the Python launcher with `--open` to open the printed loopback URL, or omit that flag when a host browser tool will open it. The server verifies bundled asset hashes before listening and stops with Ctrl+C.
+
+The viewer accepts the existing `STATE.json` or a version-1 viewer bundle with optional annotations. The [synthetic example](../../ui/dist/example.json) demonstrates the format. Ask the user to choose their local file in the viewer; never upload it or inspect unrelated cases. Preserve exact source bytes when saving a copy. Use the canonical case-state validator separately when validating diagnostic meaning: the viewer performs structural checks and preserves declared statuses. The browser UI agent is local component control, not a model/provider connection or a database tool.
+
+The viewer provides evidence/claim/run tabs, search/status/date filters, bounded pagination, details, local source-file SHA-256 comparison and immutable JSON export. Native 1C forms continue through Unica. Do not install a database bridge for viewing files. Prefer this ready viewer over generating another application when it already meets the user's task.
 
 ## The framework
 
@@ -26,7 +34,7 @@ Use existing components for keyboard navigation, focus, selection, dismissal and
 ## Workflow
 
 1. Inspect the actual project. Read its installed UI SDK documentation index and only relevant component pages. Preserve its framework; install core and the matching adapter with its package manager only when implementing the requested UI. Record resolved versions in the project lockfile. UI SDK is beta; a reviewed source snapshot is not proof that another installed version has the same API.
-2. If the `ui-sdk` skill is available, use it for the SDK details. Otherwise use the pinned [upstream entrypoint](https://github.com/vercel-labs/ui/blob/724a7d6c2d0ca1251a8eb6172462ae220c484714/packages/core/skills/ui-sdk/SKILL.md) and version-matched package docs. Do not assume global skill installation supplies JavaScript packages in a project. This plugin does not bundle the SDK or its upstream skill.
+2. If the `ui-sdk` skill is available, use it for the SDK details. Otherwise use the pinned [upstream entrypoint](https://github.com/vercel-labs/ui/blob/724a7d6c2d0ca1251a8eb6172462ae220c484714/packages/core/skills/ui-sdk/SKILL.md) and version-matched package docs. The ready viewer includes its bundled SDK runtime. It does not install authoring dependencies into other projects or include the upstream skill; global skill installation also does not supply JavaScript packages in a project.
 3. Model UI state explicitly. Route changes through component change callbacks, including programmatic agent changes. Validate through the shared state path; pointer and key handlers alone cannot enforce a rule. Filters, sorting and selection must not change the canonical evidence or its verification status.
 4. Name every control and preserve stable evidence/row identifiers. Use the SDK's documented parts and entrypoints, controlled values when the app owns state, and state attributes for styling. Verify keyboard reachability, focus recovery and the selected/disabled/invalid states actually rendered.
 5. When agent interaction is part of the requested interface, use the documented framework `createAgent` entrypoint in browser code. Test snapshot labels and actions against visible results. Register WebMCP only when the browser exposes that capability and the task includes it; otherwise report it unavailable. SDK installation alone is not a host-visible MCP capability.

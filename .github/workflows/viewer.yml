@@ -1,0 +1,35 @@
+name: Diagnostic viewer
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: viewer-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  viewer:
+    name: Viewer build and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+      - name: Install pinned package manager
+        run: npm install --global pnpm@11.25.0
+      - name: Install locked dependencies
+        working-directory: web
+        run: pnpm install --frozen-lockfile
+      - name: Check actual application and agent interactions
+        working-directory: web
+        run: pnpm test
+      - name: Build production package
+        working-directory: web
+        run: pnpm build
+      - name: Verify committed build is reproducible
+        run: git diff --exit-code -- plugins/one-c-erp-diagnostics/ui/dist

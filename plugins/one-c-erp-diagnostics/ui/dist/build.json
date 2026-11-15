@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "version": "0.4.0",
+  "framework": "React/Vite",
+  "sdk_version": "0.1.0-beta.1",
+  "dependencies": [
+    {
+      "name": "@ui-sdk/core",
+      "version": "0.1.0-beta.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "@ui-sdk/react",
+      "version": "0.1.0-beta.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "react",
+      "version": "19.3.1",
+      "license": "MIT"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.3.1",
+      "license": "MIT"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.28.0",
+      "license": "MIT"
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "license": "MIT"
+    }
+  ],
+  "sources": [
+    {
+      "path": "web/index.html",
+      "sha256": "a7eb95fe2d71dd1120a1b3062c7172c7f2a548f54abde671e6efe7ad3fa323aa"
+    },
+    {
+      "path": "web/package.json",
+      "sha256": "8c3f2e320a183f584ae8d4f3abb68824c114965528fff1be01f87115d3e0a277"
+    },
+    {
+      "path": "web/pnpm-lock.yaml",
+      "sha256": "a8bba88548c3d2dcc03628b0d4c674d624d95ad2519cd68a89b22a4d23daac60"
+    },
+    {
+      "path": "web/pnpm-workspace.yaml",
+      "sha256": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353"
+    },
+    {
+      "path": "web/scripts/package.mjs",
+      "sha256": "71ef4fa0e27bbaca84458bc11a04b72cf2bb9a3e776bceabb32dcdc49510f5a6"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "sha256": "fd6403b6a5a5ab9dbee907c940cc6ca8d1947aa11263f7571fb5013b3b52552b"
+    },
+    {
+      "path": "web/src/demo.ts",
+      "sha256": "ddfa9d1c9aea60e3d98dbf0dbb0ea89efb0f5af571110f1dba65923f3cba74b5"
+    },
+    {
+      "path": "web/src/main.tsx",
+      "sha256": "161456c400144aee6d57a8b6be0ec9d855765c8444b6d7a05d66b82beeae11d0"
+    },
+    {
+      "path": "web/src/model.ts",
+      "sha256": "f7c25cb715f29f1646194e0d903d1e95dce0cf2e0619d20114ccaa2c4f290734"
+    },
+    {
+      "path": "web/src/styles.css",
+      "sha256": "1188d3a076cb6d9c19a6b17a4980dccc2dfdac283e231d6094ccb509afb9996f"
+    },
+    {
+      "path": "web/src/test/App.test.tsx",
+      "sha256": "54fa23d048215bd57b08eb7cb8ecad94b5ac5e535fbc0781571f7842d511f483"
+    },
+    {
+      "path": "web/src/test/model.test.ts",
+      "sha256": "a6ff73f4ad1592c8a6068d7b8015a94608e9be42efe67c080eb1758b8190480a"
+    },
+    {
+      "path": "web/src/test/setup.ts",
+      "sha256": "44b57f8b599c96c776b41d0253615573d165cb74f65d3c9b78ddbf56e92aafb2"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "sha256": "d1ec91f27c0ef37e234a7609abe21aedce3d0c53881e7f3f0ac994e233462614"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "sha256": "3cdc4732ceaa75b1df69d61bf59fa0b01a6e4d8608aef3a6ccb32207761692ef"
+    }
+  ],
+  "files": [
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "sha256": "1c3da4d3d5ad6667123516e600012b4fbf4d1e5ed3d6567b0d7ab9f29873a941"
+    },
+    {
+      "path": "assets/index-Md4gxSVL.css",
+      "sha256": "0674fed6cc7fa393224737c00a920d63c93b163ed6d9866b898443e936059378"
+    },
+    {
+      "path": "assets/index-SFSzOwSf.js",
+      "sha256": "fc0762df0d942d255a8aab5728e827af0e0a429a15dd5da686f567e8b60aaf9e"
+    },
+    {
+      "path": "assets/logo-BWUTSQcX.png",
+      "sha256": "0dabb9f8ff7f73a8785d57fa2aaf0ab4bd5906ced60b9cd7cf22a073129f1d27"
+    },
+    {
+      "path": "assets/sheet-presentation-b3sjf1Bw.js",
+      "sha256": "8697f13f8e910a82da9578000a15aafc6b9d3fd2526b5bcb8e40ccacfa81d41a"
+    },
+    {
+      "path": "example.json",
+      "sha256": "7f573d30c093e184ee02895e412bbbdabb77b01f3781cb03118607ba3386a7ce"
+    },
+    {
+      "path": "index.html",
+      "sha256": "3dc204ca6ba963bed77623fba776c524e7ad722dd5f4f4c92f7fa4476e314fa3"
+    }
+  ]
+}
