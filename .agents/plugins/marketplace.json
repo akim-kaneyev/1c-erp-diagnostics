@@ -22,7 +22,7 @@
         "source": "git-subdir",
         "url": "https://github.com/IngvarConsulting/unica-marketplace.git",
         "path": "plugins/unica",
-        "sha": "c02e38d44a7dc238310172b9d790487f81aa4fb4"
+        "sha": "885ca40dffd127dc29715f637d2ebdd7846b8b6e"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -11,12 +11,18 @@ Use only after Gate 0 confirms actual installation, permissions and runtime avai
 
 The ecosystem marketplace exposes these independently maintained plugins:
 
-- `unica` — Unica `0.12.3`, source `IngvarConsulting/unica-marketplace`, immutable ref `c02e38d44a7dc238310172b9d790487f81aa4fb4` (release tag `v0.12.3`).
+- `unica` — Unica `0.13.0`, source `IngvarConsulting/unica-marketplace`, immutable ref `885ca40dffd127dc29715f637d2ebdd7846b8b6e` (release tag `v0.13.0`).
 - `1c-skills` — 1C Skills PowerShell, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `8cb7868145281d8e353831512cc1ffa72f1b5c89`.
 - `1c-skills-py` — 1C Skills Python, source `Nikolay-Shirokov/cc-1c-skills`, immutable generated ref `c1f79f5ac9f31c620b8508f75464f8c42c559ae4`.
 - `jev-browser-use` — Jev browser action planner `0.1.0`, source `wy-coliney/jev-browser-use`, immutable ref `cf7e76607d4ec70592b24becadd0296dcda8177a`.
 
 They are offered from one marketplace but remain separate plugins with their own licenses, permissions, updates and confirmation rules. Never claim that their implementation is embedded in `one-c-erp-diagnostics`.
+
+## Updating installed plugins
+
+Use the [Windows update procedure](references/plugin-updates.md). Refresh the catalog separately from installed plugins, compare offered and installed versions, and install only changed versions. A running Windows MCP bootstrap can lock its installed version directory; do not repair that lock by granting broader filesystem permissions or stopping 1C processes. Keep the canonical plugin ID and immutable source pin.
+
+Unica 0.13.0 changes parts of the public tool contract: discover current schemas, including the added dry-run/receipt behavior, deferred result delivery and metadata-edit operations. Do not reuse removed template/help tools or assume an earlier session's schemas represent a freshly updated server. Start a fresh Codex task after an update.
 
 ## Typical roles
 

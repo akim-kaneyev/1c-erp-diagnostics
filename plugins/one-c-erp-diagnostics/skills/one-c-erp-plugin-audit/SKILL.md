@@ -20,7 +20,7 @@ Audit before release or public submission:
 11. unavailable tools become fallback/`blocked`, not simulated;
 12. `R0–R3` controls protect production/accounting/access/closed-period actions;
 13. marketplace contains exactly the reviewed primary and companion plugins;
-14. Unica source/path/ref matches the canonical `0.12.0` marketplace release;
+14. Unica source/path/ref matches the canonical immutable release pin recorded by the companion skill and ecosystem marketplace;
 15. 1C Skills variants use reviewed immutable generated commit refs;
 16. every companion requires explicit installation and retains its own permissions/license;
 17. no external implementation is copied, relicensed or represented as embedded;

@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-PLUGIN_VERSION = "0.4.0"
-UNICA_COMMIT = "c02e38d44a7dc238310172b9d790487f81aa4fb4"
+PLUGIN_VERSION = "0.4.1"
+UNICA_COMMIT = "885ca40dffd127dc29715f637d2ebdd7846b8b6e"
 POWERSHELL_COMMIT = "8cb7868145281d8e353831512cc1ffa72f1b5c89"
 PYTHON_COMMIT = "c1f79f5ac9f31c620b8508f75464f8c42c559ae4"
 JEV_COMMIT = "cf7e76607d4ec70592b24becadd0296dcda8177a"
@@ -127,8 +127,8 @@ class EcosystemMarketplaceTests(unittest.TestCase):
 
         self.assertIn(PLUGIN_VERSION, audit)
         self.assertIn(MARKETPLACE_ID, ecosystem)
-        self.assertIn("v0.12.3", ecosystem)
-        self.assertIn("v0.12.3", integrations)
+        self.assertIn("v0.13.0", ecosystem)
+        self.assertIn("v0.13.0", integrations)
         self.assertIn("third-party", terms.lower())
         self.assertIn("permissions", ecosystem.lower())
 

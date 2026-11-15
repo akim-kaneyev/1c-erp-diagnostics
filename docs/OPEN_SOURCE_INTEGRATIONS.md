@@ -57,19 +57,19 @@ Risk and proof boundary: reading an identified report is `R0`; a sanitized loopb
 
 Canonical marketplace source: `https://github.com/IngvarConsulting/unica-marketplace.git`
 
-Reviewed release tag: `v0.12.3`.
+Reviewed release tag: `v0.13.0`.
 
-Immutable marketplace ref: `c02e38d44a7dc238310172b9d790487f81aa4fb4`.
+Immutable marketplace ref: `885ca40dffd127dc29715f637d2ebdd7846b8b6e`.
 
 Plugin path: `plugins/unica`.
 
-Manifest version: `0.12.3`.
+Manifest version: `0.13.0`.
 
 License: LGPL-3.0-or-later.
 
 Use: optional 1C developer workflows, metadata/BSL investigation and controlled build/test operations. Unica remains an independently installed plugin; this project does not copy or relicense it.
 
-Compatibility review: releases 0.12.1–0.12.3 restore the typed execution surface, correct runtime/Windows behavior and reduce cold-install overhead. The marketplace path and independent-installation boundary remain unchanged. Repository tests validate the new immutable source pin; actual host installation and clean-session capability execution remain external acceptance checks.
+Compatibility review: releases 0.12.1–0.13.0 restore the typed execution surface, correct runtime/Windows behavior and reduce cold-install overhead. The marketplace path and independent-installation boundary remain unchanged. Repository tests validate the new immutable source pin; actual host installation and clean-session capability execution remain external acceptance checks.
 
 ## 1C Skills
 

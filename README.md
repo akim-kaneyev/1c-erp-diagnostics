@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml"><img alt="Validation" src="https://github.com/akim-kaneyev/1c-erp-diagnostics/actions/workflows/validate.yml/badge.svg" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-gold.svg" /></a>
-  <img alt="Version 0.4.0" src="https://img.shields.io/badge/version-0.4.0-0D1B2A.svg" />
+  <img alt="Version 0.4.1" src="https://img.shields.io/badge/version-0.4.1-0D1B2A.svg" />
   <img alt="Public Preview" src="https://img.shields.io/badge/status-public%20preview-2563EB.svg" />
   <img alt="1C ERP" src="https://img.shields.io/badge/domain-1C%3AERP-F5B800.svg" />
 </p>
@@ -31,7 +31,7 @@ Adding this repository as a marketplace source exposes five independently mainta
 | Plugin | Primary role |
 |---|---|
 | **1C ERP Diagnostics** | Gate 0–10 orchestration, evidence synthesis and controlled remediation |
-| **Unica 0.12.3** | 1C development, metadata/BSL investigation and controlled build/test workflows |
+| **Unica 0.13.0** | 1C development, metadata/BSL investigation and controlled build/test workflows |
 | **1C Skills (PowerShell)** | Windows-first 1C artifact/configurator/web-client tooling |
 | **1C Skills (Python)** | Cross-platform 1C artifact parsing and controlled automation |
 | **Jev browser use 0.1.0** | Optional mechanical browser navigation through Codex CUA and an explicitly configured external model provider |
@@ -224,9 +224,9 @@ The eval suite is validated in CI. A plugin version is runtime-accepted only aft
 
 ## Status
 
-**v0.4.0 Public Preview release candidate.** This candidate ships the ready local UI SDK viewer and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
+**v0.4.1 Public Preview release candidate.** This candidate updates the reviewed Unica pin to 0.13.0 and documents Windows cache-safe updates. It retains the ready local UI SDK viewer 0.4.0 and 35 reviewed skills. It preserves the five-plugin marketplace, 26-case strict suite, original Velis assets and existing diagnostic contracts.
 
-Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. That historical acceptance does not automatically accept changed v0.4.0 package contents. See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
+Protected PR CI, CodeQL and exact-version clean-session acceptance are tracked separately. Version 0.3.11 passed its complete 26-case run for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; merged main `d69db19504e7525ea1c1e95146c3b2070ab8b5f0` has the identical Git tree. Version 0.4.0 also passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged as `17f92b7e9e3303546341f082dae3faf4582e9a11` with an identical tree (PR #43). These historical runs do not automatically accept changed v0.4.1 package contents. See [Windows plugin updates](docs/PLUGIN_UPDATES.md). See the candidate PR evidence and [runtime acceptance procedure](docs/RUNTIME_ACCEPTANCE.md).
 
 Public preview means the workflow is usable and safety-tested, but host capabilities, companion availability and cross-plugin delegation may vary by ChatGPT/Codex plan, workspace, session and permissions. Gate 0 must always report actual runtime state outside deterministic synthetic eval snapshots.
 
