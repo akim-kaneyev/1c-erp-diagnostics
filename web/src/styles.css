@@ -1,5 +1,32 @@
 @layer ui-sdk;
 
+.sidebar-nav { margin-block: 12px; width: 100%; justify-content: start; color: #e8f1ff; border-color: #516481; background: #263851; }
+.sidebar-nav:hover { background: #314865; }
+.workbench-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.workbench-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 24px; margin-block-end: 20px; min-width: 0; }
+.workbench-card h2 { margin-block: 8px 16px; }
+.workbench-card p { line-height: 1.55; }
+.workbench-card form { display: grid; gap: 12px; margin-block: 16px; }
+.workbench-card [data-slot="field"] { display: grid; gap: 6px; }
+.workbench-card [data-slot="input"], .workbench-card [data-slot="textarea"], .workbench-card [data-slot="password-input"] { border: 1px solid #718096; border-radius: 7px; padding: 10px 12px; color: #17283f; background: #fff; font: inherit; width: 100%; }
+.workbench-card [data-slot="password-input"] { display: flex; align-items: center; gap: 8px; }
+.workbench-card [data-slot="password-input-control"] { min-width: 0; flex: 1; border: 0; outline-offset: 4px; font: inherit; background: transparent; }
+.workbench-card [data-slot="password-input-toggle"] { padding: 6px; background: #edf2f8; border: 1px solid #718096; border-radius: 5px; color: #17283f; }
+.workbench-card [data-slot="textarea"] { min-height: 96px; resize: vertical; }
+.workbench-card .select-trigger { width: 100%; margin-block: 6px 14px; }
+.workbench-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-block: 16px; align-items: end; }
+.workbench-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-block: 12px; }
+.workbench-notice { min-height: 24px; color: #254469; }
+.connection-target { font-size: 13px; overflow-wrap: anywhere; color: #425570; background: #f1f5fa; padding: 12px; border-radius: 7px; }
+.connection-good { color: #17603c; }
+.checkbox-line { display: flex; gap: 10px; align-items: center; line-height: 1.5; }
+.checkbox-line [data-slot="checkbox"] { width: 22px; height: 22px; border: 1px solid #66758a; border-radius: 4px; display: grid; place-items: center; color: #fff; background: #fff; }
+.checkbox-line [data-slot="checkbox"][data-checked] { background: #2455b2; border-color: #2455b2; }
+.workbench-card .record-link { margin-block: 10px; }
+.workbench-card pre { max-height: 380px; overflow: auto; }
+[hidden] { display: none !important; }
+@media (max-width: 1050px) { .workbench-grid { grid-template-columns: 1fr; } }
+
 :root { font-family: "Segoe UI", system-ui, sans-serif; color: #17283b; background: #f6f7f9; font-synthesis: none; font-size: 14px; line-height: 1.5; }
 * { box-sizing: border-box; }
 body { margin: 0; }

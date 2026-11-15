@@ -1,6 +1,6 @@
 {
   "algorithm": "sha256",
-  "file_count": 77,
+  "file_count": 88,
   "files": [
     {
       "path": ".agents/skills/one-c-erp-diagnostics/SKILL.md",
@@ -91,6 +91,36 @@
       "path": "playbooks/warehouse-series-assignments.md",
       "sha256": "0f61efd38945bc0fad6a37d6038077f65a80de4621cdb1ce13394698d49972b9",
       "size_bytes": 2783
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/README.md",
+      "sha256": "a52fda7b6043a9a8e19bd504415074f09128e9679f065c8bedfe5cdbb6321ef2",
+      "size_bytes": 3018
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/VelisReadOnlyBridge.cfe",
+      "sha256": "8942b4ef88b39d4db28cdef4965f6e8525b97a8425ca734f252df93e80013195",
+      "size_bytes": 7679
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/build.json",
+      "sha256": "41db080a987209992a32d814ba812ca94376e48c796f3ffc5552e320f9c850a4",
+      "size_bytes": 1175
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/src/Configuration.xml",
+      "sha256": "deb6bcf25e7c427510217c65d0dade083b768f515e2bf9fb181fd87feb94972f",
+      "size_bytes": 2249
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/src/HTTPServices/VelisReadOnlyBridge.xml",
+      "sha256": "7edb937890e79efc70738be315d1ee11aa32ae67b1bcf8f202d01543db92c91d",
+      "size_bytes": 1237
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/bridge/src/HTTPServices/VelisReadOnlyBridge/Ext/Module.bsl",
+      "sha256": "aaff7816e4a975f8de91d7f07f91fb4681b6dc02585cb2e76de3db95c51244fe",
+      "size_bytes": 15664
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-access-rights/SKILL.md",
@@ -284,8 +314,8 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/SKILL.md",
-      "sha256": "d9f5d58174b92742c576c4da0c011e9acfc8f6ef900fe0e3d3c8f52ff06e88f6",
-      "size_bytes": 4676
+      "sha256": "8fb4d0f7c7783de6c8d379166e36b49e768c3dad29b8818c8c999f902b8c0e78",
+      "size_bytes": 5844
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/references/bridge-contract.md",
@@ -294,13 +324,13 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-test-bridge/scripts/test_bridge.py",
-      "sha256": "b003418f0988e7c28678f787b4a89328e2d9d50b9ab2ca4cb2fe9457612903fd",
-      "size_bytes": 15677
+      "sha256": "fd9f0703b1ce171212cdd4474a3ee9e265dde4d129c5b861993d883130bbfd9a",
+      "size_bytes": 19599
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-ui-design/SKILL.md",
-      "sha256": "8f6116ca83cdd221910460a75830f42fb99ba23986bec05d107cdd7b241b3922",
-      "size_bytes": 7686
+      "sha256": "d0fd735c28e020dcca3dfb375bcb68b23414cbc35c6475ca85fb1a77b1d5a8bf",
+      "size_bytes": 8486
     },
     {
       "path": "plugins/one-c-erp-diagnostics/skills/one-c-erp-ui-design/references/diagnostic-interface.md",
@@ -323,19 +353,24 @@
       "size_bytes": 589
     },
     {
+      "path": "plugins/one-c-erp-diagnostics/ui/bridge_doctor.py",
+      "sha256": "90725118ecaa1a6817a7b6fa09ead0bc604ecb695f9924d714c7fc38b5bf1034",
+      "size_bytes": 4108
+    },
+    {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/THIRD_PARTY_NOTICES.txt",
       "sha256": "1c3da4d3d5ad6667123516e600012b4fbf4d1e5ed3d6567b0d7ab9f29873a941",
       "size_bytes": 27198
     },
     {
-      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-Md4gxSVL.css",
-      "sha256": "0674fed6cc7fa393224737c00a920d63c93b163ed6d9866b898443e936059378",
-      "size_bytes": 13752
+      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-2aom33nW.css",
+      "sha256": "14fd4716cc79d60cca9f481d8afcf581db560fba46161386f8525efca8e04c95",
+      "size_bytes": 15944
     },
     {
-      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-r7LK6iGJ.js",
-      "sha256": "9f7f12386c1d521a6b41e328964502ea6fe2ac448496cf9a5e98901ec72664bf",
-      "size_bytes": 556488
+      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/index-ClgR3zKT.js",
+      "sha256": "1469bcb61ad6963c842074e411a1479cbea5b575c0ba844293ec997fcb31089b",
+      "size_bytes": 594875
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/logo-BWUTSQcX.png",
@@ -343,14 +378,14 @@
       "size_bytes": 5577
     },
     {
-      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/sheet-presentation-DgcGpWA7.js",
-      "sha256": "e6e076582eccaa6620be536a3ad233b3104cdba08c1c576b54c4676bca2999ae",
+      "path": "plugins/one-c-erp-diagnostics/ui/dist/assets/sheet-presentation-DB0GdmPE.js",
+      "sha256": "e4708bb59d55103a173a43dcb0e78132a0db635b722422381e9ef2e01372429f",
       "size_bytes": 36315
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/build.json",
-      "sha256": "84f9ff9e6b64a1cc862618ddb8a300666d4b26f196814219ecf2f8018228d06e",
-      "size_bytes": 3676
+      "sha256": "24611f4e1495e0c33a793d48ea631eb9d62db2e9195ec2f5e0058685ad1d6939",
+      "size_bytes": 4224
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/example.json",
@@ -359,7 +394,7 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/dist/index.html",
-      "sha256": "46bfbc0f65b050036399ef4408a0669c6235dbe0d21c7af6bc2301a525889a8c",
+      "sha256": "358e45132dc915903554dfc83573ac8a3684f2c10c267f6006aeca600ba9f410",
       "size_bytes": 463
     },
     {
@@ -369,8 +404,28 @@
     },
     {
       "path": "plugins/one-c-erp-diagnostics/ui/serve_ui.py",
-      "sha256": "2100e1b6b095948948183c50082815deac1f4025d28193fb43c8313d7f8e06c2",
-      "size_bytes": 5155
+      "sha256": "9fe57e83cf68aef681768b84a6a7f9c3021c29ac218527d5e6a56cc32e3ae3a0",
+      "size_bytes": 11708
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/ui/workbench.py",
+      "sha256": "0bf4d38adc67cdac67bad1c41e745758ff318a898722268b178829154c9ecd7d",
+      "size_bytes": 16366
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/ui/workbench_common.py",
+      "sha256": "385fcb84101ba350873a0d78e6dcc20692af7c4586bec1d2f114d813fd3d0b71",
+      "size_bytes": 2421
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/ui/workbench_scenarios.py",
+      "sha256": "917d76857b08a43cc101ab9df119cb3e4fd5333b53dabea10c0d3a92e704460e",
+      "size_bytes": 7247
+    },
+    {
+      "path": "plugins/one-c-erp-diagnostics/ui/workbench_storage.py",
+      "sha256": "a3b5ac5ddcb5e22b45610e119a33fe77ab2a0f091e12e760da365ec8401bcc4e",
+      "size_bytes": 10593
     },
     {
       "path": "skills/one-c-erp-diagnostics/SKILL.md",
@@ -388,7 +443,7 @@
       "size_bytes": 4699
     }
   ],
-  "manifest_sha256": "f9ab2d0d400be2a9665f7bce6c45e36b38ee0563fc1bf651197f57193c9e868d",
+  "manifest_sha256": "5bca0d592c5b1ddbbf859d8a82a8bec0b40f016c1aeb04038d529dfc2b2dca69",
   "schema_version": 1,
   "scope": "1C ERP Diagnostics runtime skill, playbook, checklist and state surfaces",
   "text_normalization": "CRLF and CR are normalized to LF for known text extensions"

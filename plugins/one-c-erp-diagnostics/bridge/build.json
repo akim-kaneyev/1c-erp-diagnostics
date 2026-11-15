@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "extension": "VelisReadOnlyBridge",
+  "version": "0.1.0",
+  "platform_version": "8.3.27.2342",
+  "artifact_sha256": "8942b4ef88b39d4db28cdef4965f6e8525b97a8425ca734f252df93e80013195",
+  "source_sha256": {
+    "Configuration.xml": "deb6bcf25e7c427510217c65d0dade083b768f515e2bf9fb181fd87feb94972f",
+    "HTTPServices/VelisReadOnlyBridge/Ext/Module.bsl": "aaff7816e4a975f8de91d7f07f91fb4681b6dc02585cb2e76de3db95c51244fe",
+    "HTTPServices/VelisReadOnlyBridge.xml": "7edb937890e79efc70738be315d1ee11aa32ae67b1bcf8f202d01543db92c91d"
+  },
+  "checks": [
+    "native_Designer_XML_import",
+    "native_module_syntax_check",
+    "native_CFE_save",
+    "independent_v8unpack_1.2.6_module_equality",
+    "native_test_extension_applicability",
+    "live_fixed_command_and_rejection_checks"
+  ],
+  "limitations": [
+    "Live acceptance covers metadata, constant/typed probes, empty-reference header and refusal of forbidden commands.",
+    "No real document pair, movements, posting or accounting acceptance is claimed.",
+    "Native build used an explicitly authorized test extension after the isolated file build failed for lack of a local license."
+  ]
+}

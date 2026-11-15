@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import http.client
 import json
@@ -19,6 +20,7 @@ REVIEWED_SOURCE = "https://github.com/msrv-tech/skills"
 REVIEWED_COMMIT = "702dc8dbe0a0d31b1a16af3d871af29b99ef1122"
 MAX_BYTES = 4 * 1024 * 1024
 SECTIONS = {"catalogs", "documents", "enums", "informationRegisters", "accumulationRegisters"}
+QUERY_IDS = {"probe.constant", "probe.typed", "document.header"}
 
 
 class BridgeError(ValueError):
@@ -71,7 +73,7 @@ def normalize_url(value: str) -> str:
     require(parts.username is None and parts.password is None and not parts.query and not parts.fragment,
             "endpoint_credentials_or_suffix_forbidden")
     require(port is None or 1 <= port <= 65535, "invalid_port")
-    require(re.fullmatch(r"(?:/[A-Za-z0-9_-]+)+/hs/codex-test/?", parts.path) is not None,
+    require(re.fullmatch(r"(?:/[A-Za-z0-9_-]+)+/hs/(?:codex-test|velis-readonly)/?", parts.path) is not None,
             "publication_bridge_path_required")
     host = "[::1]" if parts.hostname == "::1" else "127.0.0.1"
     return f"http://{host}" + (f":{port}" if port is not None else "") + parts.path.rstrip("/")
@@ -82,13 +84,39 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise BridgeError("redirect_forbidden")
 
 
-def request(base: str, payload: dict | None, timeout: float) -> bytes:
+class Credentials:
+    """One explicit sign-in, bound to a single normalized loopback endpoint."""
+
+    __slots__ = ("_base_url", "_username", "_secret")
+
+    def __init__(self, base_url: str, username: str, secret: str):
+        self._base_url = normalize_url(base_url)
+        require(isinstance(username, str) and 0 < len(username.strip()) <= 256
+                and not re.search(r"[\x00-\x1f\x7f:]", username)
+                and isinstance(secret, str) and 0 < len(secret) <= 4096,
+                "explicit_credentials_required")
+        self._username, self._secret = username, secret
+
+    def __repr__(self):
+        return "<Credentials: redacted>"
+
+    def header(self, base: str) -> str:
+        require(normalize_url(base) == self._base_url, "credential_target_mismatch")
+        raw = (self._username + ":" + self._secret).encode("utf-8")
+        return "Basic " + base64.b64encode(raw).decode("ascii")
+
+
+def request(base: str, payload: dict | None, timeout: float, *, credentials: Credentials | None = None) -> bytes:
     base = normalize_url(base)
     require(math.isfinite(timeout) and 0 < timeout <= 60, "invalid_timeout")
     body = None if payload is None else encode(payload)
+    headers = {"Content-Type": "application/json; charset=utf-8", "Accept": "application/json"}
+    if credentials is not None:
+        require(isinstance(credentials, Credentials), "invalid_credentials")
+        headers["Authorization"] = credentials.header(base)
     req = urllib.request.Request(base + ("/health" if payload is None else "/command"),
                                  data=body, method="GET" if body is None else "POST",
-                                 headers={"Content-Type": "application/json; charset=utf-8", "Accept": "application/json"})
+                                 headers=headers)
     # Loopback must never inherit enterprise/system proxy settings or follow redirects.
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
     try:
@@ -107,13 +135,17 @@ def request(base: str, payload: dict | None, timeout: float) -> bytes:
 
 
 def validate_health(value: dict, expected: str) -> None:
-    require(value.get("ok") is True and value.get("service") == "CodexTestBridge", "bridge_health_failed")
+    require(value.get("ok") is True and value.get("service") in {"CodexTestBridge", "VelisReadOnlyBridge"}, "bridge_health_failed")
     require(value.get("metadataName") == expected, "test_configuration_mismatch")
+    if value["service"] == "VelisReadOnlyBridge":
+        require(value.get("readOnly") is True and type(value.get("contractVersion")) is int
+                and value["contractVersion"] == 1,
+                "read_only_contract_required")
 
 
 def build_payload(operation: str, *, sections: list[str] | None = None,
                   kind: str = "", name: str = "", text: str = "", params: dict | None = None,
-                  limit: int = 100) -> dict | None:
+                  limit: int = 100, queryId: str = "") -> dict | None:
     if operation == "health":
         return None
     if operation == "metadata":
@@ -125,9 +157,27 @@ def build_payload(operation: str, *, sections: list[str] | None = None,
                 "invalid_metadata_object")
         return {"command": "Describe", "kind": kind, "name": name}
     if operation == "query":
-        require(isinstance(text, str) and 0 < len(text) <= 100_000 and text.strip(), "query_text_required")
         require(isinstance(params, (dict, type(None))), "query_params_object_required")
         require(type(limit) is int and 1 <= limit <= 1000, "query_limit_out_of_range")
+        if queryId:
+            require(queryId in QUERY_IDS and not text, "unsupported_query_id")
+            values = params or {}
+            if queryId == "probe.constant":
+                require(not values, "query_parameters_invalid")
+            elif queryId == "probe.typed":
+                require(set(values) == {"text", "number", "flag"}
+                        and isinstance(values["text"], str) and len(values["text"]) <= 200
+                        and type(values["number"]) in (int, float) and math.isfinite(values["number"])
+                        and abs(values["number"]) <= 1_000_000_000 and type(values["flag"]) is bool,
+                        "query_parameters_invalid")
+            else:
+                require(set(values) == {"name", "uuid"} and isinstance(values["name"], str)
+                        and re.fullmatch(r"[^\W\d]\w*", values["name"]) is not None
+                        and isinstance(values["uuid"], str)
+                        and re.fullmatch(r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", values["uuid"]) is not None,
+                        "query_parameters_invalid")
+            return {"command": "Query", "queryId": queryId, "params": values, "limit": limit}
+        require(isinstance(text, str) and 0 < len(text) <= 100_000 and text.strip(), "query_text_required")
         return {"command": "Query", "text": text, "params": params or {}, "limit": limit}
     raise BridgeError("operation_not_read_only")
 
@@ -157,7 +207,7 @@ def validate_response(operation: str, value: dict, payload: dict | None, expecte
 
 def capture(*, base_url: str, expected_metadata_name: str, test_contour: bool, operation: str,
             payload: dict | None, case_id: str, evidence_ids: list[str], analytic_key: str,
-            output: Path, timeout: float = 10) -> dict:
+            output: Path, timeout: float = 10, credentials: Credentials | None = None) -> dict:
     base = normalize_url(base_url)
     require(test_contour is True, "explicit_test_contour_required")
     require(bool(expected_metadata_name.strip()) and bool(case_id.strip()) and bool(analytic_key.strip())
@@ -170,9 +220,10 @@ def capture(*, base_url: str, expected_metadata_name: str, test_contour: bool, o
     require(not output.exists() and not output.is_symlink(), "new_output_directory_required")
     output.mkdir(parents=True, exist_ok=False)
     started = datetime.now(timezone.utc).isoformat()
-    health_raw = request(base, None, timeout)
-    validate_health(decode(health_raw), expected_metadata_name)
-    response_raw = health_raw if operation == "health" else request(base, payload, timeout)
+    health_raw = request(base, None, timeout, credentials=credentials)
+    health = decode(health_raw)
+    validate_health(health, expected_metadata_name)
+    response_raw = health_raw if operation == "health" else request(base, payload, timeout, credentials=credentials)
     coverage = validate_response(operation, decode(response_raw), payload, expected_metadata_name)
     request_record = {"method": "GET" if payload is None else "POST", "base_url": base,
                       "operation": operation, "payload": payload}
@@ -182,9 +233,13 @@ def capture(*, base_url: str, expected_metadata_name: str, test_contour: bool, o
         "case_id": case_id, "evidence_ids": evidence_ids, "analytic_key": analytic_key,
         "started_at": started, "finished_at": datetime.now(timezone.utc).isoformat(),
         "test_contour_declared": True, "expected_metadata_name": expected_metadata_name,
-        "protocol_reference": {"repository": REVIEWED_SOURCE, "reviewed_commit": REVIEWED_COMMIT,
-                               "installed_bridge_commit": "not_attested_by_health"},
+        "protocol_reference": ({"repository": "akim-kaneyev/1c-erp-diagnostics", "service": "VelisReadOnlyBridge",
+                                "contract_version": 1, "installed_bridge_commit": "not_attested_by_health"}
+                               if health.get("service") == "VelisReadOnlyBridge" else
+                               {"repository": REVIEWED_SOURCE, "reviewed_commit": REVIEWED_COMMIT,
+                                "installed_bridge_commit": "not_attested_by_health"}),
         "adapter_sha256": sha256(Path(__file__).read_bytes()), "coverage": coverage,
+        "authentication": "explicit_http_basic" if credentials is not None else "none",
         "files": {name: {"sha256": sha256(data), "bytes": len(data)} for name, data in artifacts.items()},
         "limitations": ["Health identifies configuration name, not a unique infobase or immutable data snapshot.",
                         "Capture integrity is not proof of business correctness or ERP causality.",
@@ -251,7 +306,10 @@ def main(argv=None) -> int:
     read.add_argument("--kind", choices=["catalog", "document", "enum"], default="")
     read.add_argument("--name", default="")
     read.add_argument("--query-file", type=Path)
+    read.add_argument("--query-id", choices=sorted(QUERY_IDS), default="")
     read.add_argument("--params-file", type=Path)
+    read.add_argument("--username", default="")
+    read.add_argument("--ask-password", dest="prompt_credentials", action="store_true", help="Read a password interactively without saving it")
     read.add_argument("--limit", type=int, default=100)
     check = sub.add_parser("verify")
     check.add_argument("--bundle", required=True, type=Path)
@@ -265,14 +323,19 @@ def main(argv=None) -> int:
         if args.mode == "verify":
             result = verify(args.bundle, **context)
         else:
-            require(args.operation == "query" or not (args.query_file or args.params_file), "query_options_out_of_scope")
+            require(args.operation == "query" or not (args.query_file or args.params_file or args.query_id), "query_options_out_of_scope")
+            require(bool(args.username) == args.prompt_credentials, "explicit_credentials_required")
+            credentials = None
+            if args.prompt_credentials:
+                import getpass
+                credentials = Credentials(args.base_url, args.username, getpass.getpass("1C password (not saved): "))
             text = args.query_file.read_text(encoding="utf-8-sig") if args.query_file else ""
             params = decode(args.params_file.read_bytes()) if args.params_file else None
             payload = build_payload(args.operation, sections=args.sections, kind=args.kind, name=args.name,
-                                    text=text, params=params, limit=args.limit)
+                                    text=text, params=params, limit=args.limit, queryId=args.query_id)
             manifest = capture(base_url=args.base_url, expected_metadata_name=args.expected_metadata_name,
                                test_contour=args.test_contour, operation=args.operation, payload=payload,
-                               output=args.output, timeout=args.timeout, **context)
+                               output=args.output, timeout=args.timeout, credentials=credentials, **context)
             result = {"status": manifest["status"], "run_id": manifest["run_id"], "coverage": manifest["coverage"]}
         print(json.dumps(result, ensure_ascii=True))
         return 0

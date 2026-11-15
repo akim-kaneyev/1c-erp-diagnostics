@@ -13,7 +13,7 @@ MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 MANIFEST = ROOT / "plugins" / "one-c-erp-diagnostics" / ".codex-plugin" / "plugin.json"
 
 MARKETPLACE_ID = "one-c-erp-diagnostics-marketplace"
-EXPECTED_VERSION = "0.4.1"
+EXPECTED_VERSION = "0.5.0"
 EXPECTED_ORDER = [
     "one-c-erp-diagnostics",
     "unica",

@@ -57,3 +57,7 @@ Return the actual artifact/preview, framework and resolved SDK versions, impleme
 
 - [Diagnostic interface contract and acceptance scenarios](references/diagnostic-interface.md).
 - [Reviewed upstream skill](https://github.com/vercel-labs/ui/blob/724a7d6c2d0ca1251a8eb6172462ae220c484714/packages/core/skills/ui-sdk/SKILL.md) and [Apache-2.0 license](https://github.com/vercel-labs/ui/blob/724a7d6c2d0ca1251a8eb6172462ae220c484714/LICENSE).
+
+## Ready local workbench
+
+When the user explicitly requests connections, capture or persistent case work, launch the installed `../../ui/serve_ui.py --workbench --open`. The original default remains the static file viewer. Use an explicitly selected test profile and existing sign-in; no automatic first base/document or credential persistence. The workbench provides private cases, separate notes, source packages and three deterministic row scenarios. It never promotes scenario output into a causal conclusion or closes Gates. The UI exposes no arbitrary BSL, query text or write commands. The first-party bridge has a fixed server contract; legacy bridge limitations remain visible. See the packaged [bridge contract](../../bridge/README.md); repository users can also read `docs/WORKBENCH.md`.

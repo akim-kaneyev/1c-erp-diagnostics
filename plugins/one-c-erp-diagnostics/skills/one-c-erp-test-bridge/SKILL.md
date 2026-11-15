@@ -7,7 +7,7 @@ description: Capture and verify read-only HTTP evidence from an explicitly selec
 
 ## When to use
 
-Use at Gate 0/5/9 when an identified, sanitized local test base already exposes CodexTestBridge. This is an optional host adapter named `codex-test-bridge-local`, not an installed marketplace companion. See the [contract and commands](references/bridge-contract.md).
+Use at Gate 0/5/9 when an identified, sanitized local test base already exposes CodexTestBridge or the first-party VelisReadOnlyBridge. This is an optional host adapter named `codex-test-bridge-local`, not an installed marketplace companion. See the [contract and commands](references/bridge-contract.md).
 
 ## When NOT to use
 
@@ -48,3 +48,9 @@ Report capability status/reason, contour identity source, operation, risk, input
 
 - [Bridge contract, CLI examples and rendering checks](references/bridge-contract.md).
 - [Packaged read-only adapter and verifier](scripts/test_bridge.py).
+
+## Authenticated local workbench
+
+For an explicitly requested ready interface launch the installed `../../ui/serve_ui.py --workbench --open`. Read the packaged [workbench guide](../../bridge/README.md) before bridge installation or migration. Profiles require explicit test scope and exact configuration name; no automatic base selection. Credentials may be supplied only to the selected loopback origin, held in memory, never saved in profiles, commands, logs or case material. CLI uses `--username` plus `--ask-password`.
+
+The workbench exposes fixed Health/Metadata/probe/Describe reads. VelisReadOnlyBridge supports fixed query IDs and two explicitly selected document headers; it rejects arbitrary query text/BSL/writes at the server. Legacy CodexTestBridge can still have a broader server surface: report that limitation honestly. Preserve exact source hashes, canonical case lineage and pending Gates. Scenario PASS is data validation, not an accounting conclusion. Installation/update and actual live acceptance require a separately authorized exact test contour; package/source presence is not installed/runtime proof.

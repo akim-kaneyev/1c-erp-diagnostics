@@ -31,6 +31,8 @@ Version 0.3.8 added 10 accounting/state/security cases and passed a complete has
 
 Version 0.3.11 subsequently passed all 26 cases for accepted source `13e5d9b09b09028985bfd439eca045de7f6a567d`; PR #41 merged the identical tree as `d69db19504e7525ea1c1e95146c3b2070ab8b5f0`. Version 0.3.12 passed all 26 cases at source `2527eb9ace90d030d253b60e0ccee67a53119d9d`, merged with identical tree as `77fed1458cfaef770503d14665fe0944ed4fe1d6` (PR #42). Version 0.4.0 subsequently passed all 26 cases at accepted source `dd351682e6eb14520308824d2b0e7e44323dae88`, merged with an identical tree as `17f92b7e9e3303546341f082dae3faf4582e9a11` (PR #43). Version 0.4.1 requires its own installed-package suite and fresh Unica 0.13.0 MCP checks. The matching viewer 0.4.1 rebuild keeps separate frontend/browser/server evidence.
 
+Version 0.5.0 adds the opt-in authenticated workbench and first-party read-only bridge. It requires its own complete installed-package run; historical results cannot accept the changed package. Frontend interactions, local API controls, native CFE applicability and live test-bridge probes are checked separately from the 26 diagnostic cases.
+
 Until this command passes for the current candidate, runtime acceptance is `blocked`:
 
 ```text

@@ -32,6 +32,28 @@ class ViewerPublicationTests(unittest.TestCase):
             self.assertTrue(public.text_findings(content)[0])
         self.assertIsNotNone(scanner.unsafe_path("cache/example" + ".dt"))
 
+    def test_only_exact_connect_variable_reference_is_not_a_literal_credential(self):
+        key = "pass" + "word"
+        source = f"'/api/connect', {{ profile_id: profileId, username, {key}: secret }}"
+        bundle = f'`/api/connect`,{{profile_id:d,username:_,{key}:e}}'
+        for value in (source, bundle):
+            for module in (scanner, public):
+                self.assertEqual(module.text_findings(value), (False, False))
+        forbidden = [
+            source.replace(": secret", ': "literal-secret"'),
+            source.replace(": secret", ": 'literal-secret'"),
+            source.replace(": secret", ": `literal-secret`"),
+            source.replace(": secret", ": true"),
+            source.replace(": secret", ": null"),
+            source.replace(": secret", ": secret + 'suffix'"),
+            source.replace("/api/connect", "/api/profile"),
+            source + f';const leaked={{{key}:"literal-secret"}}',
+            f'{key}=secret', f'{{"{key}":"literal-secret"}}',
+        ]
+        for value in forbidden:
+            for module in (scanner, public):
+                self.assertTrue(module.text_findings(value)[0], value)
+
 
 if __name__ == "__main__":
     unittest.main()

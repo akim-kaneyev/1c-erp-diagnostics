@@ -2,7 +2,7 @@
 
 ## Scope
 
-`1C ERP Diagnostics` v0.4.1 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
+`1C ERP Diagnostics` v0.5.0 is a skills-first plugin and marketplace package. The project does not operate a developer-owned MCP server, API endpoint, analytics backend, user database, telemetry service or custom OAuth service.
 
 The marketplace also references independently maintained companion plugins such as Unica, 1C Skills and Jev. Those companions are not operated, copied or controlled by this project and retain their own privacy policies, permissions and data-handling behavior.
 
@@ -72,10 +72,14 @@ If a future version adds a developer-operated MCP server, hosted service, teleme
 
 ## Local test-bridge evidence
 
-Version 0.3.11 adds opt-in HTTP reads against an explicitly identified loopback-only test publication. The adapter sends Health/Metadata/Describe/Query requests to that local service; proxies, redirects, remote hosts and URL credentials are rejected. It does not install or publish a bridge. Query text, parameters, metadata names and returned data may be confidential. Exact request/response files and a manifest are saved only to a fresh user-selected private directory; stdout reports status and bounded coverage only. Keep captures outside Git and restrict filesystem access. The adapter does not redact raw evidence, attest the installed CFE revision or prove that data is current. Authenticated endpoints require a separately reviewed capability. No evidence is sent to a developer-operated service.
+Version 0.3.11 adds opt-in HTTP reads against an explicitly identified loopback-only test publication. The adapter sends Health/Metadata/Describe/Query requests to that local service; proxies, redirects, remote hosts and URL credentials are rejected. It does not install or publish a bridge. Query text, parameters, metadata names and returned data may be confidential. Exact request/response files and a manifest are saved only to a fresh user-selected private directory; stdout reports status and bounded coverage only. Keep captures outside Git and restrict filesystem access. The adapter does not redact raw evidence, attest the installed CFE revision or prove that data is current. Version 0.5.0 adds explicit UTF-8 HTTP Basic credentials bound to the exact selected loopback origin; CLI passwords are read through getpass, never from command-line arguments or environment variables. No evidence is sent to a developer-operated service.
 
 ## Requested diagnostic web interfaces
 
 Version 0.4.0 includes a local read-only diagnostic viewer with bundled, lockfile-pinned UI SDK code. Its Python server serves static assets on IPv4 loopback only, checks Host/Origin and has no upload, case-storage or database endpoint. The browser reads user-selected JSON/source files locally; files are kept in page memory without localStorage/IndexedDB, analytics, CDN or remote model calls. Refresh clears the open case. Saving a copy is a local browser download of the original bytes. Source-file hashing is local and does not change evidence status. No selected case data is sent to the static server. Stop the server with Ctrl+C when finished.
 
 The independently installed user skill remains separate. The viewer's component agent API operates in the browser; it is not a 1C HTTP bridge, provider connection or Codex MCP installation. WebMCP is not automatically registered. UI confirmation/secret/hidden markers do not replace backend authorization. No database bridge is installed or started.
+
+## Opt-in local workbench (0.5.0)
+
+The separate workbench sends explicitly selected JSON and notes only to its own loopback API and persists them in a private user directory. Profiles contain no credentials. Sign-in sends existing test-base credentials to the local API and exact selected bridge; passwords and session tokens remain in process memory for at most 15 minutes and are cleared from the form after an attempt. The app uses no browser storage. Raw request/response captures may contain confidential metadata/business fields. Exports are explicit local downloads; ZIP uses a verified allowlist. No case data is sent to a developer-operated service. See [workbench boundaries and retention](docs/WORKBENCH.md). Starting the workbench does not install or publish a 1C service.

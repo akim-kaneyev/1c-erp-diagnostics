@@ -209,3 +209,7 @@ Every normal result separates facts, interpretations, hypotheses and missing evi
 Gate statuses are limited to `pending | passed | blocked | failed | stale | not_required`. Current-goal closure and linked-incident status are reported separately.
 
 When `EVAL_RESULT_JSON` is present, return only the exact JSON object required by the supplied skeleton and synthetic capability snapshot. A final root-cause `УСТАНОВЛЕНО` requires Gate 7, Gate 10 and complete causality. Any production/accounting/access write is `R3` and requires exact approval, rollback and post-change validation.
+
+## Рабочий экран 0.5.0
+
+Для подключения к явно выбранной тестовой базе, сбора источников, заметок и проверки строк используйте [готовое рабочее пространство](WORKBENCH.md). Запуск: `python plugins/one-c-erp-diagnostics/ui/serve_ui.py --workbench --open`. Пароль вводится при входе и не сохраняется. Начните с проверки подключения, метаданных и контрольного запроса; смысл учётных данных проверяется отдельно.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "0.4.1",
+  "version": "0.5.0",
   "framework": "React/Vite",
   "sdk_version": "0.1.0-beta.1",
   "dependencies": [
@@ -42,7 +42,7 @@
     },
     {
       "path": "web/package.json",
-      "sha256": "5036852b35404cfe36e2682666889d8e00a3108a0082ec1b691ff1c1b0be5e78"
+      "sha256": "0b4f0c7ded97d8c93c7f25786da11a68f06e02bc965c2a5f1408140301d5ef1c"
     },
     {
       "path": "web/pnpm-lock.yaml",
@@ -58,11 +58,15 @@
     },
     {
       "path": "web/src/App.tsx",
-      "sha256": "fd6403b6a5a5ab9dbee907c940cc6ca8d1947aa11263f7571fb5013b3b52552b"
+      "sha256": "81a2835613502a0722dc2bfa2703e2f66964320aca371a2ced50bdcf5434894c"
     },
     {
       "path": "web/src/demo.ts",
       "sha256": "ddfa9d1c9aea60e3d98dbf0dbb0ea89efb0f5af571110f1dba65923f3cba74b5"
+    },
+    {
+      "path": "web/src/files.ts",
+      "sha256": "26d95a54b99dc762e42f89a3406876efb4fce2f594d8ad9c0aaf1526ae69c5b0"
     },
     {
       "path": "web/src/main.tsx",
@@ -70,11 +74,11 @@
     },
     {
       "path": "web/src/model.ts",
-      "sha256": "f7c25cb715f29f1646194e0d903d1e95dce0cf2e0619d20114ccaa2c4f290734"
+      "sha256": "efac4dba6669d1b6a461b20b84f63b21300240a7175564b46c9e929076f9dca4"
     },
     {
       "path": "web/src/styles.css",
-      "sha256": "1188d3a076cb6d9c19a6b17a4980dccc2dfdac283e231d6094ccb509afb9996f"
+      "sha256": "f6bb0803b64b94121534c39846bdbd2931612ec470e2c15f3d1d2e491a3f1f16"
     },
     {
       "path": "web/src/test/App.test.tsx",
@@ -87,6 +91,18 @@
     {
       "path": "web/src/test/setup.ts",
       "sha256": "44b57f8b599c96c776b41d0253615573d165cb74f65d3c9b78ddbf56e92aafb2"
+    },
+    {
+      "path": "web/src/test/Workbench.test.tsx",
+      "sha256": "dbff3f9092b2a4abefeb1303879c2ed83568add628e06f8cb0f55bceb7c5ad13"
+    },
+    {
+      "path": "web/src/workbench_api.ts",
+      "sha256": "1a69b15e1fecc2f7b9e2337e047f75ad3e055cafa31123071b3f641f46e48bf9"
+    },
+    {
+      "path": "web/src/Workbench.tsx",
+      "sha256": "4c1241e5b76c615f87ee452da63af02e5f1be65bdc4a7b591987302c2e5bcbdd"
     },
     {
       "path": "web/tsconfig.json",
@@ -103,20 +119,20 @@
       "sha256": "1c3da4d3d5ad6667123516e600012b4fbf4d1e5ed3d6567b0d7ab9f29873a941"
     },
     {
-      "path": "assets/index-Md4gxSVL.css",
-      "sha256": "0674fed6cc7fa393224737c00a920d63c93b163ed6d9866b898443e936059378"
+      "path": "assets/index-2aom33nW.css",
+      "sha256": "14fd4716cc79d60cca9f481d8afcf581db560fba46161386f8525efca8e04c95"
     },
     {
-      "path": "assets/index-r7LK6iGJ.js",
-      "sha256": "9f7f12386c1d521a6b41e328964502ea6fe2ac448496cf9a5e98901ec72664bf"
+      "path": "assets/index-ClgR3zKT.js",
+      "sha256": "1469bcb61ad6963c842074e411a1479cbea5b575c0ba844293ec997fcb31089b"
     },
     {
       "path": "assets/logo-BWUTSQcX.png",
       "sha256": "0dabb9f8ff7f73a8785d57fa2aaf0ab4bd5906ced60b9cd7cf22a073129f1d27"
     },
     {
-      "path": "assets/sheet-presentation-DgcGpWA7.js",
-      "sha256": "e6e076582eccaa6620be536a3ad233b3104cdba08c1c576b54c4676bca2999ae"
+      "path": "assets/sheet-presentation-DB0GdmPE.js",
+      "sha256": "e4708bb59d55103a173a43dcb0e78132a0db635b722422381e9ef2e01372429f"
     },
     {
       "path": "example.json",
@@ -124,7 +140,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "46bfbc0f65b050036399ef4408a0669c6235dbe0d21c7af6bc2301a525889a8c"
+      "sha256": "358e45132dc915903554dfc83573ac8a3684f2c10c267f6006aeca600ba9f410"
     }
   ]
 }
